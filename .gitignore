@@ -1,0 +1,8 @@
+*.txt
+*.classpath
+*.project
+/.settings/
+*/.settings/
+/target/
+/documentation/
+*/target/

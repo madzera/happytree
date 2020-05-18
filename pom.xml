@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!-- ############################## HappyTree ############################## -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema#instance"
+	xsi:schemaLocation=
+"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven#4.0.0.xsd">
+
+<!-- ############################### Header ################################ -->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.miuey</groupId>
+	<artifactId>happytree</artifactId>
+	<version>0.0.0</version>
+	<name>Happy Tree</name>
+	<description>
+		The Java Object Model API to handle objects in a tree structure.
+		Be able to transform legacy linear structure with tree behavior in a
+		real hierarquical tree structure and handle it as if it were Javascript
+		DOM.
+	</description>
+<!-- ############################## Properties ############################# -->
+	<properties>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+	</properties>
+<!-- ############################# Dependencies ############################ -->
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+<!-- ############################## Build Conf ############################# -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
