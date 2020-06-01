@@ -61,8 +61,8 @@ import com.miuey.happytree.exception.TreeException;
  * children are returned, but the same does not occur when climbing the
  * hierarchy, that is, returning the element parent, grandfather, etc. Because
  * if the parent element were returned, the entire tree would also be returned
- * in the {@link TreeManager#getElementById(Object)} method call, which would not
- * make sense.</p>
+ * in the {@link TreeManager#getElementById(Object)} method call, which would
+ * not make sense.</p>
  * 
  * @author Diego Nóbrega
  * @author Miuey

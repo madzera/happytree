@@ -65,9 +65,19 @@ public interface TreeTransaction {
 	 * he assembles his desired tree. It is easily done by {@link TreeManager}
 	 * methods.</p>
 	 * 
+	 * <p>When starting a new standard session, it is necessary to specify the
+	 * parameterized type of object from which the tree will encapsulate it.
+	 * Each tree can only hold one type of parameterized object. Then, each
+	 * element (node in the tree) will contain its respective object from this
+	 * parameterized type.</p>
+	 * 
 	 * <p>The identifier can not be empty or null.</p>
 	 * 
+	 * @param T the parameterized type of the new tree session
+	 * 
 	 * @param identifier the new session identifier
+	 * 
+	 * @param type class type of the object that will be stored in the tree
 	 * 
 	 * @throws TreeException when there is another session with the same
 	 * identifier
@@ -75,7 +85,8 @@ public interface TreeTransaction {
 	 * @throws IllegalArgumentException when the <code>identifier</code> is
 	 * <code>null</code> or empty
 	 */
-	public void initializeSession(String identifier) throws TreeException;
+	public <T> void initializeSession(String identifier, T type)
+			throws TreeException;
 	
 	/**
 	 * Initialize a session with the specified identifier by a previous list of

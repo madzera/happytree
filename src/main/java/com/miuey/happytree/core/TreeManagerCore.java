@@ -1,17 +1,25 @@
 package com.miuey.happytree.core;
 
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeManagerCore implements TreeManager {
-	
+
 	/*
 	 * Protect this constructor. A single manager is sufficiently responsible
 	 * to manage all the sessions.
 	 */
 	private static TreeManager instance;
+	
+	/*
+	 * The transaction associated to this manager. A manager is always related
+	 * to its transaction. The cardinality is always 1:1.
+	 */
+	private TreeTransaction transaction = TreeFactory.serviceFactory().
+			createTreeTransaction();
 	
 	
 	TreeManagerCore() {}
@@ -104,8 +112,7 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public TreeTransaction getTransaction() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.transaction;
 	}
 
 	@Override
