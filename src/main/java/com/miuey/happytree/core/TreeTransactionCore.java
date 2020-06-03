@@ -73,26 +73,31 @@ class TreeTransactionCore implements TreeTransaction {
 
 	@Override
 	public void destroySession(String identifier) {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = this.sessions.get(identifier);
+		if (session != null && session == this.currentSession) {
+			this.currentSession = null;
+		}
+		this.sessions.remove(identifier);
 	}
 
 	@Override
 	public void destroySession() {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = this.currentSession;
+		if (session != null) {
+			this.sessions.remove(session.getSessionId());
+			this.currentSession = null;
+		}
 	}
 
 	@Override
 	public void destroyAllSessions() {
-		// TODO Auto-generated method stub
-		
+		this.sessions.clear();
 	}
 
 	@Override
 	public TreeSession sessionCheckout(String identifier) {
 		this.currentSession = sessions.get(identifier);
-		return this.getCurrentSession();
+		return this.currentSession();
 	}
 
 	@Override
@@ -121,8 +126,10 @@ class TreeTransactionCore implements TreeTransaction {
 
 	@Override
 	public List<TreeSession> sessions() {
-		// TODO Auto-generated method stub
-		return null;
+		List<TreeSession> listSessions = TreeFactory.collectionFactory().
+				createArrayList();
+		listSessions.addAll(sessions.values());
+		return listSessions;
 	}
 
 	@Override
@@ -131,7 +138,8 @@ class TreeTransactionCore implements TreeTransaction {
 		
 	}
 	
-	TreeSession getCurrentSession() {
+	@Override
+	public TreeSession currentSession() {
 		return this.currentSession;
 	}
 	

@@ -1,7 +1,9 @@
 package com.miuey.happytree.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 
 import com.miuey.happytree.core.validator.NotDuplicatedSessionValidator;
@@ -85,6 +87,10 @@ class TreeFactory {
 		
 		<T> HashSet<T> createHashSet() {
 			return new HashSet<T>();
+		}
+		
+		<T> List<T> createArrayList() {
+			return new ArrayList<T>();
 		}
 	}
 	

@@ -385,4 +385,6 @@ public interface TreeTransaction {
 	 * @param to the target tree session
 	 */
 	public void cloneSession(String from, String to);
+	
+	public TreeSession currentSession();
 }
