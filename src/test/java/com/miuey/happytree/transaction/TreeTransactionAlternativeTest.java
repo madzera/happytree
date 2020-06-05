@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import com.miuey.happytree.Directory;
@@ -100,7 +102,7 @@ public class TreeTransactionAlternativeTest {
 		
 		TreeSession session = transaction.currentSession();
 		assertNotNull(session);
-		assertEquals(session.getSessionId(), sessionId);
+		assertEquals(sessionId, session.getSessionId());
 		
 		transaction.destroySession(sessionId);
 		
@@ -215,11 +217,45 @@ public class TreeTransactionAlternativeTest {
 		transaction.destroyAllSessions();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		assertEquals(transaction.sessions().size(), sessionsListLength);
+		assertEquals(sessionsListLength, transaction.sessions().size());
 		transaction.destroySession(nullableSessionId);
-		assertEquals(transaction.sessions().size(), sessionsListLength);
+		assertEquals(sessionsListLength, transaction.sessions().size());
 		
 		assertEquals(sessionId, transaction.sessionCheckout(sessionId).
 				getSessionId());
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#destroyAllSessions()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to destroy all sessions with no one session been initialized before.
+	 * <p><b>Expected:</b></p>
+	 * Expect that the transaction has no session to be handle.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Invoke {@link TreeTransaction#destroyAllSessions()};</li>
+	 * 	<li>Verify that the transaction has no sessions anymore.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void destroyAllSessions_noInitializedSession() throws TreeException {
+		final int noSession = 0;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		/*
+		 * Clear all the sessions so as not to interfere with the accounting of
+		 * sessions.
+		 */
+		transaction.destroyAllSessions();
+		
+		List<TreeSession> sessions = transaction.sessions();
+		assertEquals(noSession, sessions.size());
 	}
 }

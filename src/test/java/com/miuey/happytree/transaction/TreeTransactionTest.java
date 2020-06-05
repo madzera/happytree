@@ -1,7 +1,10 @@
 package com.miuey.happytree.transaction;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -86,8 +89,8 @@ public class TreeTransactionTest {
 	 */
 	@Test
 	public void destroySession() throws TreeException {
-		final String identifierSession1 = "destroySession1";
-		final String identifierSession2 = "destroySession2";
+		final String sessionIdentifier1 = "destroySession1";
+		final String sessionIdentifier2 = "destroySession2";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -98,20 +101,20 @@ public class TreeTransactionTest {
 		 */
 		transaction.destroyAllSessions();
 		
-		transaction.initializeSession(identifierSession1, Directory.class);
-		transaction.initializeSession(identifierSession2, Directory.class);
+		transaction.initializeSession(sessionIdentifier1, Directory.class);
+		transaction.initializeSession(sessionIdentifier2, Directory.class);
 		
-		TreeSession session2 = transaction.sessionCheckout(identifierSession2);
-		TreeSession session1 = transaction.sessionCheckout(identifierSession1);
+		TreeSession session2 = transaction.sessionCheckout(sessionIdentifier2);
+		TreeSession session1 = transaction.sessionCheckout(sessionIdentifier1);
 		
 		/*
 		 * Destroy the last checked out session (session1).
 		 */
 		transaction.destroySession();
 		
-		session1 = transaction.sessionCheckout(identifierSession1);
+		session1 = transaction.sessionCheckout(sessionIdentifier1);
 		assertNull(session1);
-		session2 = transaction.sessionCheckout(identifierSession2);
+		session2 = transaction.sessionCheckout(sessionIdentifier2);
 		assertNotNull(session2);
 	}
 	
@@ -141,8 +144,8 @@ public class TreeTransactionTest {
 	 */
 	@Test
 	public void destroySession_arg() throws TreeException {
-		final String identifierSession1 = "destroySession1";
-		final String identifierSession2 = "destroySession2";
+		final String sessionIdentifier1 = "destroySession1";
+		final String sessionIdentifier2 = "destroySession2";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -153,14 +156,75 @@ public class TreeTransactionTest {
 		 */
 		transaction.destroyAllSessions();
 		
-		transaction.initializeSession(identifierSession1, Directory.class);
-		transaction.initializeSession(identifierSession2, Directory.class);
-		transaction.destroySession(identifierSession1);
+		transaction.initializeSession(sessionIdentifier1, Directory.class);
+		transaction.initializeSession(sessionIdentifier2, Directory.class);
+		transaction.destroySession(sessionIdentifier1);
 		
-		TreeSession session1 = transaction.sessionCheckout(identifierSession1);
-		TreeSession session2 = transaction.sessionCheckout(identifierSession2);
+		TreeSession session1 = transaction.sessionCheckout(sessionIdentifier1);
+		TreeSession session2 = transaction.sessionCheckout(sessionIdentifier2);
 		
 		assertNull(session1);
 		assertNotNull(session2);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#destroyAllSessions()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to destroy all sessions.
+	 * <p><b>Expected:</b></p>
+	 * Expect that the transaction has no session to be handle.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create 5 new session identifiers;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Clear all the sessions so as not to interfere with the another test;
+	 * 	</li>
+	 * 	<li>Initialize all the 5 sessions with its respective identifiers;</li>
+	 * 	<li>Verify if the transaction really has the 5 sessions;</li>
+	 * 	<li>Invoke {@link TreeTransaction#destroyAllSessions()};</li>
+	 * 	<li>Verify that the transaction has no sessions anymore.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void destroyAllSessions() throws TreeException {
+		final int noSession = 0;
+		final int totalSessions = 5;
+		
+		final String sessionId1 = "destroyAllSessions1";
+		final String sessionId2 = "destroyAllSessions2";
+		final String sessionId3 = "destroyAllSessions3";
+		final String sessionId4 = "destroyAllSessions4";
+		final String sessionId5 = "destroyAllSessions5";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		/*
+		 * Clear all the sessions so as not to interfere with the accounting of
+		 * sessions.
+		 */
+		transaction.destroyAllSessions();
+		
+		transaction.initializeSession(sessionId1, Directory.class);
+		transaction.initializeSession(sessionId2, Directory.class);
+		transaction.initializeSession(sessionId3, Directory.class);
+		transaction.initializeSession(sessionId4, Directory.class);
+		transaction.initializeSession(sessionId5, Directory.class);
+		
+		List<TreeSession> sessions = transaction.sessions();
+		assertEquals(totalSessions, sessions.size());
+		
+		/*
+		 * Clear all the sessions so as not to interfere with the accounting of
+		 * sessions.
+		 */
+		transaction.destroyAllSessions();
+		
+		sessions = transaction.sessions();
+		assertEquals(noSession, sessions.size());
 	}
 }
