@@ -91,7 +91,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Create another inexistent identifier ;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Clear all the sessions so as not to interfere with the accounting of
-	 * 	total sessions
+	 * 	total sessions;<li>
 	 * 	<li>Initialize the new session with the specified identifier;</li>
 	 * 	<li>Try to do a check out of an inexistent session by the inexistent
 	 * 	identifier created before and check if the session has the
@@ -152,7 +152,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Create another identifier with the <code>null</code> value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Clear all the sessions so as not to interfere with the accounting of
-	 * 	total sessions
+	 * 	total sessions;</li>
 	 * 	<li>Initialize the new session with the specified identifier;</li>
 	 * 	<li>Verify if the transaction has only one created session;</li>
 	 * 	<li>Invokes the {@link TreeTransaction#destroySession(String)} with the
@@ -256,6 +256,92 @@ public class TreeTransactionAlternativeTest {
 		transaction.initializeSession(nameTree, Directory.class);
 		TreeSession session = transaction.sessionCheckout(inexistentSession);
 		
+		assertNull(session);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#activateSession()}.
+	 * 
+	 * <p>Alternative scenario for this operation when there is no current
+	 * sessions initialized.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to activate the a session when there is no session initialized.
+	 * <p><b>Expected:</b></p>
+	 * Receive a <code>null</code> session value when checking out an inexistent
+	 * session and 0 session inside of the transaction.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create the inexistent session identifiers value;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Execute the {@link TreeTransaction#activateSession()} using the
+	 * 	(inexistent) identifier;</li>
+	 * 	<li>Assert the <code>null</code> value for the session returned.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void activateSession_noCurrentSession() throws TreeException {
+		final int sessionsListLength = 0;
+		final String inexistentSessionId = "foo";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		/*
+		 * Clear all the sessions so as not to interfere with the accounting of
+		 * sessions.
+		 */
+		transaction.destroyAllSessions();
+		
+		transaction.activateSession();
+		TreeSession inexistentSession = transaction.sessionCheckout(
+				inexistentSessionId);
+		assertNull(inexistentSession);
+		assertEquals(sessionsListLength, transaction.sessions().size());
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#activateSession(String)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to activate a
+	 * session with a <code>null</code> identifier argument.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to activate a session with a <code>null</code> identifier parameter.
+	 * <p><b>Expected:</b></p>
+	 * Expect that there is no any error passing a <code>null</code> parameter
+	 * by invoking {@link TreeTransaction#activateSession(String)} and a
+	 * <code>null</code> session when lookup the current session.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a <code>null</code> session identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Clear all the sessions so as not to interfere with the accounting of
+	 * 	total sessions;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#activateSession(String)} using the
+	 * 	(inexistent or <code>null</code>) identifier;</li>
+	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void activateSession_arg_nullIdentifier() throws TreeException {
+		final String nullableIdentifier = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		/*
+		 * Clear all the sessions so as not to interfere with the accounting of
+		 * sessions.
+		 */
+		transaction.destroyAllSessions();
+		
+		transaction.activateSession(nullableIdentifier);
+		
+		TreeSession session = transaction.currentSession();
 		assertNull(session);
 	}
 }

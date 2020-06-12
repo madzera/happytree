@@ -102,26 +102,38 @@ class TreeTransactionCore implements TreeTransaction {
 
 	@Override
 	public void activateSession(String identifier) {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = sessions.get(identifier);
+		if (session != null) {
+			TreeSessionCore sessionCore = (TreeSessionCore) session;
+			sessionCore.setActive(Boolean.TRUE);
+		}
 	}
 
 	@Override
 	public void activateSession() {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = this.currentSession();
+		if (session != null) {
+			TreeSessionCore sessionCore = (TreeSessionCore) session;
+			sessionCore.setActive(Boolean.TRUE);
+		}
 	}
 
 	@Override
 	public void deactivateSession(String identifier) {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = sessions.get(identifier);
+		if (session != null) {
+			TreeSessionCore sessionCore = (TreeSessionCore) session;
+			sessionCore.setActive(Boolean.FALSE);
+		}
 	}
 
 	@Override
 	public void deactivateSession() {
-		// TODO Auto-generated method stub
-		
+		TreeSession session = this.currentSession();
+		if (session != null) {
+			TreeSessionCore sessionCore = (TreeSessionCore) session;
+			sessionCore.setActive(Boolean.FALSE);
+		}
 	}
 
 	@Override
