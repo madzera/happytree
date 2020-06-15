@@ -77,8 +77,6 @@ public class TreeTransactionTest {
 	 * <ol>
 	 * 	<li>Create two identifiers for the new sessions;</li>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Clear all the sessions so as not to interfere with the another test
-	 * 	</li>
 	 * 	<li>Initialize the both sessions with their respective identifiers;</li>
 	 * 	<li>Check out session 2;</li>
 	 * 	<li>Check out session 1;</li>
@@ -96,12 +94,6 @@ public class TreeTransactionTest {
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		/*
-		 * Clear all the sessions so as not to interfere with the accounting of
-		 * sessions.
-		 */
-		transaction.destroyAllSessions();
 		
 		transaction.initializeSession(sessionIdentifier1, Directory.class);
 		transaction.initializeSession(sessionIdentifier2, Directory.class);
@@ -134,8 +126,6 @@ public class TreeTransactionTest {
 	 * <ol>
 	 * 	<li>Create two identifiers for the new sessions;</li>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Clear all the sessions so as not to interfere with the another test;
-	 * 	</li>
 	 * 	<li>Initialize the both sessions with their respective identifiers;</li>
 	 * 	<li>Destroy the session 1;</li>
 	 * 	<li>Verify that the session 1 is <code>null</code> and the session 2 is
@@ -151,12 +141,6 @@ public class TreeTransactionTest {
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		/*
-		 * Clear all the sessions so as not to interfere with the accounting of
-		 * sessions.
-		 */
-		transaction.destroyAllSessions();
 		
 		transaction.initializeSession(sessionIdentifier1, Directory.class);
 		transaction.initializeSession(sessionIdentifier2, Directory.class);
@@ -182,8 +166,6 @@ public class TreeTransactionTest {
 	 * <ol>
 	 * 	<li>Create 5 new session identifiers;</li>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Clear all the sessions so as not to interfere with the another test;
-	 * 	</li>
 	 * 	<li>Initialize all the 5 sessions with its respective identifiers;</li>
 	 * 	<li>Verify if the transaction really has the 5 sessions;</li>
 	 * 	<li>Invoke {@link TreeTransaction#destroyAllSessions()};</li>
@@ -204,12 +186,6 @@ public class TreeTransactionTest {
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		/*
-		 * Clear all the sessions so as not to interfere with the accounting of
-		 * sessions.
-		 */
-		transaction.destroyAllSessions();
 		
 		transaction.initializeSession(sessionId1, Directory.class);
 		transaction.initializeSession(sessionId2, Directory.class);
@@ -239,8 +215,6 @@ public class TreeTransactionTest {
 	 * <ol>
 	 * 	<li>Create the session identifier;</li>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Clear all the sessions so as not to interfere with the another test;
-	 * 	</li>
 	 * 	<li>Initialize the session;</li>
 	 * 	<li>Deactivate the session status;</li>
 	 * 	<li>Verify if the session status is deactivated;</li>
@@ -256,12 +230,6 @@ public class TreeTransactionTest {
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		/*
-		 * Clear all the sessions so as not to interfere with the accounting of
-		 * sessions.
-		 */
-		transaction.destroyAllSessions();
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		transaction.deactivateSession();
@@ -285,8 +253,6 @@ public class TreeTransactionTest {
 	 * <ol>
 	 * 	<li>Create the session identifier;</li>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Clear all the sessions so as not to interfere with the another test;
-	 * 	</li>
 	 * 	<li>Initialize the session;</li>
 	 * 	<li>Deactivate the session status;</li>
 	 * 	<li>Verify if the session status is deactivated;</li>
@@ -294,6 +260,7 @@ public class TreeTransactionTest {
 	 * 	the session;</li>
 	 * 	<li>Verify if the session status is activated.</li>
 	 * </ol>
+	 * 
 	 * @throws TreeException
 	 */
 	@Test
@@ -303,12 +270,6 @@ public class TreeTransactionTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		/*
-		 * Clear all the sessions so as not to interfere with the accounting of
-		 * sessions.
-		 */
-		transaction.destroyAllSessions();
-		
 		transaction.initializeSession(sessionId, Directory.class);
 		transaction.deactivateSession(sessionId);
 		TreeSession session = transaction.currentSession();
@@ -316,5 +277,73 @@ public class TreeTransactionTest {
 		transaction.activateSession(sessionId);
 		session = transaction.currentSession();
 		assertTrue(session.isActive());
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#deactivateSession()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to deactivate a session.
+	 * <p><b>Expected:</b></p>
+	 * The deactivated session status.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create the session identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the session;</li>
+	 * 	<li>Verify if the session status is activated;</li>
+	 * 	<li>Deactivate the session status;</li>
+	 * 	<li>Verify if the session status is deactivated.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void deactivateSession() throws TreeException {
+		final String sessionId = "deactivateSession";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		assertTrue(transaction.currentSession().isActive());
+		transaction.deactivateSession();
+		assertFalse(transaction.currentSession().isActive());
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#deactivateSession(String)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to deactivate a session.
+	 * <p><b>Expected:</b></p>
+	 * The deactivated session status.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create the session identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the session;</li>
+	 * 	<li>Verify if the session status is activated;</li>
+	 * 	<li>Deactivate the session status;</li>
+	 * 	<li>Verify if the session status is deactivated.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void deactivateSession_arg() throws TreeException {
+		final String sessionId = "deactivateSession_arg";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		assertTrue(transaction.currentSession().isActive());
+		transaction.deactivateSession(sessionId);
+		assertFalse(transaction.currentSession().isActive());
 	}
 }

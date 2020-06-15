@@ -69,6 +69,10 @@ class TreeFactory {
 	class ServiceFactory extends TreeFactory {
 		ServiceFactory() {}
 
+		TreeManagerCore createTreeManagerCore() {
+			return new TreeManagerCore();
+		}
+		
 		TreeTransactionCore createTreeTransaction() {
 			return new TreeTransactionCore();
 		}

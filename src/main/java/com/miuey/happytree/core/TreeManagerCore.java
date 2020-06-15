@@ -9,12 +9,6 @@ import com.miuey.happytree.exception.TreeException;
 class TreeManagerCore implements TreeManager {
 
 	/*
-	 * Protect this constructor. A single manager is sufficiently responsible
-	 * to manage all the sessions.
-	 */
-	private static TreeManager instance;
-	
-	/*
 	 * The transaction associated to this manager. A manager is always related
 	 * to its transaction. The cardinality is always 1:1.
 	 */
@@ -121,23 +115,7 @@ class TreeManagerCore implements TreeManager {
 		return null;
 	}
 
-	/**
-	 * <p>A tree manager must be a singleton. This type of object is responsible
-	 * to store all session tree states and handle them. Each session match with
-	 * its respective tree and each session belongs to its respective client of 
-	 * this API. It does not make sense to provide several instances of 
-	 * {@code TreeManager} objects because a only one instance is enough to 
-	 * store and handle all trees. Furthermore, if there had too much instance 
-	 * of this object, it will overload the memory with unnecessary managers 
-	 * processing each one his core in a redundant way.</p>
-	 *   
-	 * @return instance <code>TreeManager</code>. The core interface responsible
-	 * to provide operations over the trees stored inside sessions.
-	 */
 	static TreeManager getTreeManagerInstance() {
-		if (instance == null) {
-			instance = new TreeManagerCore();
-		}
-		return instance;
+		return TreeFactory.serviceFactory().createTreeManagerCore();
 	}
 }
