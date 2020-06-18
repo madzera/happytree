@@ -346,4 +346,50 @@ public class TreeTransactionTest {
 		transaction.deactivateSession(sessionId);
 		assertFalse(transaction.currentSession().isActive());
 	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#sessions()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * List all initialized sessions.
+	 * <p><b>Expected:</b></p>
+	 * Ensure that the number of sessions is the same as the number of
+	 * initialized sessions.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create six session identifiers;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the six session;</li>
+	 * 	<li>Invoke {@link TreeTransaction#sessions()} and verify if the number
+	 * 	of sessions is the same as the number of initialized sessions;</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void sessions() throws TreeException {
+		final int expected = 6;
+		final String sessionId1 = "sessions1";
+		final String sessionId2 = "sessions2";
+		final String sessionId3 = "sessions3";
+		final String sessionId4 = "sessions4";
+		final String sessionId5 = "sessions5";
+		final String sessionId6 = "sessions6";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId1, Directory.class);
+		transaction.initializeSession(sessionId2, Directory.class);
+		transaction.initializeSession(sessionId3, Directory.class);
+		transaction.initializeSession(sessionId4, Directory.class);
+		transaction.initializeSession(sessionId5, Directory.class);
+		transaction.initializeSession(sessionId6, Directory.class);
+		
+		List<TreeSession> sessions = transaction.sessions();
+		
+		assertEquals(expected, sessions.size());
+	}
 }
