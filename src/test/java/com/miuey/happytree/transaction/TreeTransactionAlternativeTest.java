@@ -3,6 +3,7 @@ package com.miuey.happytree.transaction;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -378,5 +379,34 @@ public class TreeTransactionAlternativeTest {
 		transaction.deactivateSession(nullableIdentifier);
 		TreeSession session = transaction.currentSession();
 		assertNull(session);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#sessions()}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to get the list
+	 * sessions when there is no any session initialized.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Verify the size list when there is no session initialized.
+	 * <p><b>Expected:</b></p>
+	 * Expect that the list of sessions is empty.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#sessions()};</li>
+	 * 	<li>Verify if the list of sessions is empty.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void sessions_empty() throws TreeException {
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		List<TreeSession> sessions = transaction.sessions();
+		
+		assertTrue(sessions.isEmpty());
 	}
 }
