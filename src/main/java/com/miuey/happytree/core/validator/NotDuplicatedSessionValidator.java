@@ -13,8 +13,7 @@ public class NotDuplicatedSessionValidator extends GenericServiceValidator {
 		@SuppressWarnings("unchecked")
 		Map<String, TreeSession> sessions = (Map<String, TreeSession>) 
 				pipeline.getAttribute("sessions");
-		String sessionIdentifier = (String) pipeline.getAttribute(
-				"sessionIdentifier");
+		String sessionIdentifier = (String) pipeline.getAttribute("arg");
 		
 		if (sessions.get(sessionIdentifier) != null) {
 			throw this.throwTreeException(RepositoryMessage.

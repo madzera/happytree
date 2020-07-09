@@ -32,8 +32,8 @@ class TreeTransactionCore implements TreeTransaction {
 		 */
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
+		pipeline.addAttribute("arg", identifier);
 		pipeline.addAttribute("sessions", this.sessions);
-		pipeline.addAttribute("sessionIdentifier", identifier);
 		validateInitializeSession(pipeline);
 		
 		/*
@@ -161,7 +161,7 @@ class TreeTransactionCore implements TreeTransaction {
 				serviceValidatorFactory();
 		
 		TreeServiceValidator inputValidator = validatorFactory.
-				createNotNullInputValidator();
+				createNotNullArgValidator();
 		TreeServiceValidator duplicatedSessionValidator = validatorFactory.
 				createNotDuplicatedSessionValidator();
 		

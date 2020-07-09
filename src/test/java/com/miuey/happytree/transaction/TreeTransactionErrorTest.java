@@ -40,12 +40,12 @@ public class TreeTransactionErrorTest {
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session with the <code>null</code> argument;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Assert the error message.</li>
+	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * @throws TreeException 
 	 */
 	@Test
-	public void initializeSession_nullIdentifier() throws TreeException {
+	public void nullIdentifier() throws TreeException {
 		final String nameTree = null;
 		final String messageError = "Invalid null/empty argument(s).";
 		String error = null;
@@ -59,7 +59,7 @@ public class TreeTransactionErrorTest {
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		} finally {
-			assertEquals(error, messageError);
+			assertEquals(messageError, error);
 		}
 	}
 	
@@ -84,12 +84,12 @@ public class TreeTransactionErrorTest {
 	 * 	refresh the current session;</li>
 	 * 	<li>Initialize a new session with the second identifier;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Assert the error message.</li>
+	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 */
 	@Test
-	public void initializeSession_duplicateIdentifier() {
-		final String nameTree = "initializeSession_duplicateIdentifier";
+	public void duplicateIdentifier() {
+		final String nameTree = "duplicateIdentifier";
 		final String nameTreeDuplicated = nameTree;
 		final String messageError = "Already existing initialized session.";
 		String error = null;
@@ -108,7 +108,7 @@ public class TreeTransactionErrorTest {
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
-			assertEquals(error, messageError);
+			assertEquals(messageError, error);
 		}
 	}
 }

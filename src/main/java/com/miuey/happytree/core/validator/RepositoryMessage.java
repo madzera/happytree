@@ -5,7 +5,9 @@ import java.util.Properties;
 
 enum RepositoryMessage {
 	INVALID_INPUT(Constants.Error.INVALID_INPUT_ELEMENTS),
-	DUPLICATED_SESSION(Constants.Error.DUPLICATED_SESSION_ID_ERROR);
+	DUPLICATED_SESSION(Constants.Error.DUPLICATED_SESSION_ID_ERROR),
+	NO_DEFINED_SESSION(Constants.Error.NO_DEFINED_SESSION),
+	NO_ACTIVE_SESSION(Constants.Error.NO_ACTIVE_SESSION);
 	
 	private String errorDesc;
 	private static Properties properties = new Properties();

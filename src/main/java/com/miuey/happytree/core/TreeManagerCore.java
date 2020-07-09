@@ -4,6 +4,7 @@ package com.miuey.happytree.core;
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
+import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeManagerCore implements TreeManager {
@@ -86,8 +87,16 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> createElement(Object id, Object parent)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		/*
+		 * Initial validation processes.
+		 */
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		pipeline.addAttribute("arg", id);
+		pipeline.addAttribute("session", this.getTransaction().currentSession());
+		this.validateOperation(pipeline);
+		
+		return TreeFactory.serviceFactory().createElement(id, parent);
 	}
 
 	@Override
@@ -117,5 +126,23 @@ class TreeManagerCore implements TreeManager {
 
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
+	}
+	
+	private void validateOperation(TreePipeline pipeline)
+			throws TreeException {
+		ServiceValidatorFactory validatorFactory = TreeFactory.
+				serviceValidatorFactory();
+		
+		TreeServiceValidator inputValidator = validatorFactory.
+				createNotNullArgValidator();
+		TreeServiceValidator noDefinedSessionValidator = validatorFactory.
+				createNoDefinedSessionValidator();
+		TreeServiceValidator noActiveSessionValidator = validatorFactory.
+				createNoActiveSessionValidator();
+		
+		inputValidator.next(noDefinedSessionValidator);
+		noDefinedSessionValidator.next(noActiveSessionValidator);
+		
+		inputValidator.validate(pipeline);
 	}
 }

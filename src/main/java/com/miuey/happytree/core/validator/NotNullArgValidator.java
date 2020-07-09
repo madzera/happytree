@@ -3,15 +3,16 @@ package com.miuey.happytree.core.validator;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class NotNullValidator extends GenericServiceValidator {
+public class NotNullArgValidator extends GenericServiceValidator {
 
 	@Override
 	protected void validate(TreePipeline pipeline) throws TreeException {
-		String input = (String) pipeline.getAttribute("sessionIdentifier");
+		Object arg = pipeline.getAttribute("arg");
 		
-		if (input == null || input.length() == 0) {
+		if ((arg == null) || 
+				(arg instanceof String && ((String) arg).length() == 0)) {
 			throw this.throwIllegalArgumentException(RepositoryMessage.
-					INVALID_INPUT);		
+					INVALID_INPUT);
 		}
 		doChain(pipeline);
 	}

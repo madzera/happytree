@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
+import com.miuey.happytree.core.validator.NoActiveSessionValidator;
+import com.miuey.happytree.core.validator.NoDefinedSessionValidator;
 import com.miuey.happytree.core.validator.NotDuplicatedSessionValidator;
-import com.miuey.happytree.core.validator.NotNullValidator;
+import com.miuey.happytree.core.validator.NotNullArgValidator;
 
 class TreeFactory {
 	
@@ -117,12 +119,20 @@ class TreeFactory {
 	class ServiceValidatorFactory extends TreeFactory {
 		ServiceValidatorFactory() {}
 		
-		TreeServiceValidator createNotNullInputValidator() {
-			return new NotNullValidator();
+		TreeServiceValidator createNotNullArgValidator() {
+			return new NotNullArgValidator();
 		}
 		
 		TreeServiceValidator createNotDuplicatedSessionValidator() {
 			return new NotDuplicatedSessionValidator();
+		}
+		
+		TreeServiceValidator createNoDefinedSessionValidator() {
+			return new NoDefinedSessionValidator();
+		}
+		
+		TreeServiceValidator createNoActiveSessionValidator() {
+			return new NoActiveSessionValidator();
 		}
 	}
 
