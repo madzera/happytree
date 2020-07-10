@@ -38,7 +38,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setParent(Object parent) {
-		
+		this.parentId = parent;
 	}
 
 	@Override
