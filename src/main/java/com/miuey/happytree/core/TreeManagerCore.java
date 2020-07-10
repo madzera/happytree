@@ -90,11 +90,7 @@ class TreeManagerCore implements TreeManager {
 		/*
 		 * Initial validation processes.
 		 */
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		pipeline.addAttribute("arg", id);
-		pipeline.addAttribute("session", this.getTransaction().currentSession());
-		this.validateOperation(pipeline);
+		this.validateTransaction();
 		
 		return TreeFactory.serviceFactory().createElement(id, parent);
 	}
@@ -128,21 +124,21 @@ class TreeManagerCore implements TreeManager {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
 	}
 	
-	private void validateOperation(TreePipeline pipeline)
-			throws TreeException {
+	private void validateTransaction() throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		pipeline.addAttribute("session", this.getTransaction().currentSession());
+		
 		ServiceValidatorFactory validatorFactory = TreeFactory.
 				serviceValidatorFactory();
 		
-		TreeServiceValidator inputValidator = validatorFactory.
-				createNotNullArgValidator();
 		TreeServiceValidator noDefinedSessionValidator = validatorFactory.
 				createNoDefinedSessionValidator();
 		TreeServiceValidator noActiveSessionValidator = validatorFactory.
 				createNoActiveSessionValidator();
 		
-		inputValidator.next(noDefinedSessionValidator);
 		noDefinedSessionValidator.next(noActiveSessionValidator);
-		
-		inputValidator.validate(pipeline);
+		noDefinedSessionValidator.validate(pipeline);
 	}
 }

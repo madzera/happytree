@@ -23,8 +23,7 @@ class TreeElementCore<T> implements Element<T> {
 	
 	@Override
 	public Object getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id;
 	}
 
 	@Override
@@ -100,15 +99,17 @@ class TreeElementCore<T> implements Element<T> {
 		return null;
 	}
 
-	void setSession(TreeSession session) {
-		this.session = session;
-	}
-
 	boolean isAttached() {
 		return isAttached;
 	}
 
-	void setAttached(boolean isAttached) {
-		this.isAttached = isAttached;
+	synchronized void attach(TreeSession session) {
+		this.isAttached = Boolean.TRUE;
+		this.session = session;
+	}
+
+	synchronized void detach() {
+		this.isAttached = Boolean.TRUE;
+		this.session = null;
 	}
 }

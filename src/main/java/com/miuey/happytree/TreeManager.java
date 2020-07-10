@@ -392,14 +392,6 @@ public interface TreeManager {
 	 * Create a &quot;detached&quot; element with the <code>id</code> and
 	 * <code>parent</code> specified.
 	 * 
-	 * <p>At the creation moment, it is <b>mandatory</b> to provide a
-	 * <code>not null {@literal @Id}</code> and the {@literal @Id} must be of
-	 * the same type of another one in the elements in the current session.</p>
-	 * 
-	 * <p>If the {@literal @Parent} is <code>null</code></p>, then the new
-	 * element is liable of to be in a root level of the tree when the same is
-	 * persisted.</p>
-	 * 
 	 * <p>Creating a new element does not means that it will be automatically in
 	 * the tree of the current session. It needs to be attached in the tree
 	 * right after the creation by invoking {@link #persistElement(Element)}. So,
@@ -407,20 +399,21 @@ public interface TreeManager {
 	 * {@link #cut(Element, Element)} or {@link #copy(Element, Element)} for
 	 * example.</p>
 	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * <p>If the {@literal @Parent} is <code>null</code></p>, then the new
+	 * element is liable of to be in a root level of the tree when the same is
+	 * persisted.</p>
+	 * 
+	 * @param <T> the class type of wrapped object that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param id the identifier of the new element
 	 * 
 	 * @param parent the parent identifier of this new element
 	 * 
-	 * @return newElement the new detached element
+	 * @return a new and detached element
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
-	 * 
-	 * @throws IllegalArgumentException when the <code>id</code> parameter is
-	 * <code>null</code>
+	 * work it. Also, when the current session is not active
 	 */
 	public <T> Element<T> createElement(Object id, Object parent) 
 			throws TreeException;

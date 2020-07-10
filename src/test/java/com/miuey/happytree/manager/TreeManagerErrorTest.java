@@ -25,55 +25,6 @@ public class TreeManagerErrorTest {
 	/**
 	 * Test for almost all operations for {@link TreeManager} interface.
 	 * 
-	 * <p>Error scenario for the operations when the mandatory input is
-	 * <code>null</code>.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to create an element when the <i>Id</i> of this element is
-	 * <code>null</code>.
-	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>IllegalArgumentException</code>
-	 * with the message:
-	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a session;</li>
-	 * 	<li>Try to create an element with a <code>null</code> Id;</li>
-	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
-	 * </ol>
-	 * 
-	 * @throws TreeException
-	 */
-	@Test
-	public void nullArg() throws TreeException {
-		final String sessionId = "nullArg";
-		final String messageError = "Invalid null/empty argument(s).";
-		final String nullableId = null;
-		String error = null;
-
-		try {
-			TreeManager manager = HappyTree.createTreeManager();
-			TreeTransaction transaction = manager.getTransaction();
-			
-			transaction.initializeSession(sessionId, Directory.class);
-
-			/*
-			 * All elements must have an Id.
-			 */
-			manager.createElement(nullableId, nullableId);
-			
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		} finally {
-			assertEquals(messageError, error);
-		}
-	}
-	
-	/**
-	 * Test for almost all operations for {@link TreeManager} interface.
-	 * 
 	 * <p>Error scenario for the operations when the transaction has no defined
 	 * session to run the operations.</p>
 	 * 
@@ -103,8 +54,7 @@ public class TreeManagerErrorTest {
 			TreeManager manager = HappyTree.createTreeManager();
 			
 			/*
-			 * All <code>TreeManager</code> operations must work under a defined
-			 * session.
+			 * All TreeManager operations must work under a defined session.
 			 */
 			manager.createElement(elementId, parentElementId);
 		} catch (TreeException e) {
@@ -153,8 +103,7 @@ public class TreeManagerErrorTest {
 			transaction.deactivateSession();
 			
 			/*
-			 * All <code>TreeManager</code> operations must work under a active
-			 * session.
+			 * All TreeManager operations must work under a defined session.
 			 */
 			manager.createElement(elementId, parentElementId);
 		} catch (TreeException e) {
