@@ -28,14 +28,12 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
-		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	@Override
 	public Object getParent() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.parentId;
 	}
 
 	@Override

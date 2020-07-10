@@ -3,6 +3,8 @@ package com.miuey.happytree.element;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 import com.miuey.happytree.Directory;
@@ -49,7 +51,7 @@ public class ElementTest {
 	@Test
 	public void getId() throws TreeException {
 		final String sessionId = "getId";
-		final String elementId = "foo";
+		final BigDecimal elementId = new BigDecimal((Math.random() * 100));
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -132,8 +134,8 @@ public class ElementTest {
 	@Test
 	public void getParent() throws TreeException {
 		final String sessionId = "getParent";
-		final String elementId = "foo";
-		final String parentId = "bar";
+		final Long elementId = 1000L;
+		final Long parentId = System.currentTimeMillis();
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
