@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -195,5 +196,55 @@ public class ElementTest {
 		
 		element.setParent(parentId2);
 		assertEquals(parentId2, element.getParent());
+	}
+	
+	/**
+	 * Test for the {@link Element#getChildren()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Get the element children.
+	 * <p><b>Expected:</b></p>
+	 * Two child elements when invoking {@link Element#getChildren()}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create 3 elements represented by a parent and two child elements;
+	 * 	</li>
+	 * 	<li>Add the child elements into the parent;</li>
+	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children;</li>
+	 * 	<li>Compare the resulting list with the two child elements.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void getChildren() throws TreeException {
+		final String sessionId = "getChildren";
+		
+		final String elementId = "foo";
+		final String childElement1 = "firstElement";
+		final String childElement2 = "secondElement";
+		
+		final int expected = 2;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> secondChild = manager.createElement(childElement2,
+				elementId);
+		Element<Directory> firstChild = manager.createElement(childElement1,
+				elementId);
+		
+		element.addChild(firstChild);
+		element.addChild(secondChild);
+		
+		Collection<Element<Directory>> children = element.getChildren();
+		
+		assertEquals(expected, children.size());
 	}
 }

@@ -10,6 +10,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	private Object id;
 	private Object parentId;
+	private Collection<Element<T>> children;
 	private T wrappedObject;
 	private TreeSession session;
 	private boolean isAttached;
@@ -18,6 +19,7 @@ class TreeElementCore<T> implements Element<T> {
 	TreeElementCore(Object id, Object parentId) {
 		this.id = id;
 		this.parentId = parentId;
+		this.children = TreeFactory.collectionFactory().createHashSet();
 	}
 	
 	
@@ -43,8 +45,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public Collection<Element<T>> getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.children;
 	}
 
 	@Override
