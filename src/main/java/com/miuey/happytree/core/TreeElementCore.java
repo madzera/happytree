@@ -50,8 +50,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void addChild(Element<T> child) throws TreeException {
-		// TODO Auto-generated method stub
-		
+		this.children.add(child);
 	}
 
 	@Override
