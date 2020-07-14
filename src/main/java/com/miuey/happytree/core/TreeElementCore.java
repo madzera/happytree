@@ -61,8 +61,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChildren(Collection<Element<T>> children) {
-		// TODO Auto-generated method stub
-		
+		this.children.removeAll(children);
 	}
 
 	@Override

@@ -263,12 +263,12 @@ public class ElementTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create 5 elements represented by a parent and two child elements;
-	 * 	</li>
+	 * 	<li>Create 6 elements represented by a parent and three child elements
+	 * 	and more two free elements;
 	 * 	<li>Add 3 child elements into the parent;</li>
 	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children list;
 	 * 	</li>
-	 * 	<li>Compare the resulting list with the three child elements.</li>
+	 * 	<li>Verify if the resulting list has three elements.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
@@ -312,23 +312,24 @@ public class ElementTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#addChild(Element)}.
+	 * Test for the {@link Element#addChildren(Collection)}.
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Add a child element.
+	 * Add a children element list.
 	 * <p><b>Expected:</b></p>
-	 * Three child elements when invoking {@link Element#getChildren()}.
+	 * Five child elements when invoking {@link Element#getChildren()}.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create 5 elements represented by a parent and two child elements;
+	 * 	<li>Create 6 elements represented by a parent and three child elements
+	 * 	and more two free elements;
 	 * 	</li>
 	 * 	<li>Add 2 child elements within a list;</li>
 	 * 	<li>Add 3 child elements into the parent;</li>
-	 * 	<li>Add the list of 2 child elements previously created within the
+	 * 	<li>Add the list of two child elements previously created within the
 	 * 	element by invoking {@link Element#addChildren(Collection)};</li>
 	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children list;
 	 * 	</li>
@@ -339,7 +340,7 @@ public class ElementTest {
 	 */
 	@Test
 	public void addChildren() throws TreeException {
-		final String sessionId = "addChild";
+		final String sessionId = "addChildren";
 		
 		final String elementId = "foo";
 		final String childElement1 = "firstElement";
@@ -380,6 +381,85 @@ public class ElementTest {
 		
 		Collection<Element<Directory>> children = element.getChildren();
 		
+		assertEquals(expected, children.size());
+	}
+	
+	/**
+	 * Test for the {@link Element#removeChildren(Collection)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Remove a list of children.
+	 * <p><b>Expected:</b></p>
+	 * Three child elements when invoking {@link Element#getChildren()}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create 6 elements represented by a parent and three child elements
+	 * 	and more two free elements;
+	 * 	</li>
+	 * 	<li>Add 2 child elements within a list to be removed;</li>
+	 * 	<li>Add all elements into the parent;</li>
+	 * 	<li>Remove the list of two child elements previously created by invoking
+	 * 	{@link Element#removeChildren(Collection)};</li>
+	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children list;
+	 * 	</li>
+	 * 	<li>Verify if the resulting list has three elements.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeChildren() throws TreeException {
+		final String sessionId = "removeChildren";
+		
+		final String elementId = "foo";
+		final String childElement1 = "firstElement";
+		final String childElement2 = "secondElement";
+		final String childElement3 = "thirdElement";
+		final String childElement4 = "fourthElement";
+		final String childElement5 = "fifthElement";
+		
+		final int total = 5;
+		final int expected = 3;
+		
+		List<Element<Directory>> toBeRemoved = 
+				new ArrayList<Element<Directory>>();
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		
+		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> fourthChild = manager.createElement(childElement4,
+				elementId);
+		Element<Directory> secondChild = manager.createElement(childElement2,
+				elementId);
+		Element<Directory> firstChild = manager.createElement(childElement1,
+				elementId);
+		Element<Directory> thirdChild = manager.createElement(childElement3,
+				elementId);
+		Element<Directory> fifthChild = manager.createElement(childElement5,
+				elementId);
+		
+		element.addChild(firstChild);
+		element.addChild(thirdChild);
+		element.addChild(fifthChild);
+		element.addChild(secondChild);
+		element.addChild(fourthChild);
+
+		toBeRemoved.add(fourthChild);
+		toBeRemoved.add(secondChild);
+		
+		Collection<Element<Directory>> children = element.getChildren();
+		assertEquals(total, children.size());
+		
+		element.removeChildren(toBeRemoved);
+		
+		children = element.getChildren();
 		assertEquals(expected, children.size());
 	}
 }
