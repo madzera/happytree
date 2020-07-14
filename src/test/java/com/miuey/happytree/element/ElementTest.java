@@ -213,8 +213,8 @@ public class ElementTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create 3 elements represented by a parent and two child elements;
-	 * 	</li>
+	 * 	<li>Create three elements represented by a parent and two child
+	 * 	elements;</li>
 	 * 	<li>Add the child elements into the parent;</li>
 	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children;</li>
 	 * 	<li>Compare the resulting list with the two child elements.</li>
@@ -263,9 +263,9 @@ public class ElementTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create 6 elements represented by a parent and three child elements
+	 * 	<li>Create six elements represented by a parent and three child elements
 	 * 	and more two free elements;
-	 * 	<li>Add 3 child elements into the parent;</li>
+	 * 	<li>Add three child elements into the parent;</li>
 	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children list;
 	 * 	</li>
 	 * 	<li>Verify if the resulting list has three elements.</li>
@@ -327,8 +327,8 @@ public class ElementTest {
 	 * 	<li>Create 6 elements represented by a parent and three child elements
 	 * 	and more two free elements;
 	 * 	</li>
-	 * 	<li>Add 2 child elements within a list;</li>
-	 * 	<li>Add 3 child elements into the parent;</li>
+	 * 	<li>Add two child elements within a list;</li>
+	 * 	<li>Add three child elements into the parent;</li>
 	 * 	<li>Add the list of two child elements previously created within the
 	 * 	element by invoking {@link Element#addChildren(Collection)};</li>
 	 * 	<li>Invoke {@link Element#getChildren()} to obtain the children list;
@@ -397,10 +397,10 @@ public class ElementTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create 6 elements represented by a parent and three child elements
+	 * 	<li>Create six elements represented by a parent and three child elements
 	 * 	and more two free elements;
 	 * 	</li>
-	 * 	<li>Add 2 child elements within a list to be removed;</li>
+	 * 	<li>Add two child elements within a list to be removed;</li>
 	 * 	<li>Add all elements into the parent;</li>
 	 * 	<li>Remove the list of two child elements previously created by invoking
 	 * 	{@link Element#removeChildren(Collection)};</li>
@@ -461,5 +461,106 @@ public class ElementTest {
 		
 		children = element.getChildren();
 		assertEquals(expected, children.size());
+	}
+
+	/**
+	 * Test for the {@link Element#removeChild(Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Remove a child from the element.
+	 * <p><b>Expected:</b></p>
+	 * An element without children.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create two elements represented by a parent its child element;
+	 * 	</li>
+	 * 	<li>Add the child into the parent;</li>
+	 * 	<li>Verify if the children list has one element.</li>
+	 * 	<li>Remove the element by invoking {@link Element#removeChild(Element)};
+	 * 	</li>
+	 * 	<li>Verify if the children list has no one element.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeElement() throws TreeException {
+		final String sessionId = "removeElement";
+		
+		final String elementId = "bar";
+		final String childElementId = "child";
+		
+		final int beforeRemove = 1;
+		final int afterRemove = 0;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		
+		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> child = manager.createElement(childElementId, null);
+		
+		element.addChild(child);
+		
+		assertEquals(beforeRemove, element.getChildren().size());
+		
+		element.removeChild(child);
+		
+		assertEquals(afterRemove, element.getChildren().size());
+	}
+	
+	/**
+	 * Test for the {@link Element#removeChild(Object)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Remove a child from the element using the Id.
+	 * <p><b>Expected:</b></p>
+	 * An element without children.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create two elements represented by a parent its child element;
+	 * 	</li>
+	 * 	<li>Add the child into the parent;</li>
+	 * 	<li>Verify if the children list has one element.</li>
+	 * 	<li>Remove the element by invoking {@link Element#removeChild(Object)};
+	 * 	</li>
+	 * 	<li>Verify if the children list has no one element.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeElementById() throws TreeException {
+		final String sessionId = "removeElementById";
+		
+		final Object elementId = BigDecimal.ONE.doubleValue();
+		final Object childElementId = Integer.MAX_VALUE + (Math.random() * 10);
+		
+		final int beforeRemove = 1;
+		final int afterRemove = 0;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		
+		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> child = manager.createElement(childElementId, null);
+		element.addChild(child);
+		
+		assertEquals(beforeRemove, element.getChildren().size());
+		
+		element.removeChild(childElementId);
+		
+		assertEquals(afterRemove, element.getChildren().size());
 	}
 }

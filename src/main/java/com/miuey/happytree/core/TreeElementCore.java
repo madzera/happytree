@@ -1,6 +1,7 @@
 package com.miuey.happytree.core;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeSession;
@@ -50,13 +51,17 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void addChild(Element<T> child) throws TreeException {
-		this.children.add(child);
+		if (child != null) {
+			this.children.add(child);
+		}
 	}
 
 	@Override
 	public void addChildren(Collection<Element<T>> children)
 			throws TreeException {
-		this.children.addAll(children);
+		if (children != null && !children.isEmpty()) {
+			this.children.addAll(children);
+		}
 	}
 
 	@Override
@@ -66,14 +71,20 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChild(Element<T> child) {
-		// TODO Auto-generated method stub
-		
+		this.children.remove(child);
 	}
 
 	@Override
 	public void removeChild(Object id) {
-		// TODO Auto-generated method stub
+		Iterator<Element<T>> iterator = this.children.iterator();
 		
+		while (iterator.hasNext()) {
+			Element<T> element = iterator.next();
+			if (element.getId().equals(id)) {
+				iterator.remove();
+				break;
+			}
+		}
 	}
 
 	@Override
