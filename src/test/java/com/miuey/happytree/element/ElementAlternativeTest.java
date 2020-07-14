@@ -29,7 +29,7 @@ import com.miuey.happytree.exception.TreeException;
 public class ElementAlternativeTest {
 
 	/**
-	 * Test for the {@link Element#setId(Object)}.
+	 * Test for the {@link Element#setId(Object)} and {@link Element#getId()}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to set an element
 	 * Id with a <code>null</code> value.</p>
@@ -64,10 +64,6 @@ public class ElementAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		/*
-		 * It is necessary to have any active session to use any operations of
-		 * TreeManager
-		 */
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
@@ -86,7 +82,8 @@ public class ElementAlternativeTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#setParent(Object)}.
+	 * Test for the {@link Element#setParent(Object)}
+	 * and {@link Element#getParent()}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to set a parent Id
 	 * with a <code>null</code> value.</p>
@@ -121,10 +118,6 @@ public class ElementAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		/*
-		 * It is necessary to have any active session to use any operations of
-		 * TreeManager
-		 */
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
@@ -140,7 +133,8 @@ public class ElementAlternativeTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#removeChild(Element)}.
+	 * Test for the {@link Element#removeChild(Element)} and
+	 * {@link Element#addChild(Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to remove an
 	 * element with a <code>null</code> value.</p>
@@ -191,7 +185,8 @@ public class ElementAlternativeTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#removeChild(Object)}.
+	 * Test for the {@link Element#removeChild(Object)} and
+	 * {@link Element#addChild(Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to remove an
 	 * element with a <code>null</code> Id value.</p>
@@ -241,5 +236,46 @@ public class ElementAlternativeTest {
 		assertEquals(beforeRemove, element.getChildren().size());
 		element.removeChild(nullableChildId);
 		assertEquals(afterRemove, element.getChildren().size());
+	}
+	
+	/**
+	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to set a
+	 * <code>null</code> wrapped object.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to set a wrapped object with <code>null</code> value.
+	 * <p><b>Expected:</b></p>
+	 * Receive a <code>null</code> value when trying to unwrap the object.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Set a <code>null</code> {@link Directory} object;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create an element;</li>
+	 * 	<li>Wrap the <code>null</code> object inside of the element;</li>
+	 * 	<li>Unwrap the object from the element;</li>
+	 * 	<li>Verify if the object is <code>null</code>.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void unwrap_nullWrappedObject() throws TreeException {
+		final String sessionId = "unwrap_nullWrappedObject";
+		final long elementId = Integer.MAX_VALUE;
+		Directory nullableDirectory = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(elementId, null);
+		
+		element.wrap(nullableDirectory);
+		
+		Directory wrappedDirectory = element.unwrap();
+		assertNull(wrappedDirectory);
 	}
 }

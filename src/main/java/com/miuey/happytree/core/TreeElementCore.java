@@ -94,8 +94,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public T unwrap() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.wrappedObject;
 	}
 
 	@Override

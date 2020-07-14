@@ -98,10 +98,6 @@ public class ElementTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		/*
-		 * It is necessary to have any active session to use any operations of
-		 * TreeManager
-		 */
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId1, null);
@@ -184,10 +180,6 @@ public class ElementTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		/*
-		 * It is necessary to have any active session to use any operations of
-		 * TreeManager
-		 */
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId1,
@@ -488,8 +480,8 @@ public class ElementTest {
 	 * @throws TreeException
 	 */
 	@Test
-	public void removeElement() throws TreeException {
-		final String sessionId = "removeElement";
+	public void removeChild() throws TreeException {
+		final String sessionId = "removeChild";
 		
 		final String elementId = "bar";
 		final String childElementId = "child";
@@ -539,8 +531,8 @@ public class ElementTest {
 	 * @throws TreeException
 	 */
 	@Test
-	public void removeElementById() throws TreeException {
-		final String sessionId = "removeElementById";
+	public void removeChildById() throws TreeException {
+		final String sessionId = "removeChild";
 		
 		final Object elementId = BigDecimal.ONE.doubleValue();
 		final Object childElementId = Integer.MAX_VALUE + (Math.random() * 10);
