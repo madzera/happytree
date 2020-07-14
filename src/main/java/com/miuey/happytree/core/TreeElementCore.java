@@ -89,8 +89,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) throws TreeException {
-		// TODO Auto-generated method stub
-		
+		this.wrappedObject = object;
 	}
 
 	@Override

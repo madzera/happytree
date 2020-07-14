@@ -563,4 +563,52 @@ public class ElementTest {
 		
 		assertEquals(afterRemove, element.getChildren().size());
 	}
+	
+	/**
+	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Wrap and unwrap an object inside this element.
+	 * <p><b>Expected:</b></p>
+	 * A not <code>null</code> wrapped object represented by {@link Directory}.
+	 * And this object must have named by <b>&quot;Photos&quot;</b>.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create a <code>Directory</code> object named by &quot;Photos&quot;;
+	 * 	</li>
+	 * 	<li>Create an element;</li>
+	 * 	<li>Wrap the object inside of element;</li>
+	 * 	<li>Unwrap the object;</li>
+	 * 	<li>Verify if the object is not <code>null</code>;</li>
+	 * 	<li>Verify if the object is named by <b>&quot;Photos&quot;</b>.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void wrap_unwrap() throws TreeException {
+		final String sessionId = "wrap_unwrap";
+		final long elementId = Integer.MAX_VALUE;
+		
+		final String directoryName = "Photos";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		
+		Directory directory = new Directory(elementId, 0, directoryName);
+		Element<Directory> element = manager.createElement(elementId, null);
+		
+		element.wrap(directory);
+		
+		Directory wrappedDirectory = element.unwrap();
+		
+		assertNotNull(wrappedDirectory);
+		assertEquals(directoryName, wrappedDirectory.getName());
+	}
 }
