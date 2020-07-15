@@ -6,15 +6,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.miuey.happytree.Directory;
+import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
+import com.miuey.happytree.example.Directory;
+import com.miuey.happytree.example.TreeDirectoryAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -25,7 +28,9 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * @author Diego Nóbrega
  * @author Miuey
- *
+ * 
+ * @see {@link TreeDirectoryAssembler}
+ * @see {@link Directory}
  */
 public class TreeTransactionTest {
 
@@ -61,6 +66,63 @@ public class TreeTransactionTest {
 		TreeSession session = transaction.sessionCheckout(nameTree);
 		
 		assertNotNull(session);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>this test is solely and exclusively for the API Transformation
+	 * Process. This makes use of the {@link TreeDirectoryAssembler} and
+	 * {@link Directory} classes to assemble a collection of linear objects that
+	 * have tree behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a new session using the Transformation Process.
+	 * <p><b>Expected:</b></p>
+	 * Confirm that the element called <i>happytree</i> is inside of
+	 * <i>projects</i> conform by
+	 * {@link TreeDirectoryAssembler#getDirectoryTree()}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Get the collection of source objects to be transformed;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Get the <i>projects</i> element through
+	 * 	{@link TreeManager#getElementById(Object)};</li>
+	 * 	<li>Verify if the <i>projects</i> element is not <code>null</code>;</li>
+	 * 	<li>Get the <i>happytree</i> element through
+	 * 	{@link TreeManager#getElementById(Object)};</li>
+	 * 	<li>Verify if the <i>happytree</i> element is not <code>null</code>;
+	 * 	</li>
+	 * 	<li>Verify if the <i>projects</i> element contains the
+	 * 	<i>happytree</i> element (true).</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void initializeSession_transformationProcess() throws TreeException {
+		final String sessionId = "initializeSession_transformationProcess";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeDirectoryAssembler.
+				getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> projects = manager.getElementById("projects");
+		assertNotNull(projects);
+		Element<Directory> happytree = manager.getElementById("happytree");
+		assertNotNull(happytree);
+		
+		assertTrue(manager.containsElement(projects, happytree));
 	}
 	
 	/**

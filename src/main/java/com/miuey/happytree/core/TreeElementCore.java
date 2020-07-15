@@ -50,15 +50,14 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	@Override
-	public void addChild(Element<T> child) throws TreeException {
+	public void addChild(Element<T> child) {
 		if (child != null) {
 			this.children.add(child);
 		}
 	}
 
 	@Override
-	public void addChildren(Collection<Element<T>> children)
-			throws TreeException {
+	public void addChildren(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
 		}

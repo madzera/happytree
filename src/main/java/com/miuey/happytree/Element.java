@@ -57,6 +57,11 @@ import com.miuey.happytree.exception.TreeException;
  * <code>parentId</code> of an element is <code>null</code> or not found, that
  * same element is moved to the root level of the tree.</p>
  * 
+ * <p>As stated above, an element cannot have null <code>id</code>, but this
+ * only applies when an element is going to be inserted/updated within a tree.
+ * This does not apply to detached tree elements, thus making this interface
+ * free to handle or throw {@link TreeException}.</p>
+ * 
  * <p>When getting an element is within a tree, the element itself and all its
  * children are returned, but the same does not occur when climbing the
  * hierarchy, that is, returning the element parent, grandfather, etc. Because
@@ -82,7 +87,7 @@ public interface Element<T> {
 	 * <p><b>This identifier is unique within the tree session when it is
 	 * attached to the tree.</b></p>
 	 * 
-	 * @return id the element identifier
+	 * @return the element identifier
 	 */
 	public Object getId();
 	
@@ -91,6 +96,9 @@ public interface Element<T> {
 	 * 
 	 * <p><b>The <code>id</code> must be unique and <code>not-null</code> when
 	 * attaching it to the tree.</b></p>
+	 * 
+	 * <p>These criteria are only for when the element is attached to the tree.
+	 * </p>
 	 * 
 	 * @param id the element identifier to be set
 	 */
@@ -103,7 +111,7 @@ public interface Element<T> {
 	 * non-existing element, then it is certain that this element is in the root
 	 * level of the tree when it is get directly from the tree.</p>
 	 * 
-	 * @return parentId the parent element identifier reference
+	 * @return the parent element identifier
 	 */
 	public Object getParent();
 	
@@ -123,34 +131,23 @@ public interface Element<T> {
 	 * Get all the children elements from the current element. This includes all
 	 * elements within the child elements recursively.
 	 * 
-	 * @return children all children of the current element
+	 * @return all children of the current element
 	 */
 	public Collection<Element<T>> getChildren();
 	
 	/**
-	 * Add a new child element into the current element.´
+	 * Add a new child element into the current element.
 	 * 
-	 * <p>The <code>child</code> element <b>must</b> contain a unique
-	 * identifier that can not be the same than any element inside this current
-	 * one.</p>
-	 *
 	 * <p>If the <code>child</code> element has inside it children, then they
-	 * will be added too (if all of them have a unique identifier inside of the
-	 * current element).</p>
+	 * will be added too.</p>
 	 * 
 	 * @param child the element to be added as child
 	 * 
-	 * @throws TreeException When there is another element, inside of the
-	 * current element with the same <code>id</code>.
 	 */
-	public void addChild(Element<T> child) throws TreeException;
+	public void addChild(Element<T> child);
 	
 	/**
 	 * Add a list of children to be concatenated to the current children list.
-	 * 
-	 * <p>Each child element <b>must</b> contain a unique <code>id</code> that
-	 * can not be the same than any element inside this current one, including
-	 * its own resulting children list.</p>
 	 * 
 	 * <p>If each element within the <code>children</code> list contains more
 	 * children within it recursively, they will also be added</p>
@@ -158,14 +155,11 @@ public interface Element<T> {
 	 * @param children the children list to be concatenated to the current
 	 * children list
 	 * 
-	 * @throws TreeException When there are duplicated <code>id</code> in the
-	 * resulting children list.
 	 */
-	public void addChildren(Collection<Element<T>> children) 
-			throws TreeException;
+	public void addChildren(Collection<Element<T>> children);
 	
 	/**
-	 * Remove a collection of elements inside its children list.
+	 * Remove a collection of elements inside of this element.
 	 * 
 	 * <p>The element references are removed if they are found in this current 
 	 * element children list. When an element is removed, all of its children as
@@ -197,9 +191,6 @@ public interface Element<T> {
 	 * {@link TreeManager#getElementById(Object)}) to get the element by the
 	 * corresponding <code>id</code>. If it exists, then the element and all of
 	 * its children are removed.</p>
-	 * 
-	 * <p>When an element is removed, all of its children as well as the
-	 * elements below the hierarchy are also removed, recursively.</p>
 	 * 
 	 * @param id the element to be removed
 	 */

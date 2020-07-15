@@ -1,4 +1,4 @@
-package com.miuey.happytree;
+package com.miuey.happytree.example;
 
 import java.util.ArrayList;
 import java.util.Collection;

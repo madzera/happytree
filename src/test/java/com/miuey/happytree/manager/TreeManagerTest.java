@@ -4,11 +4,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.miuey.happytree.Directory;
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
+import com.miuey.happytree.example.Directory;
 import com.miuey.happytree.exception.TreeException;
 
 /**

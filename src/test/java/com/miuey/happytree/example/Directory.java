@@ -1,4 +1,4 @@
-package com.miuey.happytree;
+package com.miuey.happytree.example;
 
 /**
  * A class that represents a directory inside of the Operation System.
