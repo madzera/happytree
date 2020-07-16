@@ -11,7 +11,8 @@ import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
-	
+
+	private static final String DEF_ROOT_IDENTIFIER = "HAPPYTREE_ROOT";
 	private Map<String, TreeSession> sessions = TreeFactory.mapFactory().
 			createHashMap();
 	
@@ -46,7 +47,8 @@ class TreeTransactionCore implements TreeTransaction {
 		 */
 		TreeSessionCore newSession = serviceFactory.createTreeSession(
 				identifier);
-		TreeElementCore<T> root = serviceFactory.createElement(null, null);
+		TreeElementCore<T> root = serviceFactory.createElement(
+				DEF_ROOT_IDENTIFIER, null);
 		
 		/*
 		 * Activate the new session with the root element.

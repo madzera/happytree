@@ -351,7 +351,7 @@ public interface TreeTransaction {
 	 * <p>The list of all sessions includes for both activated and deactivated
 	 * sessions.</p>
 	 * 
-	 * @return sessions the list of all registered sessions
+	 * @return the list of all registered sessions
 	 */
 	public List<TreeSession> sessions();
 	

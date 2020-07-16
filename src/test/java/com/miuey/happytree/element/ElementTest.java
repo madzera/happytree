@@ -38,7 +38,7 @@ public class ElementTest {
 	 * <p><b>Test:</b></p>
 	 * Get the element identifier.
 	 * <p><b>Expected:</b></p>
-	 * Match the element identifier at creation with the return of
+	 * Match the element identifier at the creation with the return of
 	 * {@link Element#getId()}.
 	 * <p><b>Steps:</b></p>
 	 * <ol>

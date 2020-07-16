@@ -74,7 +74,7 @@ public interface TreeSession {
 	 * <p>It is represented by a <code>String</code> name that cannot be empty
 	 * or <code>null</code></p>
 	 * 
-	 * @return <code>String</code> the session identifier
+	 * @return the session identifier
 	 */
 	public String getSessionId();
 	
@@ -89,7 +89,7 @@ public interface TreeSession {
 	 * <p>The <i>Destroyed</i> state is not considered because it is a
 	 * <code>null</code> state.</p>
 	 * 
-	 * @return <code>true</code> if the session is activated, <code>false</code>
+	 * @return <code>true</code> if the session is active, <code>false</code>
 	 * either.
 	 */
 	public boolean isActive();
@@ -109,7 +109,7 @@ public interface TreeSession {
 	 * @param <T> the class type of the source wrapped object that will be
 	 * encapsulated into the {@link Element} object
 	 * 
-	 * @return <code>Element</code> the root element
+	 * @return the root tree
 	 * 
 	 * @see {@link TreeManager#root()}
 	 */

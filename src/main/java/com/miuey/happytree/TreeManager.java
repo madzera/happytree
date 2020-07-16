@@ -279,8 +279,7 @@ public interface TreeManager {
 	 * 
 	 * @param id the element identifier
 	 * 
-	 * @return element representing the element and its children caught from the
-	 * tree
+	 * @return the element and its children caught from the tree
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. When if the current session is not active
@@ -466,7 +465,7 @@ public interface TreeManager {
 	 * 
 	 * @param newElement the element to be persisted
 	 * 
-	 * @return element the new persisted element
+	 * @return the new persisted element
 	 * 
 	 * @throws TreeException
 	 * <ul>
@@ -530,7 +529,7 @@ public interface TreeManager {
 	 * 
 	 * @param element the element to be updated
 	 * 
-	 * @return element the updated element itself
+	 * @return the updated element itself
 	 * 
 	 * @throws TreeException
 	 * <ul>
@@ -559,7 +558,7 @@ public interface TreeManager {
 	 * 		</pre>
 	 * </p>
 	 * 
-	 * @return transaction the transaction associated to this manager
+	 * @return the transaction associated to this manager
 	 */
 	public TreeTransaction getTransaction();
 	
@@ -593,7 +592,7 @@ public interface TreeManager {
 	 * @param <T> the class type of the source wrapped object that will be
 	 * encapsulated into the {@link Element} object
 	 * 
-	 * @return root representing the top of the tree
+	 * @return the root level representing the top of the tree
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. When if the current session is not active
