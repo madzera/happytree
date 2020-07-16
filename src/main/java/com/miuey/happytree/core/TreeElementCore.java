@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.miuey.happytree.Element;
-import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeElementCore<T> implements Element<T> {
@@ -13,7 +12,7 @@ class TreeElementCore<T> implements Element<T> {
 	private Object parentId;
 	private Collection<Element<T>> children;
 	private T wrappedObject;
-	private TreeSession session;
+	private String sessionId;
 	private boolean isAttached;
 	
 	
@@ -32,6 +31,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void setId(Object id) {
 		this.id = id;
+		detach();
 	}
 
 	@Override
@@ -42,6 +42,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void setParent(Object parent) {
 		this.parentId = parent;
+		detach();
 	}
 
 	@Override
@@ -53,6 +54,7 @@ class TreeElementCore<T> implements Element<T> {
 	public void addChild(Element<T> child) {
 		if (child != null) {
 			this.children.add(child);
+			detach();
 		}
 	}
 
@@ -60,17 +62,22 @@ class TreeElementCore<T> implements Element<T> {
 	public void addChildren(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
+			detach();
 		}
 	}
 
 	@Override
 	public void removeChildren(Collection<Element<T>> children) {
-		this.children.removeAll(children);
+		if (this.children.removeAll(children)) {
+			detach();
+		}
 	}
 
 	@Override
 	public void removeChild(Element<T> child) {
-		this.children.remove(child);
+		if (this.children.remove(child)) {
+			detach();
+		}
 	}
 
 	@Override
@@ -81,6 +88,7 @@ class TreeElementCore<T> implements Element<T> {
 			Element<T> element = iterator.next();
 			if (element.getId().equals(id)) {
 				iterator.remove();
+				detach();
 				break;
 			}
 		}
@@ -89,6 +97,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void wrap(T object) throws TreeException {
 		this.wrappedObject = object;
+		detach();
 	}
 
 	@Override
@@ -97,22 +106,20 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	@Override
-	public TreeSession attachedTo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String attachedTo() {
+		return this.sessionId;
 	}
 
 	boolean isAttached() {
 		return isAttached;
 	}
 
-	synchronized void attach(TreeSession session) {
+	synchronized void attach(String sessionId) {
 		this.isAttached = Boolean.TRUE;
-		this.session = session;
+		this.sessionId = sessionId;
 	}
 
 	synchronized void detach() {
-		this.isAttached = Boolean.TRUE;
-		this.session = null;
+		this.isAttached = Boolean.FALSE;
 	}
 }

@@ -20,6 +20,11 @@ import com.miuey.happytree.exception.TreeException;
  * directly by {@link TreeManager}. In order to be manipulated, the tree session
  * must be active.</b></p>
  * 
+ * <p><b>Considering an element previously attached to some session, Each
+ * subsequent manipulation from the perspective of the element itself will turn
+ * its state to &quot;detached&quot;, thus requiring an update by invoking
+ * {@link TreeManager#updateElement(Element)}.</b></p>
+ * 
  * <p>An element contains the following characteristics:</p>
  * 
  * <table>
@@ -40,8 +45,8 @@ import com.miuey.happytree.exception.TreeException;
  * 		<td><code>wrappedObject</code></td><td>The encapsulated object.</td>
  * 	</tr>
  * 	<tr>
- * 		<td><code>session</code></td><td>The tree session which the element
- * 		belongs.</td>
+ * 		<td><code>sessionId</code></td><td>The session identifier which the
+ * 		element	belongs.</td>
  * 	</tr>
  * 	<tr>
  * 		<td><code>attached</code></td><td>A flag that indicates whether the
@@ -232,7 +237,8 @@ public interface Element<T> {
 	 * transformed, managed and automatically encapsulated within the own
 	 * element.</p>
 	 * 
-	 * <p>There are some requirements for this object to be encapsulated:</p>
+	 * <p>There are some requirements for this object to be encapsulated when
+	 * initializing a session from the API Transformation Process:</p>
 	 * <p>
 	 * 	<ul>
 	 * 		<li>The class of this object must be annotated by {@literal @Tree};
@@ -247,6 +253,10 @@ public interface Element<T> {
 	 * 		type.</li>
 	 * 	</ul>
 	 * </p>
+	 * 
+	 * <p>Those requirements are only applied when the session was initialized
+	 * by API Transformation Process or when the element itself is ready to be
+	 * persisted/updated.</p>
 	 * 
 	 * @param object the annotated object to be encapsulated within the element
 	 * 
@@ -297,7 +307,7 @@ public interface Element<T> {
 	public T unwrap();
 	
 	/**
-	 * Get the associated session which this element belongs in.
+	 * Show up the session identifier which this element belongs in.
 	 * 
 	 * <p>If an <code>Element</code> object has not been attached to a session,
 	 * by invoking {@link TreeManager#persistElement(Element)} then it has no
@@ -314,7 +324,7 @@ public interface Element<T> {
 	 * <p><b>Be sure that before invoking this, the element is previously
 	 * persisted.</b></p>
 	 * 
-	 * @return the tree session which this element belongs
+	 * @return the session identifier which this element belongs
 	 */
-	public TreeSession attachedTo();
+	public String attachedTo();
 }
