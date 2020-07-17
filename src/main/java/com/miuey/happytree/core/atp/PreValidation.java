@@ -24,6 +24,7 @@ public class PreValidation extends ATPGenericPhase {
 		} catch (ReflectiveOperationException exception) {
 			throw this.throwTreeException(ATPRepositoryMessage.GENERAL);
 		}
+		doChain(pipeline);
 	}
 
 	private void validateMandatorySource(Collection<?> objects) {

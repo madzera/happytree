@@ -14,8 +14,12 @@ class ATPLifecycle {
 	
 	
 	void run() throws TreeException {
-		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();		
+		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
+		
 		ATPPhase preValidation = lifecycleFactory.initPreValidation();
+		ATPPhase extraction = lifecycleFactory.initExtraction();
+		
+		preValidation.next(extraction);
 		
 		preValidation.run(pipeline);
 	}

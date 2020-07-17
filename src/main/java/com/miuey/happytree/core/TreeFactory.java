@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
+import com.miuey.happytree.core.atp.Extraction;
 import com.miuey.happytree.core.atp.PreValidation;
 import com.miuey.happytree.core.validator.NoActiveSessionValidator;
 import com.miuey.happytree.core.validator.NoDefinedSessionValidator;
@@ -86,6 +87,10 @@ class TreeFactory {
 		
 		ATPPhase initPreValidation() {
 			return new PreValidation();
+		}
+		
+		ATPPhase initExtraction() {
+			return new Extraction();
 		}
 	}
 	
