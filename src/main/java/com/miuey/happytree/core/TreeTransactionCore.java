@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
+import com.miuey.happytree.core.TreeFactory.ATPLifecycleFactory;
 import com.miuey.happytree.core.TreeFactory.ServiceFactory;
 import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
@@ -31,11 +32,7 @@ class TreeTransactionCore implements TreeTransaction {
 		/*
 		 * Initial validation processes.
 		 */
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		pipeline.addAttribute("arg", identifier);
-		pipeline.addAttribute("sessions", this.sessions);
-		validateInitializeSession(pipeline);
+		validateInitializeSession(identifier);
 		
 		/*
 		 * Session creation processes.
@@ -74,8 +71,20 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void initializeSession(String identifier, Collection<?> objects)
 			throws TreeException {
-		// TODO Auto-generated method stub
+		/*
+		 * Initial validation processes.
+		 */
+		validateInitializeSession(identifier);
 		
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		pipeline.addAttribute("sessionId", identifier);
+		pipeline.addAttribute("objects", objects);
+		
+		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
+		ATPLifecycle lifecycle = lifecycleFactory.createLifecycle(pipeline);
+		
+		lifecycle.run();
 	}
 
 	@Override
@@ -162,8 +171,13 @@ class TreeTransactionCore implements TreeTransaction {
 		return this.currentSession;
 	}
 	
-	private void validateInitializeSession(TreePipeline pipeline)
+	private void validateInitializeSession(String identifier)
 			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		pipeline.addAttribute("arg", identifier);
+		pipeline.addAttribute("sessions", this.sessions);
+		
 		ServiceValidatorFactory validatorFactory = TreeFactory.
 				serviceValidatorFactory();
 		
@@ -173,7 +187,6 @@ class TreeTransactionCore implements TreeTransaction {
 				createNotDuplicatedSessionValidator();
 		
 		inputValidator.next(duplicatedSessionValidator);
-		
 		inputValidator.validate(pipeline);
 	}
 }

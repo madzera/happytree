@@ -1,5 +1,9 @@
 package com.miuey.happytree.example;
 
+import com.miuey.happytree.annotation.Id;
+import com.miuey.happytree.annotation.Parent;
+import com.miuey.happytree.annotation.Tree;
+
 /**
  * A class that represents a directory inside of the Operation System.
  * 
@@ -25,16 +29,19 @@ package com.miuey.happytree.example;
  * @author Miuey
  *
  */
+@Tree
 public class Directory {
 
 	/*
 	 * The id of this folder.
 	 */
+	@Id
 	private long identifier;
 	
 	/*
 	 * The id of the folder with this one will be inside of.
 	 */
+	@Parent
 	private long parentIdentifier;
 	
 	/*

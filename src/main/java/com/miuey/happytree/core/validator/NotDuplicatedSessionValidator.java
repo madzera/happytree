@@ -6,7 +6,7 @@ import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class NotDuplicatedSessionValidator extends GenericServiceValidator {
+public class NotDuplicatedSessionValidator extends ValidatorGenericService {
 
 	@Override
 	protected void validate(TreePipeline pipeline) throws TreeException {
@@ -16,7 +16,7 @@ public class NotDuplicatedSessionValidator extends GenericServiceValidator {
 		String sessionIdentifier = (String) pipeline.getAttribute("arg");
 		
 		if (sessions.get(sessionIdentifier) != null) {
-			throw this.throwTreeException(RepositoryMessage.
+			throw this.throwTreeException(ValidatorRepositoryMessage.
 					DUPLICATED_SESSION);
 		}
 		

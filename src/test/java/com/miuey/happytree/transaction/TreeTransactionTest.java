@@ -106,8 +106,9 @@ public class TreeTransactionTest {
 	 * @throws TreeException
 	 */
 	@Test
-	public void initializeSession_transformationProcess() throws TreeException {
-		final String sessionId = "initializeSession_transformationProcess";
+	public void initializeSession_apiTransformationProcess()
+			throws TreeException {
+		final String sessionId = "initializeSession_apiTransformationProcess";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();

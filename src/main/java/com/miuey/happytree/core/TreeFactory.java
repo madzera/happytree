@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
+import com.miuey.happytree.core.atp.PreValidation;
 import com.miuey.happytree.core.validator.NoActiveSessionValidator;
 import com.miuey.happytree.core.validator.NoDefinedSessionValidator;
 import com.miuey.happytree.core.validator.NotDuplicatedSessionValidator;
@@ -14,6 +15,7 @@ import com.miuey.happytree.core.validator.NotNullArgValidator;
 class TreeFactory {
 	
 	private static TreeFactory instance;
+	private static ATPLifecycleFactory lifecycleFactory;
 	private static ServiceFactory serviceFactory;
 	private static CollectionFactory collectionFactory;
 	private static MapFactory mapFactory;
@@ -24,7 +26,14 @@ class TreeFactory {
 	
 	protected TreeFactory() {}
 	
-
+	
+	static ATPLifecycleFactory lifecycleFactory() {
+		if (lifecycleFactory == null) {
+			lifecycleFactory = getInstance().new ATPLifecycleFactory();
+		}
+		return lifecycleFactory;
+	}
+	
 	static ServiceFactory serviceFactory() {
 		if (serviceFactory == null) {
 			serviceFactory = getInstance().new ServiceFactory();
@@ -66,6 +75,18 @@ class TreeFactory {
 			pipelineFactory = getInstance().new PipelineFactory();
 		}
 		return pipelineFactory;
+	}
+	
+	class ATPLifecycleFactory extends TreeFactory {
+		ATPLifecycleFactory() {}
+		
+		ATPLifecycle createLifecycle(TreePipeline pipeline) {
+			return new ATPLifecycle(pipeline);
+		}
+		
+		ATPPhase initPreValidation() {
+			return new PreValidation();
+		}
 	}
 	
 	class ServiceFactory extends TreeFactory {
