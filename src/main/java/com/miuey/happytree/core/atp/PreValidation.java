@@ -12,11 +12,12 @@ import com.miuey.happytree.annotation.Tree;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class PreValidation extends ATPGenericPhase {
+public class PreValidation<T> extends ATPGenericPhase<T> {
 
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
-		Collection<?> objects = (Collection<?>) pipeline.getAttribute("objects");
+		@SuppressWarnings("unchecked")
+		Collection<T> objects = (Collection<T>) pipeline.getAttribute("objects");
 		validateMandatorySource(objects);
 		validateAnnotations(objects);
 		try {
@@ -27,15 +28,15 @@ public class PreValidation extends ATPGenericPhase {
 		doChain(pipeline);
 	}
 
-	private void validateMandatorySource(Collection<?> objects) {
+	private void validateMandatorySource(Collection<T> objects) {
 		if (objects == null || objects.isEmpty()) {
 			throw this.throwIllegalArgumentException(ATPRepositoryMessage.
 					INVALID_INPUT);
 		}
 	}
 
-	private void validateAnnotations(Collection<?> objects) throws TreeException {
-		Object[] objectArray = objects.toArray(new Object[1]);
+	private void validateAnnotations(Collection<T> objects) throws TreeException {
+		Object[] objectArray = objects.toArray(new Object[0]);
 		Object object = objectArray[0];
 		
 		Class<?> treeClass = object.getClass();
@@ -57,10 +58,10 @@ public class PreValidation extends ATPGenericPhase {
 		}
 	}
 	
-	private void validateIdentifiers(Collection<?> objects) 
+	private void validateIdentifiers(Collection<T> objects) 
 			throws ReflectiveOperationException, TreeException {
 		Set<Object> validIds = new HashSet<Object>(); 
-		Iterator<?> iterator = objects.iterator();
+		Iterator<T> iterator = objects.iterator();
 		
 		while (iterator.hasNext()) {
 			Object object = iterator.next();

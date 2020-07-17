@@ -3,7 +3,7 @@ package com.miuey.happytree.core.atp;
 import com.miuey.happytree.core.ATPPhase;
 import com.miuey.happytree.exception.TreeException;
 
-abstract class ATPGenericPhase extends ATPPhase {
+abstract class ATPGenericPhase<T> extends ATPPhase<T> {
 
 	protected ATPGenericPhase() {}
 	

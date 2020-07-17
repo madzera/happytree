@@ -14,7 +14,7 @@ class TreeManagerCore implements TreeManager {
 	 * to its transaction. The cardinality is always 1:1.
 	 */
 	private TreeTransaction transaction = TreeFactory.serviceFactory().
-			createTreeTransaction();
+			createTreeTransaction(this);
 	
 	
 	TreeManagerCore() {}

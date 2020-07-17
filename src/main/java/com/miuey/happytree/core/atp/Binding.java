@@ -1,0 +1,50 @@
+package com.miuey.happytree.core.atp;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.miuey.happytree.Element;
+import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.core.TreePipeline;
+import com.miuey.happytree.exception.TreeException;
+
+public class Binding<T> extends ATPGenericPhase<T> {
+
+	@Override
+	protected void run(TreePipeline pipeline) throws TreeException {
+		@SuppressWarnings("unchecked")
+		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
+				getAttribute("elements");
+		TreeManager manager = (TreeManager) pipeline.getAttribute("manager");
+		
+		Set<Element<T>> clonedElements = new HashSet<Element<T>>();
+		Set<Element<T>> resultingList = new HashSet<Element<T>>();
+		
+		clonedElements.addAll(allElements);
+		for (Element<T> element : allElements) {
+			Object parentId = element.getParent();
+			
+			Element<T> parentElement = getParentElement(parentId,
+					clonedElements);
+			if (parentElement != null) {
+				parentElement.addChild(element);
+			} else {
+				resultingList.add(element);
+			}
+		}
+		Element<T> root = manager.createElement("HAPPYTREE_ROOT", null);
+		root.addChildren(resultingList);
+	}
+
+	private Element<T> getParentElement(Object parentId,
+			Set<Element<T>> clonedElements) {
+		Object id = null;
+		for (Element<T> element : clonedElements) {
+			id = element.getId();
+			if (parentId.equals(id)) {
+				return element;
+			}
+		}
+		return null;
+	}
+}

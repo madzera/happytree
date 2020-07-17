@@ -18,7 +18,7 @@ public class TreePipeline {
 	/*
 	 * Only the core API package can decide which attributes will be validated.
 	 */
-	void addAttribute(String attributeName, Object attribute) {
+	public void addAttribute(String attributeName, Object attribute) {
 		this.attributes.put(attributeName, attribute);
 	}
 	

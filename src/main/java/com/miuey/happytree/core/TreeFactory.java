@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
+import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.core.atp.Binding;
 import com.miuey.happytree.core.atp.Extraction;
+import com.miuey.happytree.core.atp.Initialization;
 import com.miuey.happytree.core.atp.PreValidation;
 import com.miuey.happytree.core.validator.NoActiveSessionValidator;
 import com.miuey.happytree.core.validator.NoDefinedSessionValidator;
@@ -81,16 +84,24 @@ class TreeFactory {
 	class ATPLifecycleFactory extends TreeFactory {
 		ATPLifecycleFactory() {}
 		
-		ATPLifecycle createLifecycle(TreePipeline pipeline) {
-			return new ATPLifecycle(pipeline);
+		<T> ATPLifecycle<T> createLifecycle(TreePipeline pipeline) {
+			return new ATPLifecycle<T>(pipeline);
 		}
 		
-		ATPPhase initPreValidation() {
-			return new PreValidation();
+		<T> ATPPhase<T> initPreValidation() {
+			return new PreValidation<T>();
 		}
 		
-		ATPPhase initExtraction() {
-			return new Extraction();
+		<T> ATPPhase<T> initExtraction() {
+			return new Extraction<T>();
+		}
+		
+		<T> ATPPhase<T> initInitialization() {
+			return new Initialization<T>();
+		}
+		
+		<T> ATPPhase<T> initBinding() {
+			return new Binding<T>();
 		}
 	}
 	
@@ -101,8 +112,8 @@ class TreeFactory {
 			return new TreeManagerCore();
 		}
 		
-		TreeTransactionCore createTreeTransaction() {
-			return new TreeTransactionCore();
+		TreeTransactionCore createTreeTransaction(TreeManager manager) {
+			return new TreeTransactionCore(manager);
 		}
 		
 		TreeSessionCore createTreeSession(String identifier) {

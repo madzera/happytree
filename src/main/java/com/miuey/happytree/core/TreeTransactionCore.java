@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.TreeFactory.ATPLifecycleFactory;
@@ -14,16 +15,19 @@ import com.miuey.happytree.exception.TreeException;
 class TreeTransactionCore implements TreeTransaction {
 
 	private static final String DEF_ROOT_IDENTIFIER = "HAPPYTREE_ROOT";
+	
 	private Map<String, TreeSession> sessions = TreeFactory.mapFactory().
 			createHashMap();
-	
 	/*
 	 * The session that will be used as checked out session.
 	 */
 	private TreeSession currentSession;
+	private TreeManager associatedManager;
 	
-	
-	TreeTransactionCore() {}
+
+	TreeTransactionCore(TreeManager manager) {
+		this.associatedManager = manager;
+	}
 
 	
 	@Override
@@ -69,7 +73,7 @@ class TreeTransactionCore implements TreeTransaction {
 	}
 
 	@Override
-	public void initializeSession(String identifier, Collection<?> objects)
+	public <T> void initializeSession(String identifier, Collection<T> objects)
 			throws TreeException {
 		/*
 		 * Initial validation processes.
@@ -80,9 +84,10 @@ class TreeTransactionCore implements TreeTransaction {
 				createPipelineValidator();
 		pipeline.addAttribute("sessionId", identifier);
 		pipeline.addAttribute("objects", objects);
+		pipeline.addAttribute("manager", this.associatedManager);
 		
 		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
-		ATPLifecycle lifecycle = lifecycleFactory.createLifecycle(pipeline);
+		ATPLifecycle<T> lifecycle = lifecycleFactory.createLifecycle(pipeline);
 		
 		lifecycle.run();
 	}

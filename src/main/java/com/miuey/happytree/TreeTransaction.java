@@ -227,6 +227,8 @@ public interface TreeTransaction {
 	 * by invoking this method, passing a linear structure to be transformed.
 	 * </p>
 	 * 
+	 * @param T the parameterized type of the new tree session
+	 * 
 	 * @param identifier the tree session identifier
 	 * 
 	 * @param objects the <code>Collection</code> of source objects which will
@@ -250,7 +252,7 @@ public interface TreeTransaction {
 	 * @throws IllegalArgumentException when the <code>identifier</code> or
 	 * <code>objects</code> are <code>null</code> or empty
 	 */
-	public void initializeSession(String identifier, Collection<?> objects) 
+	public <T> void initializeSession(String identifier, Collection<T> objects) 
 			throws TreeException;
 	
 	/**

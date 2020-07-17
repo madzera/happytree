@@ -2,15 +2,15 @@ package com.miuey.happytree.core;
 
 import com.miuey.happytree.exception.TreeException;
 
-public abstract class ATPPhase {
+public abstract class ATPPhase<T> {
 	
-	private ATPPhase phase;
+	private ATPPhase<T> phase;
 	
 	
 	protected ATPPhase() {}
 	
 	
-	protected void next(ATPPhase phase) {
+	protected void next(ATPPhase<T> phase) {
 		this.phase = phase;
 	}
 	
