@@ -122,4 +122,14 @@ class TreeElementCore<T> implements Element<T> {
 	synchronized void detach() {
 		this.isAttached = Boolean.FALSE;
 	}
+	
+	/*
+	 * Only in the root assembly. When there is a session being initialized,
+	 * then this root element cannot be detached.
+	 */
+	void initRoot(Collection<Element<T>> children) {
+		if (children != null && !children.isEmpty()) {
+			this.children.addAll(children);
+		}
+	}
 }

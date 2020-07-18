@@ -52,15 +52,9 @@ class TreeTransactionCore implements TreeTransaction {
 				DEF_ROOT_IDENTIFIER, null);
 		
 		/*
-		 * Attach the element to the session.
+		 * Set the root element with a empty tree.
 		 */
-		root.attach(newSession.getSessionId());
-		
-		/*
-		 * Activate the new session with the root element.
-		 */
-		newSession.setActive(Boolean.TRUE);
-		newSession.setRoot(root);
+		newSession.setRoot(root, null);
 		
 		sessions.put(identifier, newSession);
 		

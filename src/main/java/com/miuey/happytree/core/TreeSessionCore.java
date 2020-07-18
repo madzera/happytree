@@ -1,5 +1,7 @@
 package com.miuey.happytree.core;
 
+import java.util.Collection;
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeSession;
 
@@ -31,12 +33,21 @@ class TreeSessionCore implements TreeSession {
 		return (Element<T>) root;
 	}
 
-
 	void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
-	void setRoot(Element<?> root) {
+	/*
+	 * This method represents the only one place to initialize a tree. Put the
+	 * root element attached to this session and vice-versa.
+	 */
+	<T> void setRoot(Element<?> root, Collection<Element<T>> tree) {
+		@SuppressWarnings("unchecked")
+		TreeElementCore<T> rootCast = (TreeElementCore<T>) root;
+		
+		rootCast.initRoot(tree);
+		rootCast.attach(this.getSessionId());
 		this.root = root;
+		setActive(Boolean.TRUE);
 	}
 }

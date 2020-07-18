@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.miuey.happytree.Element;
-import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
@@ -15,10 +14,9 @@ public class Binding<T> extends ATPGenericPhase<T> {
 		@SuppressWarnings("unchecked")
 		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
 				getAttribute("elements");
-		TreeManager manager = (TreeManager) pipeline.getAttribute("manager");
 		
 		Set<Element<T>> clonedElements = new HashSet<Element<T>>();
-		Set<Element<T>> resultingList = new HashSet<Element<T>>();
+		Set<Element<T>> tree = new HashSet<Element<T>>();
 		
 		clonedElements.addAll(allElements);
 		for (Element<T> element : allElements) {
@@ -29,11 +27,11 @@ public class Binding<T> extends ATPGenericPhase<T> {
 			if (parentElement != null) {
 				parentElement.addChild(element);
 			} else {
-				resultingList.add(element);
+				tree.add(element);
 			}
 		}
-		Element<T> root = manager.createElement("HAPPYTREE_ROOT", null);
-		root.addChildren(resultingList);
+		pipeline.addAttribute("tree", tree);
+		doChain(pipeline);
 	}
 
 	private Element<T> getParentElement(Object parentId,

@@ -2,29 +2,42 @@ package com.miuey.happytree.core;
 
 import java.util.Map;
 
-/*
- * Internal class to send attributes for validations chains.
+/**
+ * Pipeline represents an object that will be taken from the beginning to the
+ * end of the processing chain. In this context, this object will be taken to
+ * the validations chain and API Transformation Process, in its life cycle.
+ * 
+ * @author Diego Nóbrega
+ *
  */
 public class TreePipeline {
 
+	/*
+	 * Map of attributes
+	 */
 	private Map<String, Object> attributes = TreeFactory.mapFactory().
 			createHashMap();
 	
 	/*
-	 * Protect this construct from the outside world.
+	 * Protect this construct from the outside world. If it is exposed, then the
+	 * client API will have access to use the addAtributes() and getAttribute()
+	 * methods. This class needs be public and also its methods because it needs
+	 * to be accessible to others packages. Therefore, it is crucial that this
+	 * constructor be not public.
 	 */
 	TreePipeline() {}
 
 	/*
-	 * Only the core API package can decide which attributes will be validated.
+	 * This method needs be public because it needs to be accessible to others
+	 * packages.
 	 */
 	public void addAttribute(String attributeName, Object attribute) {
 		this.attributes.put(attributeName, attribute);
 	}
 	
 	/*
-	 * Internal usage in validations chains. The reason is because the
-	 * validations processes reside in another API package.
+	 * This method needs be public because it needs to be accessible to others
+	 * packages.
 	 */
 	public Object getAttribute(String attributeName) {
 		return this.attributes.get(attributeName);
