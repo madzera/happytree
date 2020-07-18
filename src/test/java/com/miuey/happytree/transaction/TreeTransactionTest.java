@@ -73,7 +73,7 @@ public class TreeTransactionTest {
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
-	 * <p>this test is solely and exclusively for the API Transformation
+	 * <p>This test is solely and exclusively for the API Transformation
 	 * Process. This makes use of the {@link TreeDirectoryAssembler} and
 	 * {@link Directory} classes to assemble a collection of linear objects that
 	 * have tree behavior and that are going to be transformed.</p>
@@ -99,8 +99,8 @@ public class TreeTransactionTest {
 	 * 	{@link TreeManager#getElementById(Object)};</li>
 	 * 	<li>Verify if the <i>happytree</i> element is not <code>null</code>;
 	 * 	</li>
-	 * 	<li>Verify if the <i>projects</i> element contains the
-	 * 	<i>happytree</i> element (true).</li>
+	 * 	<li>Verify if the <i>projects</i> has the same id than the
+	 * 	<i>happytree</i> parent id (true).</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
@@ -109,6 +109,8 @@ public class TreeTransactionTest {
 	public void initializeSession_apiTransformationProcess()
 			throws TreeException {
 		final String sessionId = "initializeSession_apiTransformationProcess";
+		final long projectId = 93209;
+		final long happytreeId = 859452;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -118,12 +120,13 @@ public class TreeTransactionTest {
 		
 		transaction.initializeSession(sessionId, directories);
 		
-		Element<Directory> projects = manager.getElementById("projects");
+		Element<Directory> projects = manager.getElementById(projectId);
 		assertNotNull(projects);
-		Element<Directory> happytree = manager.getElementById("happytree");
+		Element<Directory> happytree = manager.getElementById(happytreeId);
 		assertNotNull(happytree);
 		
-		assertTrue(manager.containsElement(projects, happytree));
+		assertEquals(projects.getId(), happytree.getParent());
+		//assertTrue(manager.containsElement(projects, happytree));
 	}
 	
 	/**

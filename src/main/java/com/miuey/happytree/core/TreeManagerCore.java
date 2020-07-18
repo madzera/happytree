@@ -1,8 +1,11 @@
 package com.miuey.happytree.core;
 
 
+import java.util.Collection;
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
@@ -54,8 +57,14 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> getElementById(Object id) throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		Element<T> element = null;
+		validateTransaction();
+		if (id != null) {
+			TreeSession session = this.getTransaction().currentSession();
+			Element<T> root = session.tree();
+			element = searchElement(root.getChildren(), id);
+		}
+		return element;
 	}
 
 	@Override
@@ -122,6 +131,25 @@ class TreeManagerCore implements TreeManager {
 
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
+	}
+	
+	private <T> Element<T> searchElement(Collection<Element<T>> elements,
+			Object id) {
+		Element<T> result = null;
+		if (elements == null || elements.isEmpty()) {
+			return null;
+		}
+		for (Element<T> element : elements) {
+			if (result != null) {
+				return result;
+			}
+			if (element.getId().equals(id)) {
+				result = element;
+				return result;
+			}
+			result = searchElement(element.getChildren(), id);
+		}
+		return result;
 	}
 	
 	private void validateTransaction() throws TreeException {
