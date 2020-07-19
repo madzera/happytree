@@ -30,7 +30,7 @@ public class Initialization<T> extends ATPGenericPhase<T> {
 		TreeTransaction transaction = manager.getTransaction();
 		transaction.initializeSession(sessionId, clazz);
 		
-		Set<Element<?>> elements = new HashSet<Element<?>>();
+		Set<Element<?>> elements = new HashSet<>();
 		Set<Entry<Object, T>> entrySet = mapObjects.entrySet();
 		
 		for (Entry<Object, T> entry : entrySet) {

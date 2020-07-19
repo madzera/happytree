@@ -60,7 +60,7 @@ public class PreValidation<T> extends ATPGenericPhase<T> {
 	
 	private void validateIdentifiers(Collection<T> objects) 
 			throws ReflectiveOperationException, TreeException {
-		Set<Object> validIds = new HashSet<Object>(); 
+		Set<Object> validIds = new HashSet<>(); 
 		Iterator<T> iterator = objects.iterator();
 		
 		while (iterator.hasNext()) {
