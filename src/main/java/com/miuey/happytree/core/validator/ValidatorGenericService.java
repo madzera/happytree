@@ -10,13 +10,13 @@ abstract class ValidatorGenericService extends TreeServiceValidator {
 	
 	protected IllegalArgumentException throwIllegalArgumentException(
 			final ValidatorRepositoryMessage error) {
-		return ExceptionFactory.runtimeExceptionFactory().
+		return ValidatorExceptionFactory.runtimeExceptionFactory().
 				createIllegalArgumentException(this.getMessageError(error));
 	}
 	
 	protected TreeException throwTreeException(
 			final ValidatorRepositoryMessage error) {
-		return ExceptionFactory.treeExceptionFactory().createTreeException(
+		return ValidatorExceptionFactory.treeExceptionFactory().createTreeException(
 				this.getMessageError(error));
 	}
 	

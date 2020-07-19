@@ -10,13 +10,13 @@ abstract class ATPGenericPhase<T> extends ATPPhase<T> {
 	
 	protected IllegalArgumentException throwIllegalArgumentException(
 			final ATPRepositoryMessage error) {
-		return ExceptionFactory.runtimeExceptionFactory().
+		return ATPExceptionFactory.runtimeExceptionFactory().
 				createIllegalArgumentException(this.getMessageError(error));
 	}
 	
 	protected TreeException throwTreeException(
 			final ATPRepositoryMessage error) {
-		return ExceptionFactory.treeExceptionFactory().createTreeException(
+		return ATPExceptionFactory.treeExceptionFactory().createTreeException(
 				this.getMessageError(error));
 	}
 	

@@ -1,31 +1,31 @@
-package com.miuey.happytree.core.atp;
+package com.miuey.happytree.core.validator;
 
 import com.miuey.happytree.exception.TreeException;
 
-class ExceptionFactory {
-	private static ExceptionFactory treeExceptionFactory;
+class ValidatorExceptionFactory {
+	private static ValidatorExceptionFactory treeExceptionFactory;
 	private static RuntimeExceptionFactory runtimeExceptionFactory;
 	
 	
-	private ExceptionFactory() {}
+	private ValidatorExceptionFactory() {}
 	
 	
 	static RuntimeExceptionFactory runtimeExceptionFactory() {
 		if (runtimeExceptionFactory == null) {
-			runtimeExceptionFactory = new ExceptionFactory().new 
+			runtimeExceptionFactory = new ValidatorExceptionFactory().new 
 					RuntimeExceptionFactory();
 		}
 		return runtimeExceptionFactory;
 	}
 	
-	static ExceptionFactory treeExceptionFactory() {
+	static ValidatorExceptionFactory treeExceptionFactory() {
 		if (treeExceptionFactory == null) {
-			treeExceptionFactory = new ExceptionFactory();
+			treeExceptionFactory = new ValidatorExceptionFactory();
 		}
 		return treeExceptionFactory;
 	}
 	
-	class RuntimeExceptionFactory extends ExceptionFactory {
+	class RuntimeExceptionFactory extends ValidatorExceptionFactory {
 		RuntimeExceptionFactory() {}
 		
 		IllegalArgumentException createIllegalArgumentException(String message) {
