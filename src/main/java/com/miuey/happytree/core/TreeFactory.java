@@ -85,23 +85,23 @@ class TreeFactory {
 		ATPLifecycleFactory() {}
 		
 		<T> ATPLifecycle<T> createLifecycle(TreePipeline pipeline) {
-			return new ATPLifecycle<T>(pipeline);
+			return new ATPLifecycle<>(pipeline);
 		}
 		
 		<T> ATPPhase<T> initPreValidation() {
-			return new PreValidation<T>();
+			return new PreValidation<>();
 		}
 		
 		<T> ATPPhase<T> initExtraction() {
-			return new Extraction<T>();
+			return new Extraction<>();
 		}
 		
 		<T> ATPPhase<T> initInitialization() {
-			return new Initialization<T>();
+			return new Initialization<>();
 		}
 		
 		<T> ATPPhase<T> initBinding() {
-			return new Binding<T>();
+			return new Binding<>();
 		}
 	}
 	
@@ -121,7 +121,7 @@ class TreeFactory {
 		}
 		
 		<T> TreeElementCore<T> createElement(Object id, Object parent) {
-			return new TreeElementCore<T>(id, parent);
+			return new TreeElementCore<>(id, parent);
 		}
 	}
 
@@ -129,11 +129,11 @@ class TreeFactory {
 		CollectionFactory() {}
 		
 		<T> HashSet<T> createHashSet() {
-			return new HashSet<T>();
+			return new HashSet<>();
 		}
 		
 		<T> List<T> createArrayList() {
-			return new ArrayList<T>();
+			return new ArrayList<>();
 		}
 	}
 	
@@ -141,7 +141,7 @@ class TreeFactory {
 		MapFactory() {}
 		
 		<K, V> HashMap<K,V> createHashMap() {
-			return new HashMap<K, V>();
+			return new HashMap<>();
 		}
 	}
 

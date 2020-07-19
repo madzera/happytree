@@ -14,8 +14,8 @@ public class Extraction<T> extends ATPGenericPhase<T> {
 
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
-		Map<Object, Object> mapObjects = new HashMap<Object, Object>();
-		Map<Object, Object> mapParents = new HashMap<Object, Object>();
+		Map<Object, Object> mapObjects = new HashMap<>();
+		Map<Object, Object> mapParents = new HashMap<>();
 		
 		Collection<?> objects = (Collection<?>) pipeline.getAttribute("objects");
 		

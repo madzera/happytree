@@ -15,8 +15,8 @@ public class Binding<T> extends ATPGenericPhase<T> {
 		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
 				getAttribute("elements");
 		
-		Set<Element<T>> clonedElements = new HashSet<Element<T>>();
-		Set<Element<T>> tree = new HashSet<Element<T>>();
+		Set<Element<T>> clonedElements = new HashSet<>();
+		Set<Element<T>> tree = new HashSet<>();
 		
 		clonedElements.addAll(allElements);
 		for (Element<T> element : allElements) {

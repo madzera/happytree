@@ -74,7 +74,11 @@ class ATPLifecycle<T> {
 		TreeTransaction transaction = manager.getTransaction();
 		TreeSessionCore session = (TreeSessionCore) transaction.currentSession();
 		
-		Element<T> root = manager.createElement("HAPPYTREE_ROOT", null);
+		/*
+		 * Each root element has the Id value corresponding the session Id. It
+		 * is useful to identify the root elment.
+		 */
+		Element<T> root = manager.createElement(session.getSessionId(), null);
 		session.setRoot(root, tree);
 	}
 
