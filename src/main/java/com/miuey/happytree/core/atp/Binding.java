@@ -1,6 +1,5 @@
 package com.miuey.happytree.core.atp;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.miuey.happytree.Element;
@@ -15,8 +14,8 @@ public class Binding<T> extends ATPGenericPhase<T> {
 		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
 				getAttribute("elements");
 		
-		Set<Element<T>> clonedElements = new HashSet<>();
-		Set<Element<T>> tree = new HashSet<>();
+		Set<Element<T>> clonedElements = this.createHashSet();
+		Set<Element<T>> tree = this.createHashSet();
 		
 		clonedElements.addAll(allElements);
 		for (Element<T> element : allElements) {

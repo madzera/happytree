@@ -43,6 +43,7 @@ public class PostValidation<T> extends ATPGenericPhase<T> {
 						POST_VALID_INCONS);
 			}
 		}
+		
 		doChain(pipeline);
 	}
 }

@@ -2,7 +2,6 @@ package com.miuey.happytree.core.atp;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.miuey.happytree.annotation.Id;
@@ -14,8 +13,8 @@ public class Extraction<T> extends ATPGenericPhase<T> {
 
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
-		Map<Object, Object> mapObjects = new HashMap<>();
-		Map<Object, Object> mapParents = new HashMap<>();
+		Map<Object, Object> mapObjects = this.createHashMap();
+		Map<Object, Object> mapParents = this.createHashMap();
 		
 		Collection<?> objects = (Collection<?>) pipeline.getAttribute("objects");
 		

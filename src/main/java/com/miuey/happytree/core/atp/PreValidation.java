@@ -2,7 +2,6 @@ package com.miuey.happytree.core.atp;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -60,7 +59,7 @@ public class PreValidation<T> extends ATPGenericPhase<T> {
 	
 	private void validateIdentifiers(Collection<T> objects) 
 			throws ReflectiveOperationException, TreeException {
-		Set<Object> validIds = new HashSet<>(); 
+		Set<Object> validIds = this.createHashSet();
 		Iterator<T> iterator = objects.iterator();
 		
 		while (iterator.hasNext()) {

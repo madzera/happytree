@@ -1,6 +1,5 @@
 package com.miuey.happytree.core.atp;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -30,7 +29,7 @@ public class Initialization<T> extends ATPGenericPhase<T> {
 		TreeTransaction transaction = manager.getTransaction();
 		transaction.initializeSession(sessionId, clazz);
 		
-		Set<Element<?>> elements = new HashSet<>();
+		Set<Element<?>> elements = this.createHashSet();
 		Set<Entry<Object, T>> entrySet = mapObjects.entrySet();
 		
 		for (Entry<Object, T> entry : entrySet) {
