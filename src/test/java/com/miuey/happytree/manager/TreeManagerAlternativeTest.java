@@ -1,13 +1,307 @@
 package com.miuey.happytree.manager;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
 
 import org.junit.Test;
 
+import com.miuey.happytree.Element;
+import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeTransaction;
+import com.miuey.happytree.core.HappyTree;
+import com.miuey.happytree.example.Directory;
+import com.miuey.happytree.example.TreeDirectoryAssembler;
+import com.miuey.happytree.exception.TreeException;
+
+/**
+ * Test class for {@link TreeManager} operations.
+ * 
+ * <p>This test class represents the <i>alternative scenarios</i> for the
+ * operations of {@link TreeManager}.</p>
+ * 
+ * <p>Some operations in this class will use the sample model class
+ * <code>Directory</code> and <code>TreeDirectoryAssembler. Please consider see
+ * these sample classes to understand the tests scenarios.</p>
+ * 
+ * @author Diego Nóbrega
+ * @author Miuey
+ *
+ */
 public class TreeManagerAlternativeTest {
 
+	/**
+	 * Test for the {@link TreeManager#createElement(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to create an
+	 * element with <code>null</code> value id.</p>
+	 * 
+	 * <p>For remind, it is allowed trying to create an element with the
+	 * <code>null</code> value because the created element here is free up. It
+	 * does not belongs to none tree yet.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * try to create an element with <code>null</code> value id.
+	 * <p><b>Expected:</b></p>
+	 * A not <code>null</code> element but <code>null</code> id and parent id
+	 * of the same element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create the identifier for the new session;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create an element with <code>null</code> id;</li>
+	 * 	<li>Verify that the element is not <code>null</code>;</li>
+	 * 	<li>Verify that the element id and its parent id is <code>null</code>.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
 	@Test
-	public void toDo() {
-		assertTrue(Boolean.TRUE);
+	public void createElement_nullElementId() throws TreeException {
+		final String sessionId = "createElement_nullElementId";
+		final String nullablElementId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(nullablElementId,
+				null);
+		
+		assertNotNull(element);
+		assertNull(element.getId());
+		assertNull(element.getParent());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#getElementById(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to get an
+	 * element with a <code>null</code> argument id and with a not existing
+	 * id in the tree assembled through API Transformation Process.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to get an element with a <code>null</code> argument id and with a not
+	 * existing id.
+	 * <p><b>Expected:</b></p>
+	 * A <code>null</code> element passing through a <code>null</code> id and
+	 * other <code>null</code> element passing through a not existing id in the
+	 * previous assembled tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Try to get an element with the <code>null</code> argument id;</li>
+	 * 	<li>Verify that this element is <code>null</code>;</li>
+	 * 	<li>Try to get an element with an ID that does not exist in the tree;
+	 * 	</li>
+	 * 	<li>Now, verify that this element is <code>null</code> too.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void getElementById_nullArg_notExists() throws TreeException {
+		final String sessionId = "createElement";
+		final Object nullableElementId = null;
+		final long notExistingId = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeDirectoryAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> nullElement = manager.getElementById(
+				nullableElementId);
+		assertNull(nullElement);
+		
+		Element<Directory> noExistingElement = manager.getElementById(
+				notExistingId);
+		assertNull(noExistingElement);
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * inside of the root level of the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element inside of the root element.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element to be cut be moved to the root level of
+	 * the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the source (&quot;photoshop&quot;) existed element, its parent
+	 * 	(&quot;adobe&quot;) and the root element;</li>
+	 * 	<li>Verify that the &quot;adobe&quot; element really contains the
+	 * 	&quot;photoshop&quot; element;</li>
+	 * 	<li>Try to cut the &quot;photoshop&quot; inside of the root;</li>
+	 * 	<li>Verify that the element now has as parent id value, the same id than
+	 * 	session id (representing the root level);</li>
+	 * 	<li>Verify now that the &quot;adobe&quot; element does not contains the
+	 * 	&quot;photoshop&quot; element anymore (because it is in the root).</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_elementToRoot() throws TreeException {
+		final String sessionId = "cut_elementToRoot";
+		final long adobeId = 24935;
+		final long photoshopId = 909443;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeDirectoryAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		Element<Directory> root = transaction.currentSession().tree();
+		
+		assertTrue(manager.containsElement(adobe, photoshop));
+		
+		Element<Directory> photoshopCut = manager.cut(photoshop, root);
+		assertFalse(manager.containsElement(adobe, photoshop));
+		assertEquals(sessionId, photoshopCut.getParent());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * by only its id which the id from this element (<code>from</code>) does
+	 * not exists in the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element only by its id which this id does not exists in the
+	 * tree.
+	 * <p><b>Expected:</b></p>
+	 * A <code>null</code> value as return of the operation
+	 * {@link TreeManager#cut(Object, Object)}. Also, no modification in target
+	 * children elements.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the target (<code>to</code>) existed element;</li>
+	 * 	<li>Verify that the target element has no children;</li>
+	 * 	<li>Try to cut a not existed element inside of this target;</li>
+	 * 	<li>Verify that the target element has no children again;</li>
+	 * 	<li>Verify that the return of {@link TreeManager#cut(Object, Object)}
+	 * 	is <code>null</code>.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_notExistingFromElement() throws TreeException {
+		final String sessionId = "cut_notExistingFromElement";
+		final long notExistingFromId = Long.MAX_VALUE;
+		
+		final long wordExeId = 4611329;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeDirectoryAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> wordExeElement = manager.getElementById(wordExeId);
+		assertEquals(0, wordExeElement.getChildren().size());
+		
+		Element<Directory> cutElement = manager.cut(notExistingFromId,
+				wordExeId);
+		
+		wordExeElement = manager.getElementById(wordExeId);
+		assertEquals(0, wordExeElement.getChildren().size());
+		
+		assertNull(cutElement);
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * by only its id inside of a not existing target element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element inside of a not existing target element.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element to be cut be moved to the root level of
+	 * the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the source (<code>from</code>) existed element;</li>
+	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	</li>
+	 * 	<li>Try to cut this element inside of a not existed element;</li>
+	 * 	<li>Verify that the source parent element id is now with the same id
+	 * 	value of the session id, representing the root id;</li>
+	 * 	<li>Verify if the source child element was moved too by invoking
+	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_notExistingToElement() throws TreeException {
+		final String sessionId = "cut_notExistingToElement";
+		final long notExistingToId = Long.MAX_VALUE;
+		
+		final long sdkDevId = 84709;
+		final long sdkDevChildId = 983533;
+		final String sdkDevParentName = "Devel";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeDirectoryAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
+		Element<Directory> sdkDevParentElement = manager.getElementById(
+				sdkDevElement.getParent());
+		Directory devel = sdkDevParentElement.unwrap();
+		assertEquals(sdkDevParentName, devel.getName());
+		
+		Element<Directory> cutElement = manager.cut(sdkDevElement,
+				notExistingToId);
+		assertEquals(sessionId, cutElement.getParent());
+		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
 }

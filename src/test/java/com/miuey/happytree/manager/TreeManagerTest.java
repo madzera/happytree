@@ -66,8 +66,9 @@ public class TreeManagerTest {
 	 * 	<li>Initialize the session with the previous defined session identifier;
 	 * 	</li>
 	 * 	<li>Invoke {@link TreeManager#createElement(Object, Object)} to create
-	 * 	a new detached element;</li>
+	 * 	a new detached element with the specified element id;</li>
 	 * 	<li>Verify if the new element is not <code>null</code>.</li>
+	 * 	<li>Verify if the element id corresponds.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
@@ -84,6 +85,7 @@ public class TreeManagerTest {
 		Element<Directory> element = manager.createElement(elementId, null);
 		
 		assertNotNull(element);
+		assertEquals(elementId, element.getId());
 	}
 
 	/**

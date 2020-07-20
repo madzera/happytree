@@ -22,7 +22,7 @@ class ATPConstants {
 		static final String NO_PARENT_ERROR = "com.miuey.happytree.error.checked.tree.noparent";
 		static final String DIFFERENT_TYPES_ID_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
-		static final String INCONSISTENCE_POST_VALID = "com.miuey.happytree.error.checked.tree.inconsistency";
+		static final String INCONSISTENCY_POST_VALID = "com.miuey.happytree.error.checked.tree.inconsistency";
 		//---------------SESSION--------------
 		class Internal {
 			private Internal() {}

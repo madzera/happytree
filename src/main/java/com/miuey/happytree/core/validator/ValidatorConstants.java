@@ -17,6 +17,9 @@ class ValidatorConstants {
 		static final String INVALID_INPUT_ELEMENTS = "com.miuey.happytree.error.runtime.params";
 		//----------------TREE----------------
 		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
+		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
+		static final String DIFFERENT_TYPES_ID_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
+		static final String DETACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.detached";
 		//---------------SESSION--------------
 		static final String DUPLICATED_SESSION_ID_ERROR = "com.miuey.happytree.error.checked.session.duplicatedid";
 		static final String NO_DEFINED_SESSION = "com.miuey.happytree.error.checked.session.nodefinedsession";

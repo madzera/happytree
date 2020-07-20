@@ -169,7 +169,7 @@ public final class TreeDirectoryAssembler {
 		/*
 		 * Users.
 		 */
-		Directory diego = new Directory(48224, 38923, "diego");
+		Directory foo = new Directory(48224, 38923, "foo");
 			Directory tmp = new Directory(583950, 48224, "tmp");
 		Directory administrator = new Directory(47592, 38923, "administrator");
 		
@@ -185,7 +185,7 @@ public final class TreeDirectoryAssembler {
 		folders.add(realtek);folders.add(excel);
 		folders.add(database);folders.add(administrator);
 		folders.add(recorded);folders.add(devel);
-		folders.add(diego);folders.add(programFiles);
+		folders.add(foo);folders.add(programFiles);
 		folders.add(vlc);folders.add(dreamweaver);
 		folders.add(projects);folders.add(users);
 		folders.add(tmp);folders.add(happytree);

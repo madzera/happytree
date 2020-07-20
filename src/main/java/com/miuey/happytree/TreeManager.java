@@ -52,8 +52,9 @@ public interface TreeManager {
 	 * <p>If the <code>to</code> parameter element is <code>null</code> then the
 	 * <code>from</code> element with all children will be moved to the root
 	 * level of the same tree. If the {@literal @Id}} attribute of the
-	 * <code>to</code> element is <code>null</code> then the element will be cut
-	 * to the root level of the tree which the element belongs.</p>
+	 * <code>to</code> element is <code>null</code> or not found in the tree,
+	 * then the element will be cut to the root level of the tree which the
+	 * element belongs.</p>
 	 * 
 	 * <p>When cut for the target element, the <code>from</code> parameter
 	 * element cannot have the same identifier in the tree where the
