@@ -304,4 +304,114 @@ public class TreeManagerAlternativeTest {
 		assertEquals(sessionId, cutElement.getParent());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
+	
+	@Test
+	public void cut_toAnotherTree() throws TreeException {
+		final String sourceSessionId = "devel";
+		final String targetSessionId = "target";
+		
+		final Long winampId = 32099l;
+		final String winampName = "Winamp";
+		final Long systemId = 100l;
+		final String systemName = "System";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> targetDir = TreeDirectoryAssembler.
+				getSimpleDirectoryTree();
+		Collection<Directory> develDir = TreeDirectoryAssembler.
+				getDirectoryTree();
+		
+		transaction.initializeSession(sourceSessionId, develDir);
+		Element<Directory> winamp = manager.getElementById(winampId);
+		assertNotNull(winamp);
+		
+		transaction.initializeSession(targetSessionId, targetDir);
+		Element<Directory> system = manager.getElementById(systemId);
+		assertNotNull(system);
+		
+		transaction.sessionCheckout(sourceSessionId);
+		manager.cut(winamp, system);
+		
+		winamp = manager.getElementById(winampId);
+		assertNull(winamp);
+		
+		transaction.sessionCheckout(targetSessionId);
+		winamp = manager.getElementById(winamp);
+		assertNotNull(winamp);
+		assertEquals(winampName, winamp.unwrap().getName());
+		assertEquals(systemName, system.unwrap().getName());
+		assertTrue(manager.containsElement(system, winamp));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * for the root level of another tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element for the root level of another tree.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element be removed from the source tree and
+	 * placed at the target.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	<li>Get the source element (Devel) and target (target session id - root);
+	 * 	</li>
+	 * 	<li>Verify that the source tree session has no the source element
+	 * 	(devel) anymore;</li>
+	 * 	<li>Also Verify that the source element (Devel) is now in the target
+	 * 	tree session.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	public void cut_toRootOfAnotherTree() throws TreeException {
+		final String sourceSessionId = "devel";
+		final String targetSessionId = "target";
+		
+		final Long develId = 93832l;
+		final String develName = "Devel";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> targetDir = TreeDirectoryAssembler.
+				getSimpleDirectoryTree();
+		Collection<Directory> sourceDir = TreeDirectoryAssembler.
+				getDirectoryTree();
+		
+		transaction.initializeSession(sourceSessionId, sourceDir);
+		Element<Directory> devel = manager.getElementById(develId);
+		
+		transaction.initializeSession(targetSessionId, targetDir);
+		Element<Directory> targetRootTree = transaction.currentSession().tree();
+		
+		transaction.sessionCheckout(sourceSessionId);
+		
+		manager.cut(devel, targetRootTree);
+		
+		/*
+		 * Devel does not exists in the source tree anymore.
+		 */
+		devel = manager.getElementById(develId);
+		assertNull(devel);
+		
+		/*
+		 * Devel now is in target tree.
+		 */
+		transaction.sessionCheckout(targetSessionId);
+		devel = manager.getElementById(develId);
+		assertNotNull(devel);
+		assertEquals(develName, devel.unwrap().getName());
+		assertEquals(targetSessionId, devel.getParent());
+	}
 }

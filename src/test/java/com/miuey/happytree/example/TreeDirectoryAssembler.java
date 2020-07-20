@@ -196,4 +196,23 @@ public final class TreeDirectoryAssembler {
 		
 		return folders;
 	}
+	
+	public static Collection<Directory> getSimpleDirectoryTree() {
+		Collection<Directory> folders = new ArrayList<Directory>();
+		
+		/*
+		 * Fist level.
+		 */
+		Directory windows = new Directory(1, 0, "Windows");
+		Directory system = new Directory(100, 1, "System");
+		Directory system32 = new Directory(1000, 1, "System32");
+		Directory drivers = new Directory(1076, 1000, "drivers");
+		
+		folders.add(system32);
+		folders.add(windows);
+		folders.add(drivers);
+		folders.add(system);
+		
+		return folders;
+	}
 }
