@@ -49,6 +49,9 @@ public final class TreeDirectoryAssembler {
 	 * 					<li>drivers</li>
 	 * 						<ul>
 	 * 							<li>bin</li>
+	 * 								<ul>
+	 * 									<li>entry</li>
+	 * 								</ul>
 	 * 						</ul>
 	 * 					<li>sdk</li>
 	 * 						<ul>
@@ -137,6 +140,7 @@ public final class TreeDirectoryAssembler {
 		Directory realtek = new Directory(94034, 42345, "Realtek");
 			Directory drivers = new Directory(220332, 94034, "drivers");
 				Directory bin = new Directory(7753032, 220332, "bin");
+					Directory entry = new Directory(77530344, 7753032, "entry");
 			Directory sdk = new Directory(113009, 94034, "sdk");
 				Directory files = new Directory(8484934, 113009, "files");
 			Directory readme = new Directory(495833, 94034, "readme.txt");
@@ -193,6 +197,7 @@ public final class TreeDirectoryAssembler {
 		folders.add(sdk);folders.add(bin);
 		folders.add(reader);folders.add(sdkDev);
 		folders.add(ide);folders.add(excelExe);
+		folders.add(entry);
 		
 		return folders;
 	}
@@ -207,11 +212,14 @@ public final class TreeDirectoryAssembler {
 		Directory system = new Directory(100, 1, "System");
 		Directory system32 = new Directory(1000, 1, "System32");
 		Directory drivers = new Directory(1076, 1000, "drivers");
+		//To simulate duplicate entries error (exists in both trees).
+		Directory entry = new Directory(77530344, 1076, "Entry");
 		
 		folders.add(system32);
 		folders.add(windows);
 		folders.add(drivers);
 		folders.add(system);
+		folders.add(entry);
 		
 		return folders;
 	}

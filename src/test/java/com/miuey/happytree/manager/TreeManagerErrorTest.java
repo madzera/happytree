@@ -1,6 +1,7 @@
 package com.miuey.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
@@ -118,11 +119,10 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#cut(Element, Element)} and
-	 * {@link TreeManager#copy(Element, Element)} operations.
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
-	 * <p>Error scenario for these operation when trying to cut/copy an element
-	 * with a <code>null</code> argument value.</p>
+	 * <p>Error scenario for this operation when trying to cut an element with a
+	 * <code>null</code> argument value.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
@@ -147,8 +147,8 @@ public class TreeManagerErrorTest {
 	 * @throws TreeException
 	 */
 	@Test
-	public void cutCopy_nullFromElement() throws TreeException {
-		final String sessionId = "cutCopy_nullFromElement";
+	public void cut_nullFromElement() throws TreeException {
+		final String sessionId = "cut_nullFromElement";
 		final String messageError = "Invalid null/empty argument(s).";
 		
 		String error = null;
@@ -229,10 +229,9 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#cut(Element, Element)} and
-	 * {@link TreeManager#copy(Element, Element)} operations.
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
-	 * <p>Error scenario for these operation when trying to cut/copy any changed
+	 * <p>Error scenario for this operation when trying to cut any changed
 	 * attached element.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
@@ -258,8 +257,8 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void detachedElement() {
-		final String sessionId = "noActiveSession";
+	public void cut_detachedElement() {
+		final String sessionId = "cut_detachedElement";
 		final String messageError = "Detached element. Not possible to copy/cut"
 				+ "elements not synchronized inside of the tree.";
 		
@@ -287,6 +286,81 @@ public class TreeManagerErrorTest {
 			tmp.setParent(administrator.getId());
 			
 			manager.cut(tmp, administrator);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element for
+	 * inside of another tree which this tree already have an element with the
+	 * same id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try cut an element for inside of another tree containing an element with
+	 * the same id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	<li>Get the element (&quot;Entry&quot;) which its id already exists in
+	 * 	the target tree;</li>
+	 * 	<li>Change the session for the source tree by invoking
+	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
+	 * 	<li>Try to cut the &quot;Entry&quot; element from the source tree to
+	 * 	&quot;Entry&quot; element of the target tree;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_toAnotherTreeDuplicatedId() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Duplicated ID.";
+		
+		String error = null;
+		final long entryId = 77530344;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeDirectoryAssembler.
+				getDirectoryTree();
+		Collection<Directory> targetDir = TreeDirectoryAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sourceEntry = manager.getElementById(entryId);
+			assertNotNull(sourceEntry);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			
+			/*
+			 * Same Id.
+			 */
+			Element<Directory> targetEntry = manager.getElementById(entryId);
+			assertNotNull(targetEntry);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			
+			/*
+			 * Duplicated Id error.
+			 */
+			manager.cut(sourceEntry, targetEntry);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {

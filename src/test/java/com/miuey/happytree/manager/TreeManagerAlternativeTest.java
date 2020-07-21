@@ -305,9 +305,47 @@ public class TreeManagerAlternativeTest {
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
 	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * for inside of other one of another tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element for inside of other one of another tree.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element be removed from the source parent element
+	 * of the source tree and placed inside of other element which belongs to
+	 * another tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	<li>Get the source element (Winamp) and the target (System) element
+	 * 	from other tree;
+	 * 	</li>
+	 * 	<li>Verify that the both elements are not <code>null</code>;</li>
+	 * 	<li>Change the session for the source tree by invoking
+	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
+	 * 	<li>Try to cut the &quot;Winamp&quot; element for inside of the
+	 * 	&quot;System&quot; element;</li>
+	 * 	<li>Verify that the &quot;Winamp&quot; does not exists in the source
+	 * 	tree anymore;</li>
+	 * 	<li>Change the session for the target tree;</li>
+	 * 	<li>Verify that the &quot;System&quot; element contains the
+	 * 	&quot;Winamp&quot; element by invoking
+	 * 	{@link TreeManager#containsElement(Element, Element)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
 	@Test
 	public void cut_toAnotherTree() throws TreeException {
-		final String sourceSessionId = "devel";
+		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
 		final Long winampId = 32099l;
@@ -320,10 +358,10 @@ public class TreeManagerAlternativeTest {
 		
 		Collection<Directory> targetDir = TreeDirectoryAssembler.
 				getSimpleDirectoryTree();
-		Collection<Directory> develDir = TreeDirectoryAssembler.
+		Collection<Directory> sourceDir = TreeDirectoryAssembler.
 				getDirectoryTree();
 		
-		transaction.initializeSession(sourceSessionId, develDir);
+		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> winamp = manager.getElementById(winampId);
 		assertNotNull(winamp);
 		
@@ -375,7 +413,7 @@ public class TreeManagerAlternativeTest {
 	 * @throws TreeException
 	 */
 	public void cut_toRootOfAnotherTree() throws TreeException {
-		final String sourceSessionId = "devel";
+		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
 		final Long develId = 93832l;

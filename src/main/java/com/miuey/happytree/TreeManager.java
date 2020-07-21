@@ -44,7 +44,7 @@ import com.miuey.happytree.exception.TreeException;
 public interface TreeManager {
 	
 	/**
-	 * Cut the <code>from</code> element into the <code>to</code> element,
+	 * Cut the <code>from</code> element for inside the <code>to</code> element,
 	 * whether for the same session or not. With this, the element to be cut can
 	 * be cut into the same tree session or to another tree in another session.
 	 * All children of <code>from</code> element will be cut too.
@@ -73,11 +73,19 @@ public interface TreeManager {
 	 * 
 	 * @return the own <code>from</code> element to be cut
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When the current session or the session which the
-	 * <code>to</code> element belongs is not active. And also when the
-	 * <code>from</code> element neither the <code>to</code> element is not
-	 * attached in any activated tree.
+	 * @throws TreeException 
+	 * <ul>
+	 * 	<li>The transaction has no session selected to work it;</li>
+	 * 	<li>The current session or the session which the <code>to</code> element
+	 * 		belongs is not active;
+	 * 	</li>
+	 * 	<li>The <code>from</code> element has an already existing identifier in
+	 * 		the target tree.
+	 * 	</li>
+	 * 	<li>the <code>from</code> element neither the <code>to</code> element is
+	 * 		not attached in any activated tree.
+	 * 	</li>
+	 * </ul>
 	 * 
 	 * @throws IllegalArgumentException when the <code>from</code> parameter or
 	 * its <code>id</code> is <code>null</code>
