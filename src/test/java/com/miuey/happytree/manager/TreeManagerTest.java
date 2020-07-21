@@ -1,6 +1,7 @@
 package com.miuey.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -218,7 +219,8 @@ public class TreeManagerTest {
 		jdk = manager.cut(jdk, sdk);
 		
 		sdkDev = manager.getElementById(sdkDevId);
-		assertEquals(1, sdkDev.getChildren().size());
+		assertEquals(0, sdkDev.getChildren().size());
+		assertFalse(manager.containsElement(sdkDev, jdk));
 		
 		assertTrue(manager.containsElement(sdk, jdk));
 		assertEquals(sdkName, sdk.unwrap().getName());

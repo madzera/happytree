@@ -26,8 +26,16 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		validateTransaction();
+		
+		Element<T> parentFrom = this.getElementById(from.getParent());
+		parentFrom.removeChild(from);
+		
+		to.addChild(from);
+		from.setParent(to.getId());
+		
+		synchronizeElements(parentFrom, from, to);
+		return from;
 	}
 
 	@Override
@@ -131,6 +139,17 @@ class TreeManagerCore implements TreeManager {
 
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
+	}
+
+	@SafeVarargs
+	private final <T> void synchronizeElements(Element<T>... elements) {
+		String sessionId = this.getTransaction().currentSession().getSessionId();
+		
+		TreeElementCore<T> element = null;
+		for (Element<T> iterator : elements) {
+			element = (TreeElementCore<T>) iterator;
+			element.attach(sessionId);
+		}
 	}
 	
 	private <T> Element<T> searchElement(Collection<Element<T>> elements,

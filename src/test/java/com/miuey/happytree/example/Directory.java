@@ -81,4 +81,9 @@ public class Directory {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "Directory [name=" + name + "]";
+	}
 }
