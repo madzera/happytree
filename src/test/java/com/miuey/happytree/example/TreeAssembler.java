@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This test class is used to assemble a tree of {@link Directory} objects.
+ * This test class is used to assemble a tree of {@link Directory} and
+ * {@link Metadata} objects.
  * 
  * <p>It consists of a tree that will be used as an example in the development
  * of test cases. The tree in question will be of objects of type

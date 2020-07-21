@@ -2,6 +2,7 @@ package com.miuey.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -93,9 +94,9 @@ public class TreeManagerTest {
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
-	 * <p>This makes use of the {@link TreeAssembler} and
-	 * {@link Directory} classes to assemble a collection of linear objects that
-	 * have tree behavior and that are going to be transformed.</p>
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
 	 * 
 	 * <p><b>For this demonstration, please see these sample classes in
 	 * question.</b></p>
@@ -151,5 +152,144 @@ public class TreeManagerTest {
 		
 		Directory parentRec = recordedParent.unwrap();
 		assertEquals(parentRecordedName, parentRec.getName());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Cut an element for inside of other one.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the &quot;jdk&quot; element be removed from the
+	 * source element and placed inside of the &quot;sdk&quot; element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Get the &quot;jdk&quot; element;</li>
+	 * 	<li>Get the &quot;sdk&quot; element;</li>
+	 * 	<li>Verify that the parent element of &quot;jdk&quot; has one child (jdk
+	 * 	itself);</li>
+	 * 	<li>Try to cut &quot;jdk&quot; for inside of &quot;sdk&quot; element;
+	 * 	</li>
+	 * 	<li>Verify now that the previous &quot;jdk&quot; parent element has no
+	 * 	child anymore;</li>
+	 * 	<li>Verify that the &quot;sdk&quot; element contains now the
+	 * 	&quot;jdk&quot; element	by invoking
+	 * 	{@link TreeManager#containsElement(Element, Element)}.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_element() throws TreeException {
+		final String sessionId = "cut_element";
+		
+		final long jdkId = 983533;
+		final long sdkId = 113009;
+		final long sdkDevId = 84709;
+		
+		final String jdkName = "jdk1.6";
+		final String sdkName = "sdk";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> sdkDev = manager.getElementById(sdkDevId);
+		assertEquals(1, sdkDev.getChildren().size());
+		
+		Element<Directory> jdk = manager.getElementById(jdkId);
+		Element<Directory> sdk = manager.getElementById(sdkId);
+		
+		jdk = manager.cut(jdk, sdk);
+		
+		sdkDev = manager.getElementById(sdkDevId);
+		assertEquals(1, sdkDev.getChildren().size());
+		
+		assertTrue(manager.containsElement(sdk, jdk));
+		assertEquals(sdkName, sdk.unwrap().getName());
+		assertEquals(jdkName, jdk.unwrap().getName());
+		assertEquals(sdk.getId(), jdk.getParent());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Cut an element for inside of other one using only the element id.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the &quot;jdk&quot; element be removed from the
+	 * source element and placed inside of the &quot;sdk&quot; element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Get the &quot;jdk&quot; parent element;</li>
+	 * 	<li>Verify that the parent element of &quot;jdk&quot; has one child (jdk
+	 * 	itself);</li>
+	 * 	<li>Try to cut &quot;jdk&quot; for inside of &quot;sdk&quot; element
+	 * 	using only the id by invoking {@link TreeManager#cut(Object, Object)};
+	 * 	</li>
+	 * 	<li>Verify now that the previous &quot;jdk&quot; parent element has no
+	 * 	child anymore;</li>
+	 * 	<li>Verify that the &quot;sdk&quot; element contains now the
+	 * 	&quot;jdk&quot; element by invoking
+	 * 	{@link TreeManager#containsElement(Object, Object)}.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_objectId() throws TreeException {
+		final String sessionId = "cut_objectId";
+		
+		final long jdkId = 983533;
+		final long sdkId = 113009;
+		final long sdkDevId = 84709;
+		
+		final String jdkName = "jdk1.6";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> sdkDev = manager.getElementById(sdkDevId);
+		assertEquals(1, sdkDev.getChildren().size());
+		
+		Element<Directory> jdk = manager.cut(jdkId, sdkId);
+		
+		sdkDev = manager.getElementById(sdkDevId);
+		assertEquals(1, sdkDev.getChildren().size());
+		
+		assertTrue(manager.containsElement(sdkId, jdkId));
+		assertEquals(jdkName, jdk.unwrap().getName());
+		assertEquals(sdkId, jdk.getParent());
 	}
 }
