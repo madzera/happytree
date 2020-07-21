@@ -15,7 +15,7 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
-import com.miuey.happytree.example.TreeDirectoryAssembler;
+import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -25,7 +25,7 @@ import com.miuey.happytree.exception.TreeException;
  * operations of {@link TreeManager}.</p>
  * 
  * <p>Some operations in this class will use the sample model class
- * <code>Directory</code> and <code>TreeDirectoryAssembler. Please consider see
+ * <code>Directory</code> and <code>TreeAssembler. Please consider see
  * these sample classes to understand the tests scenarios.</p>
  * 
  * @author Diego Nóbrega
@@ -87,7 +87,7 @@ public class TreeManagerAlternativeTest {
 	 * id in the tree assembled through API Transformation Process.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to get an element with a <code>null</code> argument id and with a not
@@ -119,7 +119,7 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
@@ -139,7 +139,7 @@ public class TreeManagerAlternativeTest {
 	 * inside of the root level of the tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to cut an element inside of the root element.
@@ -173,7 +173,7 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
@@ -196,7 +196,7 @@ public class TreeManagerAlternativeTest {
 	 * not exists in the tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to cut an element only by its id which this id does not exists in the
@@ -230,7 +230,7 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
@@ -253,7 +253,7 @@ public class TreeManagerAlternativeTest {
 	 * by only its id inside of a not existing target element.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to cut an element inside of a not existing target element.
@@ -289,7 +289,7 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
@@ -312,7 +312,7 @@ public class TreeManagerAlternativeTest {
 	 * for inside of other one of another tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to cut an element for inside of other one of another tree.
@@ -324,7 +324,7 @@ public class TreeManagerAlternativeTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize two sessions, the respective source and target. Both
-	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
 	 * 	<li>Get the source element (Winamp) and the target (System) element
 	 * 	from other tree;
 	 * 	</li>
@@ -356,9 +356,9 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> targetDir = TreeDirectoryAssembler.
+		Collection<Directory> targetDir = TreeAssembler.
 				getSimpleDirectoryTree();
-		Collection<Directory> sourceDir = TreeDirectoryAssembler.
+		Collection<Directory> sourceDir = TreeAssembler.
 				getDirectoryTree();
 		
 		transaction.initializeSession(sourceSessionId, sourceDir);
@@ -390,7 +390,7 @@ public class TreeManagerAlternativeTest {
 	 * for the root level of another tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to cut an element for the root level of another tree.
@@ -401,7 +401,7 @@ public class TreeManagerAlternativeTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize two sessions, the respective source and target. Both
-	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
 	 * 	<li>Get the source element (Devel) and target (target session id - root);
 	 * 	</li>
 	 * 	<li>Verify that the source tree session has no the source element
@@ -422,9 +422,9 @@ public class TreeManagerAlternativeTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> targetDir = TreeDirectoryAssembler.
+		Collection<Directory> targetDir = TreeAssembler.
 				getSimpleDirectoryTree();
-		Collection<Directory> sourceDir = TreeDirectoryAssembler.
+		Collection<Directory> sourceDir = TreeAssembler.
 				getDirectoryTree();
 		
 		transaction.initializeSession(sourceSessionId, sourceDir);

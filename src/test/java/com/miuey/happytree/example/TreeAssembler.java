@@ -15,10 +15,10 @@ import java.util.Collection;
  * @author Miuey
  *
  */
-public final class TreeDirectoryAssembler {
+public final class TreeAssembler {
 
 	
-	private TreeDirectoryAssembler() {}
+	private TreeAssembler() {}
 	
 	
 	/**
@@ -222,5 +222,27 @@ public final class TreeDirectoryAssembler {
 		folders.add(entry);
 		
 		return folders;
+	}
+	
+	public static Collection<Metadata> getMetadataTree() {
+		Collection<Metadata> metadata = new ArrayList<Metadata>();
+		
+		Metadata creation = new Metadata("creation", null, "Creation");
+		Metadata permission = new Metadata("permission", null, "Permission");
+		
+		Metadata date = new Metadata("date", null, "Date");
+		Metadata user = new Metadata("user", null, "User");
+		
+		Metadata type = new Metadata("type", null, "Type");
+		Metadata owner = new Metadata("owner", null, "Owner");
+		
+		metadata.add(creation);
+		metadata.add(type);
+		metadata.add(user);
+		metadata.add(permission);
+		metadata.add(date);
+		metadata.add(owner);
+		
+		return metadata;
 	}
 }

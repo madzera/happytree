@@ -17,7 +17,7 @@ import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
-import com.miuey.happytree.example.TreeDirectoryAssembler;
+import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -29,7 +29,7 @@ import com.miuey.happytree.exception.TreeException;
  * @author Diego Nóbrega
  * @author Miuey
  * 
- * @see {@link TreeDirectoryAssembler}
+ * @see {@link TreeAssembler}
  * @see {@link Directory}
  */
 public class TreeTransactionTest {
@@ -74,7 +74,7 @@ public class TreeTransactionTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p>This test is solely and exclusively for the API Transformation
-	 * Process. This makes use of the {@link TreeDirectoryAssembler} and
+	 * Process. This makes use of the {@link TreeAssembler} and
 	 * {@link Directory} classes to assemble a collection of linear objects that
 	 * have tree behavior and that are going to be transformed.</p>
 	 * 
@@ -86,7 +86,7 @@ public class TreeTransactionTest {
 	 * <p><b>Expected:</b></p>
 	 * Confirm that the element called <i>happytree</i> is inside of
 	 * <i>projects</i> conform by
-	 * {@link TreeDirectoryAssembler#getDirectoryTree()}.
+	 * {@link TreeAssembler#getDirectoryTree()}.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -115,7 +115,7 @@ public class TreeTransactionTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		
 		transaction.initializeSession(sessionId, directories);

@@ -12,7 +12,7 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
-import com.miuey.happytree.example.TreeDirectoryAssembler;
+import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -93,7 +93,7 @@ public class TreeManagerTest {
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
-	 * <p>This makes use of the {@link TreeDirectoryAssembler} and
+	 * <p>This makes use of the {@link TreeAssembler} and
 	 * {@link Directory} classes to assemble a collection of linear objects that
 	 * have tree behavior and that are going to be transformed.</p>
 	 * 
@@ -134,7 +134,7 @@ public class TreeManagerTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		

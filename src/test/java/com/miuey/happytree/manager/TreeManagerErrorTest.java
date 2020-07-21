@@ -12,7 +12,8 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
-import com.miuey.happytree.example.TreeDirectoryAssembler;
+import com.miuey.happytree.example.Metadata;
+import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -125,7 +126,7 @@ public class TreeManagerErrorTest {
 	 * <code>null</code> argument value.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to invoke {@link TreeManager#cut(Element, Element)} with a
@@ -159,7 +160,7 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		
 		try {
@@ -181,7 +182,7 @@ public class TreeManagerErrorTest {
 	 * id with a <code>null</code> argument value.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to invoke {@link TreeManager#cut(Object, Object)} with a
@@ -215,7 +216,7 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		
 		try {
@@ -235,7 +236,7 @@ public class TreeManagerErrorTest {
 	 * attached element.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try cut a detached element.
@@ -270,7 +271,7 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeDirectoryAssembler.
+		Collection<Directory> directories = TreeAssembler.
 				getDirectoryTree();
 		try {
 			transaction.initializeSession(sessionId, directories);
@@ -301,7 +302,7 @@ public class TreeManagerErrorTest {
 	 * same id.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeDirectoryAssembler</code> sample classes.</p>
+	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try cut an element for inside of another tree containing an element with
@@ -313,7 +314,7 @@ public class TreeManagerErrorTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize two sessions, the respective source and target. Both
-	 * 	previously loaded from <code>TreeDirectoryAssembler</code>;</li>
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
 	 * 	<li>Get the element (&quot;Entry&quot;) which its id already exists in
 	 * 	the target tree;</li>
 	 * 	<li>Change the session for the source tree by invoking
@@ -337,9 +338,9 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> sourceDir = TreeDirectoryAssembler.
+		Collection<Directory> sourceDir = TreeAssembler.
 				getDirectoryTree();
-		Collection<Directory> targetDir = TreeDirectoryAssembler.
+		Collection<Directory> targetDir = TreeAssembler.
 				getSimpleDirectoryTree();
 		
 		try {
@@ -361,6 +362,75 @@ public class TreeManagerErrorTest {
 			 * Duplicated Id error.
 			 */
 			manager.cut(sourceEntry, targetEntry);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element for
+	 * inside of another tree which this tree has different type
+	 * (<code>Directory</code> -> <code>Metadata</code>).</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try cut an element for inside of another tree containing a different type.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type tree error.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source and target element;</li>
+	 * 	<li>Change the session for the source tree by invoking
+	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
+	 * 	<li>Try to cut the source element typified by <code>Directory</code>
+	 * 	inside of the target typified by <code>Metadata</code>;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_toAnotherTreeWithDiffType() {
+		final String source = "source";
+		final String target = "target";
+		final String messageError = "Mismatch type tree error.";
+		
+		String error = null;
+		
+		final long mp4Id = 3840200;
+		final String typeId = "type";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Metadata> metadata = TreeAssembler.
+				getMetadataTree();
+		
+		try {
+			transaction.initializeSession(source, directories);
+			Element<Directory> mp4 = manager.getElementById(mp4Id);
+			
+			transaction.initializeSession(target, metadata);
+			Element<Metadata> type = manager.getElementById(typeId);
+			
+			transaction.sessionCheckout(source);
+			
+			/*
+			 * Error trying to insert an element inside of a tree with different
+			 * type Directory - Metadata. 
+			 */
+			manager.cut(mp4, type);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
