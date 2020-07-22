@@ -107,10 +107,10 @@ public interface TreeManager {
 	 * through parameter (<code>from</code> parameter) then <code>null</code> is
 	 * returned.</p>
 	 * 
-	 * <p>Using this <code>cut(Object, Object), an element just can be cut into
-	 * the same tree. To cut elements for other tree consider using the 
+	 * <p>Using this <code>cut(Object, Object)</code>, an element just can be
+	 * cut into the same tree. To cut elements for other tree consider using the 
 	 * {@link #cut(Element, Element)} which the target element is linked to
-	 * another tree.</code></p>
+	 * another tree.</p>
 	 * 
 	 * @param <T> the class type of the source wrapped object that will be
 	 * encapsulated into the {@link Element} object

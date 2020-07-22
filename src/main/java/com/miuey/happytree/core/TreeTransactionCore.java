@@ -9,7 +9,6 @@ import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.TreeFactory.ATPLifecycleFactory;
 import com.miuey.happytree.core.TreeFactory.ServiceFactory;
-import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
@@ -78,7 +77,7 @@ class TreeTransactionCore implements TreeTransaction {
 				createPipelineValidator();
 		pipeline.addAttribute("sessionId", identifier);
 		pipeline.addAttribute("objects", objects);
-		pipeline.addAttribute("manager", this.associatedManager);
+		pipeline.addAttribute("manager", associatedManager());
 		
 		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
 		ATPLifecycle<T> lifecycle = lifecycleFactory.createLifecycle(pipeline);
@@ -170,22 +169,20 @@ class TreeTransactionCore implements TreeTransaction {
 		return this.currentSession;
 	}
 	
+	TreeManager associatedManager() {
+		return this.associatedManager;
+	}
+	
 	private void validateInitializeSession(String identifier)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
-		pipeline.addAttribute("arg", identifier);
-		pipeline.addAttribute("sessions", this.sessions);
+		pipeline.addAttribute("sessionId", identifier);
 		
-		ServiceValidatorFactory validatorFactory = TreeFactory.
-				serviceValidatorFactory();
+		TreeSessionValidator validator = TreeFactory.validatorFactory().
+				createSessionValidator(associatedManager());
 		
-		TreeServiceValidator inputValidator = validatorFactory.
-				createNotNullArgValidator();
-		TreeServiceValidator duplicatedSessionValidator = validatorFactory.
-				createNotDuplicatedSessionValidator();
-		
-		inputValidator.next(duplicatedSessionValidator);
-		inputValidator.validate(pipeline);
+		validator.validateMandatorySessionId(pipeline);
+		validator.validateDuplicatedSessionId(pipeline);
 	}
 }

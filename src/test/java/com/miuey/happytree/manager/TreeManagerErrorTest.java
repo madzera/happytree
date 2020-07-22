@@ -370,7 +370,11 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * Test for the {@link TreeManager#cut(Object, Object)} operation. Even
+	 * sending the <code>Element</code> instead <code>Object</code>, because
+	 * they are of different type, the operation
+	 * {@link TreeManager#cut(Object, Object)} is invoked instead
+	 * {@link TreeManager#cut(Element, Element)}
 	 * 
 	 * <p>Error scenario for this operation when trying to cut an element for
 	 * inside of another tree which this tree has different type
@@ -382,8 +386,11 @@ public class TreeManagerErrorTest {
 	 * <p><b>Test:</b></p>
 	 * Try cut an element for inside of another tree containing a different type.
 	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Mismatch type tree error.&quot;</i>
+	 * Because the {@link TreeManager#cut(Object, Object)} is invoked, in this
+	 * case the <code>from</code> argument of this operation is
+	 * <code>null</code>, thus, throwing the
+	 * <code>IllegalArgumentException</code> with the message:
+	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -394,15 +401,17 @@ public class TreeManagerErrorTest {
 	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
 	 * 	<li>Try to cut the source element typified by <code>Directory</code>
 	 * 	inside of the target typified by <code>Metadata</code>;</li>
-	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
+	 * 
+	 * @throws TreeException 
 	 */
 	@Test
-	public void cut_toAnotherTreeWithDiffType() {
+	public void cut_toAnotherTreeWithDiffType() throws TreeException {
 		final String source = "source";
 		final String target = "target";
-		final String messageError = "Mismatch type tree error.";
+		final String messageError = "Invalid null/empty argument(s).";
 		
 		String error = null;
 		
@@ -431,7 +440,7 @@ public class TreeManagerErrorTest {
 			 * type Directory - Metadata. 
 			 */
 			manager.cut(mp4, type);
-		} catch (TreeException e) {
+		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		} finally {
 			assertEquals(messageError, error);

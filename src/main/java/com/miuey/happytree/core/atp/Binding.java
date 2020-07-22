@@ -38,7 +38,7 @@ public class Binding<T> extends ATPGenericPhase<T> {
 		Object id = null;
 		for (Element<T> element : clonedElements) {
 			id = element.getId();
-			if (parentId.equals(id)) {
+			if (parentId != null && parentId.equals(id)) {
 				return element;
 			}
 		}

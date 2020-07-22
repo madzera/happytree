@@ -2,7 +2,8 @@ package com.miuey.happytree.core;
 
 public class TreeConstants {
 	
-	protected TreeConstants() {}
+	private TreeConstants() {}
+
 	
 	class Config {
 		static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
@@ -10,18 +11,15 @@ public class TreeConstants {
 		private Config() {}
 	}
 	
-	public class Error {
+	class Error {
 		private Error() {}
 		//---------------RUNTIME--------------
 		static final String INVALID_INPUT_ELEMENTS = "com.miuey.happytree.error.runtime.params";
 		//----------------TREE----------------
-		protected static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
-		static final String DIFFERENT_ID_TYPES_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
-		static final String NO_ID_ERROR = "com.miuey.happytree.error.checked.tree.noid";
-		static final String NO_PARENT_ID_ERROR = "com.miuey.happytree.error.checked.tree.noparent";
-		static final String NO_TREE_ERROR = "com.miuey.happytree.error.checked.tree.isnttree";
+		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
-		static final String FATAL_INCONSISTENCY_ERROR = "com.miuey.happytree.error.checked.tree.inconsistency";
+		static final String DIFFERENT_TYPES_ID_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
+		static final String DETACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.detached";
 		//---------------SESSION--------------
 		static final String DUPLICATED_SESSION_ID_ERROR = "com.miuey.happytree.error.checked.session.duplicatedid";
 		static final String NO_DEFINED_SESSION = "com.miuey.happytree.error.checked.session.nodefinedsession";

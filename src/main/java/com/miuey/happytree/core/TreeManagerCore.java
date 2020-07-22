@@ -7,7 +7,6 @@ import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
-import com.miuey.happytree.core.TreeFactory.ServiceValidatorFactory;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeManagerCore implements TreeManager {
@@ -27,6 +26,7 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
 		validateTransaction();
+		//validateTree(from, to);
 		
 		Element<T> parentFrom = this.getElementById(from.getParent());
 		parentFrom.removeChild(from);
@@ -193,20 +193,26 @@ class TreeManagerCore implements TreeManager {
 	}
 	
 	private void validateTransaction() throws TreeException {
+		TreeSessionValidator validator = TreeFactory.validatorFactory().
+				createSessionValidator(this);
+		
+		validator.validateNoDefinedSession();
+		validator.validateNoActiveSession();
+	}
+	
+	private void validateTree(Element<?> sourceElement,
+			Element<?> targetElement) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
+		TreeElementValidator validator = TreeFactory.validatorFactory().
+				createElementValidator(this);
 		
-		pipeline.addAttribute("session", this.getTransaction().currentSession());
+		pipeline.addAttribute("element", sourceElement);
+		pipeline.addAttribute("id", sourceElement);
+		pipeline.addAttribute("targetElement", targetElement);
 		
-		ServiceValidatorFactory validatorFactory = TreeFactory.
-				serviceValidatorFactory();
-		
-		TreeServiceValidator noDefinedSessionValidator = validatorFactory.
-				createNoDefinedSessionValidator();
-		TreeServiceValidator noActiveSessionValidator = validatorFactory.
-				createNoActiveSessionValidator();
-		
-		noDefinedSessionValidator.next(noActiveSessionValidator);
-		noDefinedSessionValidator.validate(pipeline);
+		validator.validateMandatoryElementId(pipeline);
+		validator.validateDetachedElement(pipeline);
+		validator.validateDuplicatedElement(pipeline);
 	}
 }

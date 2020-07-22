@@ -11,10 +11,7 @@ import com.miuey.happytree.core.atp.Binding;
 import com.miuey.happytree.core.atp.Extraction;
 import com.miuey.happytree.core.atp.Initialization;
 import com.miuey.happytree.core.atp.PreValidation;
-import com.miuey.happytree.core.validator.NoActiveSessionValidator;
-import com.miuey.happytree.core.validator.NoDefinedSessionValidator;
-import com.miuey.happytree.core.validator.NotDuplicatedSessionValidator;
-import com.miuey.happytree.core.validator.NotNullArgValidator;
+import com.miuey.happytree.exception.TreeException;
 
 class TreeFactory {
 	
@@ -23,10 +20,11 @@ class TreeFactory {
 	private static ServiceFactory serviceFactory;
 	private static CollectionFactory collectionFactory;
 	private static MapFactory mapFactory;
-	private static ServiceValidatorFactory serviceValidatorFactory;
+	private static ValidatorFactory validatorFactory;
 	private static PipelineFactory pipelineFactory;
 	private static IOFactory ioFactory;
-
+	private static ExceptionFactory exceptionFactory;
+	
 	
 	protected TreeFactory() {}
 	
@@ -66,12 +64,18 @@ class TreeFactory {
 		return ioFactory;
 	}
 	
-	static ServiceValidatorFactory serviceValidatorFactory() {
-		if (serviceValidatorFactory == null) {
-			serviceValidatorFactory = getInstance().new 
-					ServiceValidatorFactory();
+	static ValidatorFactory validatorFactory() {
+		if (validatorFactory == null) {
+			validatorFactory = getInstance().new ValidatorFactory();
 		}
-		return serviceValidatorFactory;
+		return validatorFactory;
+	}
+
+	static ExceptionFactory exceptionFactory() {
+		if (exceptionFactory == null) {
+			exceptionFactory = getInstance().new ExceptionFactory();
+		}
+		return exceptionFactory;
 	}
 	
 	static PipelineFactory pipelineFactory() {
@@ -153,26 +157,30 @@ class TreeFactory {
 		}
 	}
 	
-	class ServiceValidatorFactory extends TreeFactory {
-		ServiceValidatorFactory() {}
+	class ValidatorFactory extends TreeFactory {
+		ValidatorFactory() {}
 		
-		TreeServiceValidator createNotNullArgValidator() {
-			return new NotNullArgValidator();
+		TreeSessionValidator createSessionValidator(TreeManager manager) {
+			return new TreeSessionValidator(manager);
 		}
 		
-		TreeServiceValidator createNotDuplicatedSessionValidator() {
-			return new NotDuplicatedSessionValidator();
-		}
-		
-		TreeServiceValidator createNoDefinedSessionValidator() {
-			return new NoDefinedSessionValidator();
-		}
-		
-		TreeServiceValidator createNoActiveSessionValidator() {
-			return new NoActiveSessionValidator();
+		TreeElementValidator createElementValidator(TreeManager manager) {
+			return new TreeElementValidator(manager);
 		}
 	}
 
+	class ExceptionFactory extends TreeFactory {
+		ExceptionFactory() {}
+		
+		IllegalArgumentException createRuntimeException(String message) {
+			return new IllegalArgumentException(message);
+		}
+		
+		TreeException createTreeException(String message) {
+			return new TreeException(message);
+		}
+	}
+	
 	class PipelineFactory extends TreeFactory {
 		PipelineFactory() {}
 		
