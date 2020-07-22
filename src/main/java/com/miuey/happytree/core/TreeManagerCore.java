@@ -82,17 +82,32 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
+		boolean result = Boolean.FALSE;
 		validateTransaction();
-		Element<T> element = this.searchElement(parent.getChildren(),
-				descendant.getId());
-		return element != null;
+		if (parent != null && descendant != null) {
+			Element<T> element = this.searchElement(parent.getChildren(),
+					descendant.getId());
+			result = element != null;
+		}
+		return result;
 	}
 
 	@Override
 	public boolean containsElement(Object parent, Object descendant)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = Boolean.FALSE;
+		validateTransaction();
+		if (parent != null && descendant != null) {
+			Element<?> parentElement = this.getElementById(parent);
+			Element<?> descendantElement = this.getElementById(descendant);
+			
+			if (parentElement != null && descendantElement != null) {
+				Element<?> element = this.searchElement(parentElement.
+						getChildren(), descendantElement.getId());
+				result = element != null;
+			}
+		}
+		return result;
 	}
 
 	@Override
