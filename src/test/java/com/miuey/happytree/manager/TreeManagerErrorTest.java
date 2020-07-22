@@ -261,7 +261,7 @@ public class TreeManagerErrorTest {
 	public void cut_detachedElement() {
 		final String sessionId = "cut_detachedElement";
 		final String messageError = "Detached element. Not possible to copy/cut"
-				+ "elements not synchronized inside of the tree.";
+				+ " elements not synchronized inside of the tree.";
 		
 		String error = null;
 		
@@ -437,7 +437,9 @@ public class TreeManagerErrorTest {
 			
 			/*
 			 * Error trying to insert an element inside of a tree with different
-			 * type Directory - Metadata. 
+			 * type Directory - Metadata. It will invoke cut(Object, Object)
+			 * instead cur(Element, Element), thus throwing
+			 * IllegalArgumentException.
 			 */
 			manager.cut(mp4, type);
 		} catch (IllegalArgumentException e) {

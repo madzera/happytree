@@ -114,9 +114,13 @@ class TreeElementCore<T> implements Element<T> {
 		return isAttached;
 	}
 
+	void changeSession(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	
 	synchronized void attach(String sessionId) {
 		this.isAttached = Boolean.TRUE;
-		this.sessionId = sessionId;
+		changeSession(sessionId);
 	}
 
 	synchronized void detach() {

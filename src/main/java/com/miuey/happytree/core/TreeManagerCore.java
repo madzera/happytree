@@ -26,13 +26,22 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
 		validateTransaction();
-		//validateTree(from, to);
+		validateCutOperation(from, to);
 		
 		Element<T> parentFrom = this.getElementById(from.getParent());
-		parentFrom.removeChild(from);
+		if (parentFrom != null) {
+			parentFrom.removeChild(from);
+		}
 		
-		to.addChild(from);
-		from.setParent(to.getId());
+		if (to != null) {
+			to.addChild(from);
+			from.setParent(to.getId());
+		} else {
+			Element<T> root = this.root();
+			root.addChild(from);
+			from.setParent(root.getId());
+			synchronizeElements(root);
+		}
 		
 		synchronizeElements(parentFrom, from, to);
 		return from;
@@ -169,7 +178,9 @@ class TreeManagerCore implements TreeManager {
 		TreeElementCore<T> element = null;
 		for (Element<T> iterator : elements) {
 			element = (TreeElementCore<T>) iterator;
-			element.attach(sessionId);
+			if (element != null) {
+				element.attach(sessionId);
+			}
 		}
 	}
 	
@@ -200,19 +211,18 @@ class TreeManagerCore implements TreeManager {
 		validator.validateNoActiveSession();
 	}
 	
-	private void validateTree(Element<?> sourceElement,
+	private void validateCutOperation(Element<?> sourceElement,
 			Element<?> targetElement) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createElementValidator(this);
 		
-		pipeline.addAttribute("element", sourceElement);
-		pipeline.addAttribute("id", sourceElement);
+		pipeline.addAttribute("sourceElement", sourceElement);
 		pipeline.addAttribute("targetElement", targetElement);
 		
 		validator.validateMandatoryElementId(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
+		validator.validateDuplicatedElementToBeCut(pipeline);
 	}
 }
