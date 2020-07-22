@@ -40,8 +40,12 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		validateTransaction();
+		
+		Element<T> fromElement = this.getElementById(from);
+		Element<T> toElement = this.getElementById(to);
+		
+		return this.cut(fromElement, toElement);
 	}
 
 	@Override
@@ -76,10 +80,12 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public boolean containsElement(Element<?> parent, Element<?> descendant)
+	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+		validateTransaction();
+		Element<T> element = this.searchElement(parent.getChildren(),
+				descendant.getId());
+		return element != null;
 	}
 
 	@Override

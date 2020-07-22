@@ -288,7 +288,7 @@ public class TreeManagerTest {
 		Element<Directory> jdk = manager.cut(jdkId, sdkId);
 		
 		sdkDev = manager.getElementById(sdkDevId);
-		assertEquals(1, sdkDev.getChildren().size());
+		assertEquals(0, sdkDev.getChildren().size());
 		
 		assertTrue(manager.containsElement(sdkId, jdkId));
 		assertEquals(jdkName, jdk.unwrap().getName());

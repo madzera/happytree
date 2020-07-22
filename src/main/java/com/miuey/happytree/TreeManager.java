@@ -311,6 +311,9 @@ public interface TreeManager {
 	 * (comparing time), the core API internally executes
 	 * {@link Element#equals(Object)} to ensure the identity</p>
 	 * 
+	 * @param <T> the class type of the wrapped object that will be
+	 * encapsulated into the {@link Element} object
+	 * 
 	 * @param parent the element which will contains the <code>descendant</code>
 	 * element
 	 * 
@@ -324,7 +327,7 @@ public interface TreeManager {
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. When if the current session is not active
 	 */
-	public boolean containsElement(Element<?> parent, Element<?> descendant)
+	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException;
 	
 	/**

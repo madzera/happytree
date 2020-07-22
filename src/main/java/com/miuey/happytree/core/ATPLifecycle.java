@@ -22,6 +22,7 @@ class ATPLifecycle<T> {
 	private static final String SESSION_KEY = "sessionId";
 	private static final String MANAGER_KEY = "manager";
 	private static final String ROOT_KEY = "tree";
+	private static final String ELEMENTS_KEY = "elements";
 	
 	private TreePipeline pipeline;
 	
@@ -64,15 +65,27 @@ class ATPLifecycle<T> {
 	}
 	
 	/*
-	 * Assemble the root element to be made available in the session.
+	 * Prepare the elements to be attached in the tree and the root element to
+	 * be made available in this session.
 	 */
+	@SuppressWarnings("unchecked")
 	private void prepareInitializedSession() throws TreeException {
-		@SuppressWarnings("unchecked")
 		Set<Element<T>> tree = (Set<Element<T>>) pipeline.getAttribute(
 				ROOT_KEY);
+		Set<Element<T>> elements = (Set<Element<T>>) pipeline.getAttribute(
+				ELEMENTS_KEY);
 		TreeManager manager = (TreeManager) pipeline.getAttribute(MANAGER_KEY);
+		
 		TreeTransaction transaction = manager.getTransaction();
 		TreeSessionCore session = (TreeSessionCore) transaction.currentSession();
+		
+		/*
+		 * Attaching each element after tree assembled.
+		 */
+		for (Element<T> iterator : elements) {
+			TreeElementCore<T> element = (TreeElementCore<T>) iterator;
+			element.attach(session.getSessionId());
+		}
 		
 		/*
 		 * Each root element has the Id value corresponding the session Id. It
