@@ -560,4 +560,144 @@ public class TreeManagerErrorTest {
 			assertEquals(messageError, error);
 		}
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy a not existing
+	 * element in the source tree session.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy a not existing element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element by invoking
+	 * 	{@link TreeManager#getElementById(Object)};</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element by invoking
+	 * 	{@link TreeManager#getElementById(Object)} through a not existing id;
+	 * 	</li>
+	 * 	<li>Try to copy the source element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void copy_nullFromElement() throws TreeException {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		final long notExistingId = Long.MAX_VALUE;
+		final long  driversId = 1076;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> drivers = manager.getElementById(driversId);
+			
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> nullableElement = manager.getElementById(
+					notExistingId);
+			
+			/*
+			 * Error trying to copy a not existing element.
+			 */
+			manager.copy(nullableElement, drivers);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of a not existing element in the target tree session.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of a not existing target element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element by invoking
+	 * 	{@link TreeManager#getElementById(Object)} through a not existing id;
+	 * 	</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element by invoking
+	 * 	{@link TreeManager#getElementById(Object)};
+	 * 	</li>
+	 * 	<li>Try to copy the source element into the not existing target element;
+	 * 	</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void copy_nullToElement() throws TreeException {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		final long readmeId = 495833;
+		final long notExistingId = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> nullableElement = manager.getElementById(
+					notExistingId);
+			
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> readme = manager.getElementById(readmeId);
+			
+			/*
+			 * Error trying to copy a not existing target element.
+			 */
+			manager.copy(readme, nullableElement);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
 }

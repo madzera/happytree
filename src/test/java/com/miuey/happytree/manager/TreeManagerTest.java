@@ -3,6 +3,7 @@ package com.miuey.happytree.manager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -293,5 +294,98 @@ public class TreeManagerTest {
 		assertTrue(manager.containsElement(sdkId, jdkId));
 		assertEquals(jdkName, jdk.unwrap().getName());
 		assertEquals(sdkId, jdk.getParent());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Copy an element from a source tree session to other element from another
+	 * tree session.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the source element be copied (in the source tree) for
+	 * inside of the target element from other tree (in the target tree). All
+	 * children are copied too.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element which will be copied;</li>
+	 * 	<li>Verify that this element is not <code>null</code>;</li>
+	 * 	<li>Get the target element which will contain the source element;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Copy the source element for inside of the target element, which this
+	 * 	target element is in another tree;</li>
+	 * 	<li>In the target tree get an element with the same id than the source
+	 * 	element;</li>
+	 * 	<li>Verify if the copied element really have the &quot;System32&quot; as
+	 * 	parent;</li>
+	 * 	<li>Verify if the copied element really have two copied children from
+	 * 	the source element;</li>
+	 * 	<li>Change the session for the source session again;</li>
+	 * 	<li>Verify now if the source element still is inside of the source tree.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void copy() throws TreeException {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final long sourceId = 848305;
+		final long targetId = 1000;
+		
+		final String sourceName = "recorded";
+		final String targetName = "System32";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		
+		transaction.initializeSession(sourceSessionId, sourceDir);
+		Element<Directory> source = manager.getElementById(sourceId);
+		
+		transaction.initializeSession(targetSessionId, targetDir);
+		Element<Directory> target = manager.getElementById(targetId);
+
+		source = manager.getElementById(sourceId);
+		assertNull(source);
+		
+		transaction.sessionCheckout(sourceSessionId);
+		
+		source = manager.getElementById(sourceId);
+		assertNotNull(source);
+		
+		manager.copy(source, target);
+		
+		transaction.sessionCheckout(targetSessionId);
+		
+		Element<Directory> copiedSource = manager.getElementById(sourceId);
+		Element<Directory> newParentCopiedSource = manager.getElementById(
+				copiedSource.getParent());
+		assertNotNull(copiedSource);
+		assertTrue(manager.containsElement(newParentCopiedSource, copiedSource));
+		assertEquals(targetName, newParentCopiedSource.unwrap().getName());
+		assertEquals(sourceName, copiedSource.unwrap().getName());
+		assertEquals(2, copiedSource.getChildren().size());
+		
+		transaction.sessionCheckout(targetSessionId);
+		source = manager.getElementById(sourceId);
+		assertNotNull(source);
 	}
 }
