@@ -527,7 +527,7 @@ public class TreeManagerErrorTest {
 		
 		String error = null;
 		
-		final long mp4Id = 3840200;
+		final long recMp4 = 3840200;
 		final String typeId = "type";
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -540,7 +540,7 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(source, directories);
-			Element<Directory> mp4 = manager.getElementById(mp4Id);
+			Element<Directory> mp4 = manager.getElementById(recMp4);
 			
 			transaction.initializeSession(target, metadata);
 			Element<Metadata> type = manager.getElementById(typeId);
@@ -695,6 +695,291 @@ public class TreeManagerErrorTest {
 			 */
 			manager.copy(readme, nullableElement);
 		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element from
+	 * the source tree which it was changed (detached) before to be copied.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy a detached element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Detached element. Not possible to copy/cut
+	 * elements not synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element;</li>
+	 * 	<li>Change the source element by invoking for example
+	 * 	{@link Element#setParent(Object)}. At this point, the element is
+	 * 	detached now;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to copy the source element which was detached;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_detachedFromElement() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		
+		String error = null;
+		final long officeId = 53024;
+		final long driversId = 1076;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> office = manager.getElementById(officeId);
+			
+			office.setParent(Long.MAX_VALUE);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> drivers = manager.getElementById(driversId);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			
+			/*
+			 * An error will be threw here. The office element was detached when
+			 * invoked the setParent(). It would need to update() before using
+			 * any TreeManager operation.
+			 */
+			manager.copy(office, drivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of another element which was changed (detached) before copying.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of a detached element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Detached element. Not possible to copy/cut
+	 * elements not synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element;</li>
+	 * 	<li>Change the target element by invoking for example
+	 * 	{@link Element#setParent(Object)}. At this point, the target element is
+	 * 	detached now;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element;</li>
+	 * 	<li>Try to copy the source element into the detached target element;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_detachedToElement() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		String error = null;
+		
+		final long officeId = 53024;
+		final long driversId = 1076;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> drivers = manager.getElementById(driversId);
+			drivers.setParent(Long.MAX_VALUE);
+			
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> office = manager.getElementById(officeId);
+			
+			/*
+			 * An error will be threw here. The drivers element was detached
+			 * when invoked the setParent(). It would need to update() before
+			 * using any TreeManager operation.
+			 */
+			manager.copy(office, drivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of another tree which this tree already have an element with the
+	 * same id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of a tree which this tree already have
+	 * an element with the same id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element which will have the same id in the target
+	 * 	tree;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which have the same id than the source
+	 * 	element;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to copy the source element into the target element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_duplicatedIdAnotherTree() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long duplicatedEntryId = 77530344;
+		final long system32Id = 1000;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			
+			/*
+			 * The entry element already exists with the same id in the target
+			 * tree session.
+			 */
+			Element<Directory> duplicatedEntry = manager.getElementById(
+					duplicatedEntryId);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> system32 = manager.getElementById(system32Id);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			
+			/*
+			 * Error trying to copy an element to the target tree session
+			 * because there is an another element in the target tree with the
+			 * same id.
+			 */
+			manager.copy(duplicatedEntry, system32);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of the same tree. Impossible to copy for the same tree because
+	 * it always will generate duplicated id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of the same tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an element to be copied;</li>
+	 * 	<li>Get another element inside of the same tree as the previous one;
+	 * 	</li>
+	 * 	<li>Try to copy the element. Both belong to the same tree;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_duplicatedIdSameTree() {
+		final String sessionId = "duplicatedExample";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long realtekId = 94034;
+		final long readmeId = 495833;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, sourceDir);
+			Element<Directory> realtek = manager.getElementById(realtekId);
+			Element<Directory> readme = manager.getElementById(readmeId);
+			
+			/*
+			 * Impossible to copy for inside of the same tree. It always have
+			 * duplicated id. 
+			 */
+			manager.copy(realtek, readme);
+		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
 			assertEquals(messageError, error);
