@@ -42,7 +42,6 @@ class TreeManagerCore implements TreeManager {
 			from.setParent(root.getId());
 			synchronizeElements(root);
 		}
-		
 		synchronizeElements(parentFrom, from, to);
 		return from;
 	}
@@ -163,8 +162,9 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> root() throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		validateTransaction();
+		TreeSession session = this.getTransaction().currentSession();
+		return session.tree();
 	}
 
 	static TreeManager getTreeManagerInstance() {

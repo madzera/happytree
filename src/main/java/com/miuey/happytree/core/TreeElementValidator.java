@@ -53,28 +53,35 @@ class TreeElementValidator extends TreeValidator {
 		Element<?> target = (Element<?>) pipeline.getAttribute(
 				TARGET_ELEMENT_KEY);
 		
-		String sourceSessionId = source.attachedTo();
-		String targetSessionId = target.attachedTo();
-		if (!sourceSessionId.equals(targetSessionId)) {
-			Object id = source.getId();
-			
-			TreeManager manager = getManager();
-			TreeTransaction transaction = manager.getTransaction();
-			
-			/*
-			 * Verify if the target session already has the Id.
-			 */
-			transaction.sessionCheckout(targetSessionId);
-			
-			Element<?> duplicatedElement = manager.getElementById(id);
-			
-			/*
-			 * Roll back to the source session.
-			 */
-			transaction.sessionCheckout(sourceSessionId);
-			if (duplicatedElement != null) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-						DUPLICATED_ELEMENT);
+		/*
+		 * It is only possible to cut an element for inside another tree
+		 * session. If there is no target tree session, then it does not need to
+		 * be validated.
+		 */
+		if (target != null) {
+			String sourceSessionId = source.attachedTo();
+			String targetSessionId = target.attachedTo();
+			if (!sourceSessionId.equals(targetSessionId)) {
+				Object id = source.getId();
+				
+				TreeManager manager = getManager();
+				TreeTransaction transaction = manager.getTransaction();
+				
+				/*
+				 * Verify if the target session already has the Id.
+				 */
+				transaction.sessionCheckout(targetSessionId);
+				
+				Element<?> duplicatedElement = manager.getElementById(id);
+				
+				/*
+				 * Roll back to the source session.
+				 */
+				transaction.sessionCheckout(sourceSessionId);
+				if (duplicatedElement != null) {
+					throw this.throwTreeException(TreeRepositoryMessage.
+							DUPLICATED_ELEMENT);
+				}
 			}
 		}
 	}

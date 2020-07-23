@@ -189,74 +189,16 @@ public class TreeManagerAlternativeTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to cut an element
-	 * by only its id which the id from this element (<code>from</code>) does
-	 * not exists in the tree.</p>
+	 * for inside of a not existing target element.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to cut an element only by its id which this id does not exists in the
-	 * tree.
-	 * <p><b>Expected:</b></p>
-	 * A <code>null</code> value as return of the operation
-	 * {@link TreeManager#cut(Object, Object)}. Also, no modification in target
-	 * children elements.
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session by API Transformation Process using a
-	 * 	previous assembled tree;</li>
-	 * 	<li>Get the target (<code>to</code>) existed element;</li>
-	 * 	<li>Verify that the target element has no children;</li>
-	 * 	<li>Try to cut a not existed element inside of this target;</li>
-	 * 	<li>Verify that the target element has no children again;</li>
-	 * 	<li>Verify that the return of {@link TreeManager#cut(Object, Object)}
-	 * 	is <code>null</code>.</li>
-	 * </ol>
-	 * 
-	 * @throws TreeException
-	 */
-	@Test
-	public void cut_notExistingFromElement() throws TreeException {
-		final String sessionId = "cut_notExistingFromElement";
-		final long notExistingFromId = Long.MAX_VALUE;
-		
-		final long wordExeId = 4611329;
-		
-		TreeManager manager = HappyTree.createTreeManager();
-		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
-		transaction.initializeSession(sessionId, directories);
-		
-		Element<Directory> wordExeElement = manager.getElementById(wordExeId);
-		assertEquals(0, wordExeElement.getChildren().size());
-		
-		Element<Directory> cutElement = manager.cut(notExistingFromId,
-				wordExeId);
-		
-		wordExeElement = manager.getElementById(wordExeId);
-		assertEquals(0, wordExeElement.getChildren().size());
-		
-		assertNull(cutElement);
-	}
-	
-	/**
-	 * Test for the {@link TreeManager#cut(Object, Object)}.
-	 * 
-	 * <p>Alternative scenario for this operation when trying to cut an element
-	 * by only its id inside of a not existing target element.</p>
-	 * 
-	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeAssembler</code> sample classes.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to cut an element inside of a not existing target element.
+	 * Try to cut an element for inside of a not existing target element.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to be cut be moved to the root level of
 	 * the tree.
@@ -268,7 +210,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Get the source (<code>from</code>) existed element;</li>
 	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
 	 * 	</li>
-	 * 	<li>Try to cut this element inside of a not existed element;</li>
+	 * 	<li>Try to cut this element for inside of a not existed element;</li>
 	 * 	<li>Verify that the source parent element id is now with the same id
 	 * 	value of the session id, representing the root id;</li>
 	 * 	<li>Verify if the source child element was moved too by invoking
@@ -285,6 +227,7 @@ public class TreeManagerAlternativeTest {
 		final long sdkDevId = 84709;
 		final long sdkDevChildId = 983533;
 		final String sdkDevParentName = "Devel";
+		final String sdkDevName = "sdk_dev";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -296,12 +239,81 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
 		Element<Directory> sdkDevParentElement = manager.getElementById(
 				sdkDevElement.getParent());
+		Element<Directory> nullableElement = manager.getElementById(
+				notExistingToId);
+		
 		Directory devel = sdkDevParentElement.unwrap();
 		assertEquals(sdkDevParentName, devel.getName());
 		
 		Element<Directory> cutElement = manager.cut(sdkDevElement,
-				notExistingToId);
+				nullableElement);
 		assertEquals(sessionId, cutElement.getParent());
+		assertEquals(sdkDevName, cutElement.unwrap().getName());
+		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * by only its id for inside of a not existing target element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element only by its id for inside of a not existing target
+	 * element.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element to be cut be moved to the root level of
+	 * the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the source (<code>from</code>) existed element;</li>
+	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	</li>
+	 * 	<li>Try to cut this element for inside of a not existed element;</li>
+	 * 	<li>Verify that the source parent element id is now with the same id
+	 * 	value of the session id, representing the root id;</li>
+	 * 	<li>Verify if the source child element was moved too by invoking
+	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_notExistingToObjectId() throws TreeException {
+		final String sessionId = "cut_notExistingToObjectId";
+		final long notExistingToId = Long.MAX_VALUE;
+		
+		final long sdkDevId = 84709;
+		final long sdkDevChildId = 983533;
+		final String sdkDevParentName = "Devel";
+		final String sdkDevName = "sdk_dev";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
+		Element<Directory> sdkDevParentElement = manager.getElementById(
+				sdkDevElement.getParent());
+		
+		Directory devel = sdkDevParentElement.unwrap();
+		assertEquals(sdkDevParentName, devel.getName());
+		
+		/*
+		 * Verify that the element was cut to the root level.
+		 */
+		Element<Directory> cutElement = manager.cut(sdkDevId, notExistingToId);
+		assertEquals(sessionId, cutElement.getParent());
+		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
 	
@@ -376,7 +388,7 @@ public class TreeManagerAlternativeTest {
 		assertNull(winamp);
 		
 		transaction.sessionCheckout(targetSessionId);
-		winamp = manager.getElementById(winamp);
+		winamp = manager.getElementById(winampId);
 		assertNotNull(winamp);
 		assertEquals(winampName, winamp.unwrap().getName());
 		assertEquals(systemName, system.unwrap().getName());

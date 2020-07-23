@@ -61,8 +61,6 @@ class ATPLifecycle<T> {
 		} catch (TreeException e) {
 			closeResources();
 			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

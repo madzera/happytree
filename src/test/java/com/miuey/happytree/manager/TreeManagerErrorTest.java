@@ -176,6 +176,64 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)}.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element which
+	 * does not exists in the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element which does not exists in the tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the element to be cut through a not existing id;</li>
+	 * 	<li>Try to cut this element (<code>null</code>) for inside of an existed
+	 * 	element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_notExistingFromElement() throws TreeException {
+		final String sessionId = "cut_nullFromElement";
+		final String messageError = "Invalid null/empty argument(s).";
+		
+		String error = null;
+		
+		Long notExistingId = Long.MAX_VALUE;
+		final Long programFilesId = 42345l;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> programFiles = manager.getElementById(
+					programFilesId);
+			Element<Directory> nullableElement = manager.getElementById(
+					notExistingId);
+			manager.cut(nullableElement, programFiles);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
 	 * Test for the {@link TreeManager#cut(Object, Object)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to cut an element by its
@@ -222,6 +280,60 @@ public class TreeManagerErrorTest {
 		try {
 			transaction.initializeSession(sessionId, directories);
 			manager.cut(nullableId, programFilesId);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element
+	 * by only its id which the id from this element (<code>from</code>) does
+	 * not exists in the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element only by its id which this id does not exists in the
+	 * tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Try to cut a not existed element by its id for inside of an existed
+	 * 	element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_notExistingFromObjectId() throws TreeException {
+		final String sessionId = "cut_notExistingFromObjectId";
+		final String messageError = "Invalid null/empty argument(s).";
+		
+		final long notExistingFromId = Long.MAX_VALUE;
+		final long wordExeId = 4611329;
+		
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		try {
+			transaction.initializeSession(sessionId, directories);
+			manager.cut(notExistingFromId, wordExeId);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		} finally {
