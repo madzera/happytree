@@ -388,4 +388,144 @@ public class TreeManagerTest {
 		source = manager.getElementById(sourceId);
 		assertNotNull(source);
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Remove an element from a tree session.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element and its children be removed definitely
+	 * from the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element (Adobe), its parent element (Program Files) and its
+	 * 	children (Reader, Photoshop and Dreamweaver);</li>
+	 * 	<li>Confirm that the parent element (Program Files) has the element to
+	 * 	be removed (Adobe) and its children (Reader, Photoshop and Dreamweaver);
+	 * 	</li>
+	 * 	<li>Remove now the element (Adobe);</li>
+	 * 	<li>Confirm now that the parent (Program Files) has not anymore the
+	 * 	removed element (Adobe) and its children (Reader, Photoshop and
+	 * 	Dreamweaver).</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeElement() throws TreeException {
+		final String sessionId = "removeElement";
+		
+		final long programFilesId = 42345;
+		final long adobeId = 24935;
+		final long readerId = 403940;
+		final long photoshopId = 909443;
+		final long dreamweaverId = 502010;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, sourceDir);
+		Element<Directory> programFiles = manager.getElementById(programFilesId);
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> reader = manager.getElementById(readerId);
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
+		
+		assertTrue(manager.containsElement(programFiles, adobe));
+		assertTrue(manager.containsElement(programFiles, reader));
+		assertTrue(manager.containsElement(programFiles, photoshop));
+		assertTrue(manager.containsElement(programFiles, dreamweaver));
+		
+		assertTrue(manager.removeElement(adobe));
+		
+		assertFalse(manager.containsElement(programFiles, adobe));
+		assertFalse(manager.containsElement(programFiles, reader));
+		assertFalse(manager.containsElement(programFiles, photoshop));
+		assertFalse(manager.containsElement(programFiles, dreamweaver));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Object)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Remove an element using just the element id from a tree session.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element and its children be removed definitely
+	 * from the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element (Adobe), its parent element (Program Files) and its
+	 * 	children (Reader, Photoshop and Dreamweaver);</li>
+	 * 	<li>Confirm that the parent element (Program Files) has the element to
+	 * 	be removed (Adobe) and its children (Reader, Photoshop and Dreamweaver);
+	 * 	</li>
+	 * 	<li>Remove now the element (Adobe) using only the element id;</li>
+	 * 	<li>Confirm now that the parent (Program Files) has not anymore the
+	 * 	removed element (Adobe) and its children (Reader, Photoshop and
+	 * 	Dreamweaver).</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeObject() throws TreeException {
+		final String sessionId = "removeElement";
+		
+		final long programFilesId = 42345;
+		final long adobeId = 24935;
+		final long readerId = 403940;
+		final long photoshopId = 909443;
+		final long dreamweaverId = 502010;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, sourceDir);
+		Element<Directory> programFiles = manager.getElementById(programFilesId);
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> reader = manager.getElementById(readerId);
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
+		
+		assertTrue(manager.containsElement(programFiles, adobe));
+		assertTrue(manager.containsElement(programFiles, reader));
+		assertTrue(manager.containsElement(programFiles, photoshop));
+		assertTrue(manager.containsElement(programFiles, dreamweaver));
+		
+		assertTrue(manager.removeElement(adobeId));
+		
+		assertFalse(manager.containsElement(programFiles, adobe));
+		assertFalse(manager.containsElement(programFiles, reader));
+		assertFalse(manager.containsElement(programFiles, photoshop));
+		assertFalse(manager.containsElement(programFiles, dreamweaver));
+	}
 }
