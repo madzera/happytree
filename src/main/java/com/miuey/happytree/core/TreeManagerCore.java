@@ -26,7 +26,7 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
 		validateTransaction();
-		validateCutOperation(from, to);
+		validateOperation(from, to, Boolean.FALSE);
 		
 		Element<T> parentFrom = this.getElementById(from.getParent());
 		if (parentFrom != null) {
@@ -59,8 +59,16 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		validateTransaction();
+		validateOperation(from, to, Boolean.TRUE);
+		
+		Element<T> clonedElement = this.createElement(from.getId(), to.getId());
+		clonedElement.addChildren(from.getChildren());
+		clonedElement.wrap(from.unwrap());
+		to.addChild(clonedElement);
+		synchronizeElements(clonedElement, to);
+		
+		return clonedElement;
 	}
 
 	@Override
@@ -173,12 +181,12 @@ class TreeManagerCore implements TreeManager {
 
 	@SafeVarargs
 	private final <T> void synchronizeElements(Element<T>... elements) {
-		String sessionId = this.getTransaction().currentSession().getSessionId();
-		
+		String sessionId = null;
 		TreeElementCore<T> element = null;
 		for (Element<T> iterator : elements) {
 			element = (TreeElementCore<T>) iterator;
 			if (element != null) {
+				sessionId = element.attachedTo();
 				element.attach(sessionId);
 			}
 		}
@@ -211,18 +219,24 @@ class TreeManagerCore implements TreeManager {
 		validator.validateNoActiveSession();
 	}
 	
-	private void validateCutOperation(Element<?> sourceElement,
-			Element<?> targetElement) throws TreeException {
+	private void validateOperation(Element<?> sourceElement,
+			Element<?> targetElement, boolean toCopy) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
-		TreeElementValidator validator = TreeFactory.validatorFactory().
-				createElementValidator(this);
-		
+		TreeElementValidator validator = null;
+		if (toCopy) {
+			validator = TreeFactory.validatorFactory().
+					createCopyValidator(this);
+		} else {
+			validator = TreeFactory.validatorFactory().
+					createCutValidator(this);
+		}
 		pipeline.addAttribute("sourceElement", sourceElement);
 		pipeline.addAttribute("targetElement", targetElement);
 		
 		validator.validateMandatoryElementId(pipeline);
+		validator.validateCutCopyRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElementToBeCut(pipeline);
+		validator.validateDuplicatedElement(pipeline);
 	}
 }

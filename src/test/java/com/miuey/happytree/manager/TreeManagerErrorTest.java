@@ -344,6 +344,76 @@ public class TreeManagerErrorTest {
 	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
+	 * <p>Error scenario for this operation when trying to cut the entire root.
+	 * This is impossible cut the tree. There is already an implementation that
+	 * clone (copy) the tree, by invoking
+	 * {@link TreeTransaction#cloneSession(String, String)}.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut the root element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No possible to cut/copy root. Consider using a
+	 * transaction to clone trees.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source root element that will be cut;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which the source root element will be
+	 * 	inserted;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to cut the source root element into the target element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_rootToElement() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final long windowsId = 1;
+		
+		final String messageError = "No possible to cut/copy root. Consider"
+				+ " using a transaction to clone trees.";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> root = transaction.currentSession().tree();
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> windows = manager.getElementById(windowsId);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			/*
+			 * Impossible to cut the root element. Instead that, consider using
+			 * the TreeTransaction.cloneSession(). 
+			 */
+			manager.cut(root, windows);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
 	 * <p>Error scenario for this operation when trying to cut any changed
 	 * attached element.</p>
 	 * 
@@ -695,6 +765,76 @@ public class TreeManagerErrorTest {
 			 */
 			manager.copy(readme, nullableElement);
 		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy the entire root.
+	 * This is impossible copy the tree. There is already an implementation that
+	 * clone (copy) the tree, by invoking
+	 * {@link TreeTransaction#cloneSession(String, String)}.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy the root element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No possible to cut/copy root. Consider using a
+	 * transaction to clone trees.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source root element;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which the source root element will be
+	 * 	inserted;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to copy the source root element into the target element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_rootToElement() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final long windowsId = 1;
+		
+		final String messageError = "No possible to cut/copy root. Consider"
+				+ " using a transaction to clone trees.";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> root = transaction.currentSession().tree();
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> windows = manager.getElementById(windowsId);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			/*
+			 * Impossible to copy the root element. Instead that, consider using
+			 * the TreeTransaction.cloneSession(). 
+			 */
+			manager.copy(root, windows);
+		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
 			assertEquals(messageError, error);

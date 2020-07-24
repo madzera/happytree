@@ -47,7 +47,7 @@ class TreeSessionCore implements TreeSession {
 		
 		rootCast.initRoot(tree);
 		rootCast.attach(this.getSessionId());
-		this.root = root;
+		this.root = rootCast;
 		setActive(Boolean.TRUE);
 	}
 }

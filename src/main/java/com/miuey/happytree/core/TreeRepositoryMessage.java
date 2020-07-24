@@ -21,7 +21,8 @@ enum TreeRepositoryMessage {
 	 */
 	DETACHED_ELEMENT(TreeConstants.Error.DETACHED_ELEMENT),
 	DUPLICATED_ELEMENT(TreeConstants.Error.DUPLICATED_ID_ERROR),
-	MISMATCH_TYPE_ELEMENT(TreeConstants.Error.DIFFERENT_TYPES_ID_ERROR);
+	MISMATCH_TYPE_ELEMENT(TreeConstants.Error.DIFFERENT_TYPES_ID_ERROR),
+	IMPOSSIBLE_COPY_ROOT(TreeConstants.Error.CUT_COPY_ROOT);
 	
 	private String errorDesc;
 	private static Properties properties = new Properties();

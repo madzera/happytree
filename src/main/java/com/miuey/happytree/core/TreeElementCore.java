@@ -14,6 +14,7 @@ class TreeElementCore<T> implements Element<T> {
 	private T wrappedObject;
 	private String sessionId;
 	private boolean isAttached;
+	private boolean isRoot;
 	
 	
 	TreeElementCore(Object id, Object parentId) {
@@ -118,6 +119,10 @@ class TreeElementCore<T> implements Element<T> {
 		this.sessionId = sessionId;
 	}
 	
+	boolean isRoot() {
+		return isRoot;
+	}
+	
 	synchronized void attach(String sessionId) {
 		this.isAttached = Boolean.TRUE;
 		changeSession(sessionId);
@@ -134,6 +139,7 @@ class TreeElementCore<T> implements Element<T> {
 	void initRoot(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
+			this.isRoot = Boolean.TRUE;
 		}
 	}
 }

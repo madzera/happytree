@@ -535,8 +535,7 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> copiedDevel = manager.getElementById(develId);
 		assertEquals(targetSessionId, copiedDevel.getParent());
 		assertEquals(develName, copiedDevel.unwrap().getName());
-		assertTrue(manager.containsElement(targetRootTree, copiedDevel.
-				getParent()));
+		assertTrue(manager.containsElement(targetRootTree, copiedDevel));
 		assertTrue(copiedDevel.getChildren().size() > 0);
 		
 		transaction.sessionCheckout(sourceSessionId);

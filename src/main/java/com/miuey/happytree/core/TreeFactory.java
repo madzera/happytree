@@ -164,8 +164,12 @@ class TreeFactory {
 			return new TreeSessionValidator(manager);
 		}
 		
-		TreeElementValidator createElementValidator(TreeManager manager) {
-			return new TreeElementValidator(manager);
+		TreeElementValidator createCutValidator(TreeManager manager) {
+			return new TreeCutValidator(manager);
+		}
+		
+		TreeElementValidator createCopyValidator(TreeManager manager) {
+			return new TreeCopyValidator(manager);
 		}
 	}
 

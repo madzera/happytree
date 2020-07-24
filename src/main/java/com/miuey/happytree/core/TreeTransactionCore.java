@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
@@ -50,10 +51,12 @@ class TreeTransactionCore implements TreeTransaction {
 		TreeElementCore<T> root = serviceFactory.createElement(
 				DEF_ROOT_IDENTIFIER, null);
 		
+		Collection<Element<T>> rootChildren = TreeFactory.collectionFactory().
+				createHashSet();
 		/*
 		 * Set the root element with a empty tree.
 		 */
-		newSession.setRoot(root, null);
+		newSession.setRoot(root, rootChildren);
 		
 		sessions.put(identifier, newSession);
 		
