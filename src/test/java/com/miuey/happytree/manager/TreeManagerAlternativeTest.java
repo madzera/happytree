@@ -399,7 +399,8 @@ public class TreeManagerAlternativeTest {
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to cut an element
-	 * for the root level of another tree.</p>
+	 * for the root level of another tree. All children of the element will be
+	 * cut too.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
@@ -408,18 +409,22 @@ public class TreeManagerAlternativeTest {
 	 * Try to cut an element for the root level of another tree.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element be removed from the source tree and
-	 * placed at the target.
+	 * placed at the target with its children together.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize two sessions, the respective source and target. Both
 	 * 	previously loaded from <code>TreeAssembler</code>;</li>
-	 * 	<li>Get the source element (Devel) and target (target session id - root);
+	 * 	<li>Get the source element and target (target session id - root);
 	 * 	</li>
-	 * 	<li>Verify that the source tree session has no the source element
-	 * 	(devel) anymore;</li>
-	 * 	<li>Also Verify that the source element (Devel) is now in the target
-	 * 	tree session.</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Cut the element for the target root tree;</li>
+	 * 	<li>Verify that the source element is not inside of the source tree
+	 * 	anymore;</li>
+	 * 	<li>Change the session for the target session;</li>
+	 * 	<li>Verify if the target root tree really has the cut source element;
+	 * 	</li>
+	 * 	<li>Also verify if the children of the source element were cut too.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
@@ -463,5 +468,79 @@ public class TreeManagerAlternativeTest {
 		assertNotNull(devel);
 		assertEquals(develName, devel.unwrap().getName());
 		assertEquals(targetSessionId, devel.getParent());
+		assertTrue(manager.containsElement(targetRootTree, devel));
+		assertTrue(devel.getChildren().size() > 0);
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to copy an element
+	 * for the root level of another tree. All children of the element will be
+	 * copied too.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for the root level of another tree.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element be copied from the source tree and
+	 * replicated at the target tree with its children together.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element and target (target session id - root);
+	 * 	</li>
+	 * 	<li>Copy the source element in the source tree for the root level of
+	 * 	the target tree;</li>
+	 * 	<li>Change the session for the target session;</li>
+	 * 	<li>Verify if the target root really has the copied source element;</li>
+	 * 	<li>Verify if the children of source element were copied too;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Verify if the source element still is inside of the source tree.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void copy_toRootOfAnotherTree() throws TreeException {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final Long develId = 93832l;
+		final String develName = "Devel";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> targetDir = TreeAssembler.
+				getSimpleDirectoryTree();
+		Collection<Directory> sourceDir = TreeAssembler.
+				getDirectoryTree();
+		
+		transaction.initializeSession(sourceSessionId, sourceDir);
+		Element<Directory> devel = manager.getElementById(develId);
+		
+		transaction.initializeSession(targetSessionId, targetDir);
+		Element<Directory> targetRootTree = transaction.currentSession().tree();
+		
+		transaction.sessionCheckout(sourceSessionId);
+		manager.cut(devel, targetRootTree);
+		
+		transaction.sessionCheckout(sourceSessionId);
+		Element<Directory> copiedDevel = manager.getElementById(develId);
+		assertEquals(targetSessionId, copiedDevel.getParent());
+		assertEquals(develName, copiedDevel.unwrap().getName());
+		assertTrue(manager.containsElement(targetRootTree, copiedDevel.
+				getParent()));
+		assertTrue(copiedDevel.getChildren().size() > 0);
+		
+		transaction.sessionCheckout(sourceSessionId);
+		devel = manager.getElementById(develId);
+		assertNotNull(devel);
 	}
 }
