@@ -1125,4 +1125,143 @@ public class TreeManagerErrorTest {
 			assertEquals(messageError, error);
 		}
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to remove a detached
+	 * element from the tree. Impossible to remove detached elements. The
+	 * detached element needs to be updated before.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove a detached element from the tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
+	 * synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element to be removed;</li>
+	 * 	<li>Change the element to become it as &quot;detached&quot;;</li>
+	 * 	<li>Try to remove this element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void removeElement_detached() {
+		final String sessionId = "removeElement_detached";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		String error = null;
+		
+		final long readmeId = 495833;
+		final long adobeId = 24935;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, sourceDir);
+			Element<Directory> readme = manager.getElementById(readmeId);
+			
+			/*
+			 * At this point, this element becomes detached.
+			 */
+			readme.setParent(adobeId);
+			
+			/*
+			 * No possible to handle trees with detached elements.
+			 */
+			manager.removeElement(readme);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to remove an element
+	 * which one of its children was changed (detached). Impossible to remove
+	 * detached children elements. The detached element needs to be updated
+	 * before.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element with a detached child.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
+	 * synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element to be removed;</li>
+	 * 	<li>Change one of its children to become it as &quot;detached&quot;;
+	 * 	</li>
+	 * 	<li>Try to remove the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void remove_detachedChild() {
+		final String sessionId = "remove_detachedChild";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		String error = null;
+		
+		final long sdkId = 113009;
+		final String filesName = "files";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, sourceDir);
+			Element<Directory> sdk = manager.getElementById(sdkId);
+			
+			Element<Directory> files = null;
+			for (Element<Directory> child : sdk.getChildren()) {
+				files = child;
+			}
+			
+			assertNotNull(files);
+			assertEquals(filesName, files.unwrap().getName());
+			
+			/*
+			 * At this point, the parent element should be detached because one
+			 * of its children was changed.
+			 */
+			files.setId(Long.MAX_VALUE);
+			
+			/*
+			 * No possible to handle trees with detached elements.
+			 */
+			manager.removeElement(sdk);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
 }

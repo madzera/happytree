@@ -528,4 +528,186 @@ public class TreeManagerTest {
 		assertFalse(manager.containsElement(programFiles, photoshop));
 		assertFalse(manager.containsElement(programFiles, dreamweaver));
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element, Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Verify if an element contains another one.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>true</code> value when invoking
+	 * {@link TreeManager#containsElement(Element, Element)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element (Adobe);</li>
+	 * 	<li>Get the element (reader.exe);</li>
+	 * 	<li>Confirm that the (Adobe) element contains the (reader.exe) element.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void containsElement() throws TreeException {
+		final String sessionId = "containsElement";
+		
+		final long adobeId = 24935;
+		final long readerExeId = 8493845;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, sourceDir);
+		
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> readerExe = manager.getElementById(readerExeId);
+		
+		assertTrue(manager.containsElement(adobe, readerExe));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object, Object)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Verify if an element contains another one through only the element id.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>true</code> value when invoking
+	 * {@link TreeManager#containsElement(Object, Object)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Invoke {@link TreeManager#containsElement(Object, Object)};</li>
+	 * 	<li>Confirm that the (Adobe) element contains the (reader.exe) element
+	 * 	through only the element id.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void containsObject() throws TreeException {
+		final String sessionId = "containsElement";
+		
+		final long adobeId = 24935;
+		final long readerExeId = 8493845;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, sourceDir);
+		
+		assertTrue(manager.containsElement(adobeId, readerExeId));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Verify if a tree has inside of it an element.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>true</code> value when invoking
+	 * {@link TreeManager#containsElement(Element)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element (bin);</li>
+	 * 	<li>Confirm that the tree contains the (bin) element by invoking
+	 * 	{@link TreeManager#containsElement(Element)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void treeContainsElement() throws TreeException {
+		final String sessionId = "treeContainsElement";
+		
+		final long binId = 7753032;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, sourceDir);
+		Element<Directory> bin = manager.getElementById(binId);
+		
+		assertTrue(manager.containsElement(bin));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Verify if a tree has inside of it an element id.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>true</code> value when invoking
+	 * {@link TreeManager#containsElement(Object)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Confirm that the tree contains the (bin) element id by invoking
+	 * 	{@link TreeManager#containsElement(Object)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void treeContainsObjectId() throws TreeException {
+		final String sessionId = "treeContainsObjectId";
+		
+		final long binId = 7753032;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, sourceDir);
+		
+		assertTrue(manager.containsElement(binId));
+	}
 }

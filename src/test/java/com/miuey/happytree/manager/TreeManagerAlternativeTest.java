@@ -542,4 +542,163 @@ public class TreeManagerAlternativeTest {
 		devel = manager.getElementById(develId);
 		assertNotNull(devel);
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to remove an
+	 * element which it has the <code>null</code> value.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element with a <code>null</code> argument element.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value when invoking
+	 * {@link TreeManager#removeElement(Element)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Try to remove an element with a <code>null</code> value;</li>
+	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeElement_nullElement() throws TreeException {
+		final String sessionId = "removeElement_nullElement";
+		final Element<Directory> nullableElement = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		assertFalse(manager.removeElement(nullableElement));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to remove an
+	 * element only by its id which it has the <code>null</code> value.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element with a <code>null</code> argument.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value when invoking
+	 * {@link TreeManager#removeElement(Object)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Try to remove an element only by its id with a <code>null</code> id
+	 * 	value;</li>
+	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void removeElement_nullObjectId() throws TreeException {
+		final String sessionId = "removeElement_nullElement";
+		final Object nullableId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		assertFalse(manager.removeElement(nullableId));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to remove a not
+	 * existing element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove a not existing element.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value when invoking
+	 * {@link TreeManager#removeElement(Element)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Try to get an element with a not existing element id in the tree;
+	 * 	</li>
+	 * 	<li>Try to remove the previous return element;</li>
+	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void remove_notExistingElement() throws TreeException {
+		final String sessionId = "remove_notExistingElement";
+		final long notExistingId = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		Element<Directory> nullableElement = manager.getElementById(
+				notExistingId);
+		assertFalse(manager.removeElement(nullableElement));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to remove an
+	 * element through a not existing id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element through a not existing id.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value when invoking
+	 * {@link TreeManager#removeElement(Object)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Try to remove an element through a not existing id in the tree;</li>
+	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void remove_notExistingObjectId() throws TreeException {
+		final String sessionId = "remove_notExistingObjectId";
+		final long notExistingId = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		assertFalse(manager.removeElement(notExistingId));
+	}
 }
