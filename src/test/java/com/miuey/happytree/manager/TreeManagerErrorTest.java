@@ -479,6 +479,83 @@ public class TreeManagerErrorTest {
 	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
+	 * <p>Error scenario for this operation when trying to cut an element
+	 * which one of its children was changed (detached). Impossible to cut
+	 * detached children elements. The detached element needs to be updated
+	 * before.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element with a detached child.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
+	 * synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element to be cut;</li>
+	 * 	<li>Change one of its children to become it as &quot;detached&quot;;
+	 * 	</li>
+	 * 	<li>Try to cut the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_detachedChild() {
+		final String sessionId = "cut_detachedChild";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		String error = null;
+		
+		final long sdkId = 113009;
+		final long binId = 7753032;
+		final String filesName = "files";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, sourceDir);
+			Element<Directory> sdk = manager.getElementById(sdkId);
+			Element<Directory> bin = manager.getElementById(binId);
+			
+			Element<Directory> files = null;
+			for (Element<Directory> child : sdk.getChildren()) {
+				files = child;
+			}
+			
+			assertNotNull(files);
+			assertEquals(filesName, files.unwrap().getName());
+			
+			/*
+			 * At this point, the parent element should be detached because one
+			 * of its children was changed.
+			 */
+			files.setId(Long.MAX_VALUE);
+			
+			/*
+			 * No possible to handle trees with detached elements.
+			 */
+			manager.cut(sdk, bin);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
 	 * <p>Error scenario for this operation when trying to cut an element for
 	 * inside of another tree which this tree already have an element with the
 	 * same id.</p>
@@ -981,6 +1058,88 @@ public class TreeManagerErrorTest {
 			 * using any TreeManager operation.
 			 */
 			manager.copy(office, drivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of another one which one of its children was changed (detached).
+	 * The target detached element needs to be updated before.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside another one, which this one has one of
+	 * its children detached.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
+	 * synchronized inside of the tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element to be copied;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which will contain the copied element;</li>
+	 * 	<li>Change one of the target children to become it as
+	 * 	&quot;detached&quot;;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to copy the source element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_detachedChild() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Detached element. Not possible to copy/cut"
+				+ " elements not synchronized inside of the tree.";
+		String error = null;
+		
+		final long sdkId = 113009;
+		final long system32Id = 1000;
+		final String driversName = "drivers";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sdk = manager.getElementById(sdkId);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> system32 = manager.getElementById(system32Id);
+			
+			Element<Directory> drivers = null;
+			for (Element<Directory> child : system32.getChildren()) {
+				drivers = child;
+			}
+			
+			assertNotNull(drivers);
+			assertEquals(driversName, drivers.unwrap().getName());
+			
+			/*
+			 * Here the child of the target element is ready to be detached.
+			 */
+			drivers.setId(Long.MAX_VALUE);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			manager.copy(sdk, drivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
