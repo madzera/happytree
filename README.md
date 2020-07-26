@@ -1,7 +1,7 @@
 
 # Happy Tree
 
-ìJava POJO API to generate and handle hierarchical tree structure.î
+‚ÄúJava POJO API to generate and handle hierarchical tree structure.‚Äù
 
 
 ## Introduction
@@ -10,7 +10,7 @@ HappyTree is a data structure API designed for the Java programming
 language that consists of transforming linear objects into a tree 
 structure, where each object represents a node in the tree and can 
 have none or several other objects of the same type. It is similar 
-to the Data Object Model (DOM) and provides an interface for 
+to the Document Object Model (DOM) and provides an interface for 
 manipulating these objects in various trees.
 
 ### Purpose
