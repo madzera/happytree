@@ -16,6 +16,7 @@ class TreeElementCore<T> implements Element<T> {
 	private boolean isAttached;
 	private boolean isRoot;
 	
+	private int savedHash;
 	
 	TreeElementCore(Object id, Object parentId) {
 		this.id = id;
@@ -110,8 +111,67 @@ class TreeElementCore<T> implements Element<T> {
 	public String attachedTo() {
 		return this.sessionId;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		
+		result = prime * result + (calculateHashForId(id));
+		result = prime * result + (calculateHashForId(parentId));
+		
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object another) {
+		Boolean isEqual = Boolean.TRUE;
+		if (this == another) {
+			return isEqual;
+		}
+		if (another == null || this.getClass() != another.getClass()) {
+			return Boolean.FALSE;
+		}
+		
+		@SuppressWarnings("unchecked")
+		TreeElementCore<T> other = (TreeElementCore<T>) another;
+		
+		Object otherId = other.getId();
+		Object otherParentId = other.getParent();
+		String otherSessionId = other.attachedTo();
+		
+		/*
+		 * The id can be null in detached elements.
+		 */
+		if ((this.id == null && otherId != null) ||
+				(this.id != null && !this.id.equals(otherId))) {
+			return Boolean.FALSE;
+		}
+		
+		if ((this.parentId == null && otherParentId != null) ||
+				(this.parentId != null &&
+				!this.parentId.equals(otherParentId))) {
+			return Boolean.FALSE;
+		}
+		
+		if ((this.sessionId == null && otherSessionId != null) ||
+				(this.sessionId != null &&
+				!this.sessionId.equals(otherSessionId))) {
+			return Boolean.FALSE;
+		}
+		return isEqual;
+	}
+
 
 	boolean isAttached() {
+		TreeElementCore<T> child = null;
+		for (Element<T> iterator : this.children) {
+			child = (TreeElementCore<T>) iterator;
+			if (!child.isAttached) {
+				this.isAttached = Boolean.FALSE;
+				break;
+			}
+		}
 		return isAttached;
 	}
 
@@ -123,9 +183,14 @@ class TreeElementCore<T> implements Element<T> {
 		return isRoot;
 	}
 	
+	public int savedHashContent() {
+		return this.savedHash;
+	}
+	
 	synchronized void attach(String sessionId) {
 		this.isAttached = Boolean.TRUE;
 		changeSession(sessionId);
+		this.savedHash = this.hashCode();
 	}
 
 	synchronized void detach() {
@@ -140,6 +205,25 @@ class TreeElementCore<T> implements Element<T> {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
 			this.isRoot = Boolean.TRUE;
+		}
+	}
+	
+	private int calculateHashForId(Object id) {
+		final int perfectNumber = 32;
+		if (id instanceof Byte || id instanceof Short || id instanceof Integer) {
+			return (int) id;
+		} else if (id instanceof Long) {
+			long convertedId = (Long) id;
+			return (int) (convertedId ^ (convertedId >>> perfectNumber));
+		} else if (id instanceof Float) {
+			float convertedId = (Float) id;
+			return Float.floatToIntBits(convertedId);
+		} else if (id instanceof Double) {
+			double convertedId = (Double) id;
+			long value = Double.doubleToLongBits(convertedId);
+			return (int) (value ^ (value >>> perfectNumber));
+		} else {
+			return ((id == null) ? 0 : id.hashCode());
 		}
 	}
 }

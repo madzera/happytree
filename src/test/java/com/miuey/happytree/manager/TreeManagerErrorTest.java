@@ -1139,7 +1139,7 @@ public class TreeManagerErrorTest {
 			drivers.setId(Long.MAX_VALUE);
 			
 			transaction.sessionCheckout(sourceSessionId);
-			manager.copy(sdk, drivers);
+			manager.copy(sdk, system32);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
