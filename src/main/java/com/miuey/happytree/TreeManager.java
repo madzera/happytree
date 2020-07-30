@@ -490,7 +490,7 @@ public interface TreeManager {
 	 * @throws IllegalArgumentException when the <code>newElement</code> or its
 	 * <code>id</code> is <code>null</code>
 	 */
-	public <T> Element<T> persistElement(Element<?> newElement) 
+	public <T> Element<T> persistElement(Element<T> newElement) 
 			throws TreeException;
 	
 	/**

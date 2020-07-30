@@ -1423,4 +1423,145 @@ public class TreeManagerErrorTest {
 			assertEquals(messageError, error);
 		}
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * with a <code>null</code> argument value.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element with a <code>null</code> argument value.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Declare a <code>null</code> element;</li>
+	 * 	<li>Try to persist the element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void persistElement_nullElement() throws TreeException {
+		final String sessionId = "persistElement_nullElement";
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sessionId, Directory.class);
+			Element<Directory> nullableElement = null;
+			manager.persistElement(nullableElement);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * with a <code>null</code> id.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element with a <code>null</code> id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create an element with <code>null</code> id attribute value;</li>
+	 * 	<li>Try to persist the element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void persistElement_nullIdElement() throws TreeException {
+		final String sessionId = "persistElement_nullIdElement";
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		Object nullableId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sessionId, Directory.class);
+			Element<Directory> element = manager.createElement(
+					nullableId, Long.MAX_VALUE);
+			manager.persistElement(element);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * for inside the tree which it already has another element with the same id.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element with duplicated id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create an element with duplicated id;</li>
+	 * 	<li>Try to persist this element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_duplicatedId() {
+		final String sessionId = "persistElement_nullElement";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		Object duplicatedWinampExeId = 395524;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> element = manager.createElement(
+					duplicatedWinampExeId, null);
+			manager.persistElement(element);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
 }

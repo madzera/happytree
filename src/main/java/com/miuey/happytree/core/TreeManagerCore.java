@@ -213,7 +213,7 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public <T> Element<T> persistElement(Element<?> newElement)
+	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
 		// TODO Auto-generated method stub
 		return null;

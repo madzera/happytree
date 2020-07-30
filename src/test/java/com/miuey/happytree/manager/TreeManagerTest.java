@@ -710,4 +710,69 @@ public class TreeManagerTest {
 		
 		assertTrue(manager.containsElement(binId));
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Persist an element and its child into a tree.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the new element and its child be part of the tree
+	 * when the {@link TreeManager#persistElement(Element)} is invoked.
+	 * {@link TreeManager#containsElement(Object)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>create two new elements;</li>
+	 * 	<li>Verify that the element (Program Files) which the new element will
+	 * 	be inserted does not contain the new element yet;</li>
+	 * 	<li>Of the new elements, make one as the child of the other;</li>
+	 * 	<li>Verify now that the parent element (Program Files) contains the new
+	 * 	inserted element as well as its child.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void persistElement() throws TreeException {
+		final String sessionId = "persistElement";
+		
+		final long programFilesId = 42345;
+		final long gamesId = Long.MAX_VALUE;
+		final long ageOfEmpiresId = 48593500;
+	
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, sourceDir);
+		
+		Directory gamesDir = new Directory(gamesId, programFilesId, "Games");
+		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId,
+				"Age of Empires II");
+		Element<Directory> games = manager.createElement(gamesId,
+				programFilesId);
+		Element<Directory> ageGame = manager.createElement(ageOfEmpiresId,
+				gamesId);
+		games.wrap(gamesDir);
+		ageGame.wrap(ageGameDir);
+		
+		games.addChild(ageGame);
+		
+		assertFalse(manager.containsElement(programFilesId, gamesId));
+		assertNotNull(manager.persistElement(games));
+		assertTrue(manager.containsElement(programFilesId, gamesId));;
+		assertTrue(manager.containsElement(programFilesId, ageOfEmpiresId));
+	}
 }
