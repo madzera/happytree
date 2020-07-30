@@ -451,7 +451,7 @@ public class TreeManagerTest {
 		assertTrue(manager.containsElement(programFiles, photoshop));
 		assertTrue(manager.containsElement(programFiles, dreamweaver));
 		
-		assertTrue(manager.removeElement(adobe));
+		assertNotNull(manager.removeElement(adobe));
 		
 		assertFalse(manager.containsElement(programFiles, adobe));
 		assertFalse(manager.containsElement(programFiles, reader));
@@ -521,7 +521,7 @@ public class TreeManagerTest {
 		assertTrue(manager.containsElement(programFiles, photoshop));
 		assertTrue(manager.containsElement(programFiles, dreamweaver));
 		
-		assertTrue(manager.removeElement(adobeId));
+		assertNotNull(manager.removeElement(adobeId));
 		
 		assertFalse(manager.containsElement(programFiles, adobe));
 		assertFalse(manager.containsElement(programFiles, reader));

@@ -14,10 +14,11 @@ abstract class TreeElementValidator extends TreeValidator {
 	}
 
 	
-	void validateCutCopyRootElement(TreePipeline pipeline)throws TreeException {
+	void validateCutCopyRemoveRootElement(TreePipeline pipeline)
+			throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
-		if (source.isRoot()) {
+		if (source != null && source.isRoot()) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					IMPOSSIBLE_COPY_ROOT);
 		}

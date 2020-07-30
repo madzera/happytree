@@ -37,13 +37,11 @@ class TreeCopyValidator extends TreeElementValidator {
 		TreeSession session = getManager().getTransaction().currentSession();
 		String sessionId = session.getSessionId();
 		
-		if (!source.isAttached() || !sessionId.equals(source.attachedTo()) ||
-				source.hashCode() != source.savedHashContent()) {
+		if (!source.isAttached() || !sessionId.equals(source.attachedTo())) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);
 		}
-		if (!target.isAttached() && target.attachedTo() != null ||
-				target.hashCode() != target.savedHashContent()) {
+		if (!target.isAttached() && target.attachedTo() != null) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);
 		}

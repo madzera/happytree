@@ -216,16 +216,18 @@ public interface TreeManager {
 	 * <p>If the <code>element</code> is <code>null</code> then this method will
 	 * return <code>false</code>.</p>
 	 * 
+	 * @param <T> the class type of the wrapped object that will be
+	 * encapsulated into the {@link Element} object
+	 * 
 	 * @param element the element to be removed with all children
 	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the element
-	 * and children is removed, <code>false</code> either
+	 * @return the own removed element itself, but now detached
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. When the current session or the session which the
 	 * <code>to</code> element belongs is not active
 	 */
-	public boolean removeElement(Element<?> element) throws TreeException;
+	public <T> Element<T> removeElement(Element<T> element) throws TreeException;
 	
 	/**
 	 * Remove the element by <code>id</code>. All children of the found element
@@ -245,13 +247,12 @@ public interface TreeManager {
 	 * 
 	 * @param id the identifier of the element to be removed
 	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the element
-	 * and children is removed, <code>false</code> either
+	 * @return the own removed element itself, but now detached
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. When if the current session is not active
 	 */
-	public boolean removeElement(Object id) throws TreeException;
+	public <T> Element<T> removeElement(Object id) throws TreeException;
 	
 	/**
 	 * Get an element by its <code>id</code> in the current tree session.

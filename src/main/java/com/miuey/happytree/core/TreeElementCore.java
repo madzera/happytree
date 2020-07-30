@@ -16,7 +16,6 @@ class TreeElementCore<T> implements Element<T> {
 	private boolean isAttached;
 	private boolean isRoot;
 	
-	private int savedHash;
 	
 	TreeElementCore(Object id, Object parentId) {
 		this.id = id;
@@ -183,14 +182,9 @@ class TreeElementCore<T> implements Element<T> {
 		return isRoot;
 	}
 	
-	public int savedHashContent() {
-		return this.savedHash;
-	}
-	
 	synchronized void attach(String sessionId) {
 		this.isAttached = Boolean.TRUE;
 		changeSession(sessionId);
-		this.savedHash = this.hashCode();
 	}
 
 	synchronized void detach() {

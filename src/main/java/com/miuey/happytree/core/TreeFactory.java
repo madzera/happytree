@@ -171,6 +171,10 @@ class TreeFactory {
 		TreeElementValidator createCopyValidator(TreeManager manager) {
 			return new TreeCopyValidator(manager);
 		}
+		
+		TreeElementValidator createRemoveValidator(TreeManager manager) {
+			return new TreeRemoveValidator(manager);
+		}
 	}
 
 	class ExceptionFactory extends TreeFactory {

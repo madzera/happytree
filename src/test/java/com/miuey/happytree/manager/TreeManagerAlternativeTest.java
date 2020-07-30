@@ -529,9 +529,9 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> targetRootTree = transaction.currentSession().tree();
 		
 		transaction.sessionCheckout(sourceSessionId);
-		manager.cut(devel, targetRootTree);
+		manager.copy(devel, targetRootTree);
 		
-		transaction.sessionCheckout(sourceSessionId);
+		transaction.sessionCheckout(targetSessionId);
 		Element<Directory> copiedDevel = manager.getElementById(develId);
 		assertEquals(targetSessionId, copiedDevel.getParent());
 		assertEquals(develName, copiedDevel.unwrap().getName());
@@ -579,7 +579,7 @@ public class TreeManagerAlternativeTest {
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		transaction.initializeSession(sessionId, directories);
-		assertFalse(manager.removeElement(nullableElement));
+		assertNull(manager.removeElement(nullableElement));
 	}
 	
 	/**
@@ -619,7 +619,7 @@ public class TreeManagerAlternativeTest {
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		transaction.initializeSession(sessionId, directories);
-		assertFalse(manager.removeElement(nullableId));
+		assertNull(manager.removeElement(nullableId));
 	}
 	
 	/**
@@ -661,7 +661,7 @@ public class TreeManagerAlternativeTest {
 		transaction.initializeSession(sessionId, directories);
 		Element<Directory> nullableElement = manager.getElementById(
 				notExistingId);
-		assertFalse(manager.removeElement(nullableElement));
+		assertNull(manager.removeElement(nullableElement));
 	}
 	
 	/**
@@ -699,6 +699,6 @@ public class TreeManagerAlternativeTest {
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		transaction.initializeSession(sessionId, directories);
-		assertFalse(manager.removeElement(notExistingId));
+		assertNull(manager.removeElement(notExistingId));
 	}
 }

@@ -26,7 +26,7 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
 		validateTransaction();
-		validateOperation(from, to, Boolean.FALSE);
+		validateCutCopyOperation(from, to, Boolean.FALSE);
 		
 		Element<T> parentFrom = this.getElementById(from.getParent());
 		if (parentFrom != null) {
@@ -36,6 +36,8 @@ class TreeManagerCore implements TreeManager {
 		if (to != null) {
 			to.addChild(from);
 			from.setParent(to.getId());
+			TreeElementCore<T> fromCore = (TreeElementCore<T>) from;
+			fromCore.changeSession(to.attachedTo());
 		} else {
 			Element<T> root = this.root();
 			root.addChild(from);
@@ -60,27 +62,63 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
 		validateTransaction();
-		validateOperation(from, to, Boolean.TRUE);
+		validateCutCopyOperation(from, to, Boolean.TRUE);
 		
 		Element<T> clonedElement = this.createElement(from.getId(), to.getId());
 		clonedElement.addChildren(from.getChildren());
 		clonedElement.wrap(from.unwrap());
+		TreeElementCore<T> clonedElementCore = (TreeElementCore<T>) 
+				clonedElement;
+		clonedElementCore.changeSession(to.attachedTo());
+		
+		clonedElement.setParent(to.getId());
 		to.addChild(clonedElement);
+		
 		synchronizeElements(clonedElement, to);
 		
 		return clonedElement;
 	}
 
 	@Override
-	public boolean removeElement(Element<?> element) throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+	public <T> Element<T> removeElement(Element<T> element)
+			throws TreeException {
+		TreeElementCore<T> removedElement = null;
+		validateTransaction();
+		validateRemoveOperation(element);
+		
+		if (element != null) {
+			Element<T> searchElement = this.getElementById(element.getId());
+			removedElement = (TreeElementCore<T>) searchElement;
+			if (removedElement != null) {
+				Element<T> parent = this.getElementById(element.getParent());
+				parent.removeChild(removedElement);
+				removedElement.detach();
+				removedElement.changeSession(null);
+				synchronizeElements(parent);
+			}
+		}
+		return removedElement;
 	}
 
 	@Override
-	public boolean removeElement(Object id) throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+	public <T> Element<T> removeElement(Object id) throws TreeException {
+		Element<T> removedElement = null;
+		validateTransaction();
+		
+		if (id != null) {
+			Element<T> element = this.getElementById(id);
+			TreeElementCore<T> convertedElement = (TreeElementCore<T>)
+					element;
+			if (element != null && !convertedElement.isRoot()) {
+				Element<T> parent = this.getElementById(element.getParent());
+				parent.removeChild(convertedElement);
+				convertedElement.detach();
+				convertedElement.changeSession(null);
+				synchronizeElements(parent);
+				removedElement = convertedElement;
+			}
+		}
+		return removedElement;
 	}
 
 	@Override
@@ -100,7 +138,15 @@ class TreeManagerCore implements TreeManager {
 			throws TreeException {
 		boolean result = Boolean.FALSE;
 		validateTransaction();
-		if (parent != null && descendant != null) {
+		
+		TreeElementCore<T> parentElement = (TreeElementCore<T>) parent;
+		TreeElementCore<T> descendantElement = (TreeElementCore<T>) descendant;
+		
+		String sessionId = this.getTransaction().currentSession().getSessionId();
+		if (parent != null && descendant != null && parentElement.isAttached()
+				&& descendantElement.isAttached() 
+				&& parent.attachedTo().equals(sessionId) 
+				&& descendant.attachedTo().equals(sessionId)) {
 			Element<T> element = this.searchElement(parent.getChildren(),
 					descendant.getId());
 			result = element != null;
@@ -128,14 +174,31 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public boolean containsElement(Element<?> element) throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = Boolean.FALSE;
+		validateTransaction();
+		if (element != null) {
+			TreeElementCore<?> convertedElement = (TreeElementCore<?>) element;
+			String sessionId = this.getTransaction().currentSession().
+					getSessionId();
+			if (convertedElement.isAttached() 
+					&& convertedElement.attachedTo().equals(sessionId)) {
+				Element<?> foundElement = this.searchElement(this.root().
+						getChildren(), element.getId());
+				result = foundElement != null;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public boolean containsElement(Object id) throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = Boolean.FALSE;
+		validateTransaction();
+		if (id != null) {
+			Element<?> element = this.getElementById(id);
+			result = element != null;
+		}
+		return result;
 	}
 
 	@Override
@@ -219,7 +282,7 @@ class TreeManagerCore implements TreeManager {
 		validator.validateNoActiveSession();
 	}
 	
-	private void validateOperation(Element<?> sourceElement,
+	private void validateCutCopyOperation(Element<?> sourceElement,
 			Element<?> targetElement, boolean toCopy) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
@@ -235,8 +298,21 @@ class TreeManagerCore implements TreeManager {
 		pipeline.addAttribute("targetElement", targetElement);
 		
 		validator.validateMandatoryElementId(pipeline);
-		validator.validateCutCopyRootElement(pipeline);
+		validator.validateCutCopyRemoveRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedElement(pipeline);
+	}
+	
+	private void validateRemoveOperation(Element<?> sourceElement)
+			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		TreeElementValidator validator = TreeFactory.validatorFactory().
+				createRemoveValidator(this);
+		pipeline.addAttribute("sourceElement", sourceElement);
+		
+		validator.validateCutCopyRemoveRootElement(pipeline);
+		validator.validateDetachedElement(pipeline);
 	}
 }

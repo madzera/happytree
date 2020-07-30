@@ -92,6 +92,16 @@ class ATPLifecycle<T> {
 		 * is useful to identify the root elment.
 		 */
 		Element<T> root = manager.createElement(session.getSessionId(), null);
+		
+		/*
+		 * Change the parent id of immediate root children (first level).
+		 */
+		for (Element<T> child : tree) {
+			child.setParent(session.getSessionId());
+			TreeElementCore<T> element = (TreeElementCore<T>) child;
+			element.attach(session.getSessionId());
+		}
+		
 		session.setRoot(root, tree);
 	}
 
