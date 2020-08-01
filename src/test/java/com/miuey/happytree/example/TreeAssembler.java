@@ -141,6 +141,10 @@ public final class TreeAssembler {
 		Directory realtek = new Directory(94034, 42345, "Realtek");
 			Directory drivers = new Directory(220332, 94034, "drivers");
 				Directory bin = new Directory(7753032, 220332, "bin");
+					/*
+					 * This element has the same id than the another element in
+					 * another tree (Simple Tree).
+					 */
 					Directory entry = new Directory(77530344, 7753032, "entry");
 			Directory sdk = new Directory(113009, 94034, "sdk");
 				Directory files = new Directory(8484934, 113009, "files");

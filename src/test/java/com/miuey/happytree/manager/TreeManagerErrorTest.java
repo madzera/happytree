@@ -629,6 +629,75 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element for
+	 * inside of another tree which the source element has a child with the same
+	 * id as one of the children of the target element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element for inside of another tree which the source
+	 * element has a child with the same id as one of the children of the target
+	 * element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which the source element will be inside;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element that one of its children will have the same
+	 * 	id as one of the children of the target element;</li>
+	 * 	<li>Try to cut the source element into the target element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_duplicatedChildId() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long sourceDriversId = 220332;
+		final long targetDriversId = 1076;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> targetDrivers = manager.getElementById(
+					targetDriversId);
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sourceDrivers = manager.getElementById(
+					sourceDriversId);
+			
+			/*
+			 * An error will occur here, because the source drivers directory
+			 * has a child with the same id than the target drivers directory.
+			 */
+			manager.cut(sourceDrivers, targetDrivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
 	 * Test for the {@link TreeManager#cut(Object, Object)} operation. Even
 	 * sending the <code>Element</code> instead <code>Object</code>, because
 	 * they are of different type, the operation
@@ -1286,6 +1355,75 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of another tree which the source element has a child with the same
+	 * id as one of the children of the target element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of another tree which the source
+	 * element has a child with the same id as one of the children of the target
+	 * element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the target element which the source element will be inside;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the source element that one of its children will have the same
+	 * 	id as one of the children of the target element;</li>
+	 * 	<li>Try to copy the source element into the target element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_duplicatedChildId() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long sourceDriversId = 220332;
+		final long targetDriversId = 1076;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(targetSessionId, targetDir);
+			Element<Directory> targetDrivers = manager.getElementById(
+					targetDriversId);
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sourceDrivers = manager.getElementById(
+					sourceDriversId);
+			
+			/*
+			 * An error will occur here, because the source drivers directory
+			 * has a child with the same id than the target drivers directory.
+			 */
+			manager.copy(sourceDrivers, targetDrivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
 	 * Test for the {@link TreeManager#removeElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to remove a detached
@@ -1327,10 +1465,10 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		try {
-			transaction.initializeSession(sessionId, sourceDir);
+			transaction.initializeSession(sessionId, directories);
 			Element<Directory> readme = manager.getElementById(readmeId);
 			
 			/*
@@ -1393,10 +1531,10 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		try {
-			transaction.initializeSession(sessionId, sourceDir);
+			transaction.initializeSession(sessionId, directories);
 			Element<Directory> sdk = manager.getElementById(sdkId);
 			
 			Element<Directory> files = null;
@@ -1557,6 +1695,72 @@ public class TreeManagerErrorTest {
 			transaction.initializeSession(sessionId, directories);
 			Element<Directory> element = manager.createElement(
 					duplicatedWinampExeId, null);
+			manager.persistElement(element);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * into a tree where the element to be persisted has a child with the same
+	 * id as one of the elements in the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element into a tree where the element to be persisted
+	 * has a child with the same id as one of the elements in the tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create two elements, which one of them has the duplicate id related
+	 * 	to the tree which this element will be persisted;</li>
+	 * 	<li>Put the element with the duplicated id as the child of the other;
+	 * 	</li>
+	 * 	<li>Try to persist the element that its child has the duplicated id;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_duplicatedChildId() {
+		final String sessionId = "persistElement_duplicatedChildId";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long id = Long.MAX_VALUE;
+		final long duplicatedId = 77530344;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> element = manager.createElement(id, null);
+			Element<Directory> childElement = manager.createElement(
+					duplicatedId, id);
+			
+			element.addChild(childElement);
+			
+			/*
+			 * Error trying to persist an element which this element has a child
+			 * with duplicated id.
+			 */
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
