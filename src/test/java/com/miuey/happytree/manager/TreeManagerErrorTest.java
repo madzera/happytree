@@ -1768,4 +1768,56 @@ public class TreeManagerErrorTest {
 			assertEquals(messageError, error);
 		}
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * into a tree which the tree has different type of element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element into a tree which the tree has different type
+	 * of element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Mismatch type ID error.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code> with the <code>Directory</code> type;</li>
+	 * 	<li>Create an element with the <code>Metadata</code> type;</li>
+	 * 	<li>Try to persist the mismatch element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_mismatchElement() {
+		final String sessionId = "persistElement_mismatchElement";
+		
+		final String messageError = "Mismatch type ID error.";
+		String error = null;
+		
+		final String foo = "foo";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Metadata> mismatchElement = manager.createElement(foo, null);
+			
+			manager.persistElement(mismatchElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
 }
