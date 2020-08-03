@@ -11,6 +11,9 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeManagerCore implements TreeManager {
 
+	private static final String SOURCE_ELEMENT = "sourceElement";
+	private static final String TARGET_ELEMENT = "targetElement";
+	
 	/*
 	 * The transaction associated to this manager. A manager is always related
 	 * to its transaction. The cardinality is always 1:1.
@@ -215,8 +218,25 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
-		// TODO Auto-generated method stub
-		return null;
+		validateTransaction();
+		validatePersistOperation(newElement);
+		
+		Object parentId = newElement.getParent();
+		Element<T> parent = null;
+		if (parentId != null) {
+			parent = this.getElementById(parentId);
+		} else {
+			parent = this.root();
+			newElement.setParent(parent.getId());
+			parent.wrap(newElement.unwrap());
+		}
+		parent.addChild(newElement);
+		TreeElementCore<T> element = (TreeElementCore<T>) newElement;
+		element.changeSession(this.getTransaction().currentSession().
+				getSessionId());
+		synchronizeElements(newElement, parent);
+		
+		return newElement;
 	}
 
 	@Override
@@ -294,8 +314,8 @@ class TreeManagerCore implements TreeManager {
 			validator = TreeFactory.validatorFactory().
 					createCutValidator(this);
 		}
-		pipeline.addAttribute("sourceElement", sourceElement);
-		pipeline.addAttribute("targetElement", targetElement);
+		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
 		
 		validator.validateMandatoryElementId(pipeline);
 		validator.validateCutCopyRemoveRootElement(pipeline);
@@ -310,9 +330,22 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createRemoveValidator(this);
-		pipeline.addAttribute("sourceElement", sourceElement);
+		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
 		validator.validateCutCopyRemoveRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
+	}
+	
+	private void validatePersistOperation(Element<?> sourceElement)
+			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		TreeElementValidator validator = TreeFactory.validatorFactory().
+				createPersistValidator(this);
+		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		
+		validator.validateMandatoryElementId(pipeline);
+		validator.validateDuplicatedElement(pipeline);
 	}
 }

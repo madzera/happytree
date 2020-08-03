@@ -1,5 +1,8 @@
 package com.miuey.happytree.core;
 
+import java.util.Collection;
+
+import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.exception.TreeException;
 
@@ -22,6 +25,27 @@ abstract class TreeElementValidator extends TreeValidator {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					IMPOSSIBLE_COPY_ROOT);
 		}
+	}
+	
+	<T> Element<T> validateDuplicatedChildrenId(Collection<Element<T>> elements)
+			throws TreeException {
+		Element<T> result = null;
+		if (elements == null || elements.isEmpty()) {
+			return null;
+		}
+		for (Element<T> element : elements) {
+			if (result != null) {
+				return result;
+			}
+			Object id = element.getId();
+			Element<T> duplicatedElement = getManager().getElementById(id);
+			if (duplicatedElement != null) {
+				throw this.throwTreeException(TreeRepositoryMessage.
+						DUPLICATED_ELEMENT);
+			}
+			result = validateDuplicatedChildrenId(element.getChildren());
+		}
+		return result;
 	}
 	
 	abstract void validateMandatoryElementId(TreePipeline pipeline);

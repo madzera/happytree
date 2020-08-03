@@ -175,6 +175,10 @@ class TreeFactory {
 		TreeElementValidator createRemoveValidator(TreeManager manager) {
 			return new TreeRemoveValidator(manager);
 		}
+		
+		TreeElementValidator createPersistValidator(TreeManager manager) {
+			return new TreePersistValidator(manager);
+		}
 	}
 
 	class ExceptionFactory extends TreeFactory {

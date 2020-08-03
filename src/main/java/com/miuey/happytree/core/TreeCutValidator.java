@@ -65,20 +65,22 @@ class TreeCutValidator extends TreeElementValidator {
 				TreeManager manager = getManager();
 				TreeTransaction transaction = manager.getTransaction();
 				
-				/*
-				 * Verify if the target session already has the Id.
-				 */
-				transaction.sessionCheckout(targetSessionId);
-				
-				Element<?> duplicatedElement = manager.getElementById(id);
-				
-				/*
-				 * Roll back to the source session.
-				 */
-				transaction.sessionCheckout(sourceSessionId);
-				if (duplicatedElement != null) {
-					throw this.throwTreeException(TreeRepositoryMessage.
-							DUPLICATED_ELEMENT);
+				try {
+					/*
+					 * Verify if the target session already has the Id.
+					 */
+					transaction.sessionCheckout(targetSessionId);
+					Element<?> duplicatedElement = manager.getElementById(id);
+					if (duplicatedElement != null) {
+						throw this.throwTreeException(TreeRepositoryMessage.
+								DUPLICATED_ELEMENT);
+					}
+					validateDuplicatedChildrenId(source.getChildren());
+				} finally {
+					/*
+					 * Roll back to the source session.
+					 */
+					transaction.sessionCheckout(sourceSessionId);
 				}
 			}
 		}

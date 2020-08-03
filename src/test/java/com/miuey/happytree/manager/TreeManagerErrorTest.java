@@ -424,8 +424,8 @@ public class TreeManagerErrorTest {
 	 * Try cut a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
-	 * synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
+	 * elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -442,8 +442,9 @@ public class TreeManagerErrorTest {
 	@Test
 	public void cut_detachedElement() {
 		final String sessionId = "cut_detachedElement";
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		
 		String error = null;
 		
@@ -491,8 +492,8 @@ public class TreeManagerErrorTest {
 	 * Try to cut an element with a detached child.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
-	 * synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
+	 * elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -510,8 +511,9 @@ public class TreeManagerErrorTest {
 	public void cut_detachedChild() {
 		final String sessionId = "cut_detachedChild";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -1000,8 +1002,8 @@ public class TreeManagerErrorTest {
 	 * Try to copy a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Detached element. Not possible to copy/cut
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * with the message: <i>&quot;Detached element. Not possible to
+	 * copy/cut/remove elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1025,8 +1027,9 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		
 		String error = null;
 		final long officeId = 53024;
@@ -1075,8 +1078,8 @@ public class TreeManagerErrorTest {
 	 * Try to copy an element for inside of a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Detached element. Not possible to copy/cut
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * with the message: <i>&quot;Detached element. Not possible to
+	 * copy/cut/remove elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1100,8 +1103,9 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		String error = null;
 		
 		final long officeId = 53024;
@@ -1149,8 +1153,8 @@ public class TreeManagerErrorTest {
 	 * its children detached.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
-	 * synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
+	 * elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1173,8 +1177,9 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -1437,8 +1442,8 @@ public class TreeManagerErrorTest {
 	 * Try to remove a detached element from the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
-	 * synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
+	 * elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1455,8 +1460,9 @@ public class TreeManagerErrorTest {
 	public void removeElement_detached() {
 		final String sessionId = "removeElement_detached";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		String error = null;
 		
 		final long readmeId = 495833;
@@ -1502,8 +1508,8 @@ public class TreeManagerErrorTest {
 	 * Try to remove an element with a detached child.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut elements not
-	 * synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
+	 * elements not synchronized inside of the tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1521,8 +1527,9 @@ public class TreeManagerErrorTest {
 	public void remove_detachedChild() {
 		final String sessionId = "remove_detachedChild";
 		
-		final String messageError = "Detached element. Not possible to copy/cut"
-				+ " elements not synchronized inside of the tree.";
+		final String messageError = "Detached element. Not possible to"
+				+ " copy/cut/remove elements not synchronized inside of the"
+				+ " tree.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -1684,7 +1691,7 @@ public class TreeManagerErrorTest {
 		final String messageError = "Duplicated ID.";
 		String error = null;
 		
-		Object duplicatedWinampExeId = 395524;
+		Object duplicatedWinampExeId = 395524L;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -1812,6 +1819,8 @@ public class TreeManagerErrorTest {
 		try {
 			transaction.initializeSession(sessionId, directories);
 			Element<Metadata> mismatchElement = manager.createElement(foo, null);
+			Metadata metadata = new Metadata(foo, null, foo);
+			mismatchElement.wrap(metadata);
 			
 			manager.persistElement(mismatchElement);
 		} catch (TreeException e) {

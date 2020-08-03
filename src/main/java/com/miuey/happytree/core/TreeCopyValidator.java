@@ -62,13 +62,21 @@ class TreeCopyValidator extends TreeElementValidator {
 		}
 		
 		TreeTransaction transaction = getManager().getTransaction();
-		transaction.sessionCheckout(targetSessionId);
-		
-		Element<?> duplicatedElement = getManager().getElementById(source.
-				getId());
-		if (duplicatedElement != null) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATED_ELEMENT);
+		try {
+			transaction.sessionCheckout(targetSessionId);
+			
+			Element<?> duplicatedElement = getManager().getElementById(source.
+					getId());
+			if (duplicatedElement != null) {
+				throw this.throwTreeException(TreeRepositoryMessage.
+						DUPLICATED_ELEMENT);
+			}
+			validateDuplicatedChildrenId(source.getChildren());
+		} finally {
+			/*
+			 * Roll back to the source session.
+			 */
+			transaction.sessionCheckout(sourceSessionId);
 		}
 	}
 }
