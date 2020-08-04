@@ -1457,8 +1457,8 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void removeElement_detached() {
-		final String sessionId = "removeElement_detached";
+	public void removeElement_detachedElement() {
+		final String sessionId = "removeElement_detachedElement";
 		
 		final String messageError = "Detached element. Not possible to"
 				+ " copy/cut/remove elements not synchronized inside of the"
@@ -1524,7 +1524,7 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void remove_detachedChild() {
+	public void removeElement_detachedChild() {
 		final String sessionId = "remove_detachedChild";
 		
 		final String messageError = "Detached element. Not possible to"
@@ -1562,6 +1562,60 @@ public class TreeManagerErrorTest {
 			 * No possible to handle trees with detached elements.
 			 */
 			manager.removeElement(sdk);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to remove the root of
+	 * the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove the root element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No possible to handle the root of the tree. Consider
+	 * using a transaction to clone trees.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the root of the tree;</li>
+	 * 	<li>Try to remove the root element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void removeElement_rootElement() {
+		final String sessionId = "removeElement_rootElement";
+		
+		final String messageError = "No possible to handle the root of the tree."
+				+ " Consider using a transaction to clone trees.";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> root = transaction.currentSession().tree();
+			
+			/*
+			 * Impossible to remove the root element.
+			 */
+			manager.removeElement(root);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -2139,6 +2193,63 @@ public class TreeManagerErrorTest {
 			 * duplicated id.
 			 */
 			manager.updateElement(sdk);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update the root of
+	 * the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update the root element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No possible to handle the root of the tree. Consider
+	 * using a transaction to clone trees.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get the root of the tree;</li>
+	 * 	<li>Change the id of the root (not necessary);</li>
+	 * 	<li>Try to update the root element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_rootElement() {
+		final String sessionId = "updateElement_rootElement";
+		
+		final String messageError = "No possible to handle the root of the tree."
+				+ " Consider using a transaction to clone trees.";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> root = transaction.currentSession().tree();
+			
+			root.setId("bar");
+			
+			/*
+			 * Impossible to update the root element.
+			 */
+			manager.updateElement(root);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
