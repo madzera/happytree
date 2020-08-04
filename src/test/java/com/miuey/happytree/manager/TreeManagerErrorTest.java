@@ -1790,7 +1790,8 @@ public class TreeManagerErrorTest {
 	 * of element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Mismatch type ID error.&quot;</i>
+	 * with the message: <i>&quot;Mismatch type error. The object to be wrapped
+	 * has incompatible type than the object used in this tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1806,7 +1807,9 @@ public class TreeManagerErrorTest {
 	public void persistElement_mismatchElement() {
 		final String sessionId = "persistElement_mismatchElement";
 		
-		final String messageError = "Mismatch type ID error.";
+		final String messageError = "Mismatch type error. The object to be"
+				+ " wrapped has incompatible type than the object used in this"
+				+ " tree.";
 		String error = null;
 		
 		final String foo = "foo";

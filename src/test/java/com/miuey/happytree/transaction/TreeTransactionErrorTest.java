@@ -66,7 +66,50 @@ public class TreeTransactionErrorTest {
 		
 		try {
 			transaction.initializeSession(nameTree, Directory.class);
-			transaction.sessionCheckout(nameTree);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Object)}.
+	 * 
+	 * <p>Error scenario for this operation when the type of session is
+	 * <code>null</code>.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session with a <code>null</code> type of session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message:
+	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with the <code>null</code> type of session;
+	 * 	</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void initializeSession_nullTypeSession() throws TreeException {
+		final String nameTree = "initializeSession_nullTypeSession";
+		Class<?> nullableTypeSession = null;
+		
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(nameTree, nullableTypeSession);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		} finally {

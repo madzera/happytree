@@ -1,5 +1,5 @@
-package com.miuey.happytree.core;
 
+package com.miuey.happytree.core;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
 
-	private static final String DEF_ROOT_IDENTIFIER = "HAPPYTREE_ROOT";
+	private static final String KEY_SESSION_ID = "sessionId";
 	
 	private Map<String, TreeSession> sessions = TreeFactory.mapFactory().
 			createHashMap();
@@ -31,12 +31,12 @@ class TreeTransactionCore implements TreeTransaction {
 
 	
 	@Override
-	public <T> void initializeSession(String identifier, T type)
+	public <T> void initializeSession(String identifier, Class<T> type)
 			throws TreeException {
 		/*
 		 * Initial validation processes.
 		 */
-		validateInitializeSession(identifier);
+		validateInitializeSession(identifier, type);
 		
 		/*
 		 * Session creation processes.
@@ -49,14 +49,14 @@ class TreeTransactionCore implements TreeTransaction {
 		TreeSessionCore newSession = serviceFactory.createTreeSession(
 				identifier);
 		TreeElementCore<T> root = serviceFactory.createElement(
-				DEF_ROOT_IDENTIFIER, null);
+				identifier, null);
 		
 		Collection<Element<T>> rootChildren = TreeFactory.collectionFactory().
 				createHashSet();
 		/*
 		 * Set the root element with a empty tree.
 		 */
-		newSession.setRoot(root, rootChildren);
+		newSession.setRoot(root, rootChildren, type);
 		
 		sessions.put(identifier, newSession);
 		
@@ -78,7 +78,7 @@ class TreeTransactionCore implements TreeTransaction {
 		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
-		pipeline.addAttribute("sessionId", identifier);
+		pipeline.addAttribute(KEY_SESSION_ID, identifier);
 		pipeline.addAttribute("objects", objects);
 		pipeline.addAttribute("manager", associatedManager());
 		
@@ -176,11 +176,27 @@ class TreeTransactionCore implements TreeTransaction {
 		return this.associatedManager;
 	}
 	
+	private void validateInitializeSession(String identifier,
+			Object typeSession)
+			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		pipeline.addAttribute(KEY_SESSION_ID, identifier);
+		pipeline.addAttribute("typeSession", typeSession);
+		
+		TreeSessionValidator validator = TreeFactory.validatorFactory().
+				createSessionValidator(associatedManager());
+		
+		validator.validateMandatorySessionId(pipeline);
+		validator.validateMandatoryTypeSession(pipeline);
+		validator.validateDuplicatedSessionId(pipeline);
+	}
+	
 	private void validateInitializeSession(String identifier)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
-		pipeline.addAttribute("sessionId", identifier);
+		pipeline.addAttribute(KEY_SESSION_ID, identifier);
 		
 		TreeSessionValidator validator = TreeFactory.validatorFactory().
 				createSessionValidator(associatedManager());

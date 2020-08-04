@@ -755,8 +755,8 @@ public class TreeManagerTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
-		transaction.initializeSession(sessionId, sourceDir);
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
 		
 		Directory gamesDir = new Directory(gamesId, programFilesId, "Games");
 		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId,

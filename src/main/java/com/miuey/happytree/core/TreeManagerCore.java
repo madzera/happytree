@@ -341,11 +341,12 @@ class TreeManagerCore implements TreeManager {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
-		TreeElementValidator validator = TreeFactory.validatorFactory().
+		TreePersistValidator validator = TreeFactory.validatorFactory().
 				createPersistValidator(this);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
 		validator.validateMandatoryElementId(pipeline);
+		validator.validateTypeOfElement(pipeline);
 		validator.validateDuplicatedElement(pipeline);
 	}
 }

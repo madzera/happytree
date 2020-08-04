@@ -118,7 +118,7 @@ public class TreeSessionTest {
 	@Test
 	public void tree() throws TreeException {
 		final String sessionId = "TREE";
-		final String rootId = "HAPPYTREE_ROOT";
+		final String rootId = sessionId;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();

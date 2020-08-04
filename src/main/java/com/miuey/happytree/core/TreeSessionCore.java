@@ -10,6 +10,7 @@ class TreeSessionCore implements TreeSession {
 	private String identifier;
 	private boolean isActive;
 	private Element<?> root;
+	private Class<?> typeTree;
 	
 	
 	TreeSessionCore(String identifier) {
@@ -41,13 +42,19 @@ class TreeSessionCore implements TreeSession {
 	 * This method represents the only one place to initialize a tree. Put the
 	 * root element attached to this session and vice-versa.
 	 */
-	<T> void setRoot(Element<?> root, Collection<Element<T>> tree) {
+	<T> void setRoot(Element<?> root, Collection<Element<T>> tree,
+			Class<?> typeTree) {
 		@SuppressWarnings("unchecked")
 		TreeElementCore<T> rootCast = (TreeElementCore<T>) root;
 		
 		rootCast.initRoot(tree);
 		rootCast.attach(this.getSessionId());
 		this.root = rootCast;
+		this.typeTree = typeTree;
 		setActive(Boolean.TRUE);
+	}
+
+	Class<?> getTypeTree() {
+		return typeTree;
 	}
 }

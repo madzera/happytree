@@ -164,19 +164,19 @@ class TreeFactory {
 			return new TreeSessionValidator(manager);
 		}
 		
-		TreeElementValidator createCutValidator(TreeManager manager) {
+		TreeCutValidator createCutValidator(TreeManager manager) {
 			return new TreeCutValidator(manager);
 		}
 		
-		TreeElementValidator createCopyValidator(TreeManager manager) {
+		TreeCopyValidator createCopyValidator(TreeManager manager) {
 			return new TreeCopyValidator(manager);
 		}
 		
-		TreeElementValidator createRemoveValidator(TreeManager manager) {
+		TreeRemoveValidator createRemoveValidator(TreeManager manager) {
 			return new TreeRemoveValidator(manager);
 		}
 		
-		TreeElementValidator createPersistValidator(TreeManager manager) {
+		TreePersistValidator createPersistValidator(TreeManager manager) {
 			return new TreePersistValidator(manager);
 		}
 	}

@@ -85,7 +85,7 @@ public interface TreeTransaction {
 	 * @throws IllegalArgumentException when the <code>identifier</code> is
 	 * <code>null</code> or empty
 	 */
-	public <T> void initializeSession(String identifier, T type)
+	public <T> void initializeSession(String identifier, Class<T> type)
 			throws TreeException;
 	
 	/**

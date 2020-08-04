@@ -22,6 +22,15 @@ class TreeSessionValidator extends TreeValidator {
 		}
 	}
 	
+	void validateMandatoryTypeSession(TreePipeline pipeline) {
+		Class<?> typeSession = (Class<?>) pipeline.getAttribute("typeSession");
+		
+		if (typeSession == null) {
+			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
+					INVALID_INPUT);
+		}
+	}
+	
 	void validateDuplicatedSessionId(TreePipeline pipeline)
 			throws TreeException {
 		String sessionId = (String) pipeline.getAttribute("sessionId");

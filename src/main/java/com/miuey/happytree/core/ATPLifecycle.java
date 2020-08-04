@@ -93,6 +93,7 @@ class ATPLifecycle<T> {
 		 */
 		Element<T> root = manager.createElement(session.getSessionId(), null);
 		
+		T typeTree = null;
 		/*
 		 * Change the parent id of immediate root children (first level).
 		 */
@@ -100,9 +101,10 @@ class ATPLifecycle<T> {
 			child.setParent(session.getSessionId());
 			TreeElementCore<T> element = (TreeElementCore<T>) child;
 			element.attach(session.getSessionId());
+			typeTree = child.unwrap();
 		}
 		
-		session.setRoot(root, tree);
+		session.setRoot(root, tree, typeTree != null?typeTree.getClass():null);
 	}
 
 	/*

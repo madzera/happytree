@@ -18,7 +18,7 @@ public class TreeConstants {
 		//----------------TREE----------------
 		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
-		static final String DIFFERENT_TYPES_ID_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
+		static final String DIFFERENT_TYPES_ERROR = "com.miuey.happytree.error.checked.tree.mismatchelement";
 		static final String DETACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.detached";
 		static final String ATTACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.attached";
 		static final String CUT_COPY_ROOT = "com.miuey.happytree.error.checked.tree.root";
