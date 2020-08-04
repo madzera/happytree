@@ -356,8 +356,8 @@ public class TreeManagerErrorTest {
 	 * Try to cut the root element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;No possible to cut/copy root. Consider using a
-	 * transaction to clone trees.&quot;</i>
+	 * with the message: <i>&quot;No possible to handle the root of the tree.
+	 * Consider using a transaction to clone trees.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -381,8 +381,8 @@ public class TreeManagerErrorTest {
 		
 		final long windowsId = 1;
 		
-		final String messageError = "No possible to cut/copy root. Consider"
-				+ " using a transaction to clone trees.";
+		final String messageError = "No possible to handle the root of the tree."
+				+ " Consider using a transaction to clone trees.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -1758,6 +1758,10 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(sessionId, directories);
+			
+			/*
+			 * These elements, when created, they have the NOT_EXISTED state.
+			 */
 			Element<Directory> element = manager.createElement(id, null);
 			Element<Directory> childElement = manager.createElement(
 					duplicatedId, id);
@@ -1767,6 +1771,73 @@ public class TreeManagerErrorTest {
 			/*
 			 * Error trying to persist an element which this element has a child
 			 * with duplicated id.
+			 */
+			manager.persistElement(element);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * which already existed in the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element which already existed in the tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Already existed element. Not possible to
+	 * persist elements which are already persisted before. Try to update
+	 * instead.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element from this tree;</li>
+	 * 	<li>Change the id of this element with a not existing id, to change the
+	 * 	element status from &quot;ATTACHED&quot; to &quot;DETACHED&quot;;</li>
+	 * 	<li>Try to persist the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_existedElement() {
+		final String sessionId = "persistElement_existedElement";
+		
+		final String messageError = "Already existed element. Not possible to"
+				+ " persist elements which are already persisted before. Try to"
+				+ " update instead.";
+		String error = null;
+		
+		final long filesId = 8484934;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			
+			Element<Directory> element = manager.getElementById(filesId);
+			
+			/*
+			 * Here, the element pass from ATTACHED to DETACHED.
+			 */
+			element.setId(Long.MAX_VALUE);
+			
+			/*
+			 * Error trying to persist an detached element. This is no possible
+			 * to persist ATTACHED neither DETACHED elements, only NOT_EXISTED.
 			 */
 			manager.persistElement(element);
 		} catch (TreeException e) {
@@ -1826,6 +1897,369 @@ public class TreeManagerErrorTest {
 			mismatchElement.wrap(metadata);
 			
 			manager.persistElement(mismatchElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an element
+	 * with a <code>null</code> argument value.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element with a <code>null</code> argument value.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Try to get an element through a not existing id;</li>
+	 * 	<li>Try to update an element with <code>null</code> argument value;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void updateElement_nullElement() throws TreeException {
+		final String sessionId = "updateElement_nullElement";
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		Object notExistingId = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> nullableElement = manager.getElementById(
+					notExistingId);
+			
+			manager.updateElement(nullableElement);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an id of
+	 * element with a <code>null</code> id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an id element with a <code>null</code> id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element from the current tree session;</li>
+	 * 	<li>Set the id of this element with a <code>null</code> value;</li>
+	 * 	<li>Try to update the element;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void updateElement_nullIdElement() throws TreeException {
+		final String sessionId = "updateElement_nullIdElement";
+		final String messageError = "Invalid null/empty argument(s).";
+		String error = null;
+		
+		final Object wordId = 674098L;
+		Object nullableId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> word = manager.getElementById(
+					wordId);
+			
+			word.setId(nullableId);
+			
+			/*
+			 * Error because the id of this element is null.
+			 */
+			manager.updateElement(word);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an id of
+	 * element which this new id has the same id than another element inside of
+	 * the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an id of element with this id already existing.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element;</li>
+	 * 	<li>Change its id to another existing id inside of the tree;</li>
+	 * 	<li>Try to update this element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_duplicatedId() {
+		final String sessionId = "updateElement_duplicatedId";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long ideId = 13823;
+		final long readmeDuplicatedId = 495833;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> ide = manager.getElementById(ideId);
+			
+			/*
+			 * Setting the new id with the same id value than the reader
+			 * element.
+			 */
+			ide.setId(readmeDuplicatedId);
+			
+			manager.updateElement(ide);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an id of a
+	 * child element which this new id has the same id than another element
+	 * inside of the tree.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an id of a child element with this id already existing.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element;</li>
+	 * 	<li>Change the id of its child to another existing id inside of the
+	 * 	tree;</li>
+	 * 	<li>Try to update the element which its child has now the duplicated id;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_duplicatedChildId() {
+		final String sessionId = "updateElement_duplicatedChildId";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long ideId = 13823;
+		final long sdkId = 113009;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> sdk = manager.getElementById(sdkId);
+			Collection<Element<Directory>> children = sdk.getChildren();
+			Element<Directory> files = null;
+			for (Element<Directory> iterator : children) {
+				files = iterator;
+			}
+			
+			/*
+			 * Changing the id of the sdk's child pointing to the same id than
+			 * the IDE element.
+			 */
+			files.setId(ideId);
+			
+			/*
+			 * Duplicated id error because child of sdk element has now a
+			 * duplicated id.
+			 */
+			manager.updateElement(sdk);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update a not existed
+	 * element in the tree.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update a not existing element in the tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Not existed element. Not possible to update
+	 * elements which are not persisted before. Try to persist instead.&quot;
+	 * </i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element;</li>
+	 * 	<li>Try to update this element, which has not been persisted in the tree
+	 * 	before;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_notExistedElement() {
+		final String sessionId = "updateElement_notExistedElement";
+		
+		final String messageError = "Not existed element. Not possible to update"
+				+ " elements which are not persisted before. Try to persist"
+				+ " instead.";
+		String error = null;
+		
+		final long id = Long.MAX_VALUE;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sessionId, Directory.class);
+			Element<Directory> element = manager.createElement(id, null);
+			
+			/*
+			 * Error trying to update a not existed element.
+			 */
+			manager.updateElement(element);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an element
+	 * from a tree inside of another one.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element from a tree inside of another one.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Mismatch type error. The object to be wrapped
+	 * has incompatible type than the object used in this tree.&quot;
+	 * </i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session, previously loaded from
+	 * 	<code>TreeAssembler</code> for the <code>Directory</code> object;
+	 * 	<li>Get an element from this tree session;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code> for the <code>Metadata</code> object;
+	 * 	<li>Invoke the {@link TreeManager#updateElement(Element)} passing
+	 * 	through the element from the source tree session;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_mismatchElement() {
+		final String sourceSessionId = "Directory_Session";
+		final String targetSessionId = "Metadata_Session";
+		
+		final String messageError = "Mismatch type error. The object to be"
+				+ " wrapped has incompatible type than the object used in this"
+				+ " tree.";
+		String error = null;
+		
+		final long eclipseExeId = 8483742;
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Metadata> metadata = TreeAssembler.
+				getMetadataTree();
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, directories);
+			Element<Directory> eclipseExe = manager.getElementById(eclipseExeId);
+			
+			transaction.initializeSession(targetSessionId, metadata);
+			
+			/*
+			 * Here, there is an attempt to update an element from a tree inside
+			 * of another tree session. Mismatch error.
+			 */
+			manager.updateElement(eclipseExe);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {

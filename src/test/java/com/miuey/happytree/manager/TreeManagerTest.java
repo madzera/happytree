@@ -775,4 +775,72 @@ public class TreeManagerTest {
 		assertTrue(manager.containsElement(programFilesId, gamesId));;
 		assertTrue(manager.containsElement(programFilesId, ageOfEmpiresId));
 	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Update an element after changing its parent.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element to have its parent updated after changing
+	 * its parent and invoking {@link TreeManager#persistElement(Element)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get three elements, the source and its current parent (recorded and
+	 * 	VLC), and the element which it will be the new parent (Winamp);
+	 * 	</li>
+	 * 	<li>Verify that the (recorded) element has the (VLC) as its parent and
+	 * 	the (Winamp) is not the parent of (recorded) yet;</li>
+	 * 	<li>Change the parent of (recorded) element pointing to (Winamp);</li>
+	 * 	<li>Update the element;</li>
+	 * 	<li>Verify now that the (recorded) element has the new parent (Winamp)
+	 * 	instead of (VLC).</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void updateElement() throws TreeException {
+		final String sessionId = "updateElement";
+		
+		final long recordedId = 848305;
+		final long parentRecordedIdVlc = 10239;
+		final long winampId = 32099;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> winamp = manager.getElementById(winampId);
+		Element<Directory> recorded = manager.getElementById(recordedId);
+		Element<Directory> vlc = manager.getElementById(parentRecordedIdVlc);
+		
+		assertTrue(manager.containsElement(vlc, recorded));
+		assertFalse(manager.containsElement(winamp, recorded));
+		
+		/*
+		 * Setting the parent of recorded pointing to winamp.
+		 * Here, the recorded element is detached, it needs to be updated.
+		 */
+		recorded.setParent(winamp.getId());
+		
+		manager.updateElement(recorded);
+		
+		assertFalse(manager.containsElement(parentRecordedIdVlc, recordedId));
+		assertTrue(manager.containsElement(winampId, recordedId));
+	}
 }

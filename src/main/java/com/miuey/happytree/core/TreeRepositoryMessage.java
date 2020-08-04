@@ -19,11 +19,12 @@ enum TreeRepositoryMessage {
 	/*
 	 * Invalid element state.
 	 */
-	DETACHED_ELEMENT(TreeConstants.Error.DETACHED_ELEMENT),
-	ATTACHED_ELEMENT(TreeConstants.Error.ATTACHED_ELEMENT),
+	DETACHED_ELEMENT(TreeConstants.Error.CUT_COPY_DETACHED_ELEMENT),
+	ATTACHED_ELEMENT(TreeConstants.Error.PERSIST_ATTACHED_ELEMENT),
+	NOT_EXISTED_ELEMENT(TreeConstants.Error.UPDATE_NOT_EXISTED_ELEMENT),
 	DUPLICATED_ELEMENT(TreeConstants.Error.DUPLICATED_ID_ERROR),
 	MISMATCH_TYPE_ELEMENT(TreeConstants.Error.DIFFERENT_TYPES_ERROR),
-	IMPOSSIBLE_COPY_ROOT(TreeConstants.Error.CUT_COPY_ROOT);
+	IMPOSSIBLE_HANDLE_ROOT(TreeConstants.Error.HANDLE_ROOT);
 	
 	private String errorDesc;
 	private static Properties properties = new Properties();

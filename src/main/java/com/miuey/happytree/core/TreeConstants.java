@@ -19,9 +19,10 @@ public class TreeConstants {
 		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
 		static final String DIFFERENT_TYPES_ERROR = "com.miuey.happytree.error.checked.tree.mismatchelement";
-		static final String DETACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.detached";
-		static final String ATTACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.attached";
-		static final String CUT_COPY_ROOT = "com.miuey.happytree.error.checked.tree.root";
+		static final String CUT_COPY_DETACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.copycutremote.detached";
+		static final String PERSIST_ATTACHED_ELEMENT = "com.miuey.happytree.error.checked.tree.persist.attached";
+		static final String UPDATE_NOT_EXISTED_ELEMENT = "com.miuey.happytree.error.checked.tree.update.notexisted";
+		static final String HANDLE_ROOT = "com.miuey.happytree.error.checked.tree.root";
 		//---------------SESSION--------------
 		static final String DUPLICATED_SESSION_ID_ERROR = "com.miuey.happytree.error.checked.session.duplicatedid";
 		static final String NO_DEFINED_SESSION = "com.miuey.happytree.error.checked.session.nodefinedsession";

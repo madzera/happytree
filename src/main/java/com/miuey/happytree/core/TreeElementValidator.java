@@ -23,7 +23,7 @@ abstract class TreeElementValidator extends TreeValidator {
 				SOURCE_ELEMENT_KEY);
 		if (source != null && source.isRoot()) {
 			throw this.throwTreeException(TreeRepositoryMessage.
-					IMPOSSIBLE_COPY_ROOT);
+					IMPOSSIBLE_HANDLE_ROOT);
 		}
 	}
 	
