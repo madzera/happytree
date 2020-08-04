@@ -934,8 +934,8 @@ public class TreeManagerErrorTest {
 	 * Try to copy the root element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;No possible to cut/copy root. Consider using a
-	 * transaction to clone trees.&quot;</i>
+	 * with the message: <i>&quot;No possible to handle the root of the tree.
+	 * Consider using a transaction to clone trees.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -959,8 +959,8 @@ public class TreeManagerErrorTest {
 		
 		final long windowsId = 1;
 		
-		final String messageError = "No possible to cut/copy root. Consider"
-				+ " using a transaction to clone trees.";
+		final String messageError = "No possible to handle the root of the tree."
+				+ " Consider using a transaction to clone trees.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
