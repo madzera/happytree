@@ -27,7 +27,8 @@ class TreePersistValidator extends TreeElementValidator {
 				SOURCE_ELEMENT_KEY);
 		TreeElementCore<?> convertedSource = (TreeElementCore<?>) source;
 		
-		if (convertedSource.isAttached()) {
+		if (convertedSource.isAttached() 
+				|| convertedSource.attachedTo() != null) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					ATTACHED_ELEMENT);
 		}

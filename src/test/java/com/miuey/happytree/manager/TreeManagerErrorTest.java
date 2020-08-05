@@ -2133,14 +2133,15 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to update an id of a
-	 * child element which this new id has the same id than another element
-	 * inside of the tree.</p>
+	 * grand child element which this new id has the same id than another
+	 * element inside of the tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to update an id of a child element with this id already existing.
+	 * Try to update an id of a grand child element with this id already
+	 * existing.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
 	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
@@ -2150,23 +2151,23 @@ public class TreeManagerErrorTest {
 	 * 	<li>Initialize a new session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
 	 * 	<li>Get an existing element;</li>
-	 * 	<li>Change the id of its child to another existing id inside of the
+	 * 	<li>Change the id of a grand child to another existing id inside of the
 	 * 	tree;</li>
-	 * 	<li>Try to update the element which its child has now the duplicated id;
-	 * 	</li>
+	 * 	<li>Try to update the element which its grand child has now the
+	 * 	duplicated id;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 */
 	@Test
-	public void updateElement_duplicatedChildId() {
-		final String sessionId = "updateElement_duplicatedChildId";
+	public void updateElement_duplicatedGrandChildId() {
+		final String sessionId = "updateElement_duplicatedGrandChildId";
 		
 		final String messageError = "Duplicated ID.";
 		String error = null;
 		
 		final long ideId = 13823;
-		final long sdkId = 113009;
+		final long realtekId = 94034;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -2175,13 +2176,20 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(sessionId, directories);
-			Element<Directory> sdk = manager.getElementById(sdkId);
-			Collection<Element<Directory>> children = sdk.getChildren();
+			Element<Directory> realtek = manager.getElementById(realtekId);
+			Collection<Element<Directory>> children = realtek.getChildren();
+			Element<Directory> child = null;
 			Element<Directory> files = null;
-			for (Element<Directory> iterator : children) {
-				files = iterator;
-			}
 			
+			for (Element<Directory> iterator : children) {
+				Directory sdkDirectory = iterator.unwrap();
+				if (sdkDirectory.getName().equals("sdk")) {
+					child = iterator;
+				}
+			}
+			for (Element<Directory> granChild : child.getChildren()) {
+				files = granChild;
+			}
 			/*
 			 * Changing the id of the sdk's child pointing to the same id than
 			 * the IDE element.
@@ -2192,7 +2200,7 @@ public class TreeManagerErrorTest {
 			 * Duplicated id error because child of sdk element has now a
 			 * duplicated id.
 			 */
-			manager.updateElement(sdk);
+			manager.updateElement(realtek);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {

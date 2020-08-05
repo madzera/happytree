@@ -347,6 +347,7 @@ class TreeManagerCore implements TreeManager {
 		
 		validator.validateMandatoryElementId(pipeline);
 		validator.validateTypeOfElement(pipeline);
+		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedElement(pipeline);
 	}
 }
