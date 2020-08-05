@@ -1,6 +1,7 @@
 package com.miuey.happytree.core;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeSession;
@@ -11,6 +12,13 @@ class TreeSessionCore implements TreeSession {
 	private boolean isActive;
 	private Element<?> root;
 	private Class<?> typeTree;
+	
+	/*
+	 * Main cache of all elements from this session. All searches will use this
+	 * cache to increase perfomance.
+	 */
+	private Map<Object, Element<?>> cache = TreeFactory.mapFactory().
+			createHashMap();
 	
 	
 	TreeSessionCore(String identifier) {
@@ -54,6 +62,19 @@ class TreeSessionCore implements TreeSession {
 		setActive(Boolean.TRUE);
 	}
 
+	<T> void add(Object id, Element<T> element) {
+		this.cache.put(id, element);
+	}
+	
+	void remove(Object id) {
+		this.cache.remove(id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	<T> Element<T> get(Object id) {
+		return (Element<T>) this.cache.get(id);
+	}
+	
 	Class<?> getTypeTree() {
 		return typeTree;
 	}

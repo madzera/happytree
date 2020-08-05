@@ -11,8 +11,8 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeManagerCore implements TreeManager {
 
-	private static final String SOURCE_ELEMENT = "sourceElement";
-	private static final String TARGET_ELEMENT = "targetElement";
+	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
+			createValidatorFacade(this);
 	
 	/*
 	 * The transaction associated to this manager. A manager is always related
@@ -28,8 +28,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
-		validateTransaction();
-		validateCutCopyOperation(from, to, Boolean.FALSE);
+		validatorFacade.validateTransaction();
+		validatorFacade.validateCutCopyOperation(from, to, Boolean.FALSE);
 		
 		Element<T> parentFrom = this.getElementById(from.getParent());
 		if (parentFrom != null) {
@@ -53,7 +53,7 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
-		validateTransaction();
+		validatorFacade.validateTransaction();
 		
 		Element<T> fromElement = this.getElementById(from);
 		Element<T> toElement = this.getElementById(to);
@@ -64,8 +64,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
-		validateTransaction();
-		validateCutCopyOperation(from, to, Boolean.TRUE);
+		validatorFacade.validateTransaction();
+		validatorFacade.validateCutCopyOperation(from, to, Boolean.TRUE);
 		
 		Element<T> clonedElement = this.createElement(from.getId(), to.getId());
 		clonedElement.addChildren(from.getChildren());
@@ -85,9 +85,10 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> removeElement(Element<T> element)
 			throws TreeException {
+		validatorFacade.validateTransaction();
+		validatorFacade.validateRemoveOperation(element);
+		
 		TreeElementCore<T> removedElement = null;
-		validateTransaction();
-		validateRemoveOperation(element);
 		
 		if (element != null) {
 			Element<T> searchElement = this.getElementById(element.getId());
@@ -105,8 +106,9 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> removeElement(Object id) throws TreeException {
+		validatorFacade.validateTransaction();
+		
 		Element<T> removedElement = null;
-		validateTransaction();
 		
 		if (id != null) {
 			Element<T> element = this.getElementById(id);
@@ -126,8 +128,8 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> getElementById(Object id) throws TreeException {
+		validatorFacade.validateTransaction();
 		Element<T> element = null;
-		validateTransaction();
 		if (id != null) {
 			TreeSession session = this.getTransaction().currentSession();
 			Element<T> root = session.tree();
@@ -139,8 +141,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
+		validatorFacade.validateTransaction();
 		boolean result = Boolean.FALSE;
-		validateTransaction();
 		
 		TreeElementCore<T> parentElement = (TreeElementCore<T>) parent;
 		TreeElementCore<T> descendantElement = (TreeElementCore<T>) descendant;
@@ -160,8 +162,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public boolean containsElement(Object parent, Object descendant)
 			throws TreeException {
+		validatorFacade.validateTransaction();
 		boolean result = Boolean.FALSE;
-		validateTransaction();
 		if (parent != null && descendant != null) {
 			Element<?> parentElement = this.getElementById(parent);
 			Element<?> descendantElement = this.getElementById(descendant);
@@ -177,8 +179,8 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public boolean containsElement(Element<?> element) throws TreeException {
+		validatorFacade.validateTransaction();
 		boolean result = Boolean.FALSE;
-		validateTransaction();
 		if (element != null) {
 			TreeElementCore<?> convertedElement = (TreeElementCore<?>) element;
 			String sessionId = this.getTransaction().currentSession().
@@ -195,8 +197,8 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public boolean containsElement(Object id) throws TreeException {
+		validatorFacade.validateTransaction();
 		boolean result = Boolean.FALSE;
-		validateTransaction();
 		if (id != null) {
 			Element<?> element = this.getElementById(id);
 			result = element != null;
@@ -210,7 +212,7 @@ class TreeManagerCore implements TreeManager {
 		/*
 		 * Initial validation processes.
 		 */
-		this.validateTransaction();
+		validatorFacade.validateTransaction();
 		
 		return TreeFactory.serviceFactory().createElement(id, parent);
 	}
@@ -218,8 +220,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
-		validateTransaction();
-		validatePersistOperation(newElement);
+		validatorFacade.validateTransaction();
+		validatorFacade.validatePersistOperation(newElement);
 		
 		Object parentId = newElement.getParent();
 		Element<T> parent = null;
@@ -253,7 +255,7 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> root() throws TreeException {
-		validateTransaction();
+		validatorFacade.validateTransaction();
 		TreeSession session = this.getTransaction().currentSession();
 		return session.tree();
 	}
@@ -292,62 +294,5 @@ class TreeManagerCore implements TreeManager {
 			result = searchElement(element.getChildren(), id);
 		}
 		return result;
-	}
-	
-	private void validateTransaction() throws TreeException {
-		TreeSessionValidator validator = TreeFactory.validatorFactory().
-				createSessionValidator(this);
-		
-		validator.validateNoDefinedSession();
-		validator.validateNoActiveSession();
-	}
-	
-	private void validateCutCopyOperation(Element<?> sourceElement,
-			Element<?> targetElement, boolean toCopy) throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		TreeElementValidator validator = null;
-		if (toCopy) {
-			validator = TreeFactory.validatorFactory().
-					createCopyValidator(this);
-		} else {
-			validator = TreeFactory.validatorFactory().
-					createCutValidator(this);
-		}
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
-		
-		validator.validateMandatoryElementId(pipeline);
-		validator.validateCutCopyRemoveRootElement(pipeline);
-		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
-	}
-	
-	private void validateRemoveOperation(Element<?> sourceElement)
-			throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		
-		TreeElementValidator validator = TreeFactory.validatorFactory().
-				createRemoveValidator(this);
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		
-		validator.validateCutCopyRemoveRootElement(pipeline);
-		validator.validateDetachedElement(pipeline);
-	}
-	
-	private void validatePersistOperation(Element<?> sourceElement)
-			throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		
-		TreePersistValidator validator = TreeFactory.validatorFactory().
-				createPersistValidator(this);
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		
-		validator.validateMandatoryElementId(pipeline);
-		validator.validateTypeOfElement(pipeline);
-		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
 	}
 }

@@ -21,6 +21,7 @@ class TreeFactory {
 	private static CollectionFactory collectionFactory;
 	private static MapFactory mapFactory;
 	private static ValidatorFactory validatorFactory;
+	private static FacadeFactory facadeFactory;
 	private static PipelineFactory pipelineFactory;
 	private static IOFactory ioFactory;
 	private static ExceptionFactory exceptionFactory;
@@ -71,6 +72,13 @@ class TreeFactory {
 		return validatorFactory;
 	}
 
+	static FacadeFactory facadeFactory() {
+		if (facadeFactory == null) {
+			facadeFactory = getInstance().new FacadeFactory();
+		}
+		return facadeFactory;
+	}
+	
 	static ExceptionFactory exceptionFactory() {
 		if (exceptionFactory == null) {
 			exceptionFactory = getInstance().new ExceptionFactory();
@@ -181,6 +189,14 @@ class TreeFactory {
 		}
 	}
 
+	class FacadeFactory extends TreeFactory {
+		FacadeFactory() {}
+		
+		TreeValidatorFacade createValidatorFacade(TreeManager manager) {
+			return new TreeValidatorFacade(manager);
+		}
+	}
+	
 	class ExceptionFactory extends TreeFactory {
 		ExceptionFactory() {}
 		
