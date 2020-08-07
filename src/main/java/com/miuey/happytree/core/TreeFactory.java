@@ -187,6 +187,10 @@ class TreeFactory {
 		TreePersistValidator createPersistValidator(TreeManager manager) {
 			return new TreePersistValidator(manager);
 		}
+		
+		TreeUpdateValidator createUpdateValidator(TreeManager manager) {
+			return new TreeUpdateValidator(manager);
+		}
 	}
 
 	class FacadeFactory extends TreeFactory {

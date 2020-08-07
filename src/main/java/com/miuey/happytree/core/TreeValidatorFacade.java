@@ -41,7 +41,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
 		
 		validator.validateMandatoryElementId(pipeline);
-		validator.validateCutCopyRemoveRootElement(pipeline);
+		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedElement(pipeline);
 	}
@@ -55,7 +55,7 @@ class TreeValidatorFacade {
 				createRemoveValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
-		validator.validateCutCopyRemoveRootElement(pipeline);
+		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 	}
 	
@@ -69,6 +69,22 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
 		validator.validateMandatoryElementId(pipeline);
+		validator.validateTypeOfElement(pipeline);
+		validator.validateDetachedElement(pipeline);
+		validator.validateDuplicatedElement(pipeline);
+	}
+	
+	void validateUpdateOperation(Element<?> sourceElement)
+			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		TreeUpdateValidator validator = TreeFactory.validatorFactory().
+				createUpdateValidator(manager);
+		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		
+		validator.validateMandatoryElementId(pipeline);
+		validator.validateHandleRootElement(pipeline);
 		validator.validateTypeOfElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedElement(pipeline);

@@ -17,7 +17,7 @@ abstract class TreeElementValidator extends TreeValidator {
 	}
 
 	
-	void validateCutCopyRemoveRootElement(TreePipeline pipeline)
+	void validateHandleRootElement(TreePipeline pipeline)
 			throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);

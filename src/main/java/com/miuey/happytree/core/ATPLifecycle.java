@@ -85,6 +85,10 @@ class ATPLifecycle<T> {
 		for (Element<T> iterator : elements) {
 			TreeElementCore<T> element = (TreeElementCore<T>) iterator;
 			element.attach(session.getSessionId());
+			/*
+			 * Add to the cache session.
+			 */
+			session.add(element.getId(), element);
 		}
 		
 		/*

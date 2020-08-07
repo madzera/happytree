@@ -31,6 +31,8 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateTransaction();
 		validatorFacade.validateCutCopyOperation(from, to, Boolean.FALSE);
 		
+		TreeSessionCore session = (TreeSessionCore) this.getTransaction().
+				currentSession();
 		Element<T> parentFrom = this.getElementById(from.getParent());
 		if (parentFrom != null) {
 			parentFrom.removeChild(from);
@@ -48,6 +50,8 @@ class TreeManagerCore implements TreeManager {
 			synchronizeElements(root);
 		}
 		synchronizeElements(parentFrom, from, to);
+		transaction.sessionCheckout(session.getSessionId());
+		session.remove(from.getId());
 		return from;
 	}
 
@@ -131,9 +135,20 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateTransaction();
 		Element<T> element = null;
 		if (id != null) {
-			TreeSession session = this.getTransaction().currentSession();
-			Element<T> root = session.tree();
-			element = searchElement(root.getChildren(), id);
+			TreeSessionCore session = (TreeSessionCore) this.getTransaction().
+					currentSession();
+			element = session.get(id);
+			if (element == null) {
+				Element<T> root = session.tree();
+				element = searchElement(root.getChildren(), id);
+				
+				/*
+				 * Add to the cache.
+				 */
+				if (element != null) {
+					session.add(element.getId(), element);
+				}
+			}
 		}
 		return element;
 	}
@@ -242,9 +257,34 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public <T> Element<T> updateElement(Element<?> element)
+	public <T> Element<T> updateElement(Element<T> element)
 			throws TreeException {
-		// TODO Auto-generated method stub
+		validatorFacade.validateTransaction();
+		validatorFacade.validateUpdateOperation(element);
+		
+		Element<T> snapshot = ((TreeElementCore<T>) element).snapshot();
+		
+		if (snapshot != null && !snapshot.equals(element)) {
+			Object oldParentId = snapshot.getParent();
+			Object newParentId = element.getParent();
+			
+			Element<T> oldParent = null;
+			if (!oldParentId.equals(newParentId)) {
+				oldParent = this.getElementById(oldParentId);
+				if (oldParent != null) {
+					oldParent.removeChild(snapshot.getId());
+					((TreeElementCore<T>) oldParent).clearSnapshot();
+					((TreeElementCore<T>) element).clearSnapshot();
+				}
+			}
+			
+			Element<T> newParent = this.getElementById(newParentId);
+			if (newParent == null) {
+				newParent = this.root();
+			}
+			newParent.addChild(element);
+			synchronizeElements(oldParent, newParent, element);
+		}
 		return null;
 	}
 
@@ -268,13 +308,18 @@ class TreeManagerCore implements TreeManager {
 	private final <T> void synchronizeElements(Element<T>... elements) {
 		String sessionId = null;
 		TreeElementCore<T> element = null;
+		TreeSession currentSession = getTransaction().currentSession();
 		for (Element<T> iterator : elements) {
 			element = (TreeElementCore<T>) iterator;
 			if (element != null) {
 				sessionId = element.attachedTo();
+				TreeSessionCore session = (TreeSessionCore) getTransaction().
+						sessionCheckout(sessionId);
 				element.attach(sessionId);
+				session.add(element.getId(), element);
 			}
 		}
+		getTransaction().sessionCheckout(currentSession.getSessionId());
 	}
 	
 	private <T> Element<T> searchElement(Collection<Element<T>> elements,

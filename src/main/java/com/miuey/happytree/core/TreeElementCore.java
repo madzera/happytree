@@ -16,11 +16,13 @@ class TreeElementCore<T> implements Element<T> {
 	private boolean isAttached;
 	private boolean isRoot;
 	
+	private Element<T> snapshot;
 	
 	TreeElementCore(Object id, Object parentId) {
 		this.id = id;
 		this.parentId = parentId;
 		this.children = TreeFactory.collectionFactory().createHashSet();
+		
 	}
 	
 	
@@ -31,8 +33,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
-		this.id = id;
 		detach();
+		this.snapshot = snapshotReference();
+		this.id = id;
 	}
 
 	@Override
@@ -42,8 +45,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setParent(Object parent) {
-		this.parentId = parent;
 		detach();
+		this.snapshot = snapshotReference();
+		this.parentId = parent;
 	}
 
 	@Override
@@ -54,16 +58,18 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void addChild(Element<T> child) {
 		if (child != null) {
-			this.children.add(child);
 			detach();
+			this.snapshot = snapshotReference();
+			this.children.add(child);
 		}
 	}
 
 	@Override
 	public void addChildren(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
-			this.children.addAll(children);
 			detach();
+			this.snapshot = snapshotReference();
+			this.children.addAll(children);
 		}
 	}
 
@@ -71,6 +77,7 @@ class TreeElementCore<T> implements Element<T> {
 	public void removeChildren(Collection<Element<T>> children) {
 		if (this.children.removeAll(children)) {
 			detach();
+			this.snapshot = snapshotReference();
 		}
 	}
 
@@ -78,6 +85,7 @@ class TreeElementCore<T> implements Element<T> {
 	public void removeChild(Element<T> child) {
 		if (this.children.remove(child)) {
 			detach();
+			this.snapshot = snapshotReference();
 		}
 	}
 
@@ -88,8 +96,9 @@ class TreeElementCore<T> implements Element<T> {
 		while (iterator.hasNext()) {
 			Element<T> element = iterator.next();
 			if (element.getId().equals(id)) {
-				iterator.remove();
 				detach();
+				this.snapshot = snapshotReference();
+				iterator.remove();
 				break;
 			}
 		}
@@ -97,8 +106,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) throws TreeException {
-		this.wrappedObject = object;
 		detach();
+		this.snapshot = snapshotReference();
+		this.wrappedObject = object;
 	}
 
 	@Override
@@ -116,8 +126,8 @@ class TreeElementCore<T> implements Element<T> {
 		final int prime = 31;
 		int result = 1;
 		
-		result = prime * result + (calculateHashForId(id));
-		result = prime * result + (calculateHashForId(parentId));
+//		result = prime * result + (calculateHashForId(id));
+//		result = prime * result + (calculateHashForId(parentId));
 		
 		return result;
 	}
@@ -161,7 +171,6 @@ class TreeElementCore<T> implements Element<T> {
 		return isEqual;
 	}
 
-
 	boolean isAttached() {
 		TreeElementCore<T> child = null;
 		for (Element<T> iterator : this.children) {
@@ -200,6 +209,26 @@ class TreeElementCore<T> implements Element<T> {
 			this.children.addAll(children);
 			this.isRoot = Boolean.TRUE;
 		}
+	}
+	
+	Element<T> snapshot() {
+		return this.snapshot;
+	}
+	
+	void clearSnapshot() {
+		this.snapshot = null;
+	}
+	
+	Element<T> snapshotReference() {
+		TreeElementCore<T> snapshotRef = TreeFactory.serviceFactory().
+				createElement(this.id, this.parentId);
+		snapshotRef.children = this.children;
+		snapshotRef.isAttached = this.isAttached;
+		snapshotRef.isRoot = this.isRoot;
+		snapshotRef.sessionId = this.sessionId;
+		snapshotRef.wrappedObject = this.wrappedObject;
+		
+		return snapshotRef;
 	}
 	
 	private int calculateHashForId(Object id) {

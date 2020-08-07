@@ -833,7 +833,7 @@ public class TreeManagerTest {
 		assertFalse(manager.containsElement(winamp, recorded));
 		
 		/*
-		 * Setting the parent of recorded pointing to winamp.
+		 * Setting the parent of recorded pointing to Winamp.
 		 * Here, the recorded element is detached, it needs to be updated.
 		 */
 		recorded.setParent(winamp.getId());

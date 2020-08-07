@@ -550,7 +550,7 @@ public interface TreeManager {
 	 * 	<li>The current session is not active.</li>
 	 * </ul>
 	 */
-	public <T> Element<T> updateElement(Element<?> element) 
+	public <T> Element<T> updateElement(Element<T> element) 
 			throws TreeException;
 	
 	/**
