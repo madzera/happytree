@@ -151,6 +151,8 @@ public interface Element<T> {
 	 */
 	public void addChild(Element<T> child);
 	
+	public Element<T> getElementById(Object id);
+	
 	/**
 	 * Add a list of children to be concatenated to the current children list.
 	 * 
@@ -324,7 +326,7 @@ public interface Element<T> {
 	 * <p><b>Be sure that before invoking this, the element is previously
 	 * persisted.</b></p>
 	 * 
-	 * @return the session identifier which this element belongs
+	 * @return the session which this element belongs
 	 */
-	public String attachedTo();
+	public TreeSession attachedTo();
 }

@@ -422,13 +422,15 @@ public interface TreeManager {
 	 * 
 	 * @param parent the parent identifier of this new element
 	 * 
+	 * @param wrappedObject the object to be encapsulated in this element node
+	 * 
 	 * @return a new and detached element
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
 	 * work it. Also, when the current session is not active
 	 */
-	public <T> Element<T> createElement(Object id, Object parent) 
-			throws TreeException;
+	public <T> Element<T> createElement(Object id, Object parent,
+			T wrappedObject) throws TreeException;
 	
 	/**
 	 * Persist a new element into the current tree session. the new element to

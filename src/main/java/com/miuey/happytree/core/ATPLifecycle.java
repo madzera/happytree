@@ -84,31 +84,36 @@ class ATPLifecycle<T> {
 		 */
 		for (Element<T> iterator : elements) {
 			TreeElementCore<T> element = (TreeElementCore<T>) iterator;
-			element.attach(session.getSessionId());
 			/*
 			 * Add to the cache session.
 			 */
 			session.add(element.getId(), element);
+			/*
+			 * Set the state of element to ATTACHED.
+			 */
+			element.transitionState(ElementState.ATTACHED);
 		}
 		
 		/*
 		 * Each root element has the Id value corresponding the session Id. It
-		 * is useful to identify the root elment.
+		 * is useful to identify the root element.
 		 */
-		Element<T> root = manager.createElement(session.getSessionId(), null);
+		TreeElementCore<T> root = (TreeElementCore<T>) manager.createElement(
+				session.getSessionId(), null, null);
 		
-		T typeTree = null;
 		/*
 		 * Change the parent id of immediate root children (first level).
 		 */
 		for (Element<T> child : tree) {
 			child.setParent(session.getSessionId());
-			TreeElementCore<T> element = (TreeElementCore<T>) child;
-			element.attach(session.getSessionId());
-			typeTree = child.unwrap();
 		}
 		
-		session.setRoot(root, tree, typeTree != null?typeTree.getClass():null);
+		/*
+		 * Root Config.
+		 */
+		root.transitionState(ElementState.ATTACHED);
+		session.add(root.getId(), root);
+		session.setRoot(root, tree);
 	}
 
 	/*

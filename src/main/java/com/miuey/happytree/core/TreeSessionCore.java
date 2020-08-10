@@ -1,28 +1,34 @@
 package com.miuey.happytree.core;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeSession;
 
 class TreeSessionCore implements TreeSession {
 
+	/*
+	 * To be exposed by interface.
+	 */
 	private String identifier;
 	private boolean isActive;
 	private Element<?> root;
+	
+	/*
+	 * To be used internally.
+	 */
 	private Class<?> typeTree;
 	
 	/*
 	 * Main cache of all elements from this session. All searches will use this
-	 * cache to increase perfomance.
+	 * cache to increase performance.
 	 */
-	private Map<Object, Element<?>> cache = TreeFactory.mapFactory().
-			createHashMap();
+	private Cache cache = TreeFactory.utilFactory().createCacheSession();
 	
 	
-	TreeSessionCore(String identifier) {
+	TreeSessionCore(String identifier, Class<?> typeTree) {
 		this.identifier = identifier;
+		this.typeTree = typeTree;
 	}
 	
 	
@@ -41,6 +47,33 @@ class TreeSessionCore implements TreeSession {
 	public <T> Element<T> tree() {
 		return (Element<T>) root;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((identifier == null) ?
+				0 : identifier.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TreeSessionCore other = (TreeSessionCore) obj;
+		if (identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!identifier.equals(other.identifier)) {
+			return false;
+		}
+		return true;
+	}
 
 	void setActive(boolean isActive) {
 		this.isActive = isActive;
@@ -50,29 +83,26 @@ class TreeSessionCore implements TreeSession {
 	 * This method represents the only one place to initialize a tree. Put the
 	 * root element attached to this session and vice-versa.
 	 */
-	<T> void setRoot(Element<?> root, Collection<Element<T>> tree,
-			Class<?> typeTree) {
+	<T> void setRoot(Element<?> root, Collection<Element<T>> tree) {
 		@SuppressWarnings("unchecked")
 		TreeElementCore<T> rootCast = (TreeElementCore<T>) root;
 		
 		rootCast.initRoot(tree);
-		rootCast.attach(this.getSessionId());
 		this.root = rootCast;
-		this.typeTree = typeTree;
 		setActive(Boolean.TRUE);
 	}
 
 	<T> void add(Object id, Element<T> element) {
-		this.cache.put(id, element);
+		this.cache.write(id, element);
 	}
 	
 	void remove(Object id) {
-		this.cache.remove(id);
+		this.cache.delete(id);
 	}
 	
 	@SuppressWarnings("unchecked")
 	<T> Element<T> get(Object id) {
-		return (Element<T>) this.cache.get(id);
+		return (Element<T>) this.cache.read(id);
 	}
 	
 	Class<?> getTypeTree() {

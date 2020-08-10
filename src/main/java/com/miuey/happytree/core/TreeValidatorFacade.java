@@ -25,6 +25,12 @@ class TreeValidatorFacade {
 		validator.validateNoActiveSession();
 	}
 	
+	void validateMandatory(Object... args) {
+		TreeMandatoryValidator validator = TreeFactory.validatorFactory().
+				createMandatoryValidator();
+		validator.validateMandatoryInput(args);
+	}
+	
 	void validateCutCopyOperation(Element<?> sourceElement,
 			Element<?> targetElement, boolean toCopy) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().

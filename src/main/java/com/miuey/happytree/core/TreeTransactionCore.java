@@ -47,16 +47,16 @@ class TreeTransactionCore implements TreeTransaction {
 		 * used instead the interfaces type.
 		 */
 		TreeSessionCore newSession = serviceFactory.createTreeSession(
-				identifier);
+				identifier, type);
 		TreeElementCore<T> root = serviceFactory.createElement(
-				identifier, null);
+				identifier, null, null, newSession);
 		
 		Collection<Element<T>> rootChildren = TreeFactory.collectionFactory().
 				createHashSet();
 		/*
 		 * Set the root element with a empty tree.
 		 */
-		newSession.setRoot(root, rootChildren, type);
+		newSession.setRoot(root, rootChildren);
 		
 		sessions.put(identifier, newSession);
 		

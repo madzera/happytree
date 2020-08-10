@@ -37,8 +37,7 @@ public class Initialization<T> extends ATPGenericPhase<T> {
 			Object parentId = mapParents.get(id);
 			T object = entry.getValue();
 			
-			Element<T> element = manager.createElement(id, parentId);
-			element.wrap(object);
+			Element<T> element = manager.createElement(id, parentId, object);
 			elements.add(element);
 		}
 		

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.core.atp.Binding;
 import com.miuey.happytree.core.atp.Extraction;
 import com.miuey.happytree.core.atp.Initialization;
@@ -25,6 +26,7 @@ class TreeFactory {
 	private static PipelineFactory pipelineFactory;
 	private static IOFactory ioFactory;
 	private static ExceptionFactory exceptionFactory;
+	private static UtilFactory utilFactory;
 	
 	
 	protected TreeFactory() {}
@@ -93,6 +95,13 @@ class TreeFactory {
 		return pipelineFactory;
 	}
 	
+	static UtilFactory utilFactory() {
+		if (utilFactory == null) {
+			utilFactory = getInstance().new UtilFactory();
+		}
+		return utilFactory;
+	}
+	
 	class ATPLifecycleFactory extends TreeFactory {
 		ATPLifecycleFactory() {}
 		
@@ -128,12 +137,13 @@ class TreeFactory {
 			return new TreeTransactionCore(manager);
 		}
 		
-		TreeSessionCore createTreeSession(String identifier) {
-			return new TreeSessionCore(identifier);
+		TreeSessionCore createTreeSession(String identifier, Class<?> typeTree) {
+			return new TreeSessionCore(identifier, typeTree);
 		}
 		
-		<T> TreeElementCore<T> createElement(Object id, Object parent) {
-			return new TreeElementCore<>(id, parent);
+		<T> TreeElementCore<T> createElement(Object id, Object parent,
+				T wrappedObject, TreeSession session) {
+			return new TreeElementCore<>(id, parent, wrappedObject,	session);
 		}
 	}
 
@@ -170,6 +180,10 @@ class TreeFactory {
 		
 		TreeSessionValidator createSessionValidator(TreeManager manager) {
 			return new TreeSessionValidator(manager);
+		}
+		
+		TreeMandatoryValidator createMandatoryValidator() {
+			return new TreeMandatoryValidator(null);
 		}
 		
 		TreeCutValidator createCutValidator(TreeManager manager) {
@@ -218,6 +232,14 @@ class TreeFactory {
 		
 		TreePipeline createPipelineValidator() {
 			return new TreePipeline();
+		}
+	}
+	
+	class UtilFactory extends TreeFactory {
+		UtilFactory() {}
+		
+		Cache createCacheSession() {
+			return new Cache();
 		}
 	}
 	
