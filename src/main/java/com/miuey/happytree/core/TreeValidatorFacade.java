@@ -32,24 +32,27 @@ class TreeValidatorFacade {
 	}
 	
 	void validateCutCopyOperation(Element<?> sourceElement,
-			Element<?> targetElement, boolean toCopy) throws TreeException {
+			Element<?> targetElement, Operation operation) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		TreeElementValidator validator = null;
-		if (toCopy) {
-			validator = TreeFactory.validatorFactory().
-					createCopyValidator(manager);
-		} else {
+		
+		if (operation.equals(Operation.CUT)) {
 			validator = TreeFactory.validatorFactory().
 					createCutValidator(manager);
+		} else {
+			validator = TreeFactory.validatorFactory().
+					createCopyValidator(manager);
 		}
+		
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
+		pipeline.addAttribute("operation", operation);
 		
-		validator.validateMandatoryElementId(pipeline);
+		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
+		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
 	void validateRemoveOperation(Element<?> sourceElement)
@@ -74,10 +77,9 @@ class TreeValidatorFacade {
 				createPersistValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
-		validator.validateMandatoryElementId(pipeline);
 		validator.validateTypeOfElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
+		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
 	void validateUpdateOperation(Element<?> sourceElement)
@@ -89,10 +91,9 @@ class TreeValidatorFacade {
 				createUpdateValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
-		validator.validateMandatoryElementId(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateTypeOfElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedElement(pipeline);
+		validator.validateDuplicatedIdElement(pipeline);
 	}
 }

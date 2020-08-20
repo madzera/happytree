@@ -10,43 +10,35 @@ class TreePersistValidator extends TreeElementValidator {
 		super(manager);
 	}
 	
-	
-	@Override
-	void validateMandatoryElementId(TreePipeline pipeline) {
-		Element<?> source = (Element<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
-		if (source == null || source.getId() == null) {
-			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
-					INVALID_INPUT);
-		}
-	}
 
 	@Override
 	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
-		Element<?> source = (Element<?>) pipeline.getAttribute(
+		TreeElementCore<?> element = (TreeElementCore<?>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
-		TreeElementCore<?> convertedSource = (TreeElementCore<?>) source;
+		Operation operation = (Operation) pipeline.getAttribute("operation");
 		
-		if (convertedSource.isAttached() 
-				|| convertedSource.attachedTo() != null) {
+		if (!element.getState().canExecuteOperation(operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					ATTACHED_ELEMENT);
+		}
+		
+		if (Recursivity.iterateForInvalidStateOperationValidation(element.
+				getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					ATTACHED_ELEMENT);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedElement(TreePipeline pipeline) throws TreeException {
-		Element<?> source = (Element<?>) pipeline.getAttribute(
+	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
+		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
 		
-		TreeManager manager = getManager();
-		
-		Element<?> duplicatedElement = manager.getElementById(source.getId());
-		if (duplicatedElement != null) {
+		if (Recursivity.iterateForDuplicatedId(source)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);
 		}
-		validateDuplicatedChildrenId(source.getChildren());
 	}
 	
 	<T> void validateTypeOfElement(TreePipeline pipeline) throws TreeException {

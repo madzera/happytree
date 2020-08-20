@@ -1,8 +1,5 @@
 package com.miuey.happytree.core;
 
-import java.util.Collection;
-
-import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.exception.TreeException;
 
@@ -27,30 +24,46 @@ abstract class TreeElementValidator extends TreeValidator {
 		}
 	}
 	
-	<T> Element<T> validateDuplicatedChildrenId(Collection<Element<T>> elements)
+	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
+		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
+				SOURCE_ELEMENT_KEY);
+		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
+				TARGET_ELEMENT_KEY);
+		Operation operation = (Operation) pipeline.getAttribute("operation");
+		
+		if (!source.getState().canExecuteOperation(operation)
+				|| Recursivity.iterateForInvalidStateOperationValidation(source.
+						getChildren(), operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					DETACHED_ELEMENT);
+		}
+		
+		if (target != null && !target.getState().canExecuteOperation(operation)
+				&& Recursivity.iterateForInvalidStateOperationValidation(target.
+						getChildren(), operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					DETACHED_ELEMENT);
+		}
+	}
+
+	void validateMismatchParameterizedType(TreePipeline pipeline)
 			throws TreeException {
-		Element<T> result = null;
-		if (elements == null || elements.isEmpty()) {
-			return null;
-		}
-		for (Element<T> element : elements) {
-			if (result != null) {
-				return result;
-			}
-			Object id = element.getId();
-			Element<T> duplicatedElement = getManager().getElementById(id);
-			if (duplicatedElement != null) {
+		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
+				SOURCE_ELEMENT_KEY);
+		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
+				TARGET_ELEMENT_KEY);
+		
+		if (source != null && target != null) {
+			Class<?> sourceType = source.getType();
+			Class<?> targetType = target.getType();
+			if (sourceType != null && targetType != null && !sourceType.equals(
+					targetType)) {
 				throw this.throwTreeException(TreeRepositoryMessage.
-						DUPLICATED_ELEMENT);
+						MISMATCH_TYPE_ELEMENT);
 			}
-			result = validateDuplicatedChildrenId(element.getChildren());
 		}
-		return result;
 	}
 	
-	abstract void validateMandatoryElementId(TreePipeline pipeline);
-	abstract void validateDetachedElement(TreePipeline pipeline)
-			throws TreeException;
-	abstract void validateDuplicatedElement(TreePipeline pipeline)
+	abstract void validateDuplicatedIdElement(TreePipeline pipeline)
 			throws TreeException;
 }

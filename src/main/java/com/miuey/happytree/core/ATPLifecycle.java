@@ -104,8 +104,10 @@ class ATPLifecycle<T> {
 		/*
 		 * Change the parent id of immediate root children (first level).
 		 */
-		for (Element<T> child : tree) {
+		for (Element<T> iterator : tree) {
+			TreeElementCore<T> child = (TreeElementCore<T>) iterator;
 			child.setParent(session.getSessionId());
+			child.transitionState(ElementState.ATTACHED);
 		}
 		
 		/*

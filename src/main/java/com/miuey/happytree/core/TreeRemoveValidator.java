@@ -12,10 +12,17 @@ class TreeRemoveValidator extends TreeCutValidator {
 	
 	@Override
 	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
-		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
+		TreeElementCore<?> element = (TreeElementCore<?>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
+		Operation operation = (Operation) pipeline.getAttribute("operation");
 		
-		if (source != null && !source.isAttached()) {
+		if (!element.getState().canExecuteOperation(operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					DETACHED_ELEMENT);
+		}
+		
+		if (Recursivity.iterateForInvalidStateOperationValidation(element.
+				getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);
 		}

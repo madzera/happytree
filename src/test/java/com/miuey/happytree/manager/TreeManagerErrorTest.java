@@ -62,7 +62,7 @@ public class TreeManagerErrorTest {
 			/*
 			 * All TreeManager operations must work under a defined session.
 			 */
-			manager.createElement(elementId, parentElementId);
+			manager.createElement(elementId, parentElementId, null);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -111,7 +111,7 @@ public class TreeManagerErrorTest {
 			/*
 			 * All TreeManager operations must work under a defined session.
 			 */
-			manager.createElement(elementId, parentElementId);
+			manager.createElement(elementId, parentElementId, null);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -689,7 +689,8 @@ public class TreeManagerErrorTest {
 			
 			/*
 			 * An error will occur here, because the source drivers directory
-			 * has a child with the same id than the target drivers directory.
+			 * has a child with the same id than the target drivers directory
+			 * 'Entry'.
 			 */
 			manager.cut(sourceDrivers, targetDrivers);
 		} catch (TreeException e) {
@@ -720,7 +721,8 @@ public class TreeManagerErrorTest {
 	 * case the <code>from</code> argument of this operation is
 	 * <code>null</code>, thus, throwing the
 	 * <code>IllegalArgumentException</code> with the message:
-	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <i>&quot;Mismatch type error. Incompatible parameterized type tree.&quot;
+	 * </i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -741,7 +743,8 @@ public class TreeManagerErrorTest {
 	public void cut_toAnotherTreeWithDiffType() throws TreeException {
 		final String source = "source";
 		final String target = "target";
-		final String messageError = "Invalid null/empty argument(s).";
+		final String messageError = "Mismatch type error. Incompatible"
+				+ " parameterized type tree.";
 		
 		String error = null;
 		
@@ -772,7 +775,7 @@ public class TreeManagerErrorTest {
 			 * IllegalArgumentException.
 			 */
 			manager.cut(mp4, type);
-		} catch (IllegalArgumentException e) {
+		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
 			assertEquals(messageError, error);
@@ -1702,8 +1705,8 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(sessionId, Directory.class);
-			Element<Directory> element = manager.createElement(
-					nullableId, Long.MAX_VALUE);
+			Element<Directory> element = manager.createElement(nullableId,
+					Long.MAX_VALUE, null);
 			manager.persistElement(element);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
@@ -1755,7 +1758,7 @@ public class TreeManagerErrorTest {
 		try {
 			transaction.initializeSession(sessionId, directories);
 			Element<Directory> element = manager.createElement(
-					duplicatedWinampExeId, null);
+					duplicatedWinampExeId, null, null);
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
@@ -1816,9 +1819,9 @@ public class TreeManagerErrorTest {
 			/*
 			 * These elements, when created, they have the NOT_EXISTED state.
 			 */
-			Element<Directory> element = manager.createElement(id, null);
+			Element<Directory> element = manager.createElement(id, null, null);
 			Element<Directory> childElement = manager.createElement(
-					duplicatedId, id);
+					duplicatedId, id, null);
 			
 			element.addChild(childElement);
 			
@@ -1946,7 +1949,8 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(sessionId, directories);
-			Element<Metadata> mismatchElement = manager.createElement(foo, null);
+			Element<Metadata> mismatchElement = manager.createElement(foo, null,
+					null);
 			Metadata metadata = new Metadata(foo, null, foo);
 			mismatchElement.wrap(metadata);
 			
@@ -2305,7 +2309,7 @@ public class TreeManagerErrorTest {
 		
 		try {
 			transaction.initializeSession(sessionId, Directory.class);
-			Element<Directory> element = manager.createElement(id, null);
+			Element<Directory> element = manager.createElement(id, null, null);
 			
 			/*
 			 * Error trying to update a not existed element.

@@ -1,6 +1,7 @@
 package com.miuey.happytree.element;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
@@ -60,7 +61,8 @@ public class ElementTest {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		
 		assertNotNull(element);
 		assertEquals(elementId, element.getId());
@@ -72,10 +74,11 @@ public class ElementTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Set the element identifier.
+	 * Set the element identifier. Setting the id of element will not change its
+	 * real id. This must be updated for that. So, the id will keep the same
+	 * value even trying to change the id.
 	 * <p><b>Expected:</b></p>
-	 * Match the element identifier when it changes with the return of
-	 * {@link Element#getId()}.
+	 * The id keeps the value before invoking {@link #setId()}.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -84,7 +87,7 @@ public class ElementTest {
 	 * 	<li>Compare the result of {@link Element#getId()} with the previous Id;
 	 * 	</li>
 	 * 	<li>Set the element Id;</li>
-	 * 	<li>Compare again the identifiers.</li>
+	 * 	<li>Verify if the value still is the same.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException 
@@ -100,13 +103,19 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId1, null);
+		Element<Directory> element = manager.createElement(elementId1, null,
+				null);
 		
 		assertNotNull(element);
 		assertEquals(elementId1, element.getId());
 		
+		/*
+		 * The id will change after the update, not at this time.
+		 */
 		element.setId(elementId2);
-		assertEquals(elementId2, element.getId());
+		
+		assertNotEquals(elementId2, element.getId());
+		assertEquals(elementId1, element.getId());
 	}
 	
 	/**
@@ -140,7 +149,8 @@ public class ElementTest {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, parentId);
+		Element<Directory> element = manager.createElement(elementId, parentId,
+				null);
 		
 		assertNotNull(element);
 		assertEquals(parentId, element.getParent());
@@ -183,7 +193,7 @@ public class ElementTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId1,
-				parentId1);
+				parentId1, null);
 		
 		assertNotNull(element);
 		assertEquals(parentId1, element.getParent());
@@ -228,11 +238,12 @@ public class ElementTest {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		Element<Directory> secondChild = manager.createElement(childElement2,
-				elementId);
+				elementId, null);
 		Element<Directory> firstChild = manager.createElement(childElement1,
-				elementId);
+				elementId, null);
 		
 		element.addChild(firstChild);
 		element.addChild(secondChild);
@@ -283,16 +294,17 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		manager.createElement(childElement4, elementId);
-		manager.createElement(childElement2, elementId);
+		manager.createElement(childElement4, elementId, null);
+		manager.createElement(childElement2, elementId, null);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		Element<Directory> firstChild = manager.createElement(childElement1,
-				elementId);
+				elementId, null);
 		Element<Directory> thirdChild = manager.createElement(childElement3,
-				elementId);
+				elementId, null);
 		Element<Directory> fifthChild = manager.createElement(childElement5,
-				elementId);
+				elementId, null);
 		
 		element.addChild(firstChild);
 		element.addChild(thirdChild);
@@ -351,20 +363,21 @@ public class ElementTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> fourthChild = manager.createElement(childElement4,
-				elementId);
+				elementId, null);
 		Element<Directory> secondChild = manager.createElement(childElement2,
-				elementId);
+				elementId, null);
 		
 		toBeAdded.add(fourthChild);
 		toBeAdded.add(secondChild);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		Element<Directory> firstChild = manager.createElement(childElement1,
-				elementId);
+				elementId, null);
 		Element<Directory> thirdChild = manager.createElement(childElement3,
-				elementId);
+				elementId, null);
 		Element<Directory> fifthChild = manager.createElement(childElement5,
-				elementId);
+				elementId, null);
 		
 		element.addChild(firstChild);
 		element.addChild(thirdChild);
@@ -425,17 +438,18 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		Element<Directory> fourthChild = manager.createElement(childElement4,
-				elementId);
+				elementId, null);
 		Element<Directory> secondChild = manager.createElement(childElement2,
-				elementId);
+				elementId, null);
 		Element<Directory> firstChild = manager.createElement(childElement1,
-				elementId);
+				elementId, null);
 		Element<Directory> thirdChild = manager.createElement(childElement3,
-				elementId);
+				elementId, null);
 		Element<Directory> fifthChild = manager.createElement(childElement5,
-				elementId);
+				elementId, null);
 		
 		element.addChild(firstChild);
 		element.addChild(thirdChild);
@@ -494,8 +508,10 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childElementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childElementId, null,
+				null);
 		
 		element.addChild(child);
 		
@@ -519,10 +535,10 @@ public class ElementTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
-	 * 	<li>Create two elements represented by a parent its child element;
+	 * 	<li>Create two elements represented by a parent and its child element;
 	 * 	</li>
 	 * 	<li>Add the child into the parent;</li>
-	 * 	<li>Verify if the children list has one element.</li>
+	 * 	<li>Verify if the children list has only one element.</li>
 	 * 	<li>Remove the element by invoking {@link Element#removeChild(Object)};
 	 * 	</li>
 	 * 	<li>Verify if the children list has no one element.</li>
@@ -545,8 +561,10 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childElementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childElementId, null,
+				null);
 		element.addChild(child);
 		
 		assertEquals(beforeRemove, element.getChildren().size());
@@ -594,7 +612,8 @@ public class ElementTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Directory directory = new Directory(elementId, 0, directoryName);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		
 		element.wrap(directory);
 		

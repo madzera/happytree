@@ -37,7 +37,9 @@ public class ElementAlternativeTest {
 	 * <p><b>Test:</b></p>
 	 * Try to set an element Id with a <code>null</code> value.
 	 * <p><b>Expected:</b></p>
-	 * Receive a <code>null</code> value when trying to get the element Id.
+	 * Receive the same id even after invoking {@link Element#setId(Object)}.
+	 * The id of element only changes after a call for
+	 * {@link TreeManager#updateElement(Element)}
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -67,17 +69,18 @@ public class ElementAlternativeTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
-				randomParentId);
+				randomParentId, null);
 		
 		assertNotNull(element);
 		assertNotNull(element.getParent());
 		assertNotNull(element.getId());
 		
 		/*
-		 * At the Element detached context, it is allowed accept null Id.
+		 * At the Element detached context, it is allowed accept null Id because
+		 * it only changes after an update operation.
 		 */
 		element.setId(nullableId);
-		assertNull(element.getId());
+		assertNotNull(element.getId());
 		assertNotNull(element.getParent());
 	}
 	
@@ -121,7 +124,7 @@ public class ElementAlternativeTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
-				parentId);
+				parentId, null);
 		
 		assertNotNull(element);
 		assertNotNull(element.getId());
@@ -173,8 +176,9 @@ public class ElementAlternativeTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childId, null, null);
 		Element<Directory> nullChild = null;
 		
 		element.addChild(child);
@@ -227,8 +231,9 @@ public class ElementAlternativeTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childId, null, null);
 		Element<Directory> nullChild = null;
 		
 		element.addChild(child);
@@ -271,7 +276,8 @@ public class ElementAlternativeTest {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		
 		element.wrap(nullableDirectory);
 		

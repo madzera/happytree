@@ -21,9 +21,10 @@ class TreeElementCore<T> implements Element<T> {
 	/*
 	 * To be used internally.
 	 */
-	private boolean isRoot;
 	private ElementState state;
+	private boolean isRoot;
 	private Class<?> type;
+	private Object newId;
 	
 	
 	TreeElementCore(Object id, Object parentId, T wrappedObject,
@@ -34,7 +35,7 @@ class TreeElementCore<T> implements Element<T> {
 		
 		this.wrappedObject = wrappedObject;
 		if (wrappedObject != null) {
-			this.type = wrappedObject.getClass();
+			this.setType(wrappedObject.getClass());
 		}
 		this.session = session;
 		
@@ -49,7 +50,8 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
-		this.id = id;
+		this.setNewId(id);
+		transitionState(ElementState.DETACHED);
 	}
 
 	@Override
@@ -60,6 +62,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void setParent(Object parent) {
 		this.parentId = parent;
+		transitionState(ElementState.DETACHED);
 	}
 
 	@Override
@@ -67,6 +70,7 @@ class TreeElementCore<T> implements Element<T> {
 		return this.children;
 	}
 
+	@Override
 	public Element<T> getElementById(Object id) {
 		return Recursivity.searchElementById(getChildren(), id);
 	}
@@ -74,6 +78,8 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void addChild(Element<T> child) {
 		if (child != null) {
+			child.setParent(this.id);
+			transitionState(ElementState.DETACHED);
 			this.children.add(child);
 		}
 	}
@@ -82,6 +88,10 @@ class TreeElementCore<T> implements Element<T> {
 	public void addChildren(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
+			for (Element<T> element : children) {
+				element.setParent(this.id);
+			}
+			transitionState(ElementState.DETACHED);
 		}
 	}
 
@@ -92,7 +102,11 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChild(Element<T> child) {
-		this.children.remove(child);
+		if (child != null) {
+			this.children.remove(child);
+			child.setParent(null);
+			transitionState(ElementState.DETACHED);
+		}
 	}
 
 	@Override
@@ -103,6 +117,8 @@ class TreeElementCore<T> implements Element<T> {
 			Element<T> element = iterator.next();
 			if (element.getId().equals(id)) {
 				iterator.remove();
+				transitionState(ElementState.DETACHED);
+				element.setParent(null);
 				break;
 			}
 		}
@@ -111,6 +127,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void wrap(T object) throws TreeException {
 		this.wrappedObject = object;
+		transitionState(ElementState.DETACHED);
 	}
 
 	@Override
@@ -174,6 +191,19 @@ class TreeElementCore<T> implements Element<T> {
 		return isEqual;
 	}
 	
+	/*
+	 * Only for help the tests.
+	 */
+	@Override
+	public String toString() {
+		T obj = unwrap();
+		if (obj != null) {
+			return obj.toString();
+		}
+		return "null";
+	}
+
+
 	ElementState getState() {
 		return state;
 	}
@@ -190,6 +220,7 @@ class TreeElementCore<T> implements Element<T> {
 		return isRoot;
 	}
 	
+	
 	Class<?> getType() {
 		return type;
 	}
@@ -197,7 +228,13 @@ class TreeElementCore<T> implements Element<T> {
 	void transitionState(ElementState nextState) {
 		this.state = nextState;
 	}
+
+	Object getUpdatedId() {
+		return this.newId;
+	}
 	
+	
+
 	/*
 	 * Only in the root assembly. When there is a session being initialized,
 	 * then this root element cannot be detached.
@@ -205,8 +242,33 @@ class TreeElementCore<T> implements Element<T> {
 	void initRoot(Collection<Element<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
-			this.isRoot = Boolean.TRUE;
+			this.setRoot(Boolean.TRUE);
 		}
+	}
+
+	/*
+	 * This is not recommended to use implicit super clone Object because
+	 * few bugs.
+	 */
+	Element<T> cloneElement() {
+		TreeElementCore<T> clone = TreeFactory.serviceFactory().
+				createElement(
+						this.getId(),
+						this.getParent(),
+						this.unwrap(),
+						this.attachedTo());
+		
+		/*
+		 * User addAll() instead of addChildren for not changing the child
+		 * element state.
+		 */
+		clone.getChildren().addAll(this.getChildren());
+		clone.setState(this.getState());
+		clone.setRoot(this.isRoot());
+		clone.setType(this.getType());
+		clone.setNewId(this.getUpdatedId());
+		
+		return clone;
 	}
 	
 	private int calculateHashForId(Object id) {
@@ -226,5 +288,17 @@ class TreeElementCore<T> implements Element<T> {
 		} else {
 			return ((id == null) ? 0 : id.hashCode());
 		}
+	}
+	
+	private void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
+
+	private void setType(Class<?> type) {
+		this.type = type;
+	}
+
+	private void setNewId(Object newId) {
+		this.newId = newId;
 	}
 }

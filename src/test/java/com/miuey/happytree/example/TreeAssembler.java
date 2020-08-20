@@ -211,7 +211,7 @@ public final class TreeAssembler {
 		Collection<Directory> folders = new ArrayList<Directory>();
 		
 		/*
-		 * Fist level.
+		 * First level.
 		 */
 		Directory windows = new Directory(1, 0, "Windows");
 		Directory system = new Directory(100, 1, "System");

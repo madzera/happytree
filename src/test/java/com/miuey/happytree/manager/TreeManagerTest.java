@@ -79,13 +79,16 @@ public class TreeManagerTest {
 	@Test
 	public void createElement() throws TreeException {
 		final String sessionId = "createElement";
-		final String elementId = "Documents";
+		final long elementId = Long.MAX_VALUE;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
+		Directory directory = new Directory(elementId, 0, "Paint");
+		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				directory);
 		
 		assertNotNull(element);
 		assertEquals(elementId, element.getId());
@@ -762,11 +765,9 @@ public class TreeManagerTest {
 		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId,
 				"Age of Empires II");
 		Element<Directory> games = manager.createElement(gamesId,
-				programFilesId);
+				programFilesId, gamesDir);
 		Element<Directory> ageGame = manager.createElement(ageOfEmpiresId,
-				gamesId);
-		games.wrap(gamesDir);
-		ageGame.wrap(ageGameDir);
+				gamesId, ageGameDir);
 		
 		games.addChild(ageGame);
 		

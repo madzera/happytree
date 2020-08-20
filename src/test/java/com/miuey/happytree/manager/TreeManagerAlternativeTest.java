@@ -72,7 +72,7 @@ public class TreeManagerAlternativeTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		Element<Directory> element = manager.createElement(nullablElementId,
-				null);
+				null, null);
 		
 		assertNotNull(element);
 		assertNull(element.getId());
@@ -429,6 +429,7 @@ public class TreeManagerAlternativeTest {
 	 * 
 	 * @throws TreeException
 	 */
+	@Test
 	public void cut_toRootOfAnotherTree() throws TreeException {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
