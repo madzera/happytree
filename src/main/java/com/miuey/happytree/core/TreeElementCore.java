@@ -208,10 +208,6 @@ class TreeElementCore<T> implements Element<T> {
 		return state;
 	}
 
-	void setState(ElementState state) {
-		this.state = state;
-	}
-
 	void changeSession(TreeSession session) {
 		this.session = session;
 	}
@@ -263,7 +259,7 @@ class TreeElementCore<T> implements Element<T> {
 		 * element state.
 		 */
 		clone.getChildren().addAll(this.getChildren());
-		clone.setState(this.getState());
+		clone.transitionState(this.getState());
 		clone.setRoot(this.isRoot());
 		clone.setType(this.getType());
 		clone.setNewId(this.getUpdatedId());

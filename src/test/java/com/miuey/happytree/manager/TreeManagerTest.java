@@ -359,7 +359,6 @@ public class TreeManagerTest {
 		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
 		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
 		
-		
 		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> source = manager.getElementById(sourceId);
 		

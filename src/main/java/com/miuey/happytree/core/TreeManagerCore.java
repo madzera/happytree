@@ -40,7 +40,7 @@ class TreeManagerCore implements TreeManager {
 		
 		if (parent != null) {
 			parent.removeChild(source);
-			parent.setState(ElementState.ATTACHED);
+			parent.transitionState(ElementState.ATTACHED);
 		}
 		
 		TreeSessionCore session = (TreeSessionCore) getTransaction().
@@ -50,7 +50,7 @@ class TreeManagerCore implements TreeManager {
 		if (to == null) {
 			TreeElementCore<T> root = (TreeElementCore<T>) root();
 			root.addChild(source);
-			root.setState(ElementState.ATTACHED);
+			root.transitionState(ElementState.ATTACHED);
 		} else {
 			/*
 			 * The session of the target can be different, so it is necessary to
@@ -60,7 +60,7 @@ class TreeManagerCore implements TreeManager {
 					sessionCheckout(to.attachedTo().getSessionId());
 			target = (TreeElementCore<T>) this.getElementById(to.getId());
 			target.addChild(source);
-			target.setState(ElementState.ATTACHED);
+			target.transitionState(ElementState.ATTACHED);
 			
 			/*
 			 * Swap the session of the from element.
@@ -76,7 +76,7 @@ class TreeManagerCore implements TreeManager {
 			getTransaction().sessionCheckout(session.getSessionId());
 		}
 		
-		source.setState(ElementState.ATTACHED);
+		source.transitionState(ElementState.ATTACHED);
 		return source.cloneElement();
 	}
 
@@ -105,12 +105,40 @@ class TreeManagerCore implements TreeManager {
 		return this.cut(source, target);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
 		final Operation operation = Operation.COPY;
+		validatorFacade.validateTransaction();
+		validatorFacade.validateMandatory(from);
+		validatorFacade.validateMandatory(to);
+		validatorFacade.validateCutCopyOperation(from, to, operation);
 		
-		return null;
+		TreeElementCore<T> fromElement = (TreeElementCore<T>) this.
+				getElementById(from.getId());
+		TreeElementCore<T> clonedFrom = (TreeElementCore<T>) fromElement.
+				cloneElement();
+		
+		TreeSession sourceSession = from.attachedTo();
+		TreeSessionCore targetSession = (TreeSessionCore) to.attachedTo();
+		
+		transaction.sessionCheckout(targetSession.getSessionId());
+		TreeElementCore<T> targetElement = (TreeElementCore<T>) this.
+				getElementById(to.getId());
+		if (targetElement != null) {
+			clonedFrom.changeSession(targetSession);
+			targetElement.addChild(clonedFrom);
+			
+			targetElement.transitionState(ElementState.ATTACHED);
+			clonedFrom.transitionState(ElementState.ATTACHED);
+			
+			targetSession.add(clonedFrom.getId(), clonedFrom);
+		}
+		
+		transaction.sessionCheckout(sourceSession.getSessionId());
+		
+		return fromElement.cloneElement();
 	}
 
 	@Override

@@ -24,7 +24,10 @@ class TreeCutValidator extends TreeElementValidator {
 		 * element, the target element can be null, meaning that the source
 		 * element will be cut to the root level of the same tree. If the target
 		 * is not null it is necessary to validate if in the target tree there
-		 * is duplicated id.
+		 * is duplicated id. It is not necessary validate duplicated id from
+		 * the source element because cut/copy operations only allow attached
+		 * elements, then while trying to force a duplicated id, these elements
+		 * will turn on as detached, stopping on previous validation.
 		 */
 		if (target != null && !source.attachedTo().equals(target.attachedTo())
 				&& Recursivity.iterateForDuplicatedId(source, target)) {
