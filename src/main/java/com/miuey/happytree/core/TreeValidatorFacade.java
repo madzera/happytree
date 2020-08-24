@@ -55,7 +55,7 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
-	void validateRemoveOperation(Element<?> sourceElement)
+	void validateRemoveOperation(Element<?> sourceElement, Operation operation)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
@@ -63,6 +63,7 @@ class TreeValidatorFacade {
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createRemoveValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		pipeline.addAttribute("operation", operation);
 		
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);

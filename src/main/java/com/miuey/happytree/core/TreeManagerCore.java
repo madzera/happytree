@@ -35,49 +35,53 @@ class TreeManagerCore implements TreeManager {
 		TreeElementCore<T> source = (TreeElementCore<T>) this.getElementById(
 				from.getId());
 		
-		TreeElementCore<T> parent = (TreeElementCore<T>) this.getElementById(
-				source.getParent());
-		
-		if (parent != null) {
-			parent.removeChild(source);
-			parent.transitionState(ElementState.ATTACHED);
+		if (source != null) {
+			TreeElementCore<T> parent = (TreeElementCore<T>) this.
+					getElementById(source.getParent());
+			
+			if (parent != null) {
+				parent.removeChild(source);
+				parent.transitionState(ElementState.ATTACHED);
+			}
+			
+			TreeSessionCore session = (TreeSessionCore) getTransaction().
+					currentSession();
+			TreeElementCore<T> target = null;
+			
+			if (to == null) {
+				TreeElementCore<T> root = (TreeElementCore<T>) root();
+				root.addChild(source);
+				root.transitionState(ElementState.ATTACHED);
+			} else {
+				/*
+				 * The session of the target can be different, so it is
+				 * necessary to checkout the respective session.
+				 */
+				TreeSessionCore targetSession = (TreeSessionCore)
+						getTransaction().sessionCheckout(to.attachedTo().
+								getSessionId());
+				target = (TreeElementCore<T>) this.getElementById(to.getId());
+				target.addChild(source);
+				target.transitionState(ElementState.ATTACHED);
+				
+				/*
+				 * Swap the session of the from element.
+				 */
+				session.remove(source.getId());
+				source.changeSession(targetSession);
+				
+				/*
+				 * Add the from element to the target cache session.
+				 */
+				targetSession.add(source.getId(), source);
+				
+				getTransaction().sessionCheckout(session.getSessionId());
+			}
+			
+			source.transitionState(ElementState.ATTACHED);
 		}
 		
-		TreeSessionCore session = (TreeSessionCore) getTransaction().
-				currentSession();
-		TreeElementCore<T> target = null;
-		
-		if (to == null) {
-			TreeElementCore<T> root = (TreeElementCore<T>) root();
-			root.addChild(source);
-			root.transitionState(ElementState.ATTACHED);
-		} else {
-			/*
-			 * The session of the target can be different, so it is necessary to
-			 * checkout the respective session.
-			 */
-			TreeSessionCore targetSession = (TreeSessionCore) getTransaction().
-					sessionCheckout(to.attachedTo().getSessionId());
-			target = (TreeElementCore<T>) this.getElementById(to.getId());
-			target.addChild(source);
-			target.transitionState(ElementState.ATTACHED);
-			
-			/*
-			 * Swap the session of the from element.
-			 */
-			session.remove(source.getId());
-			source.changeSession(targetSession);
-			
-			/*
-			 * Add the from element to the target cache session.
-			 */
-			targetSession.add(source.getId(), source);
-			
-			getTransaction().sessionCheckout(session.getSessionId());
-		}
-		
-		source.transitionState(ElementState.ATTACHED);
-		return source.cloneElement();
+		return source;
 	}
 
 	@Override
@@ -117,36 +121,62 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeElementCore<T> fromElement = (TreeElementCore<T>) this.
 				getElementById(from.getId());
-		TreeElementCore<T> clonedFrom = (TreeElementCore<T>) fromElement.
-				cloneElement();
 		
-		TreeSession sourceSession = from.attachedTo();
-		TreeSessionCore targetSession = (TreeSessionCore) to.attachedTo();
-		
-		transaction.sessionCheckout(targetSession.getSessionId());
-		TreeElementCore<T> targetElement = (TreeElementCore<T>) this.
-				getElementById(to.getId());
-		if (targetElement != null) {
-			clonedFrom.changeSession(targetSession);
-			targetElement.addChild(clonedFrom);
+		if (fromElement != null) {
+			TreeElementCore<T> clonedFrom = (TreeElementCore<T>) fromElement.
+					cloneElement();
 			
-			targetElement.transitionState(ElementState.ATTACHED);
-			clonedFrom.transitionState(ElementState.ATTACHED);
+			TreeSession sourceSession = from.attachedTo();
+			TreeSessionCore targetSession = (TreeSessionCore) to.attachedTo();
 			
-			targetSession.add(clonedFrom.getId(), clonedFrom);
+			transaction.sessionCheckout(targetSession.getSessionId());
+			TreeElementCore<T> targetElement = (TreeElementCore<T>) this.
+					getElementById(to.getId());
+			if (targetElement != null) {
+				clonedFrom.changeSession(targetSession);
+				targetElement.addChild(clonedFrom);
+				
+				targetElement.transitionState(ElementState.ATTACHED);
+				clonedFrom.transitionState(ElementState.ATTACHED);
+				
+				targetSession.add(clonedFrom.getId(), clonedFrom);
+			}
+			transaction.sessionCheckout(sourceSession.getSessionId());
 		}
 		
-		transaction.sessionCheckout(sourceSession.getSessionId());
-		
-		return fromElement.cloneElement();
+		return fromElement;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> removeElement(Element<T> element)
 			throws TreeException {
 		final Operation operation = Operation.REMOVE;
 		
-		return null;
+		validatorFacade.validateTransaction();
+		validatorFacade.validateRemoveOperation(element, operation);
+		
+		TreeElementCore<T> elementToRemove = null;
+		if (element != null) {
+			TreeSessionCore session = (TreeSessionCore) getTransaction().
+					currentSession();
+			elementToRemove = (TreeElementCore<T>)  this.getElementById(element.
+					getId());
+			
+			if (elementToRemove != null) {
+				TreeElementCore<T> parentElement = (TreeElementCore<T>)  this.
+						getElementById(elementToRemove.getParent());
+				
+				parentElement.removeChild(elementToRemove);
+				
+				elementToRemove.transitionState(ElementState.NOT_EXISTED);
+				parentElement.transitionState(ElementState.ATTACHED);
+				
+				session.remove(elementToRemove.getId());
+			}
+		}
+		
+		return elementToRemove;
 	}
 
 	@Override
@@ -160,6 +190,7 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeSessionCore session = (TreeSessionCore) getTransaction().
 				currentSession();
+		
 		return session.get(id);
 	}
 
