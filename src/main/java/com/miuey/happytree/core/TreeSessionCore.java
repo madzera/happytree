@@ -93,11 +93,14 @@ class TreeSessionCore implements TreeSession {
 	}
 
 	<T> void add(Object id, Element<T> element) {
-		this.cache.write(id, element);
+		//this.cache.write(id, element);
+		this.applyRecursivityCacheOperation(id, element, Boolean.FALSE);
 	}
 	
 	void remove(Object id) {
-		this.cache.delete(id);
+		Element<?> element = (Element<?>) this.cache.read(id);
+		//this.cache.delete(id);
+		this.applyRecursivityCacheOperation(id, element, Boolean.TRUE);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -107,5 +110,22 @@ class TreeSessionCore implements TreeSession {
 	
 	Class<?> getTypeTree() {
 		return typeTree;
+	}
+	
+	/*
+	 * Add or remove from the cache recursively.
+	 */
+	private <T> void applyRecursivityCacheOperation(Object id,
+			Element<T> element, boolean toRemove) {
+		Collection<?> descendants = Recursivity.toPlainList(element);
+		for (Object object : descendants) {
+			Element<?> iterator = (Element<?>) object;
+
+			if (toRemove) {
+				this.cache.delete(iterator.getId());
+			} else {
+				this.cache.write(iterator.getId(), iterator);
+			}
+		}
 	}
 }

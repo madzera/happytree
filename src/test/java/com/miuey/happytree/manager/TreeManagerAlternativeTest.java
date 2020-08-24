@@ -34,50 +34,6 @@ import com.miuey.happytree.exception.TreeException;
  */
 public class TreeManagerAlternativeTest {
 
-	/**
-	 * Test for the {@link TreeManager#createElement(Object, Object)}.
-	 * 
-	 * <p>Alternative scenario for this operation when trying to create an
-	 * element with <code>null</code> value id.</p>
-	 * 
-	 * <p>For remind, it is allowed trying to create an element with the
-	 * <code>null</code> value because the created element here is free up. It
-	 * does not belongs to none tree yet.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * try to create an element with <code>null</code> value id.
-	 * <p><b>Expected:</b></p>
-	 * A not <code>null</code> element but <code>null</code> id and parent id
-	 * of the same element.
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Create the identifier for the new session;</li>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session;</li>
-	 * 	<li>Create an element with <code>null</code> id;</li>
-	 * 	<li>Verify that the element is not <code>null</code>;</li>
-	 * 	<li>Verify that the element id and its parent id is <code>null</code>.
-	 * 	</li>
-	 * </ol>
-	 * 
-	 * @throws TreeException
-	 */
-	@Test
-	public void createElement_nullElementId() throws TreeException {
-		final String sessionId = "createElement_nullElementId";
-		final String nullablElementId = null;
-		
-		TreeManager manager = HappyTree.createTreeManager();
-		TreeTransaction transaction = manager.getTransaction();
-		
-		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(nullablElementId,
-				null, null);
-		
-		assertNotNull(element);
-		assertNull(element.getId());
-		assertNull(element.getParent());
-	}
 	
 	/**
 	 * Test for the {@link TreeManager#getElementById(Object)}.

@@ -40,20 +40,4 @@ class TreePersistValidator extends TreeElementValidator {
 					DUPLICATED_ELEMENT);
 		}
 	}
-	
-	<T> void validateTypeOfElement(TreePipeline pipeline) throws TreeException {
-		@SuppressWarnings("unchecked")
-		Element<T> source = (Element<T>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
-		T unwrappedObj = source.unwrap();
-		if (unwrappedObj != null) {
-			TreeManager manager = getManager();
-			TreeSessionCore session = (TreeSessionCore) manager.
-					getTransaction().currentSession();
-			if (!unwrappedObj.getClass().equals(session.getTypeTree())) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-						MISMATCH_TYPE_ELEMENT);
-			}
-		}
-	}
 }

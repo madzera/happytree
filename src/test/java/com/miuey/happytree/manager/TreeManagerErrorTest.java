@@ -120,6 +120,52 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#createElement(Object, Object)}.
+	 * 
+	 * <p>Error scenario for the operations when trying to create an element
+	 * with <code>null</code> id.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * try to create an element with <code>null</code> id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create the identifier for the new session;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create an element with <code>null</code> id;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void createElement_nullElementId() throws TreeException {
+		final String sessionId = "createElement_nullElementId";
+		final String messageError = "Invalid null/empty argument(s).";
+		
+		String error = null;
+		
+		final String nullablElementId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sessionId, Directory.class);
+			manager.createElement(nullablElementId,	null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to cut an element with a

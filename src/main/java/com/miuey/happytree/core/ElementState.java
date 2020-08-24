@@ -2,7 +2,8 @@ package com.miuey.happytree.core;
 
 enum ElementState {
 	NOT_EXISTED(Operation.PERSIST),
-	ATTACHED(Operation.CUT, Operation.COPY, Operation.REMOVE, Operation.UPDATE),
+	ATTACHED(Operation.CUT, Operation.COPY, Operation.REMOVE, Operation.UPDATE,
+			Operation.CONTAINS),
 	DETACHED(Operation.UPDATE);
 	
 	

@@ -750,6 +750,9 @@ public class TreeManagerTest {
 	public void persistElement() throws TreeException {
 		final String sessionId = "persistElement";
 		
+		final String gamesName = "Games";
+		final String ageName = "Age of Empires II";
+		
 		final long programFilesId = 42345;
 		final long gamesId = Long.MAX_VALUE;
 		final long ageOfEmpiresId = 48593500;
@@ -760,9 +763,9 @@ public class TreeManagerTest {
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
-		Directory gamesDir = new Directory(gamesId, programFilesId, "Games");
-		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId,
-				"Age of Empires II");
+		Directory gamesDir = new Directory(gamesId, programFilesId, gamesName);
+		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId, ageName);
+		
 		Element<Directory> games = manager.createElement(gamesId,
 				programFilesId, gamesDir);
 		Element<Directory> ageGame = manager.createElement(ageOfEmpiresId,

@@ -8,6 +8,7 @@ class TreeValidatorFacade {
 	
 	private static final String SOURCE_ELEMENT = "sourceElement";
 	private static final String TARGET_ELEMENT = "targetElement";
+	private static final String OPERATION = "operation";
 	
 	private TreeManager manager;
 	
@@ -47,7 +48,7 @@ class TreeValidatorFacade {
 		
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
-		pipeline.addAttribute("operation", operation);
+		pipeline.addAttribute(OPERATION, operation);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
@@ -63,22 +64,24 @@ class TreeValidatorFacade {
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createRemoveValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute("operation", operation);
+		pipeline.addAttribute(OPERATION, operation);
 		
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 	}
 	
-	void validatePersistOperation(Element<?> sourceElement)
+	void validatePersistOperation(Element<?> sourceElement, Operation operation)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
 		TreePersistValidator validator = TreeFactory.validatorFactory().
 				createPersistValidator(manager);
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
-		validator.validateTypeOfElement(pipeline);
+		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		pipeline.addAttribute(OPERATION, operation);
+		
+		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
 	}
@@ -93,7 +96,6 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		
 		validator.validateHandleRootElement(pipeline);
-		validator.validateTypeOfElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
 	}

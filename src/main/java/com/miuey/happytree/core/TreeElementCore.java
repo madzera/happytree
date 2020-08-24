@@ -38,8 +38,10 @@ class TreeElementCore<T> implements Element<T> {
 			this.setType(wrappedObject.getClass());
 		}
 		this.session = session;
-		
-		transitionState(ElementState.NOT_EXISTED);
+		/*
+		 * First initialized state.
+		 */
+		this.state = ElementState.NOT_EXISTED;
 	}
 	
 	
@@ -216,20 +218,24 @@ class TreeElementCore<T> implements Element<T> {
 		return isRoot;
 	}
 	
-	
 	Class<?> getType() {
 		return type;
 	}
 
 	void transitionState(ElementState nextState) {
-		this.state = nextState;
+		/*
+		 * Before persist element, the element state cannot transit from
+		 * NOT_EXISTED to DETACHED directly.
+		 */
+		if (!this.state.equals(ElementState.NOT_EXISTED)
+				|| !nextState.equals(ElementState.DETACHED)) {
+			this.state = nextState;
+		}
 	}
 
 	Object getUpdatedId() {
 		return this.newId;
 	}
-	
-	
 
 	/*
 	 * Only in the root assembly. When there is a session being initialized,

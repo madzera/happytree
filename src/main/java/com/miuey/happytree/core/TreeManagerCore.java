@@ -1,6 +1,8 @@
 package com.miuey.happytree.core;
 
 
+import java.util.Collection;
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
@@ -154,10 +156,10 @@ class TreeManagerCore implements TreeManager {
 		final Operation operation = Operation.REMOVE;
 		
 		validatorFacade.validateTransaction();
-		validatorFacade.validateRemoveOperation(element, operation);
 		
 		TreeElementCore<T> elementToRemove = null;
 		if (element != null) {
+			validatorFacade.validateRemoveOperation(element, operation);
 			TreeSessionCore session = (TreeSessionCore) getTransaction().
 					currentSession();
 			elementToRemove = (TreeElementCore<T>)  this.getElementById(element.
@@ -169,7 +171,13 @@ class TreeManagerCore implements TreeManager {
 				
 				parentElement.removeChild(elementToRemove);
 				
-				elementToRemove.transitionState(ElementState.NOT_EXISTED);
+				Collection<Element<T>> descendants = Recursivity.toPlainList(
+						elementToRemove);
+				
+				for (Element<T> iterator : descendants) {
+					TreeElementCore<T> child = (TreeElementCore<T>) iterator;
+					child.transitionState(ElementState.NOT_EXISTED);
+				}
 				parentElement.transitionState(ElementState.ATTACHED);
 				
 				session.remove(elementToRemove.getId());
@@ -181,7 +189,8 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> removeElement(Object id) throws TreeException {
-		return null;
+		Element<T> element = this.getElementById(id);
+		return this.removeElement(element);
 	}
 
 	@Override
@@ -244,12 +253,27 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public boolean containsElement(Element<?> element) throws TreeException {
-		return false;
+		final Operation operation = Operation.CONTAINS;
+		validatorFacade.validateTransaction();
+
+		boolean containsElement = Boolean.FALSE;
+		
+		TreeElementCore<?> source = (TreeElementCore<?>) element;
+		boolean isAttached = source.getState().canExecuteOperation(operation)
+				&& !Recursivity.iterateForInvalidStateOperationValidation(source.
+						getChildren(), operation);
+		
+		if (isAttached) {
+			containsElement = this.getElementById(element.getId()) != null;
+		}
+		return containsElement;
 	}
 
 	@Override
 	public boolean containsElement(Object id) throws TreeException {
-		return false;
+		validatorFacade.validateTransaction();
+		
+		return this.getElementById(id) != null;
 	}
 
 	@Override
@@ -263,12 +287,39 @@ class TreeManagerCore implements TreeManager {
 				wrappedObject, session);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
 		final Operation operation = Operation.PERSIST;
+		validatorFacade.validateTransaction();
+		validatorFacade.validateMandatory(newElement);
+		validatorFacade.validatePersistOperation(newElement, operation);
 		
-		return null;
+		TreeElementCore<T> parent = (TreeElementCore<T>) this.getElementById(
+				newElement.getParent());
+		TreeElementCore<T> child = (TreeElementCore<T>) newElement;
+		
+		TreeSessionCore session = (TreeSessionCore) getTransaction().
+				currentSession();
+		if (parent == null) {
+			parent = (TreeElementCore<T>) this.root();
+		}
+		
+		child.changeSession(session);
+		parent.addChild(child);
+		
+		parent.transitionState(ElementState.ATTACHED);
+		child.transitionState(ElementState.ATTACHED);
+		Collection<Element<T>> descendants = Recursivity.toPlainList(child);
+		
+		for (Element<T> iterator : descendants) {
+			TreeElementCore<T> descendant = (TreeElementCore<T>) iterator;
+			descendant.transitionState(ElementState.ATTACHED);
+		}
+		
+		session.add(child.getId(), child);
+		return child;
 	}
 
 	@Override

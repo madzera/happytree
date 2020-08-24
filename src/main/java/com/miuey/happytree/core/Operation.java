@@ -5,5 +5,6 @@ enum Operation {
 	COPY,
 	REMOVE,
 	PERSIST,
-	UPDATE;
+	UPDATE,
+	CONTAINS;
 }
