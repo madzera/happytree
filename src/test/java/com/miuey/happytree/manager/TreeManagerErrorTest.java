@@ -627,13 +627,90 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source tree by invoking
 	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
 	 * 	<li>Try to cut the &quot;Entry&quot; element from the source tree to
+	 * 	&quot;System32&quot; element of the target tree;</li>
+	 * 	<li>Catch the <code>TreeException</code> because &quot;Entry&quot;
+	 * 	element already exists in target tree;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_toAnotherTreeDuplicatedId() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final String messageError = "Duplicated ID.";
+		
+		String error = null;
+		final long entryId = 77530344;
+		final long system32Id = 1000;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sourceEntry = manager.getElementById(entryId);
+			assertNotNull(sourceEntry);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
+			
+			/*
+			 * Same Id.
+			 */
+			Element<Directory> system32 = manager.getElementById(system32Id);
+			assertNotNull(system32);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			
+			/*
+			 * Duplicated Id error.
+			 */
+			manager.cut(sourceEntry, system32);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element for
+	 * inside of another element in another tree which this element has the
+	 * same id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try cut an element for inside of another element in another tree
+	 * which this element has the same id.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element (&quot;Entry&quot;) which its id already exists in
+	 * 	the target tree;</li>
+	 * 	<li>Change the session for the source tree by invoking
+	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
+	 * 	<li>Try to cut the &quot;Entry&quot; element from the source tree to
 	 * 	&quot;Entry&quot; element of the target tree;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 */
 	@Test
-	public void cut_toAnotherTreeDuplicatedId() {
+	public void cut_toAnotherTreeElementDuplicatedId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
@@ -754,21 +831,19 @@ public class TreeManagerErrorTest {
 	 * {@link TreeManager#cut(Element, Element)}
 	 * 
 	 * <p>Error scenario for this operation when trying to cut an element for
-	 * inside of another tree which this tree has different type
+	 * inside of another tree which this tree has different type of object
 	 * (<code>Directory</code> -> <code>Metadata</code>).</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>,
 	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try cut an element for inside of another tree containing a different type.
+	 * Try to cut an element for inside of another tree containing a different
+	 * type of object.
 	 * <p><b>Expected:</b></p>
-	 * Because the {@link TreeManager#cut(Object, Object)} is invoked, in this
-	 * case the <code>from</code> argument of this operation is
-	 * <code>null</code>, thus, throwing the
-	 * <code>IllegalArgumentException</code> with the message:
-	 * <i>&quot;Mismatch type error. Incompatible parameterized type tree.&quot;
-	 * </i>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type error. Incompatible parameterized type
+	 * tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -779,14 +854,13 @@ public class TreeManagerErrorTest {
 	 * 	{@link TreeTransaction#sessionCheckout(String)};</li>
 	 * 	<li>Try to cut the source element typified by <code>Directory</code>
 	 * 	inside of the target typified by <code>Metadata</code>;</li>
-	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException 
 	 */
 	@Test
-	public void cut_toAnotherTreeWithDiffType() throws TreeException {
+	public void cut_mismatchElement() {
 		final String source = "source";
 		final String target = "target";
 		final String messageError = "Mismatch type error. Incompatible"
@@ -817,8 +891,7 @@ public class TreeManagerErrorTest {
 			/*
 			 * Error trying to insert an element inside of a tree with different
 			 * type Directory - Metadata. It will invoke cut(Object, Object)
-			 * instead cur(Element, Element), thus throwing
-			 * IllegalArgumentException.
+			 * instead cut(Element, Element).
 			 */
 			manager.cut(mp4, type);
 		} catch (TreeException e) {
@@ -1295,8 +1368,8 @@ public class TreeManagerErrorTest {
 	 * 	tree;</li>
 	 * 	<li>Initialize the target session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Get the target element which have the same id than the source
-	 * 	element;</li>
+	 * 	<li>Get a target element which the tree where it belongs already have
+	 * 	the same source id element;</li>
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
@@ -1304,7 +1377,7 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void copy_duplicatedIdAnotherTree() {
+	public void copy_toAnotherTreeDuplicatedId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
@@ -1352,55 +1425,72 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to copy an element for
-	 * inside of the same tree. Impossible to copy for the same tree because
-	 * it always will generate duplicated id.</p>
+	 * inside of another element in another tree which this element has the
+	 * same id.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to copy an element for inside of the same tree.
+	 * Try to copy an element for inside of another element in another tree
+	 * which this element already have same id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
 	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<li>Initialize the source session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Get an element to be copied;</li>
-	 * 	<li>Get another element inside of the same tree as the previous one;
-	 * 	</li>
-	 * 	<li>Try to copy the element. Both belong to the same tree;</li>
+	 * 	<li>Get the source element which will have the same id in the target
+	 * 	tree;</li>
+	 * 	<li>Initialize the target session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get a target element which the tree where it belongs already have
+	 * 	the same source id element;</li>
+	 * 	<li>Change the session for the source session;</li>
+	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 */
 	@Test
-	public void copy_duplicatedIdSameTree() {
-		final String sessionId = "duplicatedExample";
+	public void copy_toAnotherTreeElementDuplicatedId() {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
 		
 		final String messageError = "Duplicated ID.";
-		String error = null;
 		
-		final long realtekId = 94034;
-		final long readmeId = 495833;
+		String error = null;
+		final long entryId = 77530344;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		Collection<Directory> sourceDir = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> targetDir = TreeAssembler.
+				getSimpleDirectoryTree();
 		
 		try {
-			transaction.initializeSession(sessionId, sourceDir);
-			Element<Directory> realtek = manager.getElementById(realtekId);
-			Element<Directory> readme = manager.getElementById(readmeId);
+			transaction.initializeSession(sourceSessionId, sourceDir);
+			Element<Directory> sourceEntry = manager.getElementById(entryId);
+			assertNotNull(sourceEntry);
+			
+			transaction.initializeSession(targetSessionId, targetDir);
 			
 			/*
-			 * Impossible to copy for inside of the same tree. It always have
-			 * duplicated id. 
+			 * Same Id.
 			 */
-			manager.copy(realtek, readme);
+			Element<Directory> targetEntry = manager.getElementById(entryId);
+			assertNotNull(targetEntry);
+			
+			transaction.sessionCheckout(sourceSessionId);
+			
+			/*
+			 * Duplicated Id error.
+			 */
+			manager.copy(sourceEntry, targetEntry);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -1470,6 +1560,66 @@ public class TreeManagerErrorTest {
 			 * has a child with the same id than the target drivers directory.
 			 */
 			manager.copy(sourceDrivers, targetDrivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of the same tree. Impossible to copy for the same tree because
+	 * it always will generate duplicated id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of the same tree.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an element to be copied;</li>
+	 * 	<li>Get another element inside of the same tree as the previous one;
+	 * 	</li>
+	 * 	<li>Try to copy the element. Both belong to the same tree;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_duplicatedIdSameTree() {
+		final String sessionId = "duplicatedExample";
+		
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		final long realtekId = 94034;
+		final long readmeId = 495833;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, sourceDir);
+			Element<Directory> realtek = manager.getElementById(realtekId);
+			Element<Directory> readme = manager.getElementById(readmeId);
+			
+			/*
+			 * Impossible to copy for inside of the same tree. It always have
+			 * duplicated id. 
+			 */
+			manager.copy(realtek, readme);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -1665,6 +1815,71 @@ public class TreeManagerErrorTest {
 			 * Impossible to remove the root element.
 			 */
 			manager.removeElement(root);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to remove an element
+	 * from inside of a tree which this tree has different type of wrapped
+	 * object (<code>Directory</code> != <code>Metadata</code>).</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element from inside of a tree which this tree has 
+	 * different type of object.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type error. Incompatible parameterized type
+	 * tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize two sessions, the respective source and target. Both
+	 * 	previously loaded from <code>TreeAssembler</code>;</li>
+	 * 	<li>Get the element typified by <code>Metadata</code>;</li>
+	 * 	<li>Change the session for the tree typified by <code>Directory</code>;
+	 * 	</li>
+	 * 	<li>Try to remove an element typified by <code>Metadata</code> from
+	 * 	inside of the tree typified by <code>Directory</code>;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 */
+	@Test
+	public void removeElement_mismatchElement() {
+		final String source = "source";
+		final String target = "target";
+		final String messageError = "Mismatch type error. Incompatible"
+				+ " parameterized type tree.";
+		
+		String error = null;
+		
+		final String typeId = "type";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Metadata> metadata = TreeAssembler.
+				getMetadataTree();
+		
+		try {
+			transaction.initializeSession(source, directories);
+			transaction.initializeSession(target, metadata);
+			Element<Metadata> type = manager.getElementById(typeId);
+			
+			transaction.sessionCheckout(source);
+			manager.removeElement(type);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -1954,18 +2169,18 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#persistElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to persist an element
-	 * into a tree which the tree has different type of element.</p>
+	 * into a tree which the tree has different type of object.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>,
 	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to persist an element into a tree which the tree has different type
-	 * of element.
+	 * of object.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Mismatch type error. The object to be wrapped
-	 * has incompatible type than the object used in this tree.&quot;</i>
+	 * with the message: <i>&quot;Mismatch type error. Incompatible
+	 * parameterized type tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1981,9 +2196,8 @@ public class TreeManagerErrorTest {
 	public void persistElement_mismatchElement() {
 		final String sessionId = "persistElement_mismatchElement";
 		
-		final String messageError = "Mismatch type error. The object to be"
-				+ " wrapped has incompatible type than the object used in this"
-				+ " tree.";
+		final String messageError = "Mismatch type error. Incompatible"
+				+ " parameterized type tree.";
 		String error = null;
 		
 		final String foo = "foo";

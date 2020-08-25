@@ -2,6 +2,7 @@ package com.miuey.happytree.core;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeCutValidator extends TreeElementValidator {
@@ -29,10 +30,20 @@ class TreeCutValidator extends TreeElementValidator {
 		 * elements, then while trying to force a duplicated id, these elements
 		 * will turn on as detached, stopping on previous validation.
 		 */
-		if (target != null && !source.attachedTo().equals(target.attachedTo())
-				&& Recursivity.iterateForDuplicatedId(source, target)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATED_ELEMENT);
+//		if (target != null && !source.attachedTo().equals(target.attachedTo())
+//				&& Recursivity.iterateForDuplicatedId(source, target)) {
+//			throw this.throwTreeException(TreeRepositoryMessage.
+//					DUPLICATED_ELEMENT);
+//		}
+		if (target != null) {
+			TreeSession targetSession = target.attachedTo();
+			if (!source.attachedTo().equals(targetSession)) {
+				Element<Object> targetRoot = targetSession.tree();
+				if (Recursivity.iterateForDuplicatedId(source, targetRoot)) {
+					throw this.throwTreeException(TreeRepositoryMessage.
+							DUPLICATED_ELEMENT);
+				}
+			}
 		}
 	}
 }

@@ -129,6 +129,7 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void wrap(T object) throws TreeException {
 		this.wrappedObject = object;
+		setType(object.getClass());
 		transitionState(ElementState.DETACHED);
 	}
 

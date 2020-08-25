@@ -2,6 +2,7 @@ package com.miuey.happytree.core;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.exception.TreeException;
 
 class TreeValidatorFacade {
@@ -32,7 +33,7 @@ class TreeValidatorFacade {
 		validator.validateMandatoryInput(args);
 	}
 	
-	void validateCutCopyOperation(Element<?> sourceElement,
+	void validateCutCopyOperation(Element<?> sourceElement, TreeSession session,
 			Element<?> targetElement, Operation operation) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
@@ -49,6 +50,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
 		pipeline.addAttribute(OPERATION, operation);
+		pipeline.addAttribute("session", session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
@@ -56,8 +58,8 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
-	void validateRemoveOperation(Element<?> sourceElement, Operation operation)
-			throws TreeException {
+	void validateRemoveOperation(Element<?> sourceElement, TreeSession session,
+			Operation operation) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
@@ -65,13 +67,15 @@ class TreeValidatorFacade {
 				createRemoveValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(OPERATION, operation);
+		pipeline.addAttribute("session", session);
 		
+		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 	}
 	
-	void validatePersistOperation(Element<?> sourceElement, Operation operation)
-			throws TreeException {
+	void validatePersistOperation(Element<?> sourceElement, TreeSession session,
+			Operation operation) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
@@ -80,13 +84,14 @@ class TreeValidatorFacade {
 		
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(OPERATION, operation);
+		pipeline.addAttribute("session", session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
-	void validateUpdateOperation(Element<?> sourceElement)
+	void validateUpdateOperation(Element<?> sourceElement, TreeSession session)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
@@ -94,6 +99,7 @@ class TreeValidatorFacade {
 		TreeUpdateValidator validator = TreeFactory.validatorFactory().
 				createUpdateValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
+		pipeline.addAttribute("session", session);
 		
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);

@@ -53,14 +53,31 @@ abstract class TreeElementValidator extends TreeValidator {
 				SOURCE_ELEMENT_KEY);
 		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
 				TARGET_ELEMENT_KEY);
+		TreeSessionCore session = (TreeSessionCore) pipeline.getAttribute(
+				"session");
 		
-		if (source != null && target != null) {
-			Class<?> sourceType = source.getType();
-			Class<?> targetType = target.getType();
-			if (sourceType != null && targetType != null && !sourceType.equals(
-					targetType)) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-						MISMATCH_TYPE_ELEMENT);
+		Class<?> sourceType = source.getType();
+		Class<?> sessionType = session.getTypeTree();
+		
+		if (sourceType != null
+				&& !sourceType.equals(sessionType)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					MISMATCH_TYPE_ELEMENT);
+		}
+		
+		if (target != null) {
+			TreeSessionCore targetSession = (TreeSessionCore) target.
+					attachedTo();
+			
+			if (targetSession != null) {
+				Class<?> targetType = target.getType();
+				
+				if (targetType != null
+						&& !targetType.equals(sessionType)) {
+					
+					throw this.throwTreeException(TreeRepositoryMessage.
+							MISMATCH_TYPE_ELEMENT);
+				}
 			}
 		}
 	}

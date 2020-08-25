@@ -2,6 +2,7 @@ package com.miuey.happytree.core;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.exception.TreeException;
 
 class TreePersistValidator extends TreeElementValidator {
@@ -34,8 +35,9 @@ class TreePersistValidator extends TreeElementValidator {
 	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
-		
-		if (Recursivity.iterateForDuplicatedId(source)) {
+		TreeSession sourceSession = source.attachedTo();
+		Element<Object> sourceRoot = sourceSession.tree();
+		if (Recursivity.iterateForDuplicatedId(source, sourceRoot)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);
 		}

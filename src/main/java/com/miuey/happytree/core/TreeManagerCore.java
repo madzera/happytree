@@ -32,7 +32,8 @@ class TreeManagerCore implements TreeManager {
 		final Operation operation = Operation.CUT;
 		validatorFacade.validateTransaction();
 		validatorFacade.validateMandatory(from);
-		validatorFacade.validateCutCopyOperation(from, to, operation);
+		validatorFacade.validateCutCopyOperation(from, getTransaction().
+				currentSession(), to, operation);
 
 		TreeElementCore<T> source = (TreeElementCore<T>) this.getElementById(
 				from.getId());
@@ -101,8 +102,8 @@ class TreeManagerCore implements TreeManager {
 		if (from instanceof Element<?> && to instanceof Element<?>) {
 			fromElement = (Element<?>) from;
 			toElement = (Element<?>) to;
-			validatorFacade.validateCutCopyOperation(fromElement, toElement,
-					operation);
+			validatorFacade.validateCutCopyOperation(fromElement,
+					getTransaction().currentSession(), toElement, operation);
 		}
 		
 		Element<T> source = this.getElementById(from);
@@ -119,7 +120,8 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateTransaction();
 		validatorFacade.validateMandatory(from);
 		validatorFacade.validateMandatory(to);
-		validatorFacade.validateCutCopyOperation(from, to, operation);
+		validatorFacade.validateCutCopyOperation(from, getTransaction().
+				currentSession(), to, operation);
 		
 		TreeElementCore<T> fromElement = (TreeElementCore<T>) this.
 				getElementById(from.getId());
@@ -159,14 +161,15 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeElementCore<T> elementToRemove = null;
 		if (element != null) {
-			validatorFacade.validateRemoveOperation(element, operation);
+			validatorFacade.validateRemoveOperation(element, getTransaction().
+					currentSession(), operation);
 			TreeSessionCore session = (TreeSessionCore) getTransaction().
 					currentSession();
 			elementToRemove = (TreeElementCore<T>)  this.getElementById(element.
 					getId());
 			
 			if (elementToRemove != null) {
-				TreeElementCore<T> parentElement = (TreeElementCore<T>)  this.
+				TreeElementCore<T> parentElement = (TreeElementCore<T>) this.
 						getElementById(elementToRemove.getParent());
 				
 				parentElement.removeChild(elementToRemove);
@@ -294,7 +297,8 @@ class TreeManagerCore implements TreeManager {
 		final Operation operation = Operation.PERSIST;
 		validatorFacade.validateTransaction();
 		validatorFacade.validateMandatory(newElement);
-		validatorFacade.validatePersistOperation(newElement, operation);
+		validatorFacade.validatePersistOperation(newElement, getTransaction().
+				currentSession(), operation);
 		
 		TreeElementCore<T> parent = (TreeElementCore<T>) this.getElementById(
 				newElement.getParent());
