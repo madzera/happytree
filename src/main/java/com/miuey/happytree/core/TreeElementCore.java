@@ -129,7 +129,10 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public void wrap(T object) throws TreeException {
 		this.wrappedObject = object;
-		setType(object.getClass());
+		
+		if (this.wrappedObject != null) {
+			setType(object.getClass());
+		}
 		transitionState(ElementState.DETACHED);
 	}
 
@@ -206,13 +209,21 @@ class TreeElementCore<T> implements Element<T> {
 		return "null";
 	}
 
-
 	ElementState getState() {
 		return state;
 	}
 
 	void changeSession(TreeSession session) {
 		this.session = session;
+	}
+	
+	void refreshUpdatedId(Object id) {
+		this.id = id;
+		this.setNewId(null);
+		
+		for (Element<T> child : getChildren()) {
+			child.setParent(id);
+		}
 	}
 	
 	boolean isRoot() {

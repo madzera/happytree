@@ -795,7 +795,7 @@ public class TreeManagerTest {
 	 * Update an element after changing its parent.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to have its parent updated after changing
-	 * its parent and invoking {@link TreeManager#persistElement(Element)}.
+	 * its parent.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>

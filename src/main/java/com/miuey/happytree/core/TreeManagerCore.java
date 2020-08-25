@@ -9,6 +9,7 @@ import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.exception.TreeException;
 
+@SuppressWarnings("unchecked")
 class TreeManagerCore implements TreeManager {
 
 	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
@@ -25,7 +26,6 @@ class TreeManagerCore implements TreeManager {
 	TreeManagerCore() {}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
@@ -112,7 +112,6 @@ class TreeManagerCore implements TreeManager {
 		return this.cut(source, target);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
@@ -151,7 +150,6 @@ class TreeManagerCore implements TreeManager {
 		return fromElement;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Element<T> removeElement(Element<T> element)
 			throws TreeException {
@@ -290,7 +288,7 @@ class TreeManagerCore implements TreeManager {
 				wrappedObject, session);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
@@ -330,8 +328,43 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> updateElement(Element<T> element)
 			throws TreeException {
 		final Operation operation = Operation.UPDATE;
+		validatorFacade.validateTransaction();
+		validatorFacade.validateMandatory(element);
+		validatorFacade.validateUpdateOperation(element, getTransaction().
+				currentSession(), operation);
 		
-		return null;
+		TreeElementCore<T> updateElement = (TreeElementCore<T>) element; 
+		TreeElementCore<T> original = (TreeElementCore<T>) this.getElementById(
+				element.getId());
+		
+		Object oldParentId = original.getParent();
+		
+		Object updatedId = updateElement.getUpdatedId();
+		Object updatedParentId = updateElement.getParent();
+		
+		if (updatedId != null) {
+			original.refreshUpdatedId(updatedId);
+		}
+		
+		TreeSessionCore session = (TreeSessionCore) getTransaction().
+				currentSession();
+		
+		if (!oldParentId.equals(updatedParentId)) {
+			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
+					getElementById(updatedParentId);
+			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
+					getElementById(updatedParentId);
+			
+			oldParent.removeChild(original);
+			newParent.addChild(original);
+			
+			oldParent.transitionState(ElementState.ATTACHED);
+			newParent.transitionState(ElementState.ATTACHED);
+		}
+		
+		session.add(original.getId(), original);
+		
+		return original;
 	}
 
 	@Override

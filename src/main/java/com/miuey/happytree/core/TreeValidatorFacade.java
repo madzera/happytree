@@ -91,8 +91,8 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
-	void validateUpdateOperation(Element<?> sourceElement, TreeSession session)
-			throws TreeException {
+	void validateUpdateOperation(Element<?> sourceElement, TreeSession session,
+			Operation operation) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
@@ -100,7 +100,9 @@ class TreeValidatorFacade {
 				createUpdateValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute("session", session);
+		pipeline.addAttribute(OPERATION, operation);
 		
+		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
