@@ -35,12 +35,12 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateCutCopyOperation(from, getTransaction().
 				currentSession(), to, operation);
 
-		TreeElementCore<T> source = (TreeElementCore<T>) this.getElementById(
+		TreeElementCore<T> source = (TreeElementCore<T>) this.searchElement(
 				from.getId());
 		
 		if (source != null) {
 			TreeElementCore<T> parent = (TreeElementCore<T>) this.
-					getElementById(source.getParent());
+					searchElement(source.getParent());
 			
 			if (parent != null) {
 				parent.removeChild(source);
@@ -52,7 +52,7 @@ class TreeManagerCore implements TreeManager {
 			TreeElementCore<T> target = null;
 			
 			if (to == null) {
-				TreeElementCore<T> root = (TreeElementCore<T>) root();
+				TreeElementCore<T> root = (TreeElementCore<T>) tree();
 				root.addChild(source);
 				root.transitionState(ElementState.ATTACHED);
 			} else {
@@ -63,7 +63,7 @@ class TreeManagerCore implements TreeManager {
 				TreeSessionCore targetSession = (TreeSessionCore)
 						getTransaction().sessionCheckout(to.attachedTo().
 								getSessionId());
-				target = (TreeElementCore<T>) this.getElementById(to.getId());
+				target = (TreeElementCore<T>) this.searchElement(to.getId());
 				target.addChild(source);
 				target.transitionState(ElementState.ATTACHED);
 				
@@ -84,7 +84,7 @@ class TreeManagerCore implements TreeManager {
 			source.transitionState(ElementState.ATTACHED);
 		}
 		
-		return source;
+		return source != null ? source.cloneElement() : source;
 	}
 
 	@Override
@@ -106,8 +106,8 @@ class TreeManagerCore implements TreeManager {
 					getTransaction().currentSession(), toElement, operation);
 		}
 		
-		Element<T> source = this.getElementById(from);
-		Element<T> target = this.getElementById(to);
+		Element<T> source = this.searchElement(from);
+		Element<T> target = this.searchElement(to);
 		
 		return this.cut(source, target);
 	}
@@ -123,7 +123,7 @@ class TreeManagerCore implements TreeManager {
 				currentSession(), to, operation);
 		
 		TreeElementCore<T> fromElement = (TreeElementCore<T>) this.
-				getElementById(from.getId());
+				searchElement(from.getId());
 		
 		if (fromElement != null) {
 			TreeElementCore<T> clonedFrom = (TreeElementCore<T>) fromElement.
@@ -134,7 +134,7 @@ class TreeManagerCore implements TreeManager {
 			
 			transaction.sessionCheckout(targetSession.getSessionId());
 			TreeElementCore<T> targetElement = (TreeElementCore<T>) this.
-					getElementById(to.getId());
+					searchElement(to.getId());
 			if (targetElement != null) {
 				clonedFrom.changeSession(targetSession);
 				targetElement.addChild(clonedFrom);
@@ -147,7 +147,7 @@ class TreeManagerCore implements TreeManager {
 			transaction.sessionCheckout(sourceSession.getSessionId());
 		}
 		
-		return fromElement;
+		return fromElement != null ? fromElement.cloneElement() : fromElement;
 	}
 
 	@Override
@@ -163,12 +163,12 @@ class TreeManagerCore implements TreeManager {
 					currentSession(), operation);
 			TreeSessionCore session = (TreeSessionCore) getTransaction().
 					currentSession();
-			elementToRemove = (TreeElementCore<T>)  this.getElementById(element.
+			elementToRemove = (TreeElementCore<T>) this.searchElement(element.
 					getId());
 			
 			if (elementToRemove != null) {
 				TreeElementCore<T> parentElement = (TreeElementCore<T>) this.
-						getElementById(elementToRemove.getParent());
+						searchElement(elementToRemove.getParent());
 				
 				parentElement.removeChild(elementToRemove);
 				
@@ -185,12 +185,16 @@ class TreeManagerCore implements TreeManager {
 			}
 		}
 		
+		/*
+		 * This is not necessary to return the cloned element because the
+		 * element is not attached in the tree session anymore.
+		 */
 		return elementToRemove;
 	}
 
 	@Override
 	public <T> Element<T> removeElement(Object id) throws TreeException {
-		Element<T> element = this.getElementById(id);
+		Element<T> element = this.searchElement(id);
 		return this.removeElement(element);
 	}
 
@@ -200,8 +204,9 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeSessionCore session = (TreeSessionCore) getTransaction().
 				currentSession();
+		TreeElementCore<T> element = (TreeElementCore<T>) session.get(id);
 		
-		return session.get(id);
+		return element != null ? element.cloneElement() : element;
 	}
 
 	@Override
@@ -222,11 +227,13 @@ class TreeManagerCore implements TreeManager {
 			return containsChild;
 		}
 		
-		Element<T> parentElement = this.getElementById(parentCore.getId());
-		Element<T> childElement = this.getElementById(childCore.getId());
+		Element<T> parentElement = this.searchElement(parentCore.getId());
+		Element<T> childElement = this.searchElement(childCore.getId());
 		
-		return parentElement != null 
+		containsChild = parentElement != null && childElement != null
 				&& parentElement.getElementById(childElement.getId()) != null;
+		
+		return containsChild;
 	}
 
 	@Override
@@ -240,8 +247,8 @@ class TreeManagerCore implements TreeManager {
 		}
 		
 		TreeElementCore<?> parentElement = (TreeElementCore<?>) this.
-				getElementById(parent);
-		TreeElementCore<?> child = (TreeElementCore<?>) this.getElementById(
+				searchElement(parent);
+		TreeElementCore<?> child = (TreeElementCore<?>) this.searchElement(
 				descendant);
 		
 		if (parentElement == null || child == null
@@ -265,7 +272,7 @@ class TreeManagerCore implements TreeManager {
 						getChildren(), operation);
 		
 		if (isAttached) {
-			containsElement = this.getElementById(element.getId()) != null;
+			containsElement = this.searchElement(element.getId()) != null;
 		}
 		return containsElement;
 	}
@@ -274,7 +281,7 @@ class TreeManagerCore implements TreeManager {
 	public boolean containsElement(Object id) throws TreeException {
 		validatorFacade.validateTransaction();
 		
-		return this.getElementById(id) != null;
+		return this.searchElement(id) != null;
 	}
 
 	@Override
@@ -298,14 +305,14 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validatePersistOperation(newElement, getTransaction().
 				currentSession(), operation);
 		
-		TreeElementCore<T> parent = (TreeElementCore<T>) this.getElementById(
+		TreeElementCore<T> parent = (TreeElementCore<T>) this.searchElement(
 				newElement.getParent());
 		TreeElementCore<T> child = (TreeElementCore<T>) newElement;
 		
 		TreeSessionCore session = (TreeSessionCore) getTransaction().
 				currentSession();
 		if (parent == null) {
-			parent = (TreeElementCore<T>) this.root();
+			parent = (TreeElementCore<T>) this.tree();
 		}
 		
 		child.changeSession(session);
@@ -321,7 +328,8 @@ class TreeManagerCore implements TreeManager {
 		}
 		
 		session.add(child.getId(), child);
-		return child;
+		
+		return child != null ? child.cloneElement() : child;
 	}
 
 	@Override
@@ -334,7 +342,7 @@ class TreeManagerCore implements TreeManager {
 				currentSession(), operation);
 		
 		TreeElementCore<T> updateElement = (TreeElementCore<T>) element; 
-		TreeElementCore<T> original = (TreeElementCore<T>) this.getElementById(
+		TreeElementCore<T> original = (TreeElementCore<T>) this.searchElement(
 				element.getId());
 		
 		Object oldParentId = original.getParent();
@@ -351,9 +359,9 @@ class TreeManagerCore implements TreeManager {
 		
 		if (!oldParentId.equals(updatedParentId)) {
 			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
-					getElementById(updatedParentId);
+					searchElement(updatedParentId);
 			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
-					getElementById(updatedParentId);
+					searchElement(updatedParentId);
 			
 			oldParent.removeChild(original);
 			newParent.addChild(original);
@@ -376,10 +384,24 @@ class TreeManagerCore implements TreeManager {
 	public <T> Element<T> root() throws TreeException {
 		validatorFacade.validateTransaction();
 		TreeSession session = this.getTransaction().currentSession();
-		return session.tree();
+		TreeElementCore<T> root = (TreeElementCore<T>) session.tree();
+		
+		return root.cloneElement();
 	}
 
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
+	}
+	
+	private <T> Element<T> searchElement(Object id) {
+		TreeSessionCore session = (TreeSessionCore) getTransaction().
+				currentSession();
+		
+		return session.get(id);
+	}
+	
+	private <T> Element<T> tree() {
+		TreeSession session = this.getTransaction().currentSession();
+		return session.tree();
 	}
 }

@@ -135,13 +135,15 @@ public class TreeManagerAlternativeTest {
 		
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		Element<Directory> photoshop = manager.getElementById(photoshopId);
-		Element<Directory> root = transaction.currentSession().tree();
+		Element<Directory> root = manager.root();
 		
 		assertTrue(manager.containsElement(adobe, photoshop));
 		
 		Element<Directory> photoshopCut = manager.cut(photoshop, root);
+		
 		assertFalse(manager.containsElement(adobe, photoshop));
 		assertEquals(sessionId, photoshopCut.getParent());
+		assertTrue(manager.containsElement(root, photoshop));
 	}
 	
 	/**
@@ -203,7 +205,11 @@ public class TreeManagerAlternativeTest {
 		
 		Element<Directory> cutElement = manager.cut(sdkDevElement,
 				nullableElement);
+		
+		Element<Directory> root = manager.root();
+		
 		assertEquals(sessionId, cutElement.getParent());
+		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
@@ -268,7 +274,11 @@ public class TreeManagerAlternativeTest {
 		 * Verify that the element was cut to the root level.
 		 */
 		Element<Directory> cutElement = manager.cut(sdkDevId, notExistingToId);
+		
+		Element<Directory> root = manager.root();
+		
 		assertEquals(sessionId, cutElement.getParent());
+		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
@@ -405,7 +415,7 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> devel = manager.getElementById(develId);
 		
 		transaction.initializeSession(targetSessionId, targetDir);
-		Element<Directory> targetRootTree = transaction.currentSession().tree();
+		Element<Directory> targetRootTree = manager.root();
 		
 		transaction.sessionCheckout(sourceSessionId);
 		
@@ -483,7 +493,7 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> devel = manager.getElementById(develId);
 		
 		transaction.initializeSession(targetSessionId, targetDir);
-		Element<Directory> targetRootTree = transaction.currentSession().tree();
+		Element<Directory> targetRootTree = manager.root();
 		
 		transaction.sessionCheckout(sourceSessionId);
 		manager.copy(devel, targetRootTree);
