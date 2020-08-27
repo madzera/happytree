@@ -35,9 +35,9 @@ class TreePersistValidator extends TreeElementValidator {
 	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
-		TreeSession sourceSession = source.attachedTo();
-		Element<Object> sourceRoot = sourceSession.tree();
-		if (Recursivity.iterateForDuplicatedId(source, sourceRoot)) {
+		TreeSession session = source.attachedTo();
+		Element<Object> root = session.tree();
+		if (Recursivity.iterateForDuplicatedId(source, root)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);
 		}

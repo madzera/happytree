@@ -1,5 +1,8 @@
 package com.miuey.happytree.core;
 
+import java.util.Collection;
+import java.util.Set;
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
@@ -30,12 +33,34 @@ class TreeUpdateValidator extends TreeElementValidator {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
-		TreeElementCore<?> element = (TreeElementCore<?>) pipeline.getAttribute(
+		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				SOURCE_ELEMENT_KEY);
+		TreeSession session = source.attachedTo();
+		Element<Object> root = session.tree();
 		
+		Set<Object> rootIds = TreeFactory.collectionFactory().createHashSet();
 		
+		Collection<Element<Object>> targetPlainTree = Recursivity.toPlainList(
+				root);
+		for (Element<Object> rootElement : targetPlainTree) {
+			TreeElementCore<Object> rootChild = (TreeElementCore<Object>)
+					rootElement;
+			rootIds.add(rootChild.getId());
+		}
+		
+		Collection<Element<Object>> sourcePlainTree = Recursivity.toPlainList(
+				source);
+		for (Element<Object> sourceElement : sourcePlainTree) {
+			TreeElementCore<Object> sourceChild = (TreeElementCore<Object>)
+					sourceElement;
+			if (rootIds.contains(sourceChild.getUpdatedId())) {
+				throw this.throwTreeException(TreeRepositoryMessage.
+						DUPLICATED_ELEMENT);
+			}
+		}
 	}
 	
 	<T> void validateTypeOfElement(TreePipeline pipeline) throws TreeException {

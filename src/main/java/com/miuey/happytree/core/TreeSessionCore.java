@@ -92,15 +92,13 @@ class TreeSessionCore implements TreeSession {
 		setActive(Boolean.TRUE);
 	}
 
-	<T> void add(Object id, Element<T> element) {
-		//this.cache.write(id, element);
-		this.applyRecursivityCacheOperation(id, element, Boolean.FALSE);
+	<T> void add(Element<T> element) {
+		this.applyRecursivityCacheOperation(element, Boolean.FALSE);
 	}
 	
 	void remove(Object id) {
-		Element<?> element = (Element<?>) this.cache.read(id);
-		//this.cache.delete(id);
-		this.applyRecursivityCacheOperation(id, element, Boolean.TRUE);
+		Element<?> element = this.cache.read(id);
+		this.applyRecursivityCacheOperation(element, Boolean.TRUE);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -115,8 +113,8 @@ class TreeSessionCore implements TreeSession {
 	/*
 	 * Add or remove from the cache recursively.
 	 */
-	private <T> void applyRecursivityCacheOperation(Object id,
-			Element<T> element, boolean toRemove) {
+	private <T> void applyRecursivityCacheOperation(Element<T> element,
+			boolean toRemove) {
 		Collection<?> descendants = Recursivity.toPlainList(element);
 		for (Object object : descendants) {
 			Element<?> iterator = (Element<?>) object;

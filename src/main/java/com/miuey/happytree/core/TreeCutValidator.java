@@ -30,11 +30,6 @@ class TreeCutValidator extends TreeElementValidator {
 		 * elements, then while trying to force a duplicated id, these elements
 		 * will turn on as detached, stopping on previous validation.
 		 */
-//		if (target != null && !source.attachedTo().equals(target.attachedTo())
-//				&& Recursivity.iterateForDuplicatedId(source, target)) {
-//			throw this.throwTreeException(TreeRepositoryMessage.
-//					DUPLICATED_ELEMENT);
-//		}
 		if (target != null) {
 			TreeSession targetSession = target.attachedTo();
 			if (!source.attachedTo().equals(targetSession)) {

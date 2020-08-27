@@ -2,6 +2,7 @@ package com.miuey.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -667,5 +668,117 @@ public class TreeManagerAlternativeTest {
 		
 		transaction.initializeSession(sessionId, directories);
 		assertNull(manager.removeElement(notExistingId));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to update an id of
+	 * element with a <code>null</code> value.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element id with a <code>null</code> id.
+	 * <p><b>Expected:</b></p>
+	 * Even trying to set a <code>null</code> id, the real value of the id keeps
+	 * the previous value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element from the current tree session;</li>
+	 * 	<li>Set the id of this element with a <code>null</code> value;</li>
+	 * 	<li>Try to update the element;</li>
+	 * 	<li>Verify if the value of id corresponds with the previous id value;
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void updateElement_nullIdElement() throws TreeException {
+		final String sessionId = "updateElement_nullIdElement";
+		
+		final Object wordId = 674098L;
+		Object nullableId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> word = manager.getElementById(wordId);
+		word.setId(nullableId);
+
+		manager.updateElement(word);
+		
+		word = manager.getElementById(wordId);
+		
+		assertNotNull(word);
+		assertEquals(wordId, word.getId());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to update an
+	 * element id.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element id.
+	 * <p><b>Expected:</b></p>
+	 * After updating a changed element id, the new id already becomes
+	 * available.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an existing element from the tree session;</li>
+	 * 	<li>Set the id of this element;</li>
+	 * 	<li>Verify that the id still not changed, even invoking the
+	 * 	{@link Element#setId(Object)};</li>
+	 * 	<li>Try to update the element;</li>
+	 * 	<li>Verify now that the element has the new id;</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void updateElement_setId() throws TreeException {
+		final String sessionId = "updateElement_setId";
+		
+		final long fooId = 48224;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> foo = manager.getElementById(fooId);
+		foo.setId(Long.MAX_VALUE);
+		
+		assertEquals(fooId, foo.getId());
+		
+		foo = manager.updateElement(foo);
+		
+		assertNotEquals(fooId, foo.getId());
+		assertEquals(Long.MAX_VALUE, foo.getId());
+		
+		Element<Directory> tmp = null;
+		
+		for (Element<Directory> child : foo.getChildren()) {
+			tmp = child;
+		}
+		
+		assertEquals(Long.MAX_VALUE, tmp.getParent());
 	}
 }

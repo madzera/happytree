@@ -87,7 +87,7 @@ class ATPLifecycle<T> {
 			/*
 			 * Add to the cache session.
 			 */
-			session.add(element.getId(), element);
+			session.add(element);
 			/*
 			 * Set the state of element to ATTACHED.
 			 */
@@ -114,7 +114,7 @@ class ATPLifecycle<T> {
 		 * Root Config.
 		 */
 		root.transitionState(ElementState.ATTACHED);
-		session.add(root.getId(), root);
+		session.add(root);
 		session.setRoot(root, tree);
 	}
 

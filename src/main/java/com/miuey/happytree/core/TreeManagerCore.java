@@ -76,7 +76,7 @@ class TreeManagerCore implements TreeManager {
 				/*
 				 * Add the from element to the target cache session.
 				 */
-				targetSession.add(source.getId(), source);
+				targetSession.add(source);
 				
 				getTransaction().sessionCheckout(session.getSessionId());
 			}
@@ -142,7 +142,7 @@ class TreeManagerCore implements TreeManager {
 				targetElement.transitionState(ElementState.ATTACHED);
 				clonedFrom.transitionState(ElementState.ATTACHED);
 				
-				targetSession.add(clonedFrom.getId(), clonedFrom);
+				targetSession.add(clonedFrom);
 			}
 			transaction.sessionCheckout(sourceSession.getSessionId());
 		}
@@ -327,9 +327,9 @@ class TreeManagerCore implements TreeManager {
 			descendant.transitionState(ElementState.ATTACHED);
 		}
 		
-		session.add(child.getId(), child);
+		session.add(child);
 		
-		return child != null ? child.cloneElement() : child;
+		return child.cloneElement();
 	}
 
 	@Override
@@ -359,7 +359,7 @@ class TreeManagerCore implements TreeManager {
 		
 		if (!oldParentId.equals(updatedParentId)) {
 			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
-					searchElement(updatedParentId);
+					searchElement(oldParentId);
 			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
 					searchElement(updatedParentId);
 			
@@ -368,9 +368,13 @@ class TreeManagerCore implements TreeManager {
 			
 			oldParent.transitionState(ElementState.ATTACHED);
 			newParent.transitionState(ElementState.ATTACHED);
+			
+			session.add(oldParent);
+			session.add(newParent);
 		}
+		original.transitionState(ElementState.ATTACHED);
 		
-		session.add(original.getId(), original);
+		session.add(original);
 		
 		return original;
 	}

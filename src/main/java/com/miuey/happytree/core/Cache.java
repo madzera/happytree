@@ -17,8 +17,9 @@ class Cache {
 		this.cacheElements.put(id, element);
 	}
 	
-	Element<?> read(Object id) {
-		return this.cacheElements.get(id);
+	@SuppressWarnings("unchecked")
+	<T> Element<T> read(Object id) {
+		return (Element<T>) this.cacheElements.get(id);
 	}
 	
 	void delete(Object id) {

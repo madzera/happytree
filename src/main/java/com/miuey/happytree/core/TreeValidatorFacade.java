@@ -10,6 +10,7 @@ class TreeValidatorFacade {
 	private static final String SOURCE_ELEMENT = "sourceElement";
 	private static final String TARGET_ELEMENT = "targetElement";
 	private static final String OPERATION = "operation";
+	private static final String CURRENT_SESSION = "session";
 	
 	private TreeManager manager;
 	
@@ -50,7 +51,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
 		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute("session", session);
+		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
@@ -67,7 +68,7 @@ class TreeValidatorFacade {
 				createRemoveValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute("session", session);
+		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);
@@ -84,7 +85,7 @@ class TreeValidatorFacade {
 		
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
 		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute("session", session);
+		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateDetachedElement(pipeline);
@@ -99,8 +100,8 @@ class TreeValidatorFacade {
 		TreeUpdateValidator validator = TreeFactory.validatorFactory().
 				createUpdateValidator(manager);
 		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute("session", session);
 		pipeline.addAttribute(OPERATION, operation);
+		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateHandleRootElement(pipeline);

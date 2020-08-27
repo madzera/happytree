@@ -794,7 +794,7 @@ public class TreeManagerTest {
 	 * <p><b>Test:</b></p>
 	 * Update an element after changing its parent.
 	 * <p><b>Expected:</b></p>
-	 * It is expected that the element to have its parent updated after changing
+	 * It is expected that the element have its parent updated after changing
 	 * its parent.
 	 * <p><b>Steps:</b></p>
 	 * <ol>

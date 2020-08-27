@@ -2278,65 +2278,6 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to update an id of
-	 * element with a <code>null</code> id.</p>
-	 * 
-	 * <p>For more details about this test, see also the <code>Directory</code>,
-	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to update an id element with a <code>null</code> id.
-	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>IllegalArgumentException</code>
-	 * with the message: <i>&quot;Invalid null/empty argument(s).&quot;</i>
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session, previously loaded from
-	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Get an existing element from the current tree session;</li>
-	 * 	<li>Set the id of this element with a <code>null</code> value;</li>
-	 * 	<li>Try to update the element;</li>
-	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
-	 * </ol>
-	 * 
-	 * @throws TreeException
-	 */
-	@Test
-	public void updateElement_nullIdElement() throws TreeException {
-		final String sessionId = "updateElement_nullIdElement";
-		final String messageError = "Invalid null/empty argument(s).";
-		String error = null;
-		
-		final Object wordId = 674098L;
-		Object nullableId = null;
-		
-		TreeManager manager = HappyTree.createTreeManager();
-		TreeTransaction transaction = manager.getTransaction();
-		
-		try {
-			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-			transaction.initializeSession(sessionId, directories);
-			Element<Directory> word = manager.getElementById(
-					wordId);
-			
-			word.setId(nullableId);
-			
-			/*
-			 * Error because the id of this element is null.
-			 */
-			manager.updateElement(word);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		} finally {
-			assertEquals(messageError, error);
-		}
-	}
-	
-	/**
-	 * Test for the {@link TreeManager#updateElement(Element)} operation.
-	 * 
-	 * <p>Error scenario for this operation when trying to update an id of
 	 * element which this new id has the same id than another element inside of
 	 * the tree.</p>
 	 * 
@@ -2586,7 +2527,7 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to update an element
-	 * from a tree inside of another one.</p>
+	 * which it has different type of wrapped object.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>,
 	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
@@ -2595,9 +2536,8 @@ public class TreeManagerErrorTest {
 	 * Try to update an element from a tree inside of another one.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Mismatch type error. The object to be wrapped
-	 * has incompatible type than the object used in this tree.&quot;
-	 * </i>
+	 * with the message: <i>&quot;Mismatch type error. Incompatible
+	 * parameterized type tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -2617,9 +2557,8 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "Directory_Session";
 		final String targetSessionId = "Metadata_Session";
 		
-		final String messageError = "Mismatch type error. The object to be"
-				+ " wrapped has incompatible type than the object used in this"
-				+ " tree.";
+		final String messageError = "Mismatch type error. Incompatible"
+				+ " parameterized type tree.";
 		String error = null;
 		
 		final long eclipseExeId = 8483742;

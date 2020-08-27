@@ -52,8 +52,10 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
-		this.setNewId(id);
-		transitionState(ElementState.DETACHED);
+		if (id != null) {
+			this.setNewId(id);
+			transitionState(ElementState.DETACHED);
+		}
 	}
 
 	@Override
