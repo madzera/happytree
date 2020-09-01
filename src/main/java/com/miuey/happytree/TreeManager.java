@@ -16,8 +16,26 @@ import com.miuey.happytree.exception.TreeException;
  * <p>The operations here are done for elements within others or for "root" 
  * elements. The root elements are considered to be those that are not inside of
  * other elements, but those that are at the "top" of the tree hierarchy in 
- * question. Each tree can contain 0 or more root elements, each of which must 
- * have different identifiers.</p>
+ * question. When the tree is created, automatically its root also are created,
+ * with this root being empty or having <b>n</b> children.
+ * 
+ * <p>The operations also are done for cases where this is desirable reallocate
+ * elements for inside of other trees session. In this case, the oneness of each
+ * element must be respected, related to the tree which elements will be inside.
+ * </p>
+ * 
+ * <p>This is important to note that there are two distinct and well-defined
+ * contexts in the HappyTree API. The inside and outside contexts. When the
+ * client obtains an element and its children through the manager, the client is
+ * actually working with identical copies of each node (element). When it makes
+ * any changes to any of the elements, a change in the element's life cycle is
+ * made, and this change is not immediately reflected in the tree in question.
+ * This context is called outside of the tree. An inside context represents the
+ * client's action to perform the persist/update of the element, so the change
+ * is actually reflected in the tree, but made through this manager itself. The
+ * persist/update operation work by invoking the
+ * {@link TreeManager#persistElement(Element)} and
+ * {@link #updateElement(Element)} respectively.</p>
  * 
  * <p>Conceptually, this interface works by handling trees through a 
  * transaction. This transaction is represented by the {@link TreeTransaction} 
@@ -26,11 +44,44 @@ import com.miuey.happytree.exception.TreeException;
  * one or many sessions, but it is only possible to handle one session at the 
  * time.</p>
  * 
+ * <p>The programmer must be sure to handle elements through their respective
+ * transactions. A simple swap of a tree, by a transaction, makes this manager
+ * ready to deal with a totally different tree.</p>
+ * 
  * <p>For operations to work, the following validations are made:</p>
  * <ul>
- * 		<li>The transaction must have a session binded <b>always</b>.</li>
- * 		<li>It is <b>mandatory</b> that the session is <b>activated.</b></li>
+ * 		<li>The transaction must have a session binded, <b>always</b>.</li>
+ * 		<li>It is <b>mandatory</b> that the session be <b>activated.</b></li>
+ * 		<li>According with the method, the elements must have in the proper
+ * 			state.</li>
+ * 		<li>for each tree session, each element inside must have unique id.</li>
+ * 		<li>An element cannot be handle within trees which have different
+ * 		type of wrapped object.</li>
+ * 		<li>It is no possible to handle the root element.</li>
  * </ul>
+ * 
+ * <table>
+ * 	<tr>
+ * 		<th>Element State/operation</th><th>Attached</th><th>Detached</th>
+ * 		<th>Not Existed</th>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>Cut</td><td>&#10004;</td><td>X</td><td>X</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>Copy</td><td>&#10004;</td><td>X</td><td>X</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>Remove</td><td>&#10004;</td><td>X</td><td>X</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>Update</td><td>&#10004;</td><td>&#10004;</td><td>X</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>Persist</td><td>X</td><td>X</td><td>&#10004;</td>
+ * 	</tr>
+ * </table>
+ * 
  * <p>If one of these validations fails, an exception will be thrown.</p>
  * 
  * @author Diego Nóbrega
@@ -44,85 +95,109 @@ import com.miuey.happytree.exception.TreeException;
 public interface TreeManager {
 	
 	/**
-	 * Cut the <code>from</code> element for inside the <code>to</code> element,
-	 * whether for the same session or not. With this, the element to be cut can
-	 * be cut into the same tree session or to another tree in another session.
-	 * All children of <code>from</code> element will be cut too.
+	 * Cut the <code>from</code> element for inside of the <code>to</code>
+	 * element, whether for the same session or not. With this, the element to
+	 * be cut can be cut into the same tree session or to another tree in
+	 * another session. All children of <code>from</code> element will be cut
+	 * too.
 	 * 
 	 * <p>If the <code>to</code> parameter element is <code>null</code> then the
 	 * <code>from</code> element with all children will be moved to the root
-	 * level of the same tree. If the {@literal @Id}} attribute of the
-	 * <code>to</code> element is <code>null</code> or not found in the tree,
-	 * then the element will be cut to the root level of the tree which the
-	 * element belongs.</p>
+	 * level of the same tree.</p>
 	 * 
-	 * <p>When cut for the target element, the <code>from</code> parameter
-	 * element cannot have the same identifier in the tree where the
-	 * <code>to</code> parameter element is in another session. It include also
-	 * the children identifiers of the <code>from</code> element.</p>
+	 * <p>When cutting for the target element, the <code>from</code> parameter
+	 * element cannot have the duplicated identifier in the tree where the
+	 * <code>to</code> parameter element is in. It includes also the children
+	 * identifiers of the <code>from</code> element.</p>
 	 * 
-	 * <p>It is imperative that the tree of the <code>to</code> element must be 
-	 * activated.</p>
+	 * <p>It is imperative that both trees of the <code>from</code> and
+	 * <code>to</code> element must be activated.</p>
 	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param from the source element
 	 * 
 	 * @param to the target element
 	 * 
-	 * @return the own <code>from</code> element to be cut
+	 * @return a copy of <code>from</code> element after cut
 	 * 
-	 * @throws TreeException 
+	 * @throws TreeException when:
 	 * <ul>
-	 * 	<li>The transaction has no session selected to work it;</li>
-	 * 	<li>The current session or the session which the <code>to</code> element
+	 * 	<li>
+	 * 		The transaction has no session selected to work it;
+	 * 	</li>
+	 * 	<li>
+	 * 		The current session or the session which the <code>to</code> element
 	 * 		belongs is not active;
 	 * 	</li>
-	 * 	<li>The <code>from</code> element has an already existing identifier in
-	 * 		the target tree.
+	 * 
+	 * 	<li>
+	 * 		The <code>from</code> and <code>to</code> elements have different
+	 * 		types of wrapped object related to the current session;
 	 * 	</li>
-	 * 	<li>the <code>from</code> element neither the <code>to</code> element is
-	 * 		not attached in any activated tree.
+	 * 	<li>
+	 * 		The <code>from</code> element is represented by a root of a tree
+	 * 		(this is no possible to handle root elements);
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>from</code> or <code>to</code> element or at least one of
+	 * 		their children have a DETACHED or NOT_EXISTED state in life cycle;
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>from</code> element has an already existing identifier in
+	 * 		the target tree (if the <code>to</code> element is in another tree).
 	 * 	</li>
 	 * </ul>
 	 * 
-	 * @throws IllegalArgumentException when the <code>from</code> parameter or
-	 * its <code>id</code> is <code>null</code>
+	 * @throws IllegalArgumentException when the <code>from</code> parameter is
+	 * <code>null</code>
 	 */
 	public <T> Element<T> cut(Element<T> from, Element<T> to) 
 			throws TreeException;
 	
 	/**
-	 * Get the respective <code>from</code> and <code>to</code> element passed
-	 * through and cut the <code>from</code> element into the <code>to</code>
-	 * element in the tree session. All children of <code>from</code> element
-	 * will be cut too.
+	 * Cut the <code>from</code> element for inside of the <code>to</code>
+	 * element, <b>just inside of the same session</b>. Both parameters
+	 * represent the id of elements.
 	 * 
-	 * <p>If the <code>to</code> parameter element is <code>null</code> then the
-	 * <code>from</code> element with all children will be moved to the root
-	 * level of the tree.</p>
+	 * <p>If the <code>to</code> parameter element is <code>null</code> or if
+	 * its element is not found, then the <code>from</code> element with all
+	 * children will be moved to the root level of the tree.</p>
 	 * 
-	 * <p>If it is not possible to find out the respective element from passed
+	 * <p>If this is no possible to find out the respective element from passed
 	 * through parameter (<code>from</code> parameter) then <code>null</code> is
 	 * returned.</p>
 	 * 
-	 * <p>Using this <code>cut(Object, Object)</code>, an element just can be
-	 * cut into the same tree. To cut elements for other tree consider using the 
-	 * {@link #cut(Element, Element)} which the target element is linked to
-	 * another tree.</p>
+	 * <p>Using this <code>cut(Object, Object)</code> operation, an element just
+	 * can be cut into the same tree. To cut elements for other tree consider
+	 * using the {@link #cut(Element, Element)} which the target element is
+	 * linked to another tree.</p>
 	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param from the source element
 	 * 
 	 * @param to the target element
 	 * 
-	 * @return the own <code>from</code> element to be cut
+	 * @return a copy of the element represented by the <code>from</code>
+	 * parameter, after cut
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work it. And also when the current session is not active
+	 * @throws TreeException when:
+	 * <ul>
+	 * 	<li>
+	 * 		The transaction has no session selected to work it;
+	 * 	</li>
+	 * 	<li>
+	 * 		The current session is not active;
+	 * 	</li>
+	 * 
+	 * 	<li>
+	 * 		The <code>from</code> element is represented by a root of a tree
+	 * 		(this is no possible to handle root elements).
+	 * 	</li>
+	 * </ul>
 	 * 
 	 * @throws IllegalArgumentException when the <code>from</code> parameter is
 	 * <code>null</code>
@@ -601,7 +676,8 @@ public interface TreeManager {
 	 * The creation of the root element is responsibility of the core API. It
 	 * occurs at the moment of initialization of a new session when the
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
-	 * or {@link TreeTransaction#initializeSession(String)} is invoked.</p>
+	 * or {@link TreeTransaction#initializeSession(String)} is invoked.
+	 * </p>
 	 * 
 	 * 
 	 * @param <T> the class type of the source wrapped object that will be
