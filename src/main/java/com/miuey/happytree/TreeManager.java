@@ -137,8 +137,8 @@ public interface TreeManager {
 	 * 		types of wrapped object related to the current session;
 	 * 	</li>
 	 * 	<li>
-	 * 		The <code>from</code> element is represented by a root of a tree
-	 * 		(this is no possible to handle root elements);
+	 * 		The <code>from</code> element is represented by a root of tree (this
+	 * 		is no possible to handle root elements);
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>from</code> or <code>to</code> element or at least one of
@@ -194,8 +194,8 @@ public interface TreeManager {
 	 * 	</li>
 	 * 
 	 * 	<li>
-	 * 		The <code>from</code> element is represented by a root of a tree
-	 * 		(this is no possible to handle root elements).
+	 * 		The <code>from</code> element is represented by a root of tree (this
+	 * 		is no possible to handle root elements).
 	 * 	</li>
 	 * </ul>
 	 * 
@@ -205,14 +205,14 @@ public interface TreeManager {
 	public <T> Element<T> cut(Object from, Object to) throws TreeException;
 	
 	/**
-	 * Copy the respective <code>from</code> element into <code>to</code>
-	 * element in another tree session. All structure of copied element will be
-	 * paste inside of <code>to</code> element. The element to be copied and its
-	 * all children can not have the same identifier than any element in the
-	 * <code>to</code> element tree.
+	 * Copies the respective <code>from</code> element into the <code>to</code>
+	 * element <b>in another tree session</b>. All structure of copied element
+	 * will be paste inside of <code>to</code> element. The element to be copied
+	 * and its all children cannot have the same identifier than any element in
+	 * the <code>to</code> element tree.
 	 * 
 	 * <p><i><b>This method only should be used when the client desire copy the
-	 * element between different tree. It is no possible to copy elements
+	 * element between different tree. This is no possible to copy elements
 	 * inside of the same own tree, because it will throw duplicated <i>Id</i> 
 	 * exception.</b></i></p>
 	 * 
@@ -220,16 +220,16 @@ public interface TreeManager {
 	 * an element:</p>
 	 * 
 	 * 		<ol>
-	 * 			<li>Validate the input and the current session;</li>
+	 * 			<li>Validate the current session and the input;</li>
 	 * 			<li>Copy the whole element structure with all the children;</li>
 	 * 			<li>Invoke {@link TreeTransaction#sessionCheckOut(String)} to 
-	 * 			the destination tree be able to be worked;</li>
+	 * 			the target tree be able to be worked;</li>
 	 * 			<li>Paste the elements;</li>
 	 * 			<li>Invoke {@link TreeTransaction#sessionCheckOut(String)} to 
-	 * 			the tree source tree, like before.</li>
+	 * 			the source tree, like before.</li>
 	 * 		</ol>
 	 * 
-	 * <p>It is mandatory that the both <code>from</code> and <code>to</code>
+	 * <p>This is mandatory that the both <code>from</code> and <code>to</code>
 	 * elements be attached in different trees, and the respective trees must be
 	 * activated.</p>
 	 * 
@@ -240,92 +240,133 @@ public interface TreeManager {
 	 * 
 	 * @param to the target element
 	 * 
-	 * @return the own <code>from</code> element copied (current source tree).
+	 * @return a copy of the element represented by the <code>from</code>
+	 * parameter, after copied
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When the current session or the session which the
-	 * <code>to</code> element belongs is not active. When the
-	 * <code>from</code> element neither the <code>to</code> element is not
-	 * attached in different trees. Also when if the copied element identifier
-	 * is already existing in the target tree, throwing a duplicated
-	 * <code>id</code> exception
+	 * @throws TreeException when:
+	 * <ul>
+	 * 	<li>
+	 * 		The transaction has no session selected to work it;
+	 * 	</li>
+	 * 	<li>
+	 * 		The current session or the session which the <code>to</code> element
+	 * 		belongs is not active;
+	 * 	</li>
+	 * 
+	 * 	<li>
+	 * 		The <code>from</code> and <code>to</code> elements have different
+	 * 		types of wrapped object related to the current session;
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>from</code> element is represented by a root of tree (this
+	 * 		is no possible to handle root elements);
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>from</code> or <code>to</code> element or at least one of
+	 * 		their children have a DETACHED or NOT_EXISTED state in life cycle;
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>from</code> element has an already existing identifier in
+	 * 		the target tree.
+	 * 	</li>
+	 * </ul>
 	 * 
 	 * @throws IllegalArgumentException when the <code>from</code> or
-	 * <code>to</code> parameters or their <code>id</code> are <code>null</code>
+	 * <code>to</code> parameters are <code>null</code>
 	 */
 	public <T> Element<T> copy(Element<T> from, Element<T> to) 
 			throws TreeException;
 	
 	/**
-	 * Remove the corresponding element from the tree session and return
-	 * <code>true</code>. The element must be attached in the tree and can not
-	 * get changes. All children will be removed too, in case respecting the
-	 * above rules. If there is at least a single element that the rule is not
-	 * contemplating, then no one will be removed and this method will return
-	 * <code>false</code>. Realize that removing an element means detach it from
-	 * the tree session.
+	 * Removes the corresponding element from the tree session and returns the
+	 * own removed element. After removed, the element and all its children will
+	 * have the <i>NOT_EXISTED</i> state in life cycle. In a case of reinsert
+	 * this removed element, then the same should be persisted again.
+	 * 
+	 * <p>The element to be removed must be attached (<i>ATTACHED</i> state) in
+	 * the tree and cannot get changes. All children will be removed too, if
+	 * they are with the <i>ATTACHED</i> state in life cycle. If there is at
+	 * least a single child element that is not <i>ATTACHED</i>, then no one
+	 * will be removed and this method will return <code>null</code>.</p>
 	 * 
 	 * <p>In case, if the <code>element</code> or its children is not attached,
 	 * then it is necessary to attach them in the current tree session by 
 	 * invoking {@link #persistElement(Element)} if it is a new element or 
 	 * invoking {@link #updateElement(Element)} if it is a changed element. 
-	 * After that, the <code>element</code> in question turn on attached and it
-	 * can be removed after that.</p>
+	 * After that, the <code>element</code> in question turn on attached again
+	 * and it can be removed after that.</p>
 	 * 
-	 * <p>Particularly, this method is less reliable to use than
-	 * {@link #removeElement(Object)} because if the client of this method
-	 * pass through a detached element, then this method will not remove the
-	 * element and it will return <code>false</code>. Invoking the 
-	 * {@link #removeElement(Object)} will remove certainly the element if the 
-	 * <i>Id</i> is found.</p>
-	 * 
-	 * <p>So, the client of this method must guarantee the following rules, if
-	 * he wishes getting <code>true</<ode>;
-	 * 		<ul>
-	 * 			<li><b>The element must be attached in the current session.</b>
-	 * 			</li>
-	 * 			<li><b>The element must no be changed after attached.</b></li>
-	 * 		</ul>
-	 * </p>
-	 * 
-	 * <p>If the <code>element</code> is <code>null</code> then this method will
-	 * return <code>false</code>.</p>
+	 * <p>If the <code>element</code> parameter is <code>null</code> then this
+	 * method also will return <code>null</code>.</p>
 	 * 
 	 * @param <T> the class type of the wrapped object that will be
 	 * encapsulated into the {@link Element} object
 	 * 
-	 * @param element the element to be removed with all children
+	 * @param element the element to be removed with all its children
 	 * 
-	 * @return the own removed element itself, but now detached
+	 * @return the own removed element itself, but now with the
+	 * <i>NOT_EXISTED</i> state in life cycle
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When the current session or the session which the
-	 * <code>to</code> element belongs is not active
+	 * @throws TreeException when:
+	 * <ul>
+	 * 	<li>
+	 * 		The transaction has no session selected to work it;
+	 * 	</li>
+	 * 	<li>
+	 * 		The current session is not active;
+	 * 	</li>
+	 * 
+	 * 	<li>
+	 * 		The <code>element</code> has different type of wrapped object
+	 * 		related to the current session;
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>element</code> is represented by a root of tree (this is
+	 * 		no possible to handle root elements);
+	 * 	</li>
+	 * 	<li>
+	 * 		The <code>element</code> or at least one of	its children have a
+	 * 		DETACHED or NOT_EXISTED state in life cycle;
+	 * 	</li>
+	 * </ul>
 	 */
 	public <T> Element<T> removeElement(Element<T> element) throws TreeException;
 	
 	/**
-	 * Remove the element by <code>id</code>. All children of the found element
-	 * is removed too and return <code>true</code>. Realize that removing an
-	 * element means detach it from the tree session.
+	 * Removes the element by its <code>id</code>. All children of the found
+	 * element are removed too and returns the own removed element. Realize that
+	 * removing an element means that this element will be permanently
+	 * eliminated from inside of the tree, having its state as
+	 * <i>NOT_EXISTED</i> in life cycle.
 	 * 
-	 * <p>If the <code>id</code> is not be able to be found or <code>null</code>,
-	 * then this method will return <code>false</code>.</p>
+	 * <p>If the id is not to be able to be found or <code>null</code>, then
+	 * this method will return <code>null</code>.</p>
 	 * 
-	 * <p>This method is a safe way to guarantee that if an element is found,
-	 * passing the <code>id</code> through, then it is certain that the element
-	 * and its children will be removed too. It happens because it finds out the
-	 * element directly in the tree session by <code>id</code> and bring it to
-	 * the client of this method. So, even changing the element after that, and
-	 * invoking this method then, the result will be the same element before
-	 * changing.</p>
+	 * <p>Be sure of being in the correct tree session, for not remove an
+	 * element with the same id but in another tree.</p>
+	 * 
+	 * @param <T> the class type of the wrapped object that will be
+	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param id the identifier of the element to be removed
 	 * 
-	 * @return the own removed element itself, but now detached
+	 * @return the own removed element itself, but with the <i>NOT_EXISTED</i>
+	 * state in life cycle
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * @throws TreeException when:
+	 * <ul>
+	 * 	<li>
+	 * 		The transaction has no session selected to work it;
+	 * 	</li>
+	 * 	<li>
+	 * 		The current session is not active;
+	 * 	</li>
+	 * 
+	 * 	<li>
+	 * 		The element id is represented by a root of tree (this is no
+	 * 		possible to handle root elements);
+	 * 	</li>
+	 * </ul>
 	 */
 	public <T> Element<T> removeElement(Object id) throws TreeException;
 	
@@ -335,11 +376,11 @@ public interface TreeManager {
 	 * <p>If the <code>id</code> is not be able to be found in the tree or
 	 * <code>null</code> then this method will return <code>null</code>.</p>
 	 * 
-	 * <p>The <code>id</code> corresponds the {@literal @Id} annotated
-	 * attribute of the source wrapped object in the <b>transformation
-	 * process</b>. When a tree is being built by a previous collection of
-	 * objects, the core API will bind the elements by this {@literal @Id}
-	 * annotated attribute.</p>
+	 * <p>The id corresponds to the {@literal @Id} annotated attribute of the
+	 * wrapped object in the <b>Transformation Process</b> or just an id which
+	 * the client choose. When a tree is being built by a previous collection of
+	 * objects (<b>Transformation Process</b>), the core API will bind the
+	 * elements by this {@literal @Id} annotated attribute.</p>
 	 * 
 	 * <p>Therefore:</p>
 	 * <ul>
@@ -348,26 +389,26 @@ public interface TreeManager {
 	 * 		</li>
 	 * </ul>
 	 * 
-	 * <p>All elements returned by this method represents elements with attached
-	 * state in relation with the current tree session. An attached element
-	 * means that the element returned and its children are a &quot;mirror&quot;
-	 * piece of the tree.</p>
+	 * <p>All elements returned by this method represents elements with
+	 * <i>ATTACHED</i> state in relation with the current tree session. An
+	 * attached element means that the element and its children are
+	 * &quot;mirrors&quot; piece of the tree.</p>
 	 * 
-	 * <p>Changing the element or the children states, then it is necessary to
+	 * <p>Changing the element or the children states, then this is necessary to
 	 * attach them again in the current tree session by invoking 
 	 * {@link #updateElement(Element)} to be able of handling those, for
 	 * operation like {@link #cut(Element, Element)} or 
 	 * {@link #copy(Element, Element)} for example.</p>
 	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object returned
+	 * @param <T> the class type of the wrapped object that will be
+	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param id the element identifier
 	 * 
-	 * @return the element and its children caught from the tree
+	 * @return an identical copy of the found element
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work it or if the current session is not active
 	 */
 	public <T> Element<T> getElementById(Object id) throws TreeException;
 	
@@ -376,32 +417,24 @@ public interface TreeManager {
 	 * <code>descendant</code> specified element in this current session.
 	 * 
 	 * <p>If both <code>parent</code> and <code>descendant</code> element is
-	 * <code>null</code> or detached, then <code>false</code> is returned.</p>
-	 * 
-	 * <p>hierarchically, all children of <code>descendant</code> element
-	 * <b>must be</b> identical to parent's children. The method compares
-	 * one by one and if at least one element is not equals to another one then 
-	 * <code>false</code> is immediately returned.</p>
-	 * 
-	 * <p>For this, even if the identifier of both elements are the same 
-	 * (comparing time), the core API internally executes
-	 * {@link Element#equals(Object)} to ensure the identity</p>
+	 * <code>null</code> or their (including the children) state is not
+	 * <i>ATTACHED</i> to this tree session, then <code>false</code> is
+	 * returned.</p>
 	 * 
 	 * @param <T> the class type of the wrapped object that will be
 	 * encapsulated into the {@link Element} object
 	 * 
-	 * @param parent the element which will contains the <code>descendant</code>
+	 * @param parent the element which will contain the <code>descendant</code>
 	 * element
 	 * 
 	 * @param descendant the element which is inside of <code>parent</code>
 	 * element
 	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the
-	 * <code>parent</code> element contains the <code>descendant</code>
-	 * element, <code>false</code> either
+	 * @return <code>true</code> value if the <code>parent</code> element
+	 * contains the <code>descendant</code> element, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work it or if the current session is not active
 	 */
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException;
@@ -419,59 +452,52 @@ public interface TreeManager {
 	 * caught from a tree and they are automatically attached, so this method
 	 * returns <code>true</code>.</p>
 	 * 
-	 * @param parent the parent identifier which will contains the
+	 * @param parent the parent identifier which will contain the
 	 * <code>descendant</code>
 	 * 
 	 * @param descendant the child identifier
 	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the
-	 * <code>parent</code> element contains the <code>descendant</code>
-	 * element, <code>false</code> either
+	 * @return <code>true</code> value if the <code>parent</code> element
+	 * contains the <code>descendant</code> element, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work it or if the current session is not active
 	 */
 	public boolean containsElement(Object parent, Object descendant) 
 			throws TreeException;
 	
 	/**
-	 * Verify if the current tree session has the specified
-	 * <code>element</code>.
+	 * Verify if the current tree session has the specified <code>element</code>.
 	 * 
-	 * <p>If the <code>element</code> is detached from the tree or
-	 * <code>null</code> then <code>false</code> is returned.</p>
+	 * <p>If the <code>element</code> is <code>null</code> or if the
+	 * <code>element</code> or at least one of its children have not
+	 * <i>ATTACHED</i> state in life cycle then <code>false</code> is returned.
+	 * </p>
 	 * 
-	 * <p>Internally, whole the hierarchy is iterated to seek the specified
-	 * <code>element</code>. The verification is done when the 
-	 * {@link Element#equals(Object)} is <code>true</code>.</p>
+	 * @param element the specified element to be searched
 	 * 
-	 * @param element the specified element to be verified
-	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the tree
-	 * contains the <code>element</code>, <code>false</code> either
+	 * @return <code>true</code> value if the tree contains the
+	 * <code>element</code>, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work it or if the current session is not active
 	 */
 	public boolean containsElement(Element<?> element) throws TreeException;
 	
 	/**
-	 * Verify if the current tree session has the element specified by its
+	 * Verify if the current tree session has the specified element by
 	 * <code>id</code>.
 	 * 
-	 * <p>If the element is not found in the tree or <code>null</code> then
-	 * <code>false</code> is returned.</p>
+	 * <p>If the element is not found in the tree or the <code>id</code> is
+	 * <code>null</code> then <code>false</code> is returned.</p>
 	 * 
-	 * <p>Internally, whole the hierarchy is iterated to seek the specified
-	 * <code>id</code>.</p>
+	 * @param id the identifier of the element to be searched
 	 * 
-	 * @param id the identifier of the element to be verified
-	 * 
-	 * @return <code>Boolean</code> the <code>true</code> value if the tree
-	 * contains the element, <code>false</code> either
+	 * @return <code>true</code> value if the tree contains the respective
+	 * element, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work it or if the current session is not active
 	 */
 	public boolean containsElement(Object id) throws TreeException;
 	

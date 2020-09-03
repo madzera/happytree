@@ -212,8 +212,10 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
-		boolean containsChild = Boolean.FALSE;
+		final Operation operation = Operation.CONTAINS;
+		
 		validatorFacade.validateTransaction();
+		boolean containsChild = Boolean.FALSE;
 		
 		if (parent == null || descendant == null) {
 			return containsChild;
@@ -224,6 +226,17 @@ class TreeManagerCore implements TreeManager {
 		
 		if (!parentCore.getState().equals(ElementState.ATTACHED)
 				|| !childCore.getState().equals(ElementState.ATTACHED)) {
+			return containsChild;
+		}
+		
+		boolean notAttachedParent = Recursivity.
+				iterateForInvalidStateOperationValidation(
+						parentCore.getChildren(), operation);
+		boolean notAttachedChild = Recursivity.
+				iterateForInvalidStateOperationValidation(
+						childCore.getChildren(), operation);
+		
+		if (notAttachedParent || notAttachedChild) {
 			return containsChild;
 		}
 		
@@ -239,8 +252,8 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public boolean containsElement(Object parent, Object descendant)
 			throws TreeException {
-		boolean containsChild = Boolean.FALSE;
 		validatorFacade.validateTransaction();
+		boolean containsChild = Boolean.FALSE;
 		
 		if (parent == null || descendant == null) {
 			return containsChild;
@@ -251,11 +264,10 @@ class TreeManagerCore implements TreeManager {
 		TreeElementCore<?> child = (TreeElementCore<?>) this.searchElement(
 				descendant);
 		
-		if (parentElement == null || child == null
-				|| !parentElement.getState().equals(ElementState.ATTACHED)
-				|| !child.getState().equals(ElementState.ATTACHED)) {
+		if (parentElement == null || child == null) {
 			return containsChild;
 		}
+		
 		return parentElement.getElementById(child.getId()) != null;
 	}
 
@@ -274,6 +286,7 @@ class TreeManagerCore implements TreeManager {
 		if (isAttached) {
 			containsElement = this.searchElement(element.getId()) != null;
 		}
+		
 		return containsElement;
 	}
 
