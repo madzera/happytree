@@ -24,6 +24,7 @@ enum TreeRepositoryMessage {
 	NOT_EXISTED_ELEMENT(TreeConstants.Error.UPDATE_NOT_EXISTED_ELEMENT),
 	DUPLICATED_ELEMENT(TreeConstants.Error.DUPLICATED_ID_ERROR),
 	MISMATCH_TYPE_ELEMENT(TreeConstants.Error.DIFFERENT_TYPES_ERROR),
+	NOT_BELONG_SESSION(TreeConstants.Error.INCORRECT_SESSION),
 	IMPOSSIBLE_HANDLE_ROOT(TreeConstants.Error.HANDLE_ROOT);
 	
 	private String errorDesc;

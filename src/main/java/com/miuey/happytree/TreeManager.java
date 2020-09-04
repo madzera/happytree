@@ -3,64 +3,69 @@ package com.miuey.happytree;
 import com.miuey.happytree.exception.TreeException;
 
 /**
- * Provides ways of handling elements within the tree session. With this, it is
- * possible to create, persist, update, cut, copy, remove, retrieve elements and
- * any other operations within the tree.
+ * Provides ways of handling elements within the tree session. With this, turn
+ * on possible to create, persist, update, cut, copy, remove, retrieve elements
+ * and any other operations within the tree.
  * 
  * <p>This interface works directly handling objects represented by the 
  * {@link Element} interface, where each one behaves similarly to a node within 
- * the tree. So, In practical terms, this interface allows the client API to 
- * handle business objects with tree-like behavior similar to 
- * <i>JavaScript HTML DOM</i>.</p>
+ * the tree. So, In practical terms, this interface allows the API client to 
+ * handle business objects with tree-like behavior similar to
+ * <i>JavaScript DOM</i>.</p>
  * 
- * <p>The operations here are done for elements within others or for "root" 
- * elements. The root elements are considered to be those that are not inside of
- * other elements, but those that are at the "top" of the tree hierarchy in 
+ * <p>The operations here are done for elements within others or for "roots" 
+ * elements. The roots elements are considered to be those that are not inside
+ * of other elements, but those that are at the "top" of the tree hierarchy in 
  * question. When the tree is created, automatically its root also are created,
- * with this root being empty or having <b>n</b> children.
+ * with this root being empty or having various children.</p>
  * 
  * <p>The operations also are done for cases where this is desirable reallocate
- * elements for inside of other trees session. In this case, the oneness of each
- * element must be respected, related to the tree which elements will be inside.
- * </p>
+ * elements for inside of other trees sessions. In this case, the oneness of
+ * each element must be respected, related to the tree which elements will be
+ * inside.</p>
  * 
  * <p>This is important to note that there are two distinct and well-defined
  * contexts in the HappyTree API. The inside and outside contexts. When the
- * client obtains an element and its children through the manager, the client is
- * actually working with identical copies of each node (element). When it makes
- * any changes to any of the elements, a change in the element's life cycle is
- * made, and this change is not immediately reflected in the tree in question.
- * This context is called outside of the tree. An inside context represents the
- * client's action to perform the persist/update of the element, so the change
- * is actually reflected in the tree, but made through this manager itself. The
- * persist/update operation work by invoking the
+ * API client obtains an element and its children through the manager, the
+ * API client is actually working with identical copies of each node (element).
+ * When the API client makes any changes to any of the elements, a change in the
+ * element's life cycle is made, and this change is not immediately reflected in
+ * the tree in question. This context is called outside of the tree. An inside
+ * context represents the client's action to perform the persist/update of the
+ * element, so the change is actually reflected in the tree, but made through
+ * this manager itself. The persist/update operations work by invoking the
  * {@link TreeManager#persistElement(Element)} and
  * {@link #updateElement(Element)} respectively.</p>
  * 
- * <p>Conceptually, this interface works by handling trees through a 
- * transaction. This transaction is represented by the {@link TreeTransaction} 
- * interface and the relation between both interfaces is 1:1. Therefore, this 
- * interface will always be linked to a single transaction, which can contain no 
- * one or many sessions, but it is only possible to handle one session at the 
- * time.</p>
+ * <p>Conceptually, this interface works by handling trees through a transaction.
+ * This transaction is represented by the {@link TreeTransaction} interface and
+ * the relation between both interfaces is 1:1. Therefore, this interface will
+ * always be linked to a single transaction, which can contain no one or many
+ * sessions, but this is only possible to handle one session at the time.</p>
  * 
- * <p>The programmer must be sure to handle elements through their respective
+ * <p>The API client must be sure to handle elements through their respective
  * transactions. A simple swap of a tree, by a transaction, makes this manager
  * ready to deal with a totally different tree.</p>
  * 
  * <p>For operations to work, the following validations are made:</p>
  * <ul>
  * 		<li>The transaction must have a session binded, <b>always</b>.</li>
- * 		<li>It is <b>mandatory</b> that the session be <b>activated.</b></li>
- * 		<li>According with the method, the elements must have in the proper
- * 			state.</li>
+ * 		<li>This is <b>mandatory</b> that the session be <b>activated.</b></li>
+ * 		<li>
+ * 			According with the method, the elements must have in the proper
+ * 			state.
+ * 		</li>
  * 		<li>for each tree session, each element inside must have unique id.</li>
- * 		<li>An element cannot be handle within trees which have different
- * 		type of wrapped object.</li>
- * 		<li>It is no possible to handle the root element.</li>
+ * 		<li>
+ * 			An element cannot be handle within trees which have different
+ * 			type of wrapped object.
+ * 		</li>
+ * 		<li>This is not possible to handle roots elements.</li>
  * </ul>
  * 
- * <table>
+ * <p>If one of these validations fail, an exception will be thrown.</p>
+ * 
+ * <table summary="Operations by element state.">
  * 	<tr>
  * 		<th>Element State/operation</th><th>Attached</th><th>Detached</th>
  * 		<th>Not Existed</th>
@@ -82,12 +87,10 @@ import com.miuey.happytree.exception.TreeException;
  * 	</tr>
  * </table>
  * 
- * <p>If one of these validations fails, an exception will be thrown.</p>
- * 
  * @author Diego Nóbrega
  * @author Miuey
  * 
- * @see {@link TreeSession}
+ * @see TreeSession
  * 
  * @version %I%, %G%
  *
@@ -95,7 +98,7 @@ import com.miuey.happytree.exception.TreeException;
 public interface TreeManager {
 	
 	/**
-	 * Cut the <code>from</code> element for inside of the <code>to</code>
+	 * Cuts the <code>from</code> element for inside of the <code>to</code>
 	 * element, whether for the same session or not. With this, the element to
 	 * be cut can be cut into the same tree session or to another tree in
 	 * another session. All children of <code>from</code> element will be cut
@@ -125,7 +128,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work it;
+	 * 		The transaction has no session selected to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session or the session which the <code>to</code> element
@@ -157,7 +160,7 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Cut the <code>from</code> element for inside of the <code>to</code>
+	 * Cuts the <code>from</code> element for inside of the <code>to</code>
 	 * element, <b>just inside of the same session</b>. Both parameters
 	 * represent the id of elements.
 	 * 
@@ -187,7 +190,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work it;
+	 * 		The transaction has no session selected to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -211,10 +214,10 @@ public interface TreeManager {
 	 * and its all children cannot have the same identifier than any element in
 	 * the <code>to</code> element tree.
 	 * 
-	 * <p><i><b>This method only should be used when the client desire copy the
+	 * <p><b>This method only should be used when the client desire copy the
 	 * element between different tree. This is no possible to copy elements
 	 * inside of the same own tree, because it will throw duplicated <i>Id</i> 
-	 * exception.</b></i></p>
+	 * exception.</b></p>
 	 * 
 	 * <p>The following steps are done internally inside the core API to copy
 	 * an element:</p>
@@ -222,10 +225,10 @@ public interface TreeManager {
 	 * 		<ol>
 	 * 			<li>Validate the current session and the input;</li>
 	 * 			<li>Copy the whole element structure with all the children;</li>
-	 * 			<li>Invoke {@link TreeTransaction#sessionCheckOut(String)} to 
+	 * 			<li>Invoke {@link TreeTransaction#sessionCheckout(String)} to 
 	 * 			the target tree be able to be worked;</li>
 	 * 			<li>Paste the elements;</li>
-	 * 			<li>Invoke {@link TreeTransaction#sessionCheckOut(String)} to 
+	 * 			<li>Invoke {@link TreeTransaction#sessionCheckout(String)} to 
 	 * 			the source tree, like before.</li>
 	 * 		</ol>
 	 * 
@@ -246,7 +249,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work it;
+	 * 		The transaction has no session selected to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session or the session which the <code>to</code> element
@@ -310,7 +313,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work it;
+	 * 		The transaction has no session selected to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -356,7 +359,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work it;
+	 * 		The transaction has no session selected to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -408,7 +411,7 @@ public interface TreeManager {
 	 * @return an identical copy of the found element
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it or if the current session is not active
+	 * work or the current session is not active
 	 */
 	public <T> Element<T> getElementById(Object id) throws TreeException;
 	
@@ -461,7 +464,7 @@ public interface TreeManager {
 	 * contains the <code>descendant</code> element, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it or if the current session is not active
+	 * work or if the current session is not active
 	 */
 	public boolean containsElement(Object parent, Object descendant) 
 			throws TreeException;
@@ -480,7 +483,7 @@ public interface TreeManager {
 	 * <code>element</code>, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it or if the current session is not active
+	 * work or if the current session is not active
 	 */
 	public boolean containsElement(Element<?> element) throws TreeException;
 	
@@ -497,24 +500,24 @@ public interface TreeManager {
 	 * element, <code>false</code> either
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it or if the current session is not active
+	 * work or if the current session is not active
 	 */
 	public boolean containsElement(Object id) throws TreeException;
 	
 	/**
-	 * Create a &quot;detached&quot; element with the <code>id</code> and
-	 * <code>parent</code> specified.
+	 * Create an element with the <code>id</code>, <code>parent</code> and the
+	 * wrapped object. Only the <code>id</code> is mandatory. When the
+	 * <code>parent</code> is null, then this element will be moved to the root
+	 * level of the tree, when persisted.
 	 * 
 	 * <p>Creating a new element does not means that it will be automatically in
-	 * the tree of the current session. It needs to be attached in the tree
-	 * right after the creation by invoking {@link #persistElement(Element)}. So,
-	 * after that, the element becomes attached and finally can be handled by
-	 * {@link #cut(Element, Element)} or {@link #copy(Element, Element)} for
+	 * the tree of the current session. When creating a new element, it is
+	 * &quot;outside&quot; of the tree yet, having the <i>NOT_EXISTED</i> state
+	 * in life cycle. The element needs to be attached in the tree right after
+	 * the creation moment time, by invoking {@link #persistElement(Element)}.
+	 * So, after that, the element becomes attached and finally can be handled
+	 * by {@link #cut(Element, Element)} or {@link #copy(Element, Element)} for
 	 * example.</p>
-	 * 
-	 * <p>If the {@literal @Parent} is <code>null</code></p>, then the new
-	 * element is liable of to be in a root level of the tree when the same is
-	 * persisted.</p>
 	 * 
 	 * @param <T> the class type of wrapped object that will be encapsulated
 	 * into the {@link Element} object
@@ -525,10 +528,11 @@ public interface TreeManager {
 	 * 
 	 * @param wrappedObject the object to be encapsulated in this element node
 	 * 
-	 * @return a new and detached element
+	 * @return a new element containing the <i>NOT_EXISTED</i> state in life
+	 * cycle
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. Also, when the current session is not active
+	 * work or the current session is not active
 	 */
 	public <T> Element<T> createElement(Object id, Object parent,
 			T wrappedObject) throws TreeException;
@@ -541,8 +545,8 @@ public interface TreeManager {
 	 * root level of the tree.
 	 * 
 	 * <p>Also, the new element must be essentially new, created using the
-	 * {@link #createElement(Object, Object)} method to guarantee a coherent
-	 * detached state from the current tree.</p>
+	 * {@link #createElement(Object, Object, Object)} method to guarantee a
+	 * coherent detached state from the current tree.</p>
 	 * 
 	 * <p>Another way to get a 'detached' element to be persisted is simply
 	 * get an already existing element from the tree and just change its
@@ -555,22 +559,25 @@ public interface TreeManager {
 	 * child in this new created element that has duplicated identifier in
 	 * relation to the tree, then an exception will threw.</p>
 	 * 
-	 * <table>
-	 * 
-	 * 	<th>Element Status</th><th>Ways</th><th>persistElement()</th>
+	 * <table summary="The element states which can be operated.">
 	 * 	<tr>
-	 * 		<td>Detached</td><td>{@link #createElement(Object, Object)}}</td>
+	 * 	<th>Element Status</th><th>Ways</th><th>persistElement()</th>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>
+	 * 			Detached</td><td>{@link #createElement(Object, Object, Object)}
+	 * 		</td>
 	 * 		<td>Yes</td>
 	 * 	</tr>
 	 * 	<tr>
 	 * 	<td>Attached</td><td>{@link #getElementById(Object)}</td><td>No</td>
 	 * 	</tr>
 	 * 	<tr>
-	 * 		<td>Detached</td><td>{@link #getElementById(Object)} -> 
+	 * 		<td>Detached</td><td>{@link #getElementById(Object)} - 
 	 * 		{@link Element#setId(Object)}</td><td>Yes</td>
 	 * 	</tr>
 	 * 	<tr>
-	 * 		<td>Attached</td><td>{@link #getElementById(Object)} -> 
+	 * 		<td>Attached</td><td>{@link #getElementById(Object)} - 
 	 * 		{@link Element#setParent(Object)}</td>
 	 * 		<td>No - Did not change the Id - Duplicated Id</td>
 	 * 	</tr>
@@ -615,22 +622,25 @@ public interface TreeManager {
 	 * <p>Updating an element, also its children list will be automatically
 	 * updated recursively.</p>
 	 * 
-	 * <table>
-	 * 
-	 * 	<th>Element Status</th><th>Ways</th><th>updateElement()</th>
+	 * <table summary="Operation by element state.">
 	 * 	<tr>
-	 * 		<td>Detached</td><td>{@link #createElement(Object, Object)}}</td>
+	 * 	<th>Element Status</th><th>Ways</th><th>updateElement()</th>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>
+	 * 			Detached</td><td>{@link #createElement(Object, Object, Object)}}
+	 * 		</td>
 	 * 		<td>No</td>
 	 * 	</tr>
 	 * 	<tr>
 	 * 	<td>Attached</td><td>{@link #getElementById(Object)}</td><td>Yes</td>
 	 * 	</tr>
 	 * 	<tr>
-	 * 		<td>Detached</td><td>{@link #getElementById(Object)} -> 
+	 * 		<td>Detached</td><td>{@link #getElementById(Object)} -
 	 * 		{@link Element#setId(Object)}</td><td>Yes</td>
 	 * 	</tr>
 	 * 	<tr>
-	 * 		<td>Attached</td><td>{@link #getElementById(Object)} -> 
+	 * 		<td>Attached</td><td>{@link #getElementById(Object)} - 
 	 * 		{@link Element#setParent(Object)}</td>
 	 * 		<td>Yes</td>
 	 * 	</tr>
@@ -668,11 +678,10 @@ public interface TreeManager {
 	 * work. This transaction has this objective, provide and handle the
 	 * sessions.</p>
 	 * 
-	 * <p>
 	 * 		<pre>
-	 * MANAGER (invokes) -> TRANSACTION (to handle) -> SESSIONS
+	 * MANAGER (invokes) - TRANSACTION (to handle) - SESSIONS
 	 * 		</pre>
-	 * </p>
+	 * 
 	 * 
 	 * @return the transaction associated to this manager
 	 */
@@ -690,7 +699,6 @@ public interface TreeManager {
 	 * Because that, every element with <code>null {@literal @Parent}</code>
 	 * attached to the tree become immediately child of root.</p>
 	 * 
-	 * <p>
 	 * 	<pre>
 	 *                          ELEMENT(ROOT)
 	 *                               /\
@@ -702,8 +710,7 @@ public interface TreeManager {
 	 * The creation of the root element is responsibility of the core API. It
 	 * occurs at the moment of initialization of a new session when the
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
-	 * or {@link TreeTransaction#initializeSession(String)} is invoked.
-	 * </p>
+	 * or {@link TreeTransaction#initializeSession(String, Class)} is invoked.
 	 * 
 	 * 
 	 * @param <T> the class type of the source wrapped object that will be

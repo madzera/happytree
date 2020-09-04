@@ -14,6 +14,20 @@ abstract class TreeElementValidator extends TreeValidator {
 	}
 
 	
+	/*
+	 * To be applied.
+	 */
+	void validateSessionElement(TreePipeline pipeline) throws TreeException {
+		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
+				SOURCE_ELEMENT_KEY);
+		TreeSessionCore session = (TreeSessionCore) pipeline.getAttribute(
+				"session");
+		if (!source.attachedTo().equals(session)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					NOT_BELONG_SESSION);
+		}
+	}
+	
 	void validateHandleRootElement(TreePipeline pipeline)
 			throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(

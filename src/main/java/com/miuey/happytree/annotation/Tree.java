@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
  * 
  * <p>The HappyTree API is able to transform a data structure that represents
  * a tree but that this behavior is not real in a real tree. So each object
- * in a <code>Collection<?></code> that have this annotation will represent
- * a node in a tree.</p>
+ * in a <code>Collection</code> that have this annotation will represent a node
+ * in a tree.</p>
  * 
  * <p>For instance, if there is, for any reason a necessity transforming a data
  * structure like this:</p>
