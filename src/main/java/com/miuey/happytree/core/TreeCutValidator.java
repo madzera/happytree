@@ -14,11 +14,12 @@ class TreeCutValidator extends TreeElementValidator {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
+	void validateDuplicatedIdElement(TreePipeline pipeline)
+			throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
+				SOURCE_ELEMENT);
 		Element<Object> target = (Element<Object>) pipeline.getAttribute(
-				TARGET_ELEMENT_KEY);
+				TARGET_ELEMENT);
 		
 		/*
 		 * Just validate when the target element is null. When cutting an

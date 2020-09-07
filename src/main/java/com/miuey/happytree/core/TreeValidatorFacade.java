@@ -7,10 +7,10 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeValidatorFacade {
 	
-	private static final String SOURCE_ELEMENT = "sourceElement";
-	private static final String TARGET_ELEMENT = "targetElement";
-	private static final String OPERATION = "operation";
-	private static final String CURRENT_SESSION = "session";
+	private static final String SOURCE_ELEMENT = TreeValidator.SOURCE_ELEMENT;
+	private static final String TARGET_ELEMENT = TreeValidator.TARGET_ELEMENT;
+	private static final String OPERATION = TreeValidator.OPERATION;
+	private static final String CURRENT_SESSION = TreeValidator.CURRENT_SESSION;
 	
 	private TreeManager manager;
 	
@@ -54,6 +54,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
+		validator.validateSessionElement(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
@@ -71,6 +72,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
+		validator.validateSessionElement(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 	}
@@ -88,6 +90,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
+		validator.validateSessionElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);
 	}
@@ -104,6 +107,7 @@ class TreeValidatorFacade {
 		pipeline.addAttribute(CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
+		validator.validateSessionElement(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicatedIdElement(pipeline);

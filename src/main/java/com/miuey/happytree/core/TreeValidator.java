@@ -5,6 +5,11 @@ import com.miuey.happytree.exception.TreeException;
 
 abstract class TreeValidator {
 
+	static final String SOURCE_ELEMENT = "sourceElement";
+	static final String TARGET_ELEMENT = "targetElement";
+	static final String OPERATION = "operation";
+	static final String CURRENT_SESSION = "session";
+	
 	private TreeManager manager;
 	
 	

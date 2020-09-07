@@ -63,6 +63,21 @@ class TreeManagerCore implements TreeManager {
 				TreeSessionCore targetSession = (TreeSessionCore)
 						getTransaction().sessionCheckout(to.attachedTo().
 								getSessionId());
+				try {
+					validatorFacade.validateTransaction();
+				} catch (TreeException e) {
+					/*
+					 * Rollback.
+					 */
+					getTransaction().sessionCheckout(session.getSessionId());
+					if (parent != null) {
+						parent.addChild(source);
+						source.transitionState(ElementState.ATTACHED);
+						parent.transitionState(ElementState.ATTACHED);
+					}
+					throw e;
+				}
+				
 				target = (TreeElementCore<T>) this.searchElement(to.getId());
 				target.addChild(source);
 				target.transitionState(ElementState.ATTACHED);
@@ -133,6 +148,17 @@ class TreeManagerCore implements TreeManager {
 			TreeSessionCore targetSession = (TreeSessionCore) to.attachedTo();
 			
 			transaction.sessionCheckout(targetSession.getSessionId());
+			
+			try {
+				validatorFacade.validateTransaction();
+			} catch (TreeException e) {
+				/*
+				 * Rollback.
+				 */
+				transaction.sessionCheckout(sourceSession.getSessionId());
+				throw e;
+			}
+			
 			TreeElementCore<T> targetElement = (TreeElementCore<T>) this.
 					searchElement(to.getId());
 			if (targetElement != null) {
@@ -280,8 +306,8 @@ class TreeManagerCore implements TreeManager {
 		
 		TreeElementCore<?> source = (TreeElementCore<?>) element;
 		boolean isAttached = source.getState().canExecuteOperation(operation)
-				&& !Recursivity.iterateForInvalidStateOperationValidation(source.
-						getChildren(), operation);
+				&& !Recursivity.iterateForInvalidStateOperationValidation(
+						source.	getChildren(), operation);
 		
 		if (isAttached) {
 			containsElement = this.searchElement(element.getId()) != null;

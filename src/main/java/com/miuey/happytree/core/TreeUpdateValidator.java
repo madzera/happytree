@@ -18,8 +18,8 @@ class TreeUpdateValidator extends TreeElementValidator {
 	@Override
 	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
 		TreeElementCore<?> element = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
-		Operation operation = (Operation) pipeline.getAttribute("operation");
+				SOURCE_ELEMENT);
+		Operation operation = (Operation) pipeline.getAttribute(OPERATION);
 		
 		if (!element.getState().canExecuteOperation(operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
@@ -37,7 +37,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 	@Override
 	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
+				SOURCE_ELEMENT);
 		TreeSession session = source.attachedTo();
 		Element<Object> root = session.tree();
 		
@@ -66,7 +66,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 	<T> void validateTypeOfElement(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")
 		Element<T> source = (Element<T>) pipeline.getAttribute(
-				SOURCE_ELEMENT_KEY);
+				SOURCE_ELEMENT);
 		T unwrappedObj = source.unwrap();
 		if (unwrappedObj != null) {
 			TreeManager manager = getManager();

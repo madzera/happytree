@@ -2,6 +2,7 @@ package com.miuey.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -160,6 +161,146 @@ public class TreeManagerErrorTest {
 			manager.createElement(nullablElementId,	null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element which
+	 * this element does not belong to the current session.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element inside of an incorrect session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Element not defined in this session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session;</li>
+	 * 	<li>Get an element from the source session;</li>
+	 * 	<li>Initialize the target session;</li>
+	 * 	<li>Still in target session, try to cut the first element from the
+	 * 	source session;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_wrongSessionElement() {
+		final String sourceSession = "source";
+		final String targetSession = "target";
+		
+		final String messageError = "Element not defined in this session.";
+		String error = null;
+		
+		final Long dreamweaverId = 502010l;
+		final Long driversId = 1076l;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> simpleDirectories = TreeAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSession, directories);
+			Element<Directory> dreamweaver = manager.getElementById(
+					dreamweaverId);
+			
+			transaction.initializeSession(targetSession, simpleDirectories);
+			Element<Directory> drivers = manager.getElementById(
+					driversId);
+			
+			/*
+			 * The current session is pointing to the target, but the
+			 * Dreamweaver element belongs to source session.
+			 */
+			manager.cut(dreamweaver, drivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element for
+	 * inside of another element in other tree which this tree is not active.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element for inside of another element in other tree which
+	 * this tree is not active.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session;</li>
+	 * 	<li>Get an element from the source session;</li>
+	 * 	<li>Initialize the target session;</li>
+	 * 	<li>Get an element from the target session;</li>
+	 * 	<li>Deactivate the target session by invoking
+	 * 	{@link TreeTransaction#deactivateSession(String)};</li>
+	 * 	<li>Still in target session, try to cut the source element from the
+	 * 	source session for inside of the target session, which is deactivated;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void cut_deactivatedTargetSession() throws TreeException {
+		final String sourceSession = "source";
+		final String targetSession = "target";
+		
+		final String messageError = "No active session.";
+		String error = null;
+		
+		final Long administratorId = 47592l;
+		final Long systemId = 100l;
+		final Long usersId = 38923l;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> simpleDirectories = TreeAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSession, directories);
+			Element<Directory> administrator = manager.getElementById(
+					administratorId);
+			
+			transaction.initializeSession(targetSession, simpleDirectories);
+			Element<Directory> system = manager.getElementById(
+					systemId);
+			
+			transaction.sessionCheckout(sourceSession);
+			transaction.deactivateSession(targetSession);
+			
+			manager.cut(administrator, system);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertTrue(manager.containsElement(usersId, administratorId));
 		} finally {
 			assertEquals(messageError, error);
 		}
@@ -896,6 +1037,147 @@ public class TreeManagerErrorTest {
 			manager.cut(mp4, type);
 		} catch (TreeException e) {
 			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element which
+	 * this element does not belong to the current session.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element inside of an incorrect current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Element not defined in this session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session;</li>
+	 * 	<li>Get an element from the source session;</li>
+	 * 	<li>Initialize the target session;</li>
+	 * 	<li>Still in target session, try to copy the first element from the
+	 * 	source session into the target element through of incorrect current
+	 * 	session;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_wrongSessionElement() {
+		final String sourceSession = "source";
+		final String targetSession = "target";
+		
+		final String messageError = "Element not defined in this session.";
+		String error = null;
+		
+		final Long dreamweaverId = 502010l;
+		final Long driversId = 1076l;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> simpleDirectories = TreeAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSession, directories);
+			Element<Directory> dreamweaver = manager.getElementById(
+					dreamweaverId);
+			
+			transaction.initializeSession(targetSession, simpleDirectories);
+			Element<Directory> drivers = manager.getElementById(
+					driversId);
+			
+			/*
+			 * The current session is pointing to the target, but the
+			 * Dreamweaver element belongs to source session.
+			 */
+			manager.copy(dreamweaver, drivers);
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to copy an element for
+	 * inside of another element in other tree which this tree is not active.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element for inside of another element in other tree which
+	 * this tree is not active.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the source session;</li>
+	 * 	<li>Get an element from the source session;</li>
+	 * 	<li>Initialize the target session;</li>
+	 * 	<li>Get an element from the target session;</li>
+	 * 	<li>Deactivate the target session by invoking
+	 * 	{@link TreeTransaction#deactivateSession(String)};</li>
+	 * 	<li>Still in target session, try to copy the source element from the
+	 * 	source session for inside of the target session, which is deactivated;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void copy_deactivatedTargetSession() throws TreeException {
+		final String sourceSession = "source";
+		final String targetSession = "target";
+		
+		final String messageError = "No active session.";
+		String error = null;
+		
+		final Long administratorId = 47592l;
+		final Long systemId = 100l;
+		final Long usersId = 38923l;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		Collection<Directory> simpleDirectories = TreeAssembler.
+				getSimpleDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sourceSession, directories);
+			Element<Directory> administrator = manager.getElementById(
+					administratorId);
+			
+			transaction.initializeSession(targetSession, simpleDirectories);
+			Element<Directory> system = manager.getElementById(
+					systemId);
+			
+			transaction.sessionCheckout(sourceSession);
+			transaction.deactivateSession(targetSession);
+			
+			manager.copy(administrator, system);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertTrue(manager.containsElement(usersId, administratorId));
 		} finally {
 			assertEquals(messageError, error);
 		}
