@@ -305,12 +305,18 @@ class TreeManagerCore implements TreeManager {
 		boolean containsElement = Boolean.FALSE;
 		
 		TreeElementCore<?> source = (TreeElementCore<?>) element;
-		boolean isAttached = source.getState().canExecuteOperation(operation)
-				&& !Recursivity.iterateForInvalidStateOperationValidation(
-						source.	getChildren(), operation);
 		
-		if (isAttached) {
-			containsElement = this.searchElement(element.getId()) != null;
+		TreeSession currentSession = getTransaction().currentSession();
+		
+		if (source != null && currentSession.equals(source.attachedTo())) {
+			boolean isAttached = source.getState().canExecuteOperation(
+					operation)
+					&& !Recursivity.iterateForInvalidStateOperationValidation(
+							source.	getChildren(), operation);
+			
+			if (isAttached) {
+				containsElement = this.searchElement(element.getId()) != null;
+			}
 		}
 		
 		return containsElement;

@@ -16,6 +16,7 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
+import com.miuey.happytree.example.Metadata;
 import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
@@ -654,6 +655,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Try to remove an element through a not existing id in the tree;</li>
 	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
 	 * </ol>
+	 * 
 	 * @throws TreeException
 	 */
 	@Test
@@ -668,6 +670,173 @@ public class TreeManagerAlternativeTest {
 		
 		transaction.initializeSession(sessionId, directories);
 		assertNull(manager.removeElement(notExistingId));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element, Element)} and
+	 * {@link TreeManager#containsElement(Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to verify if an
+	 * element contains another one which that one has <code>null</code> value.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify if an element contains another one which that one is
+	 * <code>null</code>.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get an element from this tree session;</li>
+	 * 	<li>Verify if this element contains an element with <code>null</code>
+	 * 	value;</li>
+	 * 	<li>Receive the <code>false</code> value.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void containsElement_nullElement() throws TreeException {
+		final String sessionId = "containsElement_nullElement";
+		
+		final long officeId = 53024;
+		final Element<Directory> nullableElement = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> office = manager.getElementById(officeId);
+		
+		assertFalse(manager.containsElement(office, nullableElement));
+		assertFalse(manager.containsElement(nullableElement));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object, Object)} and
+	 * {@link TreeManager#containsElement(Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to verify if an
+	 * element contains another one which they have different types of wrapped
+	 * objects.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify if an element contains another one which they have
+	 * different types of wrapped objects.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session previously loaded from
+	 * 	<code>TreeAssembler</code> with the <code>Directory</code> type;</li>
+	 * 	<li>Get an element from this tree session;</li>
+	 * 	<li>Initialize another session previously loaded from
+	 * 	<code>TreeAssembler</code> with the <code>Metadata</code> type;</li>
+	 * 	<li>Get an element from this tree session;</li>
+	 * 	<li>Try to verify if an element contains the other one;</li>
+	 * 	<li>Receive the <code>false</code> value.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void containsElement_mismatchElement() throws TreeException {
+		final String sourceSessionId = "source";
+		final String targetSessionId = "target";
+		
+		final long happytreeId = 859452;
+		final String ownerId = "owner";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		Collection<Metadata> metadatas = TreeAssembler.
+				getMetadataTree();
+		
+		transaction.initializeSession(sourceSessionId, directories);
+		Element<Directory> happytree = manager.getElementById(happytreeId);
+		
+		transaction.initializeSession(targetSessionId, metadatas);
+		Element<Metadata> owner = manager.getElementById(ownerId);
+		
+		assertFalse(manager.containsElement(happytree, owner));
+		assertFalse(manager.containsElement(happytree));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element, Element)} and
+	 * {@link TreeManager#containsElement(Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to verify if an
+	 * element contains another one which one of them has the <i>DETACHED</i>
+	 * state in life cycle.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify if an element contains another one which one of them has
+	 * the <i>DETACHED</i> state in life cycle.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get two elements from this tree session;</li>
+	 * 	<li>Confirm if an element is descendant of the other one;</li>
+	 * 	<li>Modify the wrapped object to turn on one of elements with
+	 * 	<i>DETACHED</i> state;</li>
+	 * 	<li>Try to verify if this modified element contains the other one;</li>
+	 * 	<li>Receive the <code>false</code> value.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void containsElement_detachedElement() throws TreeException {
+		final String sessionId = "containsElement_detachedElement";
+		
+		final long vlcId = 10239;
+		final long rec2Id = 1038299;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		Element<Directory> vlc = manager.getElementById(vlcId);
+		Element<Directory> rec2 = manager.getElementById(rec2Id);
+		
+		assertTrue(manager.containsElement(vlc, rec2));
+		assertTrue(manager.containsElement(vlc));
+		
+		Directory proj = new Directory((long) vlc.getId(),
+				(long) vlc.getParent(), "Media Player");
+		
+		/*
+		 * Becomes detached here.
+		 */
+		vlc.wrap(proj);
+		
+		assertFalse(manager.containsElement(vlc, rec2));
+		assertFalse(manager.containsElement(vlc));
 	}
 	
 	/**
