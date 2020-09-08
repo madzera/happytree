@@ -436,7 +436,7 @@ public interface TreeManager {
 	 * <code>descendant</code> element in this current session.
 	 * 
 	 * <p>If both <code>parent</code> and <code>descendant</code> element is
-	 * <code>null</code> or their (including the children) state is not
+	 * <code>null</code> or their (including the children) state are not
 	 * <i>ATTACHED</i> to this tree session, then <code>false</code> is
 	 * returned.</p>
 	 * 
