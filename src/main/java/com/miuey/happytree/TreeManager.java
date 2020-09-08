@@ -741,19 +741,19 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Get the {@link TreeTransaction} instance associated to this manager.
+	 * Obtains the {@link TreeTransaction} instance associated to this manager.
 	 * 
 	 * <p>The manager is closely related to the transaction. Absolutely every
 	 * operations defined in this interface needs to check the transaction and
 	 * verify if there is a session to be managed.</p>
 	 * 
 	 * <p>If there is no session to be handled inside the transaction, an error
-	 * occurs. The client of this method should know what session he wishes to
-	 * work. This transaction has this objective, provide and handle the
-	 * sessions.</p>
+	 * occurs. The API client of this method should know what session he wishes
+	 * to work. This transaction object has this objective, provide and handle
+	 * the sessions.</p>
 	 * 
 	 * 		<pre>
-	 * MANAGER (invokes) - TRANSACTION (to handle) - SESSIONS
+	 * MANAGER (invokes) -&gt; TRANSACTION (to handle) -&gt; SESSIONS
 	 * 		</pre>
 	 * 
 	 * 
@@ -762,16 +762,20 @@ public interface TreeManager {
 	public TreeTransaction getTransaction();
 	
 	/**
-	 * Return the root of the tree in this current session.
+	 * Returns the root of the tree in this current session.
 	 * 
-	 * <p>the root element contains a collection of children, which in turn
+	 * <p>The root element contains a collection of children, which in turn
 	 * contains a collection of children, and so on. All this structure is
 	 * returned in this method.</p>
 	 * 
 	 * <p>The root element represents the top of the tree and its
-	 * <code>id</code> is always defined with the <code>null</code> value.
-	 * Because that, every element with <code>null {@literal @Parent}</code>
-	 * attached to the tree become immediately child of root.</p>
+	 * <code>id</code> is always defined with the respective session id value.
+	 * Because that, every element with <code>null {@literal @Parent}</code> or
+	 * an unknown {@literal @Parent} will be attached to the tree become
+	 * immediately child of root.</p>
+	 * 
+	 * <p>Operations to copy, cut, remove or update cannot be applied to roots
+	 * elements. An exception will be threw and the execution aborted.</p>
 	 * 
 	 * 	<pre>
 	 *                          ELEMENT(ROOT)
@@ -786,14 +790,13 @@ public interface TreeManager {
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
 	 * or {@link TreeTransaction#initializeSession(String, Class)} is invoked.
 	 * 
-	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @return the root level representing the top of the tree
 	 * 
 	 * @throws TreeException when the transaction has no session selected to
-	 * work it. When if the current session is not active
+	 * work or the current session is not active
 	 */
 	public <T> Element<T> root() throws TreeException; 
 }
