@@ -1,6 +1,5 @@
 package com.miuey.happytree.core;
 
-
 import java.util.Collection;
 
 import com.miuey.happytree.Element;
@@ -15,11 +14,7 @@ class TreeManagerCore implements TreeManager {
 	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
 			createValidatorFacade(this);
 	
-	/*
-	 * The transaction associated to this manager. A manager is always related
-	 * to its transaction. The cardinality is always 1:1.
-	 */
-	private TreeTransaction transaction = TreeFactory.serviceFactory().
+	private TreeTransactionCore transaction = TreeFactory.serviceFactory().
 			createTreeTransaction(this);
 	
 	
@@ -29,11 +24,7 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
-		final Operation operation = Operation.CUT;
-		validatorFacade.validateTransaction();
-		validatorFacade.validateMandatory(from);
-		validatorFacade.validateCutCopyOperation(from, getTransaction().
-				currentSession(), to, operation);
+		validatorFacade.validateCutOperation(from, to);
 
 		TreeElementCore<T> source = (TreeElementCore<T>) this.searchElement(
 				from.getId());
@@ -44,7 +35,6 @@ class TreeManagerCore implements TreeManager {
 			
 			if (parent != null) {
 				parent.removeChild(source);
-				parent.transitionState(ElementState.ATTACHED);
 			}
 			
 			TreeSessionCore session = (TreeSessionCore) getTransaction().
@@ -54,17 +44,17 @@ class TreeManagerCore implements TreeManager {
 			if (to == null) {
 				TreeElementCore<T> root = (TreeElementCore<T>) tree();
 				root.addChild(source);
-				root.transitionState(ElementState.ATTACHED);
+				transaction.commitTransaction();
 			} else {
 				/*
 				 * The session of the target can be different, so it is
 				 * necessary to checkout the respective session.
 				 */
 				TreeSessionCore targetSession = (TreeSessionCore)
-						getTransaction().sessionCheckout(to.attachedTo().
+						transaction.sessionCheckout(to.attachedTo().
 								getSessionId());
 				try {
-					validatorFacade.validateTransaction();
+					validatorFacade.validateSessionTransaction();
 				} catch (TreeException e) {
 					/*
 					 * Rollback.
@@ -72,31 +62,23 @@ class TreeManagerCore implements TreeManager {
 					getTransaction().sessionCheckout(session.getSessionId());
 					if (parent != null) {
 						parent.addChild(source);
-						source.transitionState(ElementState.ATTACHED);
-						parent.transitionState(ElementState.ATTACHED);
 					}
 					throw e;
 				}
 				
 				target = (TreeElementCore<T>) this.searchElement(to.getId());
 				target.addChild(source);
-				target.transitionState(ElementState.ATTACHED);
 				
 				/*
 				 * Swap the session of the from element.
 				 */
-				session.remove(source.getId());
+				session.delete(source.getId());
 				source.changeSession(targetSession);
 				
-				/*
-				 * Add the from element to the target cache session.
-				 */
-				targetSession.add(source);
-				
-				getTransaction().sessionCheckout(session.getSessionId());
+				transaction.commitTransaction();
+				transaction.sessionCheckout(session.getSessionId());
 			}
 			
-			source.transitionState(ElementState.ATTACHED);
 		}
 		
 		return source != null ? source.cloneElement() : source;
@@ -104,8 +86,6 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
-		final Operation operation = Operation.CUT;
-		
 		Element<?> fromElement = null;
 		Element<?> toElement = null;
 		
@@ -117,8 +97,7 @@ class TreeManagerCore implements TreeManager {
 		if (from instanceof Element<?> && to instanceof Element<?>) {
 			fromElement = (Element<?>) from;
 			toElement = (Element<?>) to;
-			validatorFacade.validateCutCopyOperation(fromElement,
-					getTransaction().currentSession(), toElement, operation);
+			validatorFacade.validateCutOperation(fromElement, toElement);
 		}
 		
 		Element<T> source = this.searchElement(from);
@@ -130,12 +109,7 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
-		final Operation operation = Operation.COPY;
-		validatorFacade.validateTransaction();
-		validatorFacade.validateMandatory(from);
-		validatorFacade.validateMandatory(to);
-		validatorFacade.validateCutCopyOperation(from, getTransaction().
-				currentSession(), to, operation);
+		validatorFacade.validateCopyOperation(from, to);
 		
 		TreeElementCore<T> fromElement = (TreeElementCore<T>) this.
 				searchElement(from.getId());
@@ -150,7 +124,7 @@ class TreeManagerCore implements TreeManager {
 			transaction.sessionCheckout(targetSession.getSessionId());
 			
 			try {
-				validatorFacade.validateTransaction();
+				validatorFacade.validateSessionTransaction();
 			} catch (TreeException e) {
 				/*
 				 * Rollback.
@@ -168,7 +142,7 @@ class TreeManagerCore implements TreeManager {
 				targetElement.transitionState(ElementState.ATTACHED);
 				clonedFrom.transitionState(ElementState.ATTACHED);
 				
-				targetSession.add(clonedFrom);
+				targetSession.save(clonedFrom);
 			}
 			transaction.sessionCheckout(sourceSession.getSessionId());
 		}
@@ -179,14 +153,11 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> removeElement(Element<T> element)
 			throws TreeException {
-		final Operation operation = Operation.REMOVE;
-		
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 		
 		TreeElementCore<T> elementToRemove = null;
 		if (element != null) {
-			validatorFacade.validateRemoveOperation(element, getTransaction().
-					currentSession(), operation);
+			validatorFacade.validateRemoveOperation(element);
 			TreeSessionCore session = (TreeSessionCore) getTransaction().
 					currentSession();
 			elementToRemove = (TreeElementCore<T>) this.searchElement(element.
@@ -207,7 +178,7 @@ class TreeManagerCore implements TreeManager {
 				}
 				parentElement.transitionState(ElementState.ATTACHED);
 				
-				session.remove(elementToRemove.getId());
+				session.delete(elementToRemove.getId());
 			}
 		}
 		
@@ -226,7 +197,7 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> getElementById(Object id) throws TreeException {
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 		
 		TreeSessionCore session = (TreeSessionCore) getTransaction().
 				currentSession();
@@ -239,8 +210,8 @@ class TreeManagerCore implements TreeManager {
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
 		final Operation operation = Operation.CONTAINS;
+		validatorFacade.validateSessionTransaction();
 		
-		validatorFacade.validateTransaction();
 		boolean containsChild = Boolean.FALSE;
 		
 		if (parent == null || descendant == null) {
@@ -278,7 +249,7 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public boolean containsElement(Object parent, Object descendant)
 			throws TreeException {
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 		boolean containsChild = Boolean.FALSE;
 		
 		if (parent == null || descendant == null) {
@@ -300,7 +271,7 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public boolean containsElement(Element<?> element) throws TreeException {
 		final Operation operation = Operation.CONTAINS;
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 
 		boolean containsElement = Boolean.FALSE;
 		
@@ -324,31 +295,26 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public boolean containsElement(Object id) throws TreeException {
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 		
 		return this.searchElement(id) != null;
 	}
 
 	@Override
 	public <T> Element<T> createElement(Object id, Object parent,
-			T wrappedObject) throws TreeException {
-		validatorFacade.validateTransaction();
+			T wrappedNode) throws TreeException {
+		validatorFacade.validateSessionTransaction();
 		validatorFacade.validateMandatory(id);
 		
 		TreeSession session = getTransaction().currentSession();
 		return TreeFactory.serviceFactory().createElement(id, parent,
-				wrappedObject, session);
+				wrappedNode, session);
 	}
 
-	
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
-		final Operation operation = Operation.PERSIST;
-		validatorFacade.validateTransaction();
-		validatorFacade.validateMandatory(newElement);
-		validatorFacade.validatePersistOperation(newElement, getTransaction().
-				currentSession(), operation);
+		validatorFacade.validatePersistOperation(newElement);
 		
 		TreeElementCore<T> parent = (TreeElementCore<T>) this.searchElement(
 				newElement.getParent());
@@ -372,7 +338,7 @@ class TreeManagerCore implements TreeManager {
 			descendant.transitionState(ElementState.ATTACHED);
 		}
 		
-		session.add(child);
+		session.save(child);
 		
 		return child.cloneElement();
 	}
@@ -380,11 +346,7 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> updateElement(Element<T> element)
 			throws TreeException {
-		final Operation operation = Operation.UPDATE;
-		validatorFacade.validateTransaction();
-		validatorFacade.validateMandatory(element);
-		validatorFacade.validateUpdateOperation(element, getTransaction().
-				currentSession(), operation);
+		validatorFacade.validateUpdateOperation(element);
 		
 		TreeElementCore<T> updateElement = (TreeElementCore<T>) element; 
 		TreeElementCore<T> original = (TreeElementCore<T>) this.searchElement(
@@ -414,12 +376,12 @@ class TreeManagerCore implements TreeManager {
 			oldParent.transitionState(ElementState.ATTACHED);
 			newParent.transitionState(ElementState.ATTACHED);
 			
-			session.add(oldParent);
-			session.add(newParent);
+			session.save(oldParent);
+			session.save(newParent);
 		}
 		original.transitionState(ElementState.ATTACHED);
 		
-		session.add(original);
+		session.save(original);
 		
 		return original;
 	}
@@ -431,7 +393,7 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> root() throws TreeException {
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
 		TreeSession session = this.getTransaction().currentSession();
 		TreeElementCore<T> root = (TreeElementCore<T>) session.tree();
 		

@@ -582,7 +582,7 @@ public class ElementTest {
 	 * <p><b>Test:</b></p>
 	 * Wrap and unwrap an object inside this element.
 	 * <p><b>Expected:</b></p>
-	 * A not <code>null</code> wrapped object represented by {@link Directory}.
+	 * A not <code>null</code> wrapped node represented by {@link Directory}.
 	 * And this object must have named by <b>&quot;Photos&quot;</b>.
 	 * <p><b>Steps:</b></p>
 	 * <ol>

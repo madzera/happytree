@@ -15,7 +15,7 @@ class TreeElementCore<T> implements Element<T> {
 	private Object id;
 	private Object parentId;
 	private Collection<Element<T>> children;
-	private T wrappedObject;
+	private T wrappedNode;
 	private TreeSession session;
 	
 	/*
@@ -27,15 +27,15 @@ class TreeElementCore<T> implements Element<T> {
 	private Object newId;
 	
 	
-	TreeElementCore(Object id, Object parentId, T wrappedObject,
+	TreeElementCore(Object id, Object parentId, T wrappedNode,
 			TreeSession session) {
 		this.id = id;
 		this.parentId = parentId;
 		this.children = TreeFactory.collectionFactory().createHashSet();
 		
-		this.wrappedObject = wrappedObject;
-		if (wrappedObject != null) {
-			this.setType(wrappedObject.getClass());
+		this.wrappedNode = wrappedNode;
+		if (wrappedNode != null) {
+			this.setType(wrappedNode.getClass());
 		}
 		this.session = session;
 		/*
@@ -130,9 +130,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) throws TreeException {
-		this.wrappedObject = object;
+		this.wrappedNode = object;
 		
-		if (this.wrappedObject != null) {
+		if (this.wrappedNode != null) {
 			setType(object.getClass());
 		}
 		transitionState(ElementState.DETACHED);
@@ -140,7 +140,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public T unwrap() {
-		return this.wrappedObject;
+		return this.wrappedNode;
 	}
 
 	@Override

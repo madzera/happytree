@@ -734,7 +734,7 @@ public class TreeManagerAlternativeTest {
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to verify if an element contains another one which they have
-	 * different types of wrapped objects.
+	 * different types of wrapped nodes.
 	 * <p><b>Expected:</b></p>
 	 * Receive the <code>false</code> value.
 	 * <p><b>Steps:</b></p>
@@ -800,7 +800,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<code>TreeAssembler</code>;</li>
 	 * 	<li>Get two elements from this tree session;</li>
 	 * 	<li>Confirm if an element is descendant of the other one;</li>
-	 * 	<li>Modify the wrapped object to turn on one of elements with
+	 * 	<li>Modify the wrapped node to turn on one of elements with
 	 * 	<i>DETACHED</i> state;</li>
 	 * 	<li>Try to verify if this modified element contains the other one;</li>
 	 * 	<li>Receive the <code>false</code> value.</li>

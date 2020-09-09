@@ -7,11 +7,6 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeValidatorFacade {
 	
-	private static final String SOURCE_ELEMENT = TreeValidator.SOURCE_ELEMENT;
-	private static final String TARGET_ELEMENT = TreeValidator.TARGET_ELEMENT;
-	private static final String OPERATION = TreeValidator.OPERATION;
-	private static final String CURRENT_SESSION = TreeValidator.CURRENT_SESSION;
-	
 	private TreeManager manager;
 	
 	
@@ -20,7 +15,36 @@ class TreeValidatorFacade {
 	}
 
 	
-	void validateTransaction() throws TreeException {
+	void validateSessionInitialization(String identifier) throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		pipeline.addAttribute(TreePipelineAttributes.SESSION_ID, identifier);
+		
+		TreeSessionValidator validator = TreeFactory.validatorFactory().
+				createSessionValidator(manager);
+		
+		validator.validateMandatorySessionId(pipeline);
+		validator.validateDuplicatedSessionId(pipeline);
+	}
+	
+	void validateSessionInitialization(String identifier, Object typeSession)
+			throws TreeException {
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		pipeline.addAttribute(TreePipelineAttributes.SESSION_ID, identifier);
+		pipeline.addAttribute(TreePipelineAttributes.SESSION_TYPE, typeSession);
+		
+		TreeSessionValidator validator = TreeFactory.validatorFactory().
+				createSessionValidator(manager);
+		
+		validator.validateMandatorySessionId(pipeline);
+		validator.validateMandatoryTypeSession(pipeline);
+		validator.validateDuplicatedSessionId(pipeline);
+	}
+	
+	void validateSessionTransaction() throws TreeException {
 		TreeSessionValidator validator = TreeFactory.validatorFactory().
 				createSessionValidator(manager);
 		
@@ -34,42 +58,49 @@ class TreeValidatorFacade {
 		validator.validateMandatoryInput(args);
 	}
 	
-	void validateCutCopyOperation(Element<?> sourceElement, TreeSession session,
-			Element<?> targetElement, Operation operation) throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		TreeElementValidator validator = null;
+	void validateCutOperation(Element<?> sourceElement,
+			Element<?> targetElement) throws TreeException {
+		final Operation operation = Operation.CUT;
 		
-		if (operation.equals(Operation.CUT)) {
-			validator = TreeFactory.validatorFactory().
-					createCutValidator(manager);
-		} else {
-			validator = TreeFactory.validatorFactory().
-					createCopyValidator(manager);
-		}
+		validateSessionTransaction();
+		validateMandatory(sourceElement);
 		
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute(TARGET_ELEMENT, targetElement);
-		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute(CURRENT_SESSION, session);
+		TreeElementValidator validator = TreeFactory.validatorFactory().
+				createCutValidator(manager);
 		
-		validator.validateMismatchParameterizedType(pipeline);
-		validator.validateSessionElement(pipeline);
-		validator.validateHandleRootElement(pipeline);
-		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedIdElement(pipeline);
+		validateCutCopyOperation(sourceElement, manager.getTransaction().
+				currentSession(), targetElement, operation, validator);
 	}
 	
-	void validateRemoveOperation(Element<?> sourceElement, TreeSession session,
-			Operation operation) throws TreeException {
+	void validateCopyOperation(Element<?> sourceElement,
+			Element<?> targetElement) throws TreeException {
+		final Operation operation = Operation.COPY;
+		
+		validateSessionTransaction();
+		validateMandatory(sourceElement);
+		validateMandatory(targetElement);
+		
+		TreeElementValidator validator = TreeFactory.validatorFactory().
+				createCopyValidator(manager);
+		
+		validateCutCopyOperation(sourceElement, manager.getTransaction().
+				currentSession(), targetElement, operation, validator);
+	}
+	
+	void validateRemoveOperation(Element<?> sourceElement) throws TreeException {
+		final Operation operation = Operation.REMOVE;
+		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createRemoveValidator(manager);
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute(CURRENT_SESSION, session);
+		
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_ELEMENT,
+				sourceElement);
+		pipeline.addAttribute(TreePipelineAttributes.OPERATION, operation);
+		pipeline.addAttribute(TreePipelineAttributes.CURRENT_SESSION,
+				manager.getTransaction().currentSession());
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateSessionElement(pipeline);
@@ -77,17 +108,24 @@ class TreeValidatorFacade {
 		validator.validateDetachedElement(pipeline);
 	}
 	
-	void validatePersistOperation(Element<?> sourceElement, TreeSession session,
-			Operation operation) throws TreeException {
+	void validatePersistOperation(Element<?> sourceElement)
+			throws TreeException {
+		final Operation operation = Operation.PERSIST;
+		
+		validateSessionTransaction();
+		validateMandatory(sourceElement);
+		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
 		TreePersistValidator validator = TreeFactory.validatorFactory().
 				createPersistValidator(manager);
 		
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute(CURRENT_SESSION, session);
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_ELEMENT,
+				sourceElement);
+		pipeline.addAttribute(TreePipelineAttributes.OPERATION, operation);
+		pipeline.addAttribute(TreePipelineAttributes.CURRENT_SESSION,
+				manager.getTransaction().currentSession());
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateSessionElement(pipeline);
@@ -95,16 +133,44 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
-	void validateUpdateOperation(Element<?> sourceElement, TreeSession session,
-			Operation operation) throws TreeException {
+	void validateUpdateOperation(Element<?> sourceElement) throws TreeException {
+		final Operation operation = Operation.UPDATE;
+		
+		validateSessionTransaction();
+		validateMandatory(sourceElement);
+		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
 		
 		TreeUpdateValidator validator = TreeFactory.validatorFactory().
 				createUpdateValidator(manager);
-		pipeline.addAttribute(SOURCE_ELEMENT, sourceElement);
-		pipeline.addAttribute(OPERATION, operation);
-		pipeline.addAttribute(CURRENT_SESSION, session);
+		
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_ELEMENT,
+				sourceElement);
+		pipeline.addAttribute(TreePipelineAttributes.OPERATION, operation);
+		pipeline.addAttribute(TreePipelineAttributes.CURRENT_SESSION,
+				manager.getTransaction().currentSession());
+		
+		validator.validateMismatchParameterizedType(pipeline);
+		validator.validateSessionElement(pipeline);
+		validator.validateHandleRootElement(pipeline);
+		validator.validateDetachedElement(pipeline);
+		validator.validateDuplicatedIdElement(pipeline);
+	}
+	
+	private void validateCutCopyOperation(Element<?> sourceElement,
+			TreeSession session, Element<?> targetElement, Operation operation,
+			TreeElementValidator validator) throws TreeException {
+		
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_ELEMENT,
+				sourceElement);
+		pipeline.addAttribute(TreePipelineAttributes.TARGET_ELEMENT,
+				targetElement);
+		pipeline.addAttribute(TreePipelineAttributes.OPERATION, operation);
+		pipeline.addAttribute(TreePipelineAttributes.CURRENT_SESSION, session);
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateSessionElement(pipeline);

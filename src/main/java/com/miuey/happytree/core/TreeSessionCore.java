@@ -92,13 +92,13 @@ class TreeSessionCore implements TreeSession {
 		setActive(Boolean.TRUE);
 	}
 
-	<T> void add(Element<T> element) {
-		this.applyRecursivityCacheOperation(element, Boolean.FALSE);
+	<T> void save(Element<T> element) {
+		this.applyRecursivityCacheOperation(element, SessionHandler.SAVE);
 	}
 	
-	void remove(Object id) {
+	void delete(Object id) {
 		Element<?> element = this.cache.read(id);
-		this.applyRecursivityCacheOperation(element, Boolean.TRUE);
+		this.applyRecursivityCacheOperation(element, SessionHandler.DELETE);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -110,20 +110,24 @@ class TreeSessionCore implements TreeSession {
 		return typeTree;
 	}
 	
-	/*
-	 * Add or remove from the cache recursively.
-	 */
 	private <T> void applyRecursivityCacheOperation(Element<T> element,
-			boolean toRemove) {
+			SessionHandler handler) {
 		Collection<?> descendants = Recursivity.toPlainList(element);
 		for (Object object : descendants) {
-			Element<?> iterator = (Element<?>) object;
-
-			if (toRemove) {
-				this.cache.delete(iterator.getId());
-			} else {
+			TreeElementCore<?> iterator = (TreeElementCore<?>) object;
+			
+			if (handler.equals(SessionHandler.SAVE)) {
+				iterator.transitionState(ElementState.ATTACHED);
 				this.cache.write(iterator.getId(), iterator);
+			} else {
+				iterator.transitionState(ElementState.NOT_EXISTED);
+				this.cache.delete(iterator.getId());
 			}
 		}
+	}
+	
+	private enum SessionHandler {
+		SAVE,
+		DELETE;
 	}
 }

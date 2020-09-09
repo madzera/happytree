@@ -2809,7 +2809,7 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to update an element
-	 * which it has different type of wrapped object.</p>
+	 * which it has different type of wrapped node.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>,
 	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>

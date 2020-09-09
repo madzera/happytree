@@ -17,9 +17,9 @@ class TreeCutValidator extends TreeElementValidator {
 	void validateDuplicatedIdElement(TreePipeline pipeline)
 			throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
 		Element<Object> target = (Element<Object>) pipeline.getAttribute(
-				TARGET_ELEMENT);
+				TreePipelineAttributes.TARGET_ELEMENT);
 		
 		/*
 		 * Just validate when the target element is null. When cutting an
@@ -33,8 +33,10 @@ class TreeCutValidator extends TreeElementValidator {
 		 */
 		if (target != null) {
 			TreeSession targetSession = target.attachedTo();
+			
 			if (!source.attachedTo().equals(targetSession)) {
 				Element<Object> targetRoot = targetSession.tree();
+				
 				if (Recursivity.iterateForDuplicatedId(source, targetRoot)) {
 					throw this.throwTreeException(TreeRepositoryMessage.
 							DUPLICATED_ELEMENT);

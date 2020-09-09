@@ -14,30 +14,33 @@ public class PostValidation<T> extends ATPGenericPhase<T> {
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
-				getAttribute("elements");
-		Map<Object, Object> mapObjects = (Map<Object, Object>) 
-				pipeline.getAttribute("mapObjects");
-		Map<Object, Object> mapParents = (Map<Object, Object>) 
-				pipeline.getAttribute("mapParents");
-		Collection<Object> objects = mapObjects.values();
+				getAttribute(ATPPipelineAttributes.ELEMENTS);
 		
-		if (allElements.size() != objects.size()) {
+		Map<Object, Object> nodesMap = (Map<Object, Object>) 
+				pipeline.getAttribute(ATPPipelineAttributes.NODES_MAP);
+		Map<Object, Object> nodesParentMap = (Map<Object, Object>) 
+				pipeline.getAttribute(ATPPipelineAttributes.NODES_PARENT_MAP);
+		
+		Collection<Object> nodes = nodesMap.values();
+		
+		if (allElements.size() != nodes.size()) {
 			throw this.throwTreeException(ATPRepositoryMessage.
 					POST_VALID_INCONS);
 		}
 		
 		Object id = null;
 		Object parentId = null;
-		T wrappedObject = null;
+		T wrappedNode = null;
+		
 		for (Element<T> element : allElements) {
 			id = element.getId();
 			parentId = element.getParent();
-			wrappedObject = element.unwrap();
+			wrappedNode = element.unwrap();
 			
-			Object parentIdSource = mapParents.get(id);
-			Object object = mapObjects.get(id);
+			Object parentIdSource = nodesParentMap.get(id);
+			Object object = nodesMap.get(id);
 			
-			if (!object.equals(wrappedObject) || 
+			if (!object.equals(wrappedNode) || 
 					parentIdSource.equals(parentId)) {
 				throw this.throwTreeException(ATPRepositoryMessage.
 						POST_VALID_INCONS);

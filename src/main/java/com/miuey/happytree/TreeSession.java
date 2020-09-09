@@ -106,8 +106,8 @@ public interface TreeSession {
 	 * more children who will be able to contain other children within and in a
 	 * hierarchical way.</p>
 	 * 
-	 * @param <T> the class type of the source wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @return the root tree
 	 * 

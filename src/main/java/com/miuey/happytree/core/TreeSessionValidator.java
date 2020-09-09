@@ -14,7 +14,8 @@ class TreeSessionValidator extends TreeValidator {
 
 	
 	void validateMandatorySessionId(TreePipeline pipeline) {
-		String sessionId = (String) pipeline.getAttribute("sessionId");
+		String sessionId = (String) pipeline.getAttribute(
+				TreePipelineAttributes.SESSION_ID);
 		
 		if (sessionId == null || sessionId.length() == 0) {
 			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
@@ -23,7 +24,8 @@ class TreeSessionValidator extends TreeValidator {
 	}
 	
 	void validateMandatoryTypeSession(TreePipeline pipeline) {
-		Class<?> typeSession = (Class<?>) pipeline.getAttribute("typeSession");
+		Class<?> typeSession = (Class<?>) pipeline.getAttribute(
+				TreePipelineAttributes.SESSION_TYPE);
 		
 		if (typeSession == null) {
 			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
@@ -33,7 +35,8 @@ class TreeSessionValidator extends TreeValidator {
 	
 	void validateDuplicatedSessionId(TreePipeline pipeline)
 			throws TreeException {
-		String sessionId = (String) pipeline.getAttribute("sessionId");
+		String sessionId = (String) pipeline.getAttribute(
+				TreePipelineAttributes.SESSION_ID);
 		List<TreeSession> sessions = getManager().getTransaction().sessions();
 
 		for (TreeSession session : sessions) {

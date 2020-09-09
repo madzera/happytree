@@ -15,8 +15,9 @@ class TreePersistValidator extends TreeElementValidator {
 	@Override
 	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
 		TreeElementCore<?> element = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
-		Operation operation = (Operation) pipeline.getAttribute(OPERATION);
+				TreePipelineAttributes.SOURCE_ELEMENT);
+		Operation operation = (Operation) pipeline.getAttribute(
+				TreePipelineAttributes.OPERATION);
 		
 		if (!element.getState().canExecuteOperation(operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
@@ -34,9 +35,11 @@ class TreePersistValidator extends TreeElementValidator {
 	@Override
 	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
+		
 		TreeSession session = source.attachedTo();
 		Element<Object> root = session.tree();
+		
 		if (Recursivity.iterateForDuplicatedId(source, root)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);

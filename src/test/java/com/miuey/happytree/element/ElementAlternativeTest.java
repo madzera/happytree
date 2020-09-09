@@ -247,10 +247,10 @@ public class ElementAlternativeTest {
 	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to set a
-	 * <code>null</code> wrapped object.</p>
+	 * <code>null</code> wrapped node.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to set a wrapped object with <code>null</code> value.
+	 * Try to set a wrapped node with <code>null</code> value.
 	 * <p><b>Expected:</b></p>
 	 * Receive a <code>null</code> value when trying to unwrap the object.
 	 * <p><b>Steps:</b></p>
@@ -260,15 +260,15 @@ public class ElementAlternativeTest {
 	 * 	<li>Initialize a new session;</li>
 	 * 	<li>Create an element;</li>
 	 * 	<li>Wrap the <code>null</code> object inside of the element;</li>
-	 * 	<li>Unwrap the object from the element;</li>
+	 * 	<li>Unwrap the node object from the element;</li>
 	 * 	<li>Verify if the object is <code>null</code>.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
 	 */
 	@Test
-	public void unwrap_nullWrappedObject() throws TreeException {
-		final String sessionId = "unwrap_nullWrappedObject";
+	public void unwrap_nullWrappedNode() throws TreeException {
+		final String sessionId = "unwrap_nullWrappedNode";
 		final long elementId = Integer.MAX_VALUE;
 		Directory nullableDirectory = null;
 		

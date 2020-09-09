@@ -13,9 +13,10 @@ abstract class TreeElementValidator extends TreeValidator {
 
 	void validateSessionElement(TreePipeline pipeline) throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
 		TreeSessionCore session = (TreeSessionCore) pipeline.getAttribute(
-				CURRENT_SESSION);
+				TreePipelineAttributes.CURRENT_SESSION);
+		
 		if (!source.attachedTo().equals(session)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					NOT_BELONG_SESSION);
@@ -25,7 +26,8 @@ abstract class TreeElementValidator extends TreeValidator {
 	void validateHandleRootElement(TreePipeline pipeline)
 			throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
+		
 		if (source != null && source.isRoot()) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					IMPOSSIBLE_HANDLE_ROOT);
@@ -34,10 +36,11 @@ abstract class TreeElementValidator extends TreeValidator {
 	
 	void validateDetachedElement(TreePipeline pipeline) throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
 		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
-				TARGET_ELEMENT);
-		Operation operation = (Operation) pipeline.getAttribute(OPERATION);
+				TreePipelineAttributes.TARGET_ELEMENT);
+		Operation operation = (Operation) pipeline.getAttribute(
+				TreePipelineAttributes.OPERATION);
 		
 		if (!source.getState().canExecuteOperation(operation)
 				|| Recursivity.iterateForInvalidStateOperationValidation(source.
@@ -58,11 +61,11 @@ abstract class TreeElementValidator extends TreeValidator {
 	void validateMismatchParameterizedType(TreePipeline pipeline)
 			throws TreeException {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
-				SOURCE_ELEMENT);
+				TreePipelineAttributes.SOURCE_ELEMENT);
 		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
-				TARGET_ELEMENT);
+				TreePipelineAttributes.TARGET_ELEMENT);
 		TreeSessionCore session = (TreeSessionCore) pipeline.getAttribute(
-				CURRENT_SESSION);
+				TreePipelineAttributes.CURRENT_SESSION);
 		
 		Class<?> sourceType = source.getType();
 		Class<?> sessionType = session.getTypeTree();

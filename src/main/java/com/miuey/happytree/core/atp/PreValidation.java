@@ -16,26 +16,31 @@ public class PreValidation<T> extends ATPGenericPhase<T> {
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")
-		Collection<T> objects = (Collection<T>) pipeline.getAttribute("objects");
-		validateMandatorySource(objects);
-		validateAnnotations(objects);
+		Collection<T> nodes = (Collection<T>) pipeline.getAttribute(
+				ATPPipelineAttributes.NODES);
+		
+		validateMandatorySource(nodes);
+		validateAnnotations(nodes);
+		
 		try {
-			validateIdentifiers(objects);
+			validateIdentifiers(nodes);
 		} catch (ReflectiveOperationException exception) {
 			throw this.throwTreeException(ATPRepositoryMessage.GENERAL);
 		}
+		
 		doChain(pipeline);
 	}
 
-	private void validateMandatorySource(Collection<T> objects) {
-		if (objects == null || objects.isEmpty()) {
+	private void validateMandatorySource(Collection<T> nodes) {
+		if (nodes == null || nodes.isEmpty()) {
 			throw this.throwIllegalArgumentException(ATPRepositoryMessage.
 					INVALID_INPUT);
 		}
 	}
 
-	private void validateAnnotations(Collection<T> objects) throws TreeException {
-		Object[] objectArray = objects.toArray(new Object[0]);
+	private void validateAnnotations(Collection<T> nodes) throws TreeException {
+		
+		Object[] objectArray = nodes.toArray(new Object[0]);
 		Object object = objectArray[0];
 		
 		Class<?> treeClass = object.getClass();
@@ -57,26 +62,30 @@ public class PreValidation<T> extends ATPGenericPhase<T> {
 		}
 	}
 	
-	private void validateIdentifiers(Collection<T> objects) 
+	private void validateIdentifiers(Collection<T> nodes) 
 			throws ReflectiveOperationException, TreeException {
 		Set<Object> validIds = this.createHashSet();
-		Iterator<T> iterator = objects.iterator();
+		Iterator<T> iterator = nodes.iterator();
 		
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
+			
 			Field fieldIdAnnotation = ATPReflectionUtil.getFieldAnnotation(
 					object, Id.class);
 			
-			Object objId = ATPReflectionUtil.invokeGetter(
-					fieldIdAnnotation.getName(), object);
+			Object objId = ATPReflectionUtil.invokeGetter(fieldIdAnnotation.
+					getName(), object);
+			
 			if (objId == null) {
 				throw this.throwIllegalArgumentException(ATPRepositoryMessage.
 						INVALID_INPUT);
 			}
+			
 			if (validIds.contains(objId)) {
 				throw this.throwTreeException(ATPRepositoryMessage.
 						DUPLICATED_ID);
 			}
+			
 			validIds.add(objId);
 		}
 	}

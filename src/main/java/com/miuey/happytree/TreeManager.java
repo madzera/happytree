@@ -58,7 +58,7 @@ import com.miuey.happytree.exception.TreeException;
  * 		<li>for each tree session, each element inside must have unique id.</li>
  * 		<li>
  * 			An element cannot be handle within trees which have different
- * 			type of wrapped object.
+ * 			types of wrapped nodes.
  * 		</li>
  * 		<li>This is not possible to handle roots elements.</li>
  * </ul>
@@ -116,7 +116,7 @@ public interface TreeManager {
 	 * <p>This is imperative that both trees of the <code>from</code> and
 	 * <code>to</code> elements must be activated.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * @param <T> the class type of the wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
 	 * @param from the source element
@@ -141,7 +141,7 @@ public interface TreeManager {
 	 * 
 	 * 	<li>
 	 * 		The <code>from</code> and <code>to</code> elements have different
-	 * 		types of wrapped object related to the current session;
+	 * 		types of wrapped nodes related to the current session;
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>from</code> element is represented by a root of tree (this
@@ -180,7 +180,7 @@ public interface TreeManager {
 	 * using the {@link #cut(Element, Element)} which the target element is
 	 * linked to another tree.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * @param <T> the class type of the wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
 	 * @param from the source element
@@ -244,7 +244,7 @@ public interface TreeManager {
 	 * elements be attached in different trees, and both of trees must be
 	 * activated.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
+	 * @param <T> the class type of the wrapped node that will be
 	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param from the source element
@@ -270,7 +270,7 @@ public interface TreeManager {
 	 * 
 	 * 	<li>
 	 * 		The <code>from</code> and <code>to</code> elements have different
-	 * 		types of wrapped object related to the current session;
+	 * 		types of wrapped nodes related to the current session;
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>from</code> element is represented by a root of tree (this
@@ -314,8 +314,8 @@ public interface TreeManager {
 	 * <p>If the <code>element</code> parameter is <code>null</code> then this
 	 * method also will return <code>null</code>.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param element the element to be removed with all its children
 	 * 
@@ -336,8 +336,8 @@ public interface TreeManager {
 	 * 	</li>
 	 * 
 	 * 	<li>
-	 * 		The <code>element</code> has different type of wrapped object
-	 * 		related to the current session;
+	 * 		The <code>element</code> has different type of wrapped node	related
+	 * 		to the current session;
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>element</code> is represented by a root of tree (this is
@@ -364,8 +364,8 @@ public interface TreeManager {
 	 * <p>Be sure of being in the correct tree session, for not remove an
 	 * element with the same id but in another tree.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param id the identifier of the element to be removed
 	 * 
@@ -396,7 +396,7 @@ public interface TreeManager {
 	 * found in the tree or then this method will return <code>null</code>.</p>
 	 * 
 	 * <p>The id corresponds to the {@literal @Id} annotated attribute of the
-	 * wrapped object in the <b>Transformation Process</b> or just an id which
+	 * wrapped node in the <b>Transformation Process</b> or just an id which
 	 * the API client choose. When a tree is being built by a previous
 	 * collection of objects (<b>Transformation Process</b>), the core API will
 	 * bind the elements by this {@literal @Id} annotated attribute.</p>
@@ -419,8 +419,8 @@ public interface TreeManager {
 	 * operation like {@link #cut(Element, Element)} or 
 	 * {@link #copy(Element, Element)} for example.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param id the element identifier
 	 * 
@@ -440,8 +440,8 @@ public interface TreeManager {
 	 * <i>ATTACHED</i> to this tree session, then <code>false</code> is
 	 * returned.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param parent the element which will contain the <code>descendant</code>
 	 * element
@@ -527,7 +527,7 @@ public interface TreeManager {
 	
 	/**
 	 * Creates an element with the <code>id</code>, <code>parent</code> and the
-	 * wrapped object. Only the <code>id</code> is mandatory. When the
+	 * wrapped node object. Only the <code>id</code> is mandatory. When the
 	 * <code>parent</code> is null, then this element will be moved to the root
 	 * level of the tree, when persisted.
 	 * 
@@ -543,14 +543,14 @@ public interface TreeManager {
 	 * <p>Ensure that the parameterized type when creating an element is the
 	 * same type related to the current session.</p>
 	 * 
-	 * @param <T> the class type of wrapped object that will be encapsulated
+	 * @param <T> the class type of wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
 	 * @param id the identifier of the new element
 	 * 
 	 * @param parent the parent identifier of this new element
 	 * 
-	 * @param wrappedObject the object to be encapsulated in this element node
+	 * @param wrappedNode the object to be encapsulated in this element node
 	 * 
 	 * @return a new element containing the <i>NOT_EXISTED</i> state in life
 	 * cycle
@@ -559,7 +559,7 @@ public interface TreeManager {
 	 * work or the current session is not active
 	 */
 	public <T> Element<T> createElement(Object id, Object parent,
-			T wrappedObject) throws TreeException;
+			T wrappedNode) throws TreeException;
 	
 	/**
 	 * Persists a new element into the current tree session. The new element to
@@ -606,8 +606,8 @@ public interface TreeManager {
 	 * 	</tr>
 	 * </table>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be
-	 * encapsulated into the {@link Element} object
+	 * @param <T> the class type of the wrapped node that will be encapsulated
+	 * into the {@link Element} object
 	 * 
 	 * @param newElement the element to be persisted
 	 * 
@@ -627,7 +627,7 @@ public interface TreeManager {
 	 * 	</li>
 	 * 
 	 * 	<li>
-	 * 		The <code>newElement</code> has different type of wrapped object
+	 * 		The <code>newElement</code> has different type of wrapped node
 	 * 		related to the current session;
 	 * 	</li>
 	 * 	<li>
@@ -656,7 +656,7 @@ public interface TreeManager {
 	 * 
 	 * <p>A <i>DETACHED</i> element represents an element, or one of its
 	 * children, in which it has undergone some change, whether it be the id,
-	 * the parent id or the wrapped object. Ensure yourself to avoid duplicated
+	 * the parent id or the wrapped node. Ensure yourself to avoid duplicated
 	 * id in current session by an id change. To move up the
 	 * element for the root level, just set the parent id as <code>null</code>
 	 * or reference an unknown parent id.</p>
@@ -696,7 +696,7 @@ public interface TreeManager {
 	 * 	</tr>
 	 * </table>
 	 * 
-	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * @param <T> the class type of the wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
 	 * @param element the element to be updated
@@ -717,8 +717,8 @@ public interface TreeManager {
 	 * 	</li>
 	 * 
 	 * 	<li>
-	 * 		The <code>element</code> has different type of wrapped object
-	 * 		related to the current session;
+	 * 		The <code>element</code> has different type of wrapped node	related
+	 * 		to the current session;
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>element</code> is represented by a root of tree (this is
@@ -790,7 +790,7 @@ public interface TreeManager {
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
 	 * or {@link TreeTransaction#initializeSession(String, Class)} is invoked.
 	 * 
-	 * @param <T> the class type of the wrapped object that will be encapsulated
+	 * @param <T> the class type of the wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
 	 * @return the root level representing the top of the tree

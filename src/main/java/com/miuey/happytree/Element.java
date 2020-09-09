@@ -42,7 +42,7 @@ import com.miuey.happytree.exception.TreeException;
  * 		<td><code>children</code></td><td>The children list of the element.</td>
  * 	</tr>
  * 	<tr>
- * 		<td><code>wrappedObject</code></td><td>The encapsulated object.</td>
+ * 		<td><code>wrappedNode</code></td><td>The encapsulated source node.</td>
  * 	</tr>
  * 	<tr>
  * 		<td><code>sessionId</code></td><td>The session identifier which the
@@ -81,8 +81,8 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * @version %I%, %G%
  *
- * @param <T> the class type of the source wrapped object that will be
- * encapsulated into the this <code>Element</code>
+ * @param <T> the class type of the  wrapped node that will be encapsulated into
+ * this <code>Element</code>
  */
 public interface Element<T> {
 	

@@ -13,30 +13,35 @@ public class Extraction<T> extends ATPGenericPhase<T> {
 
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
-		Map<Object, Object> mapObjects = this.createHashMap();
-		Map<Object, Object> mapParents = this.createHashMap();
+		Map<Object, Object> nodesMap = this.createHashMap();
+		Map<Object, Object> nodesParentMap = this.createHashMap();
 		
-		Collection<?> objects = (Collection<?>) pipeline.getAttribute("objects");
+		Collection<?> nodes = (Collection<?>) pipeline.getAttribute(
+				ATPPipelineAttributes.NODES);
 		
-		for (Object object : objects) {
+		for (Object node : nodes) {
 			Field fieldIdAnnotation = ATPReflectionUtil.getFieldAnnotation(
-					object, Id.class);
+					node, Id.class);
 			Field fieldParentAnnotation = ATPReflectionUtil.getFieldAnnotation(
-					object, Parent.class);
+					node, Parent.class);
+			
 			try {
 				Object objId = ATPReflectionUtil.invokeGetter(
-						fieldIdAnnotation.getName(), object);
+						fieldIdAnnotation.getName(), node);
 				Object objParent = ATPReflectionUtil.invokeGetter(
-						fieldParentAnnotation.getName(), object);
+						fieldParentAnnotation.getName(), node);
 				
-				mapObjects.put(objId, object);
-				mapParents.put(objId, objParent);
+				nodesMap.put(objId, node);
+				nodesParentMap.put(objId, objParent);
 			} catch (ReflectiveOperationException e) {
 				throw this.throwTreeException(ATPRepositoryMessage.GENERAL);
 			}
 		}
-		pipeline.addAttribute("mapObjects", mapObjects);
-		pipeline.addAttribute("mapParents", mapParents);
+		
+		pipeline.addAttribute(ATPPipelineAttributes.NODES_MAP, nodesMap);
+		pipeline.addAttribute(ATPPipelineAttributes.NODES_PARENT_MAP,
+				nodesParentMap);
+		
 		doChain(pipeline);
 	}
 }

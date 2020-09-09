@@ -142,8 +142,8 @@ class TreeFactory {
 		}
 		
 		<T> TreeElementCore<T> createElement(Object id, Object parent,
-				T wrappedObject, TreeSession session) {
-			return new TreeElementCore<>(id, parent, wrappedObject,	session);
+				T wrappedNode, TreeSession session) {
+			return new TreeElementCore<>(id, parent, wrappedNode, session);
 		}
 	}
 
