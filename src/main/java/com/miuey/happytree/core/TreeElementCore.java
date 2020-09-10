@@ -176,10 +176,7 @@ class TreeElementCore<T> implements Element<T> {
 		Object otherParentId = other.getParent();
 		
 		TreeSession otherSession = other.attachedTo();
-		
-		/*
-		 * The id can be null in detached elements.
-		 */
+
 		if ((this.id == null && otherId != null) ||
 				(this.id != null && !this.id.equals(otherId))) {
 			return Boolean.FALSE;
@@ -208,7 +205,7 @@ class TreeElementCore<T> implements Element<T> {
 		if (obj != null) {
 			return obj.toString();
 		}
-		return "null";
+		return "[null]";
 	}
 
 	ElementState getState() {
@@ -255,7 +252,7 @@ class TreeElementCore<T> implements Element<T> {
 	 * Only in the root assembly. When there is a session being initialized,
 	 * then this root element cannot be detached.
 	 */
-	void initRoot(Collection<Element<T>> children) {
+	void initRoot(Collection<TreeElementCore<T>> children) {
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
 			this.setRoot(Boolean.TRUE);
@@ -266,7 +263,7 @@ class TreeElementCore<T> implements Element<T> {
 	 * This is not recommended to use implicit super clone Object because
 	 * few bugs.
 	 */
-	Element<T> cloneElement() {
+	TreeElementCore<T> cloneElement() {
 		TreeElementCore<T> clone = TreeFactory.serviceFactory().
 				createElement(
 						this.getId(),

@@ -13,7 +13,7 @@ import java.util.Map;
 public class TreePipeline {
 
 	/*
-	 * Map of attributes
+	 * Map of attributes.
 	 */
 	private Map<String, Object> attributes = TreeFactory.mapFactory().
 			createHashMap();
@@ -22,8 +22,8 @@ public class TreePipeline {
 	 * Protect this construct from the outside world. If it is exposed, then the
 	 * client API will have access to use the addAtributes() and getAttribute()
 	 * methods. This class needs be public and also its methods because it needs
-	 * to be accessible to others packages. Therefore, it is crucial that this
-	 * constructor be not public.
+	 * to be accessible to others packages. Therefore (atp), it is crucial that
+	 * this constructor does not be public.
 	 */
 	TreePipeline() {}
 

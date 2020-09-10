@@ -2,24 +2,22 @@ package com.miuey.happytree.core;
 
 import java.util.Map;
 
-import com.miuey.happytree.Element;
-
 class Cache {
 
-	private Map<Object, Element<?>> cacheElements = TreeFactory.mapFactory().
-			createHashMap();
+	private Map<Object, TreeElementCore<?>> cacheElements = 
+			TreeFactory.mapFactory().createHashMap();
 	
 	
 	Cache() {}
 	
 	
-	void write(Object id, Element<?> element) {
+	void write(Object id, TreeElementCore<?> element) {
 		this.cacheElements.put(id, element);
 	}
 	
 	@SuppressWarnings("unchecked")
-	<T> Element<T> read(Object id) {
-		return (Element<T>) this.cacheElements.get(id);
+	<T> TreeElementCore<T> read(Object id) {
+		return (TreeElementCore<T>) this.cacheElements.get(id);
 	}
 	
 	void delete(Object id) {

@@ -2,7 +2,6 @@ package com.miuey.happytree.core;
 
 import java.util.Set;
 
-import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.TreeFactory.ATPLifecycleFactory;
@@ -15,14 +14,13 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * @author Diego Nóbrega
  *
- * @param <T> the type of object wrapped inside of <code>Element</code>
+ * @param <T> the type of wrapped node inside of <code>Element</code>
  */
 class ATPLifecycle<T> {
 
 	private static final String SESSION_KEY = "sessionId";
 	private static final String MANAGER_KEY = "manager";
 	private static final String ROOT_KEY = "tree";
-	private static final String ELEMENTS_KEY = "elements";
 	
 	private TreePipeline pipeline;
 	
@@ -70,32 +68,17 @@ class ATPLifecycle<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	private void prepareInitializedSession() throws TreeException {
-		Set<Element<T>> tree = (Set<Element<T>>) pipeline.getAttribute(
-				ROOT_KEY);
-		Set<Element<T>> elements = (Set<Element<T>>) pipeline.getAttribute(
-				ELEMENTS_KEY);
+		Set<TreeElementCore<T>> tree = (Set<TreeElementCore<T>>)
+				pipeline.getAttribute(ROOT_KEY);
 		TreeManager manager = (TreeManager) pipeline.getAttribute(MANAGER_KEY);
 		
-		TreeTransaction transaction = manager.getTransaction();
+		
+		TreeTransactionCore transaction = (TreeTransactionCore)
+				manager.getTransaction();
 		TreeSessionCore session = (TreeSessionCore) transaction.currentSession();
 		
 		/*
-		 * Attaching each element after tree assembled.
-		 */
-		for (Element<T> iterator : elements) {
-			TreeElementCore<T> element = (TreeElementCore<T>) iterator;
-			/*
-			 * Add to the cache session.
-			 */
-			session.save(element);
-			/*
-			 * Set the state of element to ATTACHED.
-			 */
-			element.transitionState(ElementState.ATTACHED);
-		}
-		
-		/*
-		 * Each root element has the Id value corresponding the session Id. It
+		 * Each root element has the Id value corresponding the session Id. This
 		 * is useful to identify the root element.
 		 */
 		TreeElementCore<T> root = (TreeElementCore<T>) manager.createElement(
@@ -104,23 +87,24 @@ class ATPLifecycle<T> {
 		/*
 		 * Change the parent id of immediate root children (first level).
 		 */
-		for (Element<T> iterator : tree) {
-			TreeElementCore<T> child = (TreeElementCore<T>) iterator;
+		for (TreeElementCore<T> child : tree) {
 			child.setParent(session.getSessionId());
-			child.transitionState(ElementState.ATTACHED);
 		}
 		
 		/*
 		 * Root Config.
 		 */
-		root.transitionState(ElementState.ATTACHED);
-		session.save(root);
 		session.setRoot(root, tree);
+		
+		/*
+		 * Save changes.
+		 */
+		transaction.commitTransaction();
 	}
 
 	/*
-	 * If some error occurs after the session initialization, then the own
-	 * session needs to be destroyed.
+	 * Roll back in case some error occurs after the session initialization,
+	 * then the own session needs to be destroyed.
 	 */
 	private void closeResources() {
 		String sessionId = (String) pipeline.getAttribute(SESSION_KEY);

@@ -251,8 +251,7 @@ public interface TreeManager {
 	 * 
 	 * @param to the target element
 	 * 
-	 * @return a copy of the element represented by the <code>from</code>
-	 * parameter, after copied
+	 * @return a copy of the copied element in the target tree session
 	 * 
 	 * @throws TreeException when:
 	 * <ul>

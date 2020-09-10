@@ -12,7 +12,7 @@ class TreeSessionCore implements TreeSession {
 	 */
 	private String identifier;
 	private boolean isActive;
-	private Element<?> root;
+	private TreeElementCore<?> root;
 	
 	/*
 	 * To be used internally.
@@ -75,6 +75,11 @@ class TreeSessionCore implements TreeSession {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "TreeSessionCore [identifier=" + identifier + "]";
+	}
+
 	void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
@@ -83,7 +88,7 @@ class TreeSessionCore implements TreeSession {
 	 * This method represents the only one place to initialize a tree. Put the
 	 * root element attached to this session and vice-versa.
 	 */
-	<T> void setRoot(Element<?> root, Collection<Element<T>> tree) {
+	<T> void setRoot(Element<?> root, Collection<TreeElementCore<T>> tree) {
 		@SuppressWarnings("unchecked")
 		TreeElementCore<T> rootCast = (TreeElementCore<T>) root;
 		
@@ -101,9 +106,8 @@ class TreeSessionCore implements TreeSession {
 		this.applyRecursivityCacheOperation(element, SessionHandler.DELETE);
 	}
 	
-	@SuppressWarnings("unchecked")
-	<T> Element<T> get(Object id) {
-		return (Element<T>) this.cache.read(id);
+	<T> TreeElementCore<T> get(Object id) {
+		return this.cache.read(id);
 	}
 	
 	Class<?> getTypeTree() {
@@ -113,6 +117,7 @@ class TreeSessionCore implements TreeSession {
 	private <T> void applyRecursivityCacheOperation(Element<T> element,
 			SessionHandler handler) {
 		Collection<?> descendants = Recursivity.toPlainList(element);
+		
 		for (Object object : descendants) {
 			TreeElementCore<?> iterator = (TreeElementCore<?>) object;
 			

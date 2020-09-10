@@ -1,5 +1,5 @@
-
 package com.miuey.happytree.core;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +14,10 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
 
-	private Map<String, TreeSession> sessions = TreeFactory.mapFactory().
+	private Map<String, TreeSessionCore> sessions = TreeFactory.mapFactory().
 			createHashMap();
 	
-	private TreeSession currentSession;
+	private TreeSessionCore currentSession;
 	private TreeManager associatedManager;
 	
 
@@ -40,8 +40,8 @@ class TreeTransactionCore implements TreeTransaction {
 		TreeElementCore<T> root = serviceFactory.createElement(
 				identifier, null, null, newSession);
 		
-		Collection<Element<T>> rootChildren = TreeFactory.collectionFactory().
-				createHashSet();
+		Collection<TreeElementCore<T>> rootChildren = TreeFactory.
+				collectionFactory().createHashSet();
 		
 		newSession.setRoot(root, rootChildren);
 		
@@ -166,9 +166,24 @@ class TreeTransactionCore implements TreeTransaction {
 		return this.associatedManager;
 	}
 	
+	<T> TreeElementCore<T> refreshElement(Object id) {
+		return currentSession.get(id);
+	}
+	
+	<T> void rollbackElement(Element<T> element) {
+		currentSession.delete(element.getId());
+	}
+	
+	<T> void commitElement(Element<T> element) {
+		currentSession.save(element);
+	}
+	
 	void commitTransaction() {
-		TreeSessionCore session = (TreeSessionCore) currentSession;
-		
-		session.save(session.tree());
+		currentSession.save(currentSession.tree());
+	}
+	
+	@SuppressWarnings("unchecked")
+	<T> TreeElementCore<T> refresh() {
+		return (TreeElementCore<T>) currentSession.tree();
 	}
 }

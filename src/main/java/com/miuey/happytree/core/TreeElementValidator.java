@@ -16,10 +16,21 @@ abstract class TreeElementValidator extends TreeValidator {
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		TreeSessionCore session = (TreeSessionCore) pipeline.getAttribute(
 				TreePipelineAttributes.CURRENT_SESSION);
+		TreeElementCore<?> target = (TreeElementCore<?>) pipeline.getAttribute(
+				TreePipelineAttributes.TARGET_ELEMENT);
 		
 		if (!source.attachedTo().equals(session)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					NOT_BELONG_SESSION);
+		}
+		
+		/**
+		 * When trying to cut/copy, if the target session element is not active
+		 * then this is no possible to cut or copy for their elements.
+		 */
+		if (target != null && !target.attachedTo().isActive()) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					NO_ACTIVE_SESSION);
 		}
 	}
 	

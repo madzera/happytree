@@ -59,7 +59,7 @@ class TreeSessionValidator extends TreeValidator {
 	void validateNoActiveSession() throws TreeException {
 		TreeSession session = getManager().getTransaction().currentSession();
 		
-		if (session != null && !session.isActive()) {
+		if (!session.isActive()) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					NO_ACTIVE_SESSION);
 		}
