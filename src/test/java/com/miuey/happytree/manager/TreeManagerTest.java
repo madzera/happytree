@@ -79,13 +79,16 @@ public class TreeManagerTest {
 	@Test
 	public void createElement() throws TreeException {
 		final String sessionId = "createElement";
-		final String elementId = "Documents";
+		final long elementId = Long.MAX_VALUE;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
+		Directory directory = new Directory(elementId, 0, "Paint");
+		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				directory);
 		
 		assertNotNull(element);
 		assertEquals(elementId, element.getId());
@@ -355,7 +358,6 @@ public class TreeManagerTest {
 		
 		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
 		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
-		
 		
 		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> source = manager.getElementById(sourceId);
@@ -748,6 +750,9 @@ public class TreeManagerTest {
 	public void persistElement() throws TreeException {
 		final String sessionId = "persistElement";
 		
+		final String gamesName = "Games";
+		final String ageName = "Age of Empires II";
+		
 		final long programFilesId = 42345;
 		final long gamesId = Long.MAX_VALUE;
 		final long ageOfEmpiresId = 48593500;
@@ -758,15 +763,13 @@ public class TreeManagerTest {
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
 		
-		Directory gamesDir = new Directory(gamesId, programFilesId, "Games");
-		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId,
-				"Age of Empires II");
+		Directory gamesDir = new Directory(gamesId, programFilesId, gamesName);
+		Directory ageGameDir = new Directory(ageOfEmpiresId, gamesId, ageName);
+		
 		Element<Directory> games = manager.createElement(gamesId,
-				programFilesId);
+				programFilesId, gamesDir);
 		Element<Directory> ageGame = manager.createElement(ageOfEmpiresId,
-				gamesId);
-		games.wrap(gamesDir);
-		ageGame.wrap(ageGameDir);
+				gamesId, ageGameDir);
 		
 		games.addChild(ageGame);
 		
@@ -791,8 +794,8 @@ public class TreeManagerTest {
 	 * <p><b>Test:</b></p>
 	 * Update an element after changing its parent.
 	 * <p><b>Expected:</b></p>
-	 * It is expected that the element to have its parent updated after changing
-	 * its parent and invoking {@link TreeManager#persistElement(Element)}.
+	 * It is expected that the element have its parent updated after changing
+	 * its parent.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>

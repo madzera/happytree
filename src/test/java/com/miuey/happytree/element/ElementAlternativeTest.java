@@ -37,7 +37,9 @@ public class ElementAlternativeTest {
 	 * <p><b>Test:</b></p>
 	 * Try to set an element Id with a <code>null</code> value.
 	 * <p><b>Expected:</b></p>
-	 * Receive a <code>null</code> value when trying to get the element Id.
+	 * Receive the same id even after invoking {@link Element#setId(Object)}.
+	 * The id of element only changes after a call for
+	 * {@link TreeManager#updateElement(Element)}
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -67,17 +69,18 @@ public class ElementAlternativeTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
-				randomParentId);
+				randomParentId, null);
 		
 		assertNotNull(element);
 		assertNotNull(element.getParent());
 		assertNotNull(element.getId());
 		
 		/*
-		 * At the Element detached context, it is allowed accept null Id.
+		 * At the Element detached context, it is allowed accept null Id because
+		 * it only changes after an update operation.
 		 */
 		element.setId(nullableId);
-		assertNull(element.getId());
+		assertNotNull(element.getId());
 		assertNotNull(element.getParent());
 	}
 	
@@ -121,7 +124,7 @@ public class ElementAlternativeTest {
 		transaction.initializeSession(sessionId, Directory.class);
 		
 		Element<Directory> element = manager.createElement(elementId,
-				parentId);
+				parentId, null);
 		
 		assertNotNull(element);
 		assertNotNull(element.getId());
@@ -173,8 +176,9 @@ public class ElementAlternativeTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childId, null, null);
 		Element<Directory> nullChild = null;
 		
 		element.addChild(child);
@@ -227,8 +231,9 @@ public class ElementAlternativeTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Element<Directory> element = manager.createElement(elementId, null);
-		Element<Directory> child = manager.createElement(childId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childId, null, null);
 		Element<Directory> nullChild = null;
 		
 		element.addChild(child);
@@ -242,10 +247,10 @@ public class ElementAlternativeTest {
 	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to set a
-	 * <code>null</code> wrapped object.</p>
+	 * <code>null</code> wrapped node.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to set a wrapped object with <code>null</code> value.
+	 * Try to set a wrapped node with <code>null</code> value.
 	 * <p><b>Expected:</b></p>
 	 * Receive a <code>null</code> value when trying to unwrap the object.
 	 * <p><b>Steps:</b></p>
@@ -255,15 +260,15 @@ public class ElementAlternativeTest {
 	 * 	<li>Initialize a new session;</li>
 	 * 	<li>Create an element;</li>
 	 * 	<li>Wrap the <code>null</code> object inside of the element;</li>
-	 * 	<li>Unwrap the object from the element;</li>
+	 * 	<li>Unwrap the node object from the element;</li>
 	 * 	<li>Verify if the object is <code>null</code>.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException
 	 */
 	@Test
-	public void unwrap_nullWrappedObject() throws TreeException {
-		final String sessionId = "unwrap_nullWrappedObject";
+	public void unwrap_nullWrappedNode() throws TreeException {
+		final String sessionId = "unwrap_nullWrappedNode";
 		final long elementId = Integer.MAX_VALUE;
 		Directory nullableDirectory = null;
 		
@@ -271,7 +276,8 @@ public class ElementAlternativeTest {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Directory.class);
-		Element<Directory> element = manager.createElement(elementId, null);
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
 		
 		element.wrap(nullableDirectory);
 		

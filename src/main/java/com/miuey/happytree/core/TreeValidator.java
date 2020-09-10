@@ -4,7 +4,7 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.exception.TreeException;
 
 abstract class TreeValidator {
-
+	
 	private TreeManager manager;
 	
 	

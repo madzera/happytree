@@ -1,24 +1,18 @@
 package com.miuey.happytree.core;
 
-
-import java.util.Collection;
-
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.exception.TreeException;
 
+@SuppressWarnings("unchecked")
 class TreeManagerCore implements TreeManager {
 
 	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
 			createValidatorFacade(this);
 	
-	/*
-	 * The transaction associated to this manager. A manager is always related
-	 * to its transaction. The cardinality is always 1:1.
-	 */
-	private TreeTransaction transaction = TreeFactory.serviceFactory().
+	private TreeTransactionCore transaction = TreeFactory.serviceFactory().
 			createTreeTransaction(this);
 	
 	
@@ -28,264 +22,414 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> cut(Element<T> from, Element<T> to)
 			throws TreeException {
-		validatorFacade.validateTransaction();
-		validatorFacade.validateCutCopyOperation(from, to, Boolean.FALSE);
+		/*
+		 * Input validation.
+		 */
+		validatorFacade.validateCutOperation(from, to);
+
+		/*
+		 * Obtains both of sessions: source and target sessions.
+		 */
+		TreeSessionCore sourceSession = (TreeSessionCore) from.attachedTo();
+		TreeSessionCore targetSession = to != null ?
+				(TreeSessionCore) to.attachedTo() : null;
 		
-		TreeSessionCore session = (TreeSessionCore) this.getTransaction().
-				currentSession();
-		Element<T> parentFrom = this.getElementById(from.getParent());
-		if (parentFrom != null) {
-			parentFrom.removeChild(from);
-		}
+		/*
+		 * Obtains the source element.
+		 */
+		TreeElementCore<T> source = this.searchElement(from.getId());
 		
-		if (to != null) {
-			to.addChild(from);
-			from.setParent(to.getId());
-			TreeElementCore<T> fromCore = (TreeElementCore<T>) from;
-			fromCore.changeSession(to.attachedTo());
+		/*
+		 * Retires the element from the source parent.
+		 */
+		TreeElementCore<T> sourceParent = this.searchElement(source.getParent());
+		sourceParent.removeChild(source);
+		
+		/*
+		 * If the source and target are from different tree session, then swap
+		 * the transaction to the target session and add the source element into
+		 * the target element inside of the target session. Otherwise, insert
+		 * the source element into the target element (root or not) in the same
+		 * source session.
+		 */
+		TreeElementCore<T> target = null;
+		if (targetSession != null && !sourceSession.equals(targetSession)) {
+			transaction.rollbackElement(source);
+			
+			transaction.sessionCheckout(targetSession.getSessionId());
+			target = this.searchElement(to.getId());
+			
+			target.addChild(source);
+			source.changeSession(targetSession);
+			
+			transaction.commitTransaction();
+			
+			transaction.sessionCheckout(sourceSession.getSessionId());
 		} else {
-			Element<T> root = this.root();
-			root.addChild(from);
-			from.setParent(root.getId());
-			synchronizeElements(root);
+			target = to != null ? (TreeElementCore<T>)
+					this.searchElement(to.getId()) : null;
+			
+			target = target == null ? (TreeElementCore<T>)
+					this.searchElement(sourceSession.getSessionId()) : target;
+			
+			target.addChild(source);
+			
+			transaction.commitTransaction();
 		}
-		synchronizeElements(parentFrom, from, to);
-		transaction.sessionCheckout(session.getSessionId());
-		session.remove(from.getId());
-		return from;
+		
+		return source.cloneElement();
 	}
 
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
-		validatorFacade.validateTransaction();
+		Element<?> fromElement = null;
+		Element<?> toElement = null;
 		
-		Element<T> fromElement = this.getElementById(from);
-		Element<T> toElement = this.getElementById(to);
+		/*
+		 * Mismatch parameterized type error. invoking with the parameters
+		 * Element<X> and Element<Y> this method is called instead
+		 * cut(Element, Element).
+		 */
+		if (from instanceof Element<?> && to instanceof Element<?>) {
+			fromElement = (Element<?>) from;
+			toElement = (Element<?>) to;
+			validatorFacade.validateCutOperation(fromElement, toElement);
+		}
 		
-		return this.cut(fromElement, toElement);
+		Element<T> source = this.searchElement(from);
+		Element<T> target = this.searchElement(to);
+		
+		return this.cut(source, target);
 	}
 
 	@Override
 	public <T> Element<T> copy(Element<T> from, Element<T> to)
 			throws TreeException {
-		validatorFacade.validateTransaction();
-		validatorFacade.validateCutCopyOperation(from, to, Boolean.TRUE);
+		/*
+		 * Input validation.
+		 */
+		validatorFacade.validateCopyOperation(from, to);
+
+		/*
+		 * Obtains both of sessions: source and target sessions.
+		 */
+		TreeSessionCore sourceSession = (TreeSessionCore) from.attachedTo();
+		TreeSessionCore targetSession = (TreeSessionCore) to.attachedTo();
 		
-		Element<T> clonedElement = this.createElement(from.getId(), to.getId());
-		clonedElement.addChildren(from.getChildren());
-		clonedElement.wrap(from.unwrap());
-		TreeElementCore<T> clonedElementCore = (TreeElementCore<T>) 
-				clonedElement;
-		clonedElementCore.changeSession(to.attachedTo());
+		/*
+		 * Obtains the source element.
+		 */
+		TreeElementCore<T> source = this.searchElement(from.getId());
 		
-		clonedElement.setParent(to.getId());
-		to.addChild(clonedElement);
+		/*
+		 * Clones the source element.
+		 */
+		TreeElementCore<T> clonedSource = source.cloneElement();
 		
-		synchronizeElements(clonedElement, to);
+		/*
+		 * Checkout the target session.
+		 */
+		transaction.sessionCheckout(targetSession.getSessionId());
 		
-		return clonedElement;
+		TreeElementCore<T> target = this.searchElement(to.getId());
+		
+		/*
+		 * Setup the copy process.
+		 */
+		clonedSource.changeSession(targetSession);
+		target.addChild(clonedSource);
+		
+		/*
+		 * Save changes.
+		 */
+		transaction.commitTransaction();
+		transaction.sessionCheckout(sourceSession.getSessionId());
+		
+		return clonedSource.cloneElement();
 	}
 
 	@Override
 	public <T> Element<T> removeElement(Element<T> element)
 			throws TreeException {
-		validatorFacade.validateTransaction();
-		validatorFacade.validateRemoveOperation(element);
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
 		
+		/*
+		 * The removed element to be returned.
+		 */
 		TreeElementCore<T> removedElement = null;
 		
 		if (element != null) {
-			Element<T> searchElement = this.getElementById(element.getId());
-			removedElement = (TreeElementCore<T>) searchElement;
-			if (removedElement != null) {
-				Element<T> parent = this.getElementById(element.getParent());
-				parent.removeChild(removedElement);
-				removedElement.detach();
-				removedElement.changeSession(null);
-				synchronizeElements(parent);
-			}
+			
+			/*
+			 * If the input is not null, this is necessary to valid it.
+			 */
+			validatorFacade.validateRemoveOperation(element);
+			
+			/*
+			 * Obtains the element and its parent element in the tree.
+			 */
+			removedElement = this.searchElement(element.getId());
+			TreeElementCore<T> parentElement = this.searchElement(
+					removedElement.getParent());
+			
+			/*
+			 * Removes the element from its parent and from the cache.
+			 */
+			parentElement.removeChild(removedElement);
+			transaction.rollbackElement(removedElement);
+			
+			/*
+			 * Save changes.
+			 */
+			transaction.commitTransaction();
 		}
+		
+		/*
+		 * This is not necessary to return the cloned element because the
+		 * element is not attached in the tree session anymore.
+		 */
 		return removedElement;
 	}
 
 	@Override
 	public <T> Element<T> removeElement(Object id) throws TreeException {
-		validatorFacade.validateTransaction();
-		
-		Element<T> removedElement = null;
-		
-		if (id != null) {
-			Element<T> element = this.getElementById(id);
-			TreeElementCore<T> convertedElement = (TreeElementCore<T>)
-					element;
-			if (element != null && !convertedElement.isRoot()) {
-				Element<T> parent = this.getElementById(element.getParent());
-				parent.removeChild(convertedElement);
-				convertedElement.detach();
-				convertedElement.changeSession(null);
-				synchronizeElements(parent);
-				removedElement = convertedElement;
-			}
-		}
-		return removedElement;
+		Element<T> element = this.searchElement(id);
+		return this.removeElement(element);
 	}
 
 	@Override
 	public <T> Element<T> getElementById(Object id) throws TreeException {
-		validatorFacade.validateTransaction();
-		Element<T> element = null;
-		if (id != null) {
-			TreeSessionCore session = (TreeSessionCore) this.getTransaction().
-					currentSession();
-			element = session.get(id);
-			if (element == null) {
-				Element<T> root = session.tree();
-				element = searchElement(root.getChildren(), id);
-				
-				/*
-				 * Add to the cache.
-				 */
-				if (element != null) {
-					session.add(element.getId(), element);
-				}
-			}
-		}
-		return element;
+		validatorFacade.validateSessionTransaction();
+		
+		TreeElementCore<T> element = this.searchElement(id);
+		return element != null ? element.cloneElement() : element;
 	}
 
 	@Override
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
-		validatorFacade.validateTransaction();
-		boolean result = Boolean.FALSE;
+		final Operation operation = Operation.CONTAINS;
 		
-		TreeElementCore<T> parentElement = (TreeElementCore<T>) parent;
-		TreeElementCore<T> descendantElement = (TreeElementCore<T>) descendant;
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
 		
-		String sessionId = this.getTransaction().currentSession().getSessionId();
-		if (parent != null && descendant != null && parentElement.isAttached()
-				&& descendantElement.isAttached() 
-				&& parent.attachedTo().equals(sessionId) 
-				&& descendant.attachedTo().equals(sessionId)) {
-			Element<T> element = this.searchElement(parent.getChildren(),
-					descendant.getId());
-			result = element != null;
+		boolean containsChild = Boolean.FALSE;
+		
+		/*
+		 * Null arguments must return false.
+		 */
+		if (parent == null || descendant == null) {
+			return containsChild;
 		}
-		return result;
+		
+		TreeElementCore<T> parentCore = (TreeElementCore<T>) parent;
+		TreeElementCore<T> childCore = (TreeElementCore<T>) descendant;
+		
+		/*
+		 * Detached elements must return false.
+		 */
+		if (!parentCore.getState().equals(ElementState.ATTACHED)
+				|| !childCore.getState().equals(ElementState.ATTACHED)) {
+			return containsChild;
+		}
+		
+		boolean notAttachedParent = Recursivity.
+				iterateForInvalidStateOperationValidation(
+						parentCore.getChildren(), operation);
+		boolean notAttachedChild = Recursivity.
+				iterateForInvalidStateOperationValidation(
+						childCore.getChildren(), operation);
+		
+		if (notAttachedParent || notAttachedChild) {
+			return containsChild;
+		}
+		
+		Element<T> parentElement = this.searchElement(parentCore.getId());
+		Element<T> childElement = this.searchElement(childCore.getId());
+		
+		containsChild = parentElement != null && childElement != null
+				&& parentElement.getElementById(childElement.getId()) != null;
+		
+		return containsChild;
 	}
 
 	@Override
 	public boolean containsElement(Object parent, Object descendant)
 			throws TreeException {
-		validatorFacade.validateTransaction();
-		boolean result = Boolean.FALSE;
-		if (parent != null && descendant != null) {
-			Element<?> parentElement = this.getElementById(parent);
-			Element<?> descendantElement = this.getElementById(descendant);
-			
-			if (parentElement != null && descendantElement != null) {
-				Element<?> element = this.searchElement(parentElement.
-						getChildren(), descendantElement.getId());
-				result = element != null;
-			}
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+		boolean containsChild = Boolean.FALSE;
+		
+		/*
+		 * Null arguments must return false.
+		 */
+		if (parent == null || descendant == null) {
+			return containsChild;
 		}
-		return result;
+		
+		TreeElementCore<?> parentElement = this.searchElement(parent);
+		TreeElementCore<?> child = this.searchElement(descendant);
+		
+		/*
+		 * Not found elements must return false.
+		 */
+		if (parentElement == null || child == null) {
+			return containsChild;
+		}
+		
+		return parentElement.getElementById(child.getId()) != null;
 	}
 
 	@Override
 	public boolean containsElement(Element<?> element) throws TreeException {
-		validatorFacade.validateTransaction();
-		boolean result = Boolean.FALSE;
-		if (element != null) {
-			TreeElementCore<?> convertedElement = (TreeElementCore<?>) element;
-			String sessionId = this.getTransaction().currentSession().
-					getSessionId();
-			if (convertedElement.isAttached() 
-					&& convertedElement.attachedTo().equals(sessionId)) {
-				Element<?> foundElement = this.searchElement(this.root().
-						getChildren(), element.getId());
-				result = foundElement != null;
+		final Operation operation = Operation.CONTAINS;
+		
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+
+		boolean containsElement = Boolean.FALSE;
+		
+		TreeElementCore<?> source = (TreeElementCore<?>) element;
+		
+		TreeSession currentSession = getTransaction().currentSession();
+		
+		/*
+		 * If the input element does not belong to the current session and it is
+		 * not attached to the current tree session, then false must be
+		 * returned.
+		 */
+		if (source != null && currentSession.equals(source.attachedTo())) {
+			boolean isAttached = source.getState().canExecuteOperation(
+					operation)
+					&& !Recursivity.iterateForInvalidStateOperationValidation(
+							source.	getChildren(), operation);
+			
+			if (isAttached) {
+				containsElement = this.searchElement(element.getId()) != null;
 			}
 		}
-		return result;
+		
+		return containsElement;
 	}
 
 	@Override
 	public boolean containsElement(Object id) throws TreeException {
-		validatorFacade.validateTransaction();
-		boolean result = Boolean.FALSE;
-		if (id != null) {
-			Element<?> element = this.getElementById(id);
-			result = element != null;
-		}
-		return result;
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+		
+		return this.searchElement(id) != null;
 	}
 
 	@Override
-	public <T> Element<T> createElement(Object id, Object parent)
-			throws TreeException {
+	public <T> Element<T> createElement(Object id, Object parent,
+			T wrappedNode) throws TreeException {
 		/*
-		 * Initial validation processes.
+		 * Input validation.
 		 */
-		validatorFacade.validateTransaction();
+		validatorFacade.validateSessionTransaction();
+		validatorFacade.validateMandatory(id);
 		
-		return TreeFactory.serviceFactory().createElement(id, parent);
+		TreeSession session = getTransaction().currentSession();
+		return TreeFactory.serviceFactory().createElement(id, parent,
+				wrappedNode, session);
 	}
 
 	@Override
 	public <T> Element<T> persistElement(Element<T> newElement)
 			throws TreeException {
-		validatorFacade.validateTransaction();
+		/*
+		 * Input validation.
+		 */
 		validatorFacade.validatePersistOperation(newElement);
 		
-		Object parentId = newElement.getParent();
-		Element<T> parent = null;
-		if (parentId != null) {
-			parent = this.getElementById(parentId);
-		} else {
-			parent = this.root();
-			newElement.setParent(parent.getId());
-			parent.wrap(newElement.unwrap());
-		}
-		parent.addChild(newElement);
-		TreeElementCore<T> element = (TreeElementCore<T>) newElement;
-		element.changeSession(this.getTransaction().currentSession().
-				getSessionId());
-		synchronizeElements(newElement, parent);
+		/*
+		 * Group the child and parent elements.
+		 */
+		TreeElementCore<T> parent = this.searchElement(newElement.getParent());
+		TreeElementCore<T> child = (TreeElementCore<T>) newElement;
 		
-		return newElement;
+		/*
+		 * If the parent referenced by @Parent annotation is not found, then
+		 * this element will be moved to the root level.
+		 */
+		if (parent == null) {
+			parent = (TreeElementCore<T>) this.tree();
+		}
+		parent.addChild(child);
+		
+		/*
+		 * Save changes.
+		 */
+		transaction.commitTransaction();
+		
+		return child.cloneElement();
 	}
 
 	@Override
 	public <T> Element<T> updateElement(Element<T> element)
 			throws TreeException {
-		validatorFacade.validateTransaction();
+		/*
+		 * Input validation.
+		 */
 		validatorFacade.validateUpdateOperation(element);
 		
-		Element<T> snapshot = ((TreeElementCore<T>) element).snapshot();
+		TreeElementCore<T> updatedElement = (TreeElementCore<T>) element;
 		
-		if (snapshot != null && !snapshot.equals(element)) {
-			Object oldParentId = snapshot.getParent();
-			Object newParentId = element.getParent();
-			
-			Element<T> oldParent = null;
-			if (!oldParentId.equals(newParentId)) {
-				oldParent = this.getElementById(oldParentId);
-				if (oldParent != null) {
-					oldParent.removeChild(snapshot.getId());
-					((TreeElementCore<T>) oldParent).clearSnapshot();
-					((TreeElementCore<T>) element).clearSnapshot();
-				}
-			}
-			
-			Element<T> newParent = this.getElementById(newParentId);
-			if (newParent == null) {
-				newParent = this.root();
-			}
-			newParent.addChild(element);
-			synchronizeElements(oldParent, newParent, element);
+		TreeElementCore<T> source = this.searchElement(element.getId());
+		
+		Object oldParentId = source.getParent();
+		
+		/*
+		 * Obtains the id to be updated. If it is not null then implies that
+		 * there is a change in the id attribute.
+		 */
+		Object updatedId = updatedElement.getUpdatedId();
+		
+		/*
+		 * References the id of old parent.
+		 */
+		Object updatedParentId = updatedElement.getParent();
+		
+		/*
+		 * If there is a change to the element id, refresh the id and reference
+		 * the parent of each child element for this one.
+		 */
+		if (updatedId != null) {
+			source.refreshUpdatedId(updatedId);
 		}
-		return null;
+		
+		/*
+		 * If there is a change to the parent of this element, then remove this
+		 * element from inside of its old parent and insert it inside of the
+		 * new parent one.
+		 */
+		if (!oldParentId.equals(updatedParentId)) {
+			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
+					searchElement(oldParentId);
+			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
+					searchElement(updatedParentId);
+			
+			oldParent.removeChild(source);
+			newParent.addChild(source);
+		}
+		
+		/*
+		 * Save changes.
+		 */
+		transaction.commitTransaction();
+		
+		return source.cloneElement();
 	}
 
 	@Override
@@ -295,49 +439,32 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> root() throws TreeException {
-		validatorFacade.validateTransaction();
-		TreeSession session = this.getTransaction().currentSession();
-		return session.tree();
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+		
+		/*
+		 * Obtains the root of the tree.
+		 */
+		TreeElementCore<T> root = (TreeElementCore<T>) this.tree();
+		
+		return root.cloneElement();
 	}
 
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
 	}
-
-	@SafeVarargs
-	private final <T> void synchronizeElements(Element<T>... elements) {
-		String sessionId = null;
-		TreeElementCore<T> element = null;
-		TreeSession currentSession = getTransaction().currentSession();
-		for (Element<T> iterator : elements) {
-			element = (TreeElementCore<T>) iterator;
-			if (element != null) {
-				sessionId = element.attachedTo();
-				TreeSessionCore session = (TreeSessionCore) getTransaction().
-						sessionCheckout(sessionId);
-				element.attach(sessionId);
-				session.add(element.getId(), element);
-			}
-		}
-		getTransaction().sessionCheckout(currentSession.getSessionId());
+	
+	/*
+	 * Brings up the element from the respective stored tree session to API
+	 * client.
+	 */
+	private <T> TreeElementCore<T> searchElement(Object id) {
+		return transaction.refreshElement(id);
 	}
 	
-	private <T> Element<T> searchElement(Collection<Element<T>> elements,
-			Object id) {
-		Element<T> result = null;
-		if (elements == null || elements.isEmpty()) {
-			return null;
-		}
-		for (Element<T> element : elements) {
-			if (result != null) {
-				return result;
-			}
-			if (element.getId().equals(id)) {
-				result = element;
-				return result;
-			}
-			result = searchElement(element.getChildren(), id);
-		}
-		return result;
+	private <T> Element<T> tree() {
+		return transaction.refresh();
 	}
 }

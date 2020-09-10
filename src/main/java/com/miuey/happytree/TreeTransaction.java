@@ -210,8 +210,8 @@ public interface TreeTransaction {
 	 * 	<ul>
 	 * 		<li>The <code>id</code> attribute value;</li>
 	 * 		<li>The <code>parent</code> attribute value;</li>
-	 * 		<li>The <code>wrappedObject</code> corresponding the source object
-	 * 		transformed in this process;</li>
+	 * 		<li>The <code>wrappedNode</code> corresponding the source node
+	 * 		object transformed in this process;</li>
 	 * 		<li>The collection of children, corresponding to other elements in
 	 * 		which they are children of it;</li>
 	 * 		<li>The tree session identifier which it belongs.</li>
@@ -231,8 +231,8 @@ public interface TreeTransaction {
 	 * 
 	 * @param identifier the tree session identifier
 	 * 
-	 * @param objects the <code>Collection</code> of source objects which will
-	 * be transformed
+	 * @param nodes the <code>Collection</code> of source objects which
+	 * represent nodes and that will be transformed
 	 * 
 	 * @throws TreeException
 	 * <ul>
@@ -252,7 +252,7 @@ public interface TreeTransaction {
 	 * @throws IllegalArgumentException when the <code>identifier</code> or
 	 * <code>objects</code> are <code>null</code> or empty
 	 */
-	public <T> void initializeSession(String identifier, Collection<T> objects) 
+	public <T> void initializeSession(String identifier, Collection<T> nodes) 
 			throws TreeException;
 	
 	/**

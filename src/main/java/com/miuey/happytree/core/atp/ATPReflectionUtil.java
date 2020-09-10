@@ -10,6 +10,7 @@ class ATPReflectionUtil {
 	
 	private ATPReflectionUtil() {}
 	
+	
 	static boolean isAnnotation(Class<?> clazz) {
 		return clazz.isAnnotation();
 	}

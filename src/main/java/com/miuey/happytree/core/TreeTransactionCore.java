@@ -1,5 +1,5 @@
-
 package com.miuey.happytree.core;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +14,10 @@ import com.miuey.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
 
-	private static final String KEY_SESSION_ID = "sessionId";
-	
-	private Map<String, TreeSession> sessions = TreeFactory.mapFactory().
+	private Map<String, TreeSessionCore> sessions = TreeFactory.mapFactory().
 			createHashMap();
-	/*
-	 * The session that will be used as checked out session.
-	 */
-	private TreeSession currentSession;
+	
+	private TreeSessionCore currentSession;
 	private TreeManager associatedManager;
 	
 
@@ -33,54 +29,42 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public <T> void initializeSession(String identifier, Class<T> type)
 			throws TreeException {
-		/*
-		 * Initial validation processes.
-		 */
-		validateInitializeSession(identifier, type);
+		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
+				createValidatorFacade(this.associatedManager());
+		validatorFacade.validateSessionInitialization(identifier, type);
 		
-		/*
-		 * Session creation processes.
-		 */
 		ServiceFactory serviceFactory = TreeFactory.serviceFactory();
-		/*
-		 * Inside the core implementation only core implementations should be
-		 * used instead the interfaces type.
-		 */
-		TreeSessionCore newSession = serviceFactory.createTreeSession(
-				identifier);
-		TreeElementCore<T> root = serviceFactory.createElement(
-				identifier, null);
 		
-		Collection<Element<T>> rootChildren = TreeFactory.collectionFactory().
-				createHashSet();
-		/*
-		 * Set the root element with a empty tree.
-		 */
-		newSession.setRoot(root, rootChildren, type);
+		TreeSessionCore newSession = serviceFactory.createTreeSession(
+				identifier, type);
+		TreeElementCore<T> root = serviceFactory.createElement(
+				identifier, null, null, newSession);
+		
+		Collection<TreeElementCore<T>> rootChildren = TreeFactory.
+				collectionFactory().createHashSet();
+		
+		newSession.setRoot(root, rootChildren);
 		
 		sessions.put(identifier, newSession);
 		
-		/*
-		 * Define this new session as the current session to be worked. When the
-		 * user API starts a new session, <b>always</b> the new session turn on
-		 * the current session.
-		 */
 		this.sessionCheckout(identifier);
 	}
 
 	@Override
-	public <T> void initializeSession(String identifier, Collection<T> objects)
+	public <T> void initializeSession(String identifier, Collection<T> nodes)
 			throws TreeException {
-		/*
-		 * Initial validation processes.
-		 */
-		validateInitializeSession(identifier);
+		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
+				createValidatorFacade(this.associatedManager());
+		
+		validatorFacade.validateSessionInitialization(identifier);
 		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
-		pipeline.addAttribute(KEY_SESSION_ID, identifier);
-		pipeline.addAttribute("objects", objects);
-		pipeline.addAttribute("manager", associatedManager());
+		
+		pipeline.addAttribute(TreePipelineAttributes.SESSION_ID, identifier);
+		pipeline.addAttribute(TreePipelineAttributes.NODES, nodes);
+		pipeline.addAttribute(TreePipelineAttributes.MANAGER,
+				this.associatedManager());
 		
 		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
 		ATPLifecycle<T> lifecycle = lifecycleFactory.createLifecycle(pipeline);
@@ -120,6 +104,7 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void activateSession(String identifier) {
 		TreeSession session = sessions.get(identifier);
+		
 		if (session != null) {
 			TreeSessionCore sessionCore = (TreeSessionCore) session;
 			sessionCore.setActive(Boolean.TRUE);
@@ -129,6 +114,7 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void activateSession() {
 		TreeSession session = this.currentSession();
+		
 		if (session != null) {
 			TreeSessionCore sessionCore = (TreeSessionCore) session;
 			sessionCore.setActive(Boolean.TRUE);
@@ -138,6 +124,7 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void deactivateSession(String identifier) {
 		TreeSession session = sessions.get(identifier);
+		
 		if (session != null) {
 			TreeSessionCore sessionCore = (TreeSessionCore) session;
 			sessionCore.setActive(Boolean.FALSE);
@@ -147,6 +134,7 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void deactivateSession() {
 		TreeSession session = this.currentSession();
+		
 		if (session != null) {
 			TreeSessionCore sessionCore = (TreeSessionCore) session;
 			sessionCore.setActive(Boolean.FALSE);
@@ -157,7 +145,9 @@ class TreeTransactionCore implements TreeTransaction {
 	public List<TreeSession> sessions() {
 		List<TreeSession> listSessions = TreeFactory.collectionFactory().
 				createArrayList();
+		
 		listSessions.addAll(sessions.values());
+		
 		return listSessions;
 	}
 
@@ -176,32 +166,24 @@ class TreeTransactionCore implements TreeTransaction {
 		return this.associatedManager;
 	}
 	
-	private void validateInitializeSession(String identifier,
-			Object typeSession)
-			throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		pipeline.addAttribute(KEY_SESSION_ID, identifier);
-		pipeline.addAttribute("typeSession", typeSession);
-		
-		TreeSessionValidator validator = TreeFactory.validatorFactory().
-				createSessionValidator(associatedManager());
-		
-		validator.validateMandatorySessionId(pipeline);
-		validator.validateMandatoryTypeSession(pipeline);
-		validator.validateDuplicatedSessionId(pipeline);
+	<T> TreeElementCore<T> refreshElement(Object id) {
+		return currentSession.get(id);
 	}
 	
-	private void validateInitializeSession(String identifier)
-			throws TreeException {
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
-		pipeline.addAttribute(KEY_SESSION_ID, identifier);
-		
-		TreeSessionValidator validator = TreeFactory.validatorFactory().
-				createSessionValidator(associatedManager());
-		
-		validator.validateMandatorySessionId(pipeline);
-		validator.validateDuplicatedSessionId(pipeline);
+	<T> void rollbackElement(Element<T> element) {
+		currentSession.delete(element.getId());
+	}
+	
+	<T> void commitElement(Element<T> element) {
+		currentSession.save(element);
+	}
+	
+	void commitTransaction() {
+		currentSession.save(currentSession.tree());
+	}
+	
+	@SuppressWarnings("unchecked")
+	<T> TreeElementCore<T> refresh() {
+		return (TreeElementCore<T>) currentSession.tree();
 	}
 }

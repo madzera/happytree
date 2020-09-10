@@ -15,35 +15,37 @@ public class Initialization<T> extends ATPGenericPhase<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
-		Map<Object, T> mapObjects = (Map<Object, T>) 
-				pipeline.getAttribute("mapObjects");
-		Map<Object, Object> mapParents = (Map<Object, Object>) 
-				pipeline.getAttribute("mapParents");
+		Map<Object, T> nodesMap = (Map<Object, T>) 
+				pipeline.getAttribute(ATPPipelineAttributes.NODES_MAP);
+		Map<Object, Object> nodesParentMap = (Map<Object, Object>) 
+				pipeline.getAttribute(ATPPipelineAttributes.NODES_PARENT_MAP);
 		
-		TreeManager manager = (TreeManager) pipeline.getAttribute("manager");
-		String sessionId = (String) pipeline.getAttribute("sessionId");
+		TreeManager manager = (TreeManager) pipeline.getAttribute(
+				ATPPipelineAttributes.MANAGER);
+		String sessionId = (String) pipeline.getAttribute(
+				ATPPipelineAttributes.SESSION_ID);
 		
-		Object[] objectsArray = mapObjects.values().toArray(new Object[0]);
+		Object[] objectsArray = nodesMap.values().toArray(new Object[0]);
 		Class<?> clazz = objectsArray[0].getClass();
 		
 		TreeTransaction transaction = manager.getTransaction();
 		transaction.initializeSession(sessionId, clazz);
 		
 		Set<Element<?>> elements = this.createHashSet();
-		Set<Entry<Object, T>> entrySet = mapObjects.entrySet();
+		Set<Entry<Object, T>> entrySet = nodesMap.entrySet();
 		
 		for (Entry<Object, T> entry : entrySet) {
 			Object id = entry.getKey();
-			Object parentId = mapParents.get(id);
+			Object parentId = nodesParentMap.get(id);
 			T object = entry.getValue();
 			
-			Element<T> element = manager.createElement(id, parentId);
-			element.wrap(object);
+			Element<T> element = manager.createElement(id, parentId, object);
 			elements.add(element);
 		}
 		
-		pipeline.addAttribute("type", clazz);
-		pipeline.addAttribute("elements", elements);
+		pipeline.addAttribute(ATPPipelineAttributes.NODE_TYPE, clazz);
+		pipeline.addAttribute(ATPPipelineAttributes.ELEMENTS, elements);
+		
 		doChain(pipeline);
 	}
 }
