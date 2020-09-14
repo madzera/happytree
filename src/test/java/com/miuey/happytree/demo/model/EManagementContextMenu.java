@@ -1,4 +1,4 @@
-package com.miuey.happytree.cases.context_menu;
+package com.miuey.happytree.demo.model;
 
 import com.miuey.happytree.annotation.Id;
 import com.miuey.happytree.annotation.Parent;

@@ -10,13 +10,13 @@ import org.junit.Test;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
-import com.miuey.happytree.example.Directory;
+import com.miuey.happytree.demo.model.Directory;
+import com.miuey.happytree.demo.model.node.Node;
+import com.miuey.happytree.demo.model.node.Node_MismatchId;
+import com.miuey.happytree.demo.model.node.Node_NoId;
+import com.miuey.happytree.demo.model.node.Node_NoParent;
+import com.miuey.happytree.demo.model.node.Node_NoTree;
 import com.miuey.happytree.exception.TreeException;
-import com.miuey.happytree.transaction.model.Node;
-import com.miuey.happytree.transaction.model.Node_MismatchId;
-import com.miuey.happytree.transaction.model.Node_NoId;
-import com.miuey.happytree.transaction.model.Node_NoParent;
-import com.miuey.happytree.transaction.model.Node_NoTree;
 
 /**
  * Test class for {@link TreeTransaction} operations.

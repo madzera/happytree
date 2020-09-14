@@ -1,10 +1,12 @@
-package com.miuey.happytree.transaction.model;
+package com.miuey.happytree.demo.model.node;
 
+import com.miuey.happytree.annotation.Id;
 import com.miuey.happytree.annotation.Parent;
 import com.miuey.happytree.annotation.Tree;
 
 @Tree
-public class Node_NoId {
+public class Node {
+	@Id
 	private Integer id;
 	@Parent
 	private Integer parent;

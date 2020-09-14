@@ -1,13 +1,15 @@
-package com.miuey.happytree.transaction.model;
+package com.miuey.happytree.demo.model.node;
 
 import com.miuey.happytree.annotation.Id;
+import com.miuey.happytree.annotation.Parent;
 import com.miuey.happytree.annotation.Tree;
 
 @Tree
-public class Node_NoParent {
+public class Node_MismatchId {
 	@Id
 	private Integer id;
-	private Integer parent;
+	@Parent
+	private long parent;
 	private String name;
 	
 	
@@ -17,10 +19,10 @@ public class Node_NoParent {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getParent() {
+	public long getParent() {
 		return parent;
 	}
-	public void setParent(Integer parent) {
+	public void setParent(long parent) {
 		this.parent = parent;
 	}
 	public String getName() {

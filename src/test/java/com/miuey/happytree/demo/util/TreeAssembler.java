@@ -1,7 +1,10 @@
-package com.miuey.happytree.example;
+package com.miuey.happytree.demo.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import com.miuey.happytree.demo.model.Directory;
+import com.miuey.happytree.demo.model.Metadata;
 
 /**
  * This test class is used to assemble a tree of {@link Directory} and
