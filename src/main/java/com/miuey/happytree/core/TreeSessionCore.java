@@ -114,17 +114,19 @@ class TreeSessionCore implements TreeSession {
 		return typeTree;
 	}
 	
-	private void cloneRoot(TreeElementCore<?> root) {
-		this.root = root;
-	}
-	
 	TreeSessionCore cloneSession(String newSessionId) {
 		TreeSessionCore clone = TreeFactory.serviceFactory().
 				createTreeSession(newSessionId, this.getTypeTree());
 		
-		clone.isActive = this.isActive == Boolean.TRUE;
-		//clone.root = (TreeElementCore<?>) this.root.clone();
-		//updateSessionClonedElements(clone);
+		clone.setActive(this.isActive);
+		
+		TreeElementCore<?> clonedTree = (TreeElementCore<?>) this.tree();
+		TreeElementCore<?> clonedRoot = clonedTree.cloneElement();
+		
+		clonedRoot.mergeUpdatedId(newSessionId);
+		clone.root = clonedRoot;
+		
+		updateSessionClonedElements(clone);
 		return clone;
 	}
 	
@@ -147,12 +149,6 @@ class TreeSessionCore implements TreeSession {
 	
 	private void updateSessionClonedElements(TreeSessionCore clone) {
 		TreeElementCore<?> clonedRoot = (TreeElementCore<?>) clone.tree();
-		
-		/*
-		 * The root element must have the same id than the session id.
-		 */
-		clonedRoot.mergeUpdatedId(clone.getSessionId());
-		
 		Collection<?> descendants = Recursivity.toPlainList(clonedRoot);
 		
 		for (Object object : descendants) {

@@ -167,7 +167,8 @@ class TreeTransactionCore implements TreeTransaction {
 		TreeSessionCore clonedSession = null;
 		
 		TreeSessionCore sourceSession = (TreeSessionCore) from;
-		if (from != null && to != null && !to.trim().equals("")) {
+		
+		if (from != null && to != null) {
 			clonedSession = sourceSession.cloneSession(to);
 			sessions.put(clonedSession.getSessionId(), clonedSession);
 		}

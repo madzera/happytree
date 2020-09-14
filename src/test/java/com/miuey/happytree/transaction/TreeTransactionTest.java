@@ -502,6 +502,8 @@ public class TreeTransactionTest {
 		final long vlcId = 10239;
 		final long rec2Id = 1038299;
 		
+		final long vlcParentId = 42345;
+		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
@@ -536,9 +538,12 @@ public class TreeTransactionTest {
 		assertEquals(targetSessionId, rec2.attachedTo().getSessionId());
 		
 		vlc.setParent(Long.MAX_VALUE);
-		transaction.sessionCheckout(sourceSessionId);
-		assertEquals(sourceSessionId, vlc.attachedTo());
 		
+		transaction.sessionCheckout(sourceSessionId);
+		Element<Directory> sourceVlc = manager.getElementById(vlcId);
+		
+		assertEquals(sourceSessionId, sourceVlc.attachedTo().getSessionId());
+		assertEquals(vlcParentId, sourceVlc.getParent());
 	}
 	
 	/**

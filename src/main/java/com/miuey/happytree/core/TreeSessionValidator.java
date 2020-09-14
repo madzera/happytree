@@ -17,8 +17,7 @@ class TreeSessionValidator extends TreeValidator {
 		String sessionId = (String) pipeline.getAttribute(
 				TreePipelineAttributes.SESSION_ID);
 		
-		if (sessionId == null || sessionId.length() == 0
-				|| sessionId.trim().equals("")) {
+		if (sessionId == null) {
 			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
 					INVALID_INPUT);
 		}

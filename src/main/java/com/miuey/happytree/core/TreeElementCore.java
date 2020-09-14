@@ -52,6 +52,11 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
+		/*
+		 * Invoking this method should not update the id automatically, instead
+		 * that, store the id value in a newId attribute to be submitted when
+		 * the element is going to be updated.
+		 */
 		if (id != null) {
 			this.setNewId(id);
 			transitionState(ElementState.DETACHED);
@@ -216,6 +221,12 @@ class TreeElementCore<T> implements Element<T> {
 		this.session = session;
 	}
 	
+	/*
+	 * This method only can be invoked by core API, when this is updating the
+	 * object which a change in the id attribute is necessary. This set the
+	 * current id with the desirable id and all children will reference this
+	 * new id.
+	 */
 	void mergeUpdatedId(Object id) {
 		this.id = id;
 		this.setNewId(null);
@@ -225,6 +236,9 @@ class TreeElementCore<T> implements Element<T> {
 		}
 	}
 	
+	/*
+	 * Return if this instance is a root of a tree.
+	 */
 	boolean isRoot() {
 		return isRoot;
 	}
@@ -233,17 +247,22 @@ class TreeElementCore<T> implements Element<T> {
 		return type;
 	}
 
+	/*
+	 * Before persist element, the element state cannot transit from
+	 * NOT_EXISTED to DETACHED directly.
+	 */
 	void transitionState(ElementState nextState) {
-		/*
-		 * Before persist element, the element state cannot transit from
-		 * NOT_EXISTED to DETACHED directly.
-		 */
 		if (!this.state.equals(ElementState.NOT_EXISTED)
 				|| !nextState.equals(ElementState.DETACHED)) {
 			this.state = nextState;
 		}
 	}
 
+	/*
+	 * This attribute represents the new Id that this element will have. When
+	 * the API client invokes setId() the id is not changed automatically, it
+	 * just is submitted when the updateElement() from TreeManager is invoked.
+	 */
 	Object getUpdatedId() {
 		return this.newId;
 	}
