@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,6 +15,7 @@ import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.example.Directory;
+import com.miuey.happytree.example.TreeAssembler;
 import com.miuey.happytree.exception.TreeException;
 
 /**
@@ -408,5 +410,141 @@ public class TreeTransactionAlternativeTest {
 		List<TreeSession> sessions = transaction.sessions();
 		
 		assertTrue(sessions.isEmpty());
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#cloneSession(String, String)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to clone an
+	 * existing session with a <code>null</code> session identifier.</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to clone an existing session with a <code>null</code> session
+	 * identifier.
+	 * <p><b>Expected:</b></p>
+	 * No error should occur and the cloned session returned has
+	 * <code>null</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a <code>null</code> session identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#cloneSession(String, String)}
+	 * 	using the <code>null</code> session identifier;</li>
+	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cloneSessionById_arg_nullIdentifier() throws TreeException {
+		final String sourceSessionId = "directory_session";
+		final String nullableSessionId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		
+		/*
+		 * To load the tree by ATP.
+		 */
+		transaction.initializeSession(sourceSessionId, directories);
+		
+		TreeSession clonedSession = transaction.cloneSession(sourceSessionId,
+				nullableSessionId);
+		
+		assertNull(clonedSession);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#cloneSession(TreeSession, String)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to clone an
+	 * existing session with a <code>null</code> session identifier.</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to clone an existing session with a <code>null</code> session
+	 * identifier.
+	 * <p><b>Expected:</b></p>
+	 * No error should occur and the cloned session returned has
+	 * <code>null</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a <code>null</code> session identifier;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#cloneSession(TreeSession, String)}
+	 * 	using the <code>null</code> session identifier;</li>
+	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cloneSession_arg_nullIdentifier() throws TreeException {
+		final String sourceSessionId = "directory_session";
+		final String nullableSessionId = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		
+		/*
+		 * To load the tree by ATP.
+		 */
+		transaction.initializeSession(sourceSessionId, directories);
+		
+		TreeSession sourceSession = transaction.currentSession();
+		TreeSession clonedSession = transaction.cloneSession(sourceSession,
+				nullableSessionId);
+		
+		assertNull(clonedSession);
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#cloneSession(TreeSession, String)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to clone a not
+	 * existing session.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to clone a not existing session.
+	 * <p><b>Expected:</b></p>
+	 * No error should occur and the cloned session returned has
+	 * <code>null</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Get a not existing session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#cloneSession(TreeSession, String)}
+	 * 	using the session which does not exists;</li>
+	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
+	 * </ol>
+	 * @throws TreeException
+	 */
+	@Test
+	public void cloneSession_nullSession() throws TreeException {
+		final String targetSessionId = "bar";
+		final String notExistingSessionId = "foo";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		TreeSession sourceSession = transaction.sessionCheckout(
+				notExistingSessionId);
+		TreeSession clonedSession = transaction.cloneSession(sourceSession,
+				targetSessionId);
+		
+		assertNull(clonedSession);
 	}
 }

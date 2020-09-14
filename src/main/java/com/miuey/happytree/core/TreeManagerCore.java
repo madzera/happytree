@@ -406,7 +406,7 @@ class TreeManagerCore implements TreeManager {
 		 * the parent of each child element for this one.
 		 */
 		if (updatedId != null) {
-			source.refreshUpdatedId(updatedId);
+			source.mergeUpdatedId(updatedId);
 		}
 		
 		/*

@@ -382,11 +382,46 @@ public interface TreeTransaction {
 	 * worked. For this, invoke the {@link #sessionCheckout(String)} before or
 	 * after of cloning a session.</p>
 	 * 
-	 * @param from the source tree session to be replicated
+	 * @param from the identifier of the source tree session to be replicated
 	 * 
-	 * @param to the target tree session
+	 * @param to the identifier of the target tree session
+	 * 
+	 * @return the new cloned session
 	 */
-	public void cloneSession(String from, String to);
+	public TreeSession cloneSession(String from, String to);
+	
+	/**
+	 * Replicate the tree session defined by <code>from</code> identifier for
+	 * the session defined by <code>to</code> identifier.
+	 * 
+	 * <p>Replicating an existing tree session consists of faithfully
+	 * reproducing all the elements defined in the source tree for a target
+	 * tree, whether this is a new or already existed target tree.</p>
+	 * 
+	 * <p>Replicating a session to an already existed session implies replacing
+	 * the entire tree in the target session defined by <code>to</code>
+	 * identifier, which causes the total loss of the previous states of the
+	 * elements that were defined in the target tree.</p>
+	 * 
+	 * <p><b>Warning: the programmer is responsible for ensuring that the
+	 * session defined by the <code>to</code> identifier is already existed or
+	 * not.</b></p>
+	 * 
+	 * <p>In contrast, if the session defined by the <code>to</code> identifier
+	 * does not exist, then a new session is created with the tree and its
+	 * elements replicated from the source tree session.</p>
+	 * 
+	 * <p><b>This method only clone a session, and not turn it ready to be
+	 * worked. For this, invoke the {@link #sessionCheckout(String)} before or
+	 * after of cloning a session.</p>
+	 * 
+	 * @param from the identifier of the source tree session to be replicated
+	 * 
+	 * @param to the identifier of the target tree session
+	 * 
+	 * @return the new cloned session
+	 */
+	public TreeSession cloneSession(TreeSession from, String to);
 	
 	public TreeSession currentSession();
 }

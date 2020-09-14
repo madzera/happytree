@@ -216,7 +216,7 @@ class TreeElementCore<T> implements Element<T> {
 		this.session = session;
 	}
 	
-	void refreshUpdatedId(Object id) {
+	void mergeUpdatedId(Object id) {
 		this.id = id;
 		this.setNewId(null);
 		
@@ -272,10 +272,15 @@ class TreeElementCore<T> implements Element<T> {
 						this.attachedTo());
 		
 		/*
-		 * User addAll() instead of addChildren for not changing the child
-		 * element state.
+		 * Clone the descendants.
 		 */
-		clone.getChildren().addAll(this.getChildren());
+		for (Element<T> child : this.getChildren()) {
+			TreeElementCore<T> clonedChild = (TreeElementCore<T>) child;
+			
+			clonedChild = clonedChild.cloneElement();
+			clone.getChildren().add(clonedChild);
+		}
+		
 		clone.transitionState(this.getState());
 		clone.setRoot(this.isRoot());
 		clone.setType(this.getType());

@@ -152,9 +152,27 @@ class TreeTransactionCore implements TreeTransaction {
 	}
 
 	@Override
-	public void cloneSession(String from, String to) {
-		// TODO Auto-generated method stub
+	public TreeSession cloneSession(String from, String to) {
+		TreeSessionCore clonedSession = null;
 		
+		TreeSessionCore sourceSession = sessions.get(from);
+		
+		clonedSession = (TreeSessionCore) this.cloneSession(sourceSession, to);
+		
+		return clonedSession;
+	}
+	
+	@Override
+	public TreeSession cloneSession(TreeSession from, String to) {
+		TreeSessionCore clonedSession = null;
+		
+		TreeSessionCore sourceSession = (TreeSessionCore) from;
+		if (from != null && to != null && !to.trim().equals("")) {
+			clonedSession = sourceSession.cloneSession(to);
+			sessions.put(clonedSession.getSessionId(), clonedSession);
+		}
+		
+		return clonedSession;
 	}
 	
 	@Override

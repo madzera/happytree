@@ -458,4 +458,143 @@ public class TreeTransactionTest {
 		
 		assertEquals(expected, sessions.size());
 	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#cloneSession(String, String)}.
+	 * 
+	 * <p>Happy scenario for this operation.</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Clone the session by session identifier.
+	 * <p><b>Expected:</b></p>
+	 * Ensure that the cloned session has the same elements.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Clone this session by invoking
+	 * 	{@link TreeTransaction#cloneSession(String, String)};</li>
+	 * 	<li>Get two elements which one of their is inside of other one</li>
+	 * 	<li>Verify that the elements belong into the source session yet;</li>
+	 * 	<li>Swap the transaction to work with the cloned session;</li>
+	 * 	<li>Get the both elements again, but in cloned session (target session)
+	 * 	now;</li>
+	 * 	<li>Verify now that the elements belong into the target session;</li>
+	 * 	<li>Set the parent id of one element;</li>
+	 * 	<li>Swap the transaction to work with the source session;</li>
+	 * 	<li>Check that the change over the parent id, when the transaction was
+	 * 	pointing to the cloned session, does not cause problems in the same
+	 * 	element (VLC) in this session.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cloneSessionByIdentifiers() throws TreeException {
+		final String sourceSessionId = "directory_session";
+		final String targetSessionId = "cloned_directory_session";
+		
+		final long vlcId = 10239;
+		final long rec2Id = 1038299;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.
+				getDirectoryTree();
+		
+		transaction.initializeSession(sourceSessionId, directories);
+		
+		TreeSession clonedSession = transaction.cloneSession(sourceSessionId,
+				targetSessionId);
+		
+		assertNotNull(clonedSession);
+		assertEquals(sourceSessionId, transaction.currentSession().
+				getSessionId());
+		
+		Element<Directory> vlc = manager.getElementById(vlcId);
+		Element<Directory> rec2 = manager.getElementById(rec2Id);
+		
+		assertEquals(sourceSessionId, vlc.attachedTo().getSessionId());
+		assertEquals(sourceSessionId, rec2.attachedTo().getSessionId());
+		
+		transaction.sessionCheckout(targetSessionId);
+		
+		vlc = manager.getElementById(vlcId);
+		rec2 = manager.getElementById(rec2Id);
+		
+		assertNotNull(vlc);
+		assertNotNull(rec2);
+		assertTrue(manager.containsElement(vlc, rec2));
+		
+		assertEquals(targetSessionId, vlc.attachedTo().getSessionId());
+		assertEquals(targetSessionId, rec2.attachedTo().getSessionId());
+		
+		vlc.setParent(Long.MAX_VALUE);
+		transaction.sessionCheckout(sourceSessionId);
+		assertEquals(sourceSessionId, vlc.attachedTo());
+		
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#cloneSession(String, String)}.
+	 * 
+	 * <p>Happy scenario for this operation.</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Clone the session.
+	 * <p><b>Expected:</b></p>
+	 * Ensure that the cloned session has the same elements.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Clone this session by invoking
+	 * 	{@link TreeTransaction#cloneSession(TreeSession, String)};</li>
+	 * 	<li>Get two elements and verify if they are the same structure than
+	 * 	source session.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException
+	 */
+	@Test
+	public void cloneSession() throws TreeException {
+		final String sourceSessionId = "directory_session";
+		final String targetSessionId = "cloned_directory_session";
+		
+		final long vlcId = 10239;
+		final long rec2Id = 1038299;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sourceSessionId, directories);
+		
+		TreeSession sourceSession = transaction.currentSession();
+		TreeSession clonedSession = transaction.cloneSession(sourceSession,
+				targetSessionId);
+		
+		assertNotNull(clonedSession);
+		
+		transaction.sessionCheckout(targetSessionId);
+		
+		Element<Directory> vlc = manager.getElementById(vlcId);
+		Element<Directory> rec2 = manager.getElementById(rec2Id);
+		
+		assertNotNull(vlc);
+		assertNotNull(rec2);
+		assertTrue(manager.containsElement(vlc, rec2));
+	}
 }
