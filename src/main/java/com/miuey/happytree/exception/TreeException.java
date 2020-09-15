@@ -4,42 +4,53 @@ package com.miuey.happytree.exception;
  * The class <code>TreeException</code> represents a checked exception for the
  * HappyTree API, by inheriting the {@link Exception} class.
  * 
- * <p>The {@code TreeException} is the only one exception class that can be
- * threw inside of this API. This happens when the following validations does
- * not corresponds:</p>
+ * <p>The <code>TreeException</code> is the only one exception (checked
+ * exception) class that can be threw inside of this API. This happens when the
+ * following validations does not corresponds:</p>
  * 
  * <ul>
  * 	<li>When there is another session with the same identifier, by initializing
  * 	a new session;</li>
  * 
  * 	<li>When the class of the object to be transformed has not been annotated by
- * 	{@literal @Tree}, {@literal @Id} and {@literal @Parent}, by initializing a
+ * 	{@literal @Tree}, {@literal @Id} and {@literal @Parent}, when initializing a
  * 	new session;</li>
  * 
  * 	<li>When the annotated attribute {@literal @Id} and {@literal @Parent} have
- * 	incompatible types;</li>
+ * 	different types;</li>
  * 
- * 	<li>When the current transaction has no session selected to work it;</li>
+ * 	<li>When the API Transformation Process was not well processed at
+ * 	<i>Post-Validation</i> phase;</li>
  * 
- * 	<li>When the current session is not active, by handling a tree;</li>
+ * 	<li>When the transaction has no session selected to work;</li>
  * 
- * 	<li>When there is an <code>Element</code> object with duplicated
- * 	<code>Id</code>, by trying to insert/update or cut/copy an element between
- * 	the trees;</li>
+ * 	<li>When the current session is not active;</li>
  * 
- * 	<li>When the element to be updated or cut/copied is not attached in the any
- * 	tree session;</li>
+ * 	<li>When there are mismatch parameterized types when invoking the operations;
+ * 	</li>
  * 
- * 	<li>When the API transformation is not well processed at
- * 	<i>Post-Validation</i> phase.</li>
+ * 	<li>When there is an attempt of handling an element which does not belong to
+ * 	the current session;</li>
+ * 
+ * 	<li>When there is an attempt of handling the root element of the tree;</li>
+ * 
+ * 	<li>When the element to be cut/copied/removes is not with the
+ * 	<i>ATTACHED</i> state in life cycle;</li>
+ * 
+ * 	<li>When the element to be updated is with the <i>NOT_EXISTED</i> state
+ * 	in life cycle;</li>
+ * 
+ * 	<li>When the element to be persisted is not with the <i>NOT_EXISTED</i>
+ * 	state in life cycle;</li>
+ * 
+ * 	<li>When there is an <code>Element</code> object with duplicated id, by
+ * 	trying to insert/update or cut/copy an element between the trees;</li>
  * </ul>
  * 
- * @author Diego Nóbrega
+ * @author Diego NÃ³brega
  * @author Miuey
  * 
- * @see {@link Throwable}
- * 
- * @version %I%, %G%
+ * @see Throwable
  *
  */
 public class TreeException extends Exception {

@@ -7,16 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represent, conceptually, an identifier of a object that is not this, but an
- * object that will be its parent in a tree model.
+ * Represent, conceptually, an identifier of a object that is not this one, but
+ * an object that will be its parent in a tree model.
  * 
  * <p>When the <b>API Transformation Process</b> is triggered, then during the
- * tree build, an <code>Id</code> of a object will be linked to the
- * <code>Id</code> of another one that represents its <i>parent</i> object.</p>
+ * tree build, an id of a object will be linked to the id of another one that
+ * represents its <i>parent</i> object when the tree is built.</p>
  * 
- * <p>If the parent identifier is not found or even <code>null</code>, then
- * this object that have a unknown parent will be placed in root level of the
- * tree.</p>
+ * <p>When the parent identifier is not found or even <code>null</code>, then
+ * this object that have a unknown parent will be placed in the root level of
+ * the tree.</p>
  * 
  * Example:
  * 
@@ -31,15 +31,14 @@ import java.lang.annotation.Target;
  * 	}
  * </pre>
  * 
- * <b>The {@literal @Id} and {@literal @Parent} must have same class type.</b>
+ * <b>The {@literal @Id} and {@literal @Parent} must have the same class type.
+ * </b>
  * 
- * @author Diego Nóbrega
+ * @author Diego NÃ³brega
  * @author Miuey
  * 
- * @see {@link Tree}
- * @see {@link Id}
- * 
- * @version %I%, %G%
+ * @see Tree
+ * @see Id
  *
  */
 @Documented
