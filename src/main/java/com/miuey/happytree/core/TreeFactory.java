@@ -14,6 +14,9 @@ import com.miuey.happytree.core.atp.Initialization;
 import com.miuey.happytree.core.atp.PreValidation;
 import com.miuey.happytree.exception.TreeException;
 
+/*
+ * Abstract Factory used for HappyTree API.
+ */
 class TreeFactory {
 	
 	private static TreeFactory instance;

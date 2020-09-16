@@ -6,11 +6,17 @@ import java.util.Set;
 
 import com.miuey.happytree.Element;
 
+/*
+ * Utility that assists the operations that involves trees.
+ */
 class Recursivity {
 
 	private Recursivity() {}
 	
 	
+	/*
+	 * Searches inside of the tree for an element by the id.
+	 */
 	static <T> Element<T> searchElementById(Collection<Element<T>> elements,
 			Object id) {
 		Element<T> result = null;
@@ -29,34 +35,27 @@ class Recursivity {
 			}
 			result = searchElementById(element.getChildren(), id);
 		}
+		
 		return result;
 	}
 	
+	/*
+	 * Transforms a tree structure into a plain list structure, but keeping the
+	 * references inside each Element object.
+	 */
 	static <T> Collection<Element<T>> toPlainList(Element<T> element) {
 		List<Element<T>> elements = TreeFactory.collectionFactory().
 				createArrayList();
 		elements.add(element);
 		treePlain(element.getChildren(), elements);
+		
 		return elements;
 	}
 	
-	static <T> boolean iterateForNullIdValidation(
-			Collection<Element<T>> elements) {
-		boolean treeHasNullId = Boolean.FALSE;
-		if (elements == null || elements.isEmpty()) {
-			return treeHasNullId;
-		}
-		
-		for (Element<T> element : elements) {
-			if (element.getId() == null) {
-				treeHasNullId = Boolean.TRUE;
-				return treeHasNullId;
-			}
-			treeHasNullId = iterateForNullIdValidation(element.getChildren());
-		}
-		return treeHasNullId;
-	}
-	
+	/*
+	 * Iterates over the tree and verifies if each element inside of the tree
+	 * can run a determined operation according the its life cycle state.
+	 */
 	static <T> boolean iterateForInvalidStateOperationValidation(
 			Collection<Element<T>> elements, Operation operation) {
 		boolean treeHasInvalidState = Boolean.FALSE;
@@ -67,6 +66,7 @@ class Recursivity {
 		
 		for (Element<T> element : elements) {
 			TreeElementCore<T> elementCore = (TreeElementCore<T>) element;
+			
 			if (!elementCore.getState().canExecuteOperation(operation)) {
 				treeHasInvalidState = Boolean.TRUE;
 				return treeHasInvalidState;
@@ -77,26 +77,15 @@ class Recursivity {
 		return treeHasInvalidState;
 	}
 	
-	static <T> boolean iterateForDuplicatedId(Element<T> element) {
-		Set<Object> ids = TreeFactory.collectionFactory().createHashSet();
-		Collection<Element<T>> plainTree = toPlainList(element);
-		
-		for (Element<T> iterator : plainTree) {
-			Object iteratorId = iterator.getId();
-			if (ids.contains(iteratorId)) {
-				return Boolean.TRUE;
-			}
-			ids.add(iteratorId);
-		}
-		
-		return Boolean.FALSE;
-	}
-	
+	/*
+	 * Verifies inside of the tree the existence of duplicate id.
+	 */
 	static <T> boolean iterateForDuplicatedId(Element<T> source,
 			Element<T> target) {
 		Set<Object> targetIds = TreeFactory.collectionFactory().createHashSet();
 		
 		Collection<Element<T>> targetPlainTree = toPlainList(target);
+		
 		for (Element<T> targetElement : targetPlainTree) {
 			targetIds.add(targetElement.getId());
 		}
@@ -127,6 +116,7 @@ class Recursivity {
 			elementsToAdd.add(element);
 			result = treePlain(element.getChildren(), elementsToAdd);
 		}
+		
 		return result;
 	}
 }

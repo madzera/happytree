@@ -12,7 +12,7 @@ import com.miuey.happytree.exception.TreeException;
  * linear structure of objects that behaves like a tree into a structural tree
  * itself.
  * 
- * @author Diego Nóbrega
+ * @author Diego NÃ³brega
  *
  * @param <T> the type of wrapped node inside of <code>Element</code>
  */
@@ -26,7 +26,7 @@ class ATPLifecycle<T> {
 	
 	/*
 	 * Pipeline represents an object that will be taken from the beginning to
-	 * the end of the processing chain for the entire life cycle
+	 * the end of the processing chain for the entire life cycle.
 	 */
 	ATPLifecycle(TreePipeline pipeline) {
 		this.pipeline = pipeline;
@@ -57,6 +57,9 @@ class ATPLifecycle<T> {
 			preValidation.run(pipeline);
 			prepareInitializedSession();
 		} catch (TreeException e) {
+			/*
+			 * Do not let the failed session alive.
+			 */
 			closeResources();
 			throw e;
 		}
@@ -92,7 +95,7 @@ class ATPLifecycle<T> {
 		}
 		
 		/*
-		 * Root Config.
+		 * Root configuration.
 		 */
 		session.setRoot(root, tree);
 		

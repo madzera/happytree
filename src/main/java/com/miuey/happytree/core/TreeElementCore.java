@@ -201,8 +201,11 @@ class TreeElementCore<T> implements Element<T> {
 		return isEqual;
 	}
 	
-	/*
-	 * Only for help the tests.
+	/**
+	 * Writes the <code>toString()</code> from the own wrapped node inside of
+	 * this element, represented by the parameterized type.
+	 * 
+	 * @return the <code>toString()</code> of the wrapped node
 	 */
 	@Override
 	public String toString() {

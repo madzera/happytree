@@ -1,6 +1,6 @@
 package com.miuey.happytree.core;
 
-public class TreeConstants {
+class TreeConstants {
 	
 	private TreeConstants() {}
 

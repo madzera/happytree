@@ -5,7 +5,6 @@ import com.miuey.happytree.exception.TreeException;
 
 abstract class TreeElementValidator extends TreeValidator {
 	
-	
 	TreeElementValidator(TreeManager manager) {
 		super(manager);
 	}

@@ -2,13 +2,10 @@ package com.miuey.happytree.core;
 
 import java.util.Map;
 
-/**
+/*
  * Pipeline represents an object that will be taken from the beginning to the
  * end of the processing chain. In this context, this object will be taken to
  * the validations chain and API Transformation Process, in its life cycle.
- * 
- * @author Diego Nóbrega
- *
  */
 public class TreePipeline {
 
@@ -19,10 +16,10 @@ public class TreePipeline {
 			createHashMap();
 	
 	/*
-	 * Protect this construct from the outside world. If it is exposed, then the
-	 * client API will have access to use the addAtributes() and getAttribute()
+	 * Protects this construct from the outside world. If it is exposed, then the
+	 * API client will have access to use the addAtribute() and getAttribute()
 	 * methods. This class needs be public and also its methods because it needs
-	 * to be accessible to others packages. Therefore (atp), it is crucial that
+	 * to be accessible to other package (ATP). Therefore, it is crucial that
 	 * this constructor does not be public.
 	 */
 	TreePipeline() {}

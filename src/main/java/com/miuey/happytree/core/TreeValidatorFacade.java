@@ -5,6 +5,9 @@ import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.exception.TreeException;
 
+/*
+ * Main class of the API HappyTree to validate all interface operations.
+ */
 class TreeValidatorFacade {
 	
 	private TreeManager manager;

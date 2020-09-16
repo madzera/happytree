@@ -2,6 +2,11 @@ package com.miuey.happytree.core;
 
 import java.util.Map;
 
+/*
+ * All searches about elements in the tree are actually done inside this cache.
+ * 
+ * Each session has its respective cache.
+ */
 class Cache {
 
 	private Map<Object, TreeElementCore<?>> cacheElements = 

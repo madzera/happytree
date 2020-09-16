@@ -28,6 +28,10 @@ enum TreeRepositoryMessage {
 	IMPOSSIBLE_HANDLE_ROOT(TreeConstants.Error.HANDLE_ROOT);
 	
 	private String errorDesc;
+	
+	/*
+	 * The only one 'new' operator outside of TreeFactory.
+	 */
 	private static Properties properties = new Properties();
 	
 	
@@ -42,6 +46,9 @@ enum TreeRepositoryMessage {
 			loadProperties();
 			error = properties.getProperty(errorDesc);
 		} catch (IOException e) {
+			/*
+			 * Not found error messages properties file.
+			 */
 			error = TreeConstants.Error.Internal.GENERAL_ERROR;
 		}
 		return error;

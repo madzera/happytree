@@ -1,56 +1,48 @@
 package com.miuey.happytree.core;
 
+import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
+import com.miuey.happytree.TreeTransaction;
 
 /**
- * <i>Helper</i> class that represents the entry point of the HappyTree API.
+ * <i>Helper</i> class that shows up the entry point of the HappyTree API.
  * 
- * <p>It is not justifiable to inherit this class or elaborate any further
- * implementation besides serving only the API entry point, which justifies the
- * fact that the HappyTree class is <i><b>final</b></i>.</p>
+ * <p>This class only serve to return an instance of the main
+ * <code>interface</code> which will assist the API client to handle trees.</p>
  * 
  * <p>The entry point of the API represents an instance of {@link TreeManager},
- * from which it is possible to access its respective
- * {@linkplain com.miuey.happytree.TreeTransaction} object.</p>
+ * from which it is possible to access its respective {@link TreeTransaction}
+ * object.</p>
  * 
- * <p>From a transaction you can then manipulate trees and sessions and
+ * <p>From this, it is possible to manipulate trees and sessions and
  * consequently the elements within the trees, thus contemplating the absolute
- * use of the API</p>
+ * use of the API.</p>
  * 
- * <p><code>TreeManager</code> -> <code>TreeTransaction</code> ->
- * <code>TreeSession</code> -> <code>Element</code>.</p>
- * 
- * <p><b>Relation between <code>TreeManager</code> ->
- * <code>TreeTransaction</code>: 1:1</b></p>
- * <p><b>Relation between <code>TreeTransaction</code> ->
- * <code>TreeSession</code>: 1:0-N</b></p>
- * <p><b>Relation between <code>TreeSession</code> ->
- * <code>Element</code>: 1:0-N</b></p>
- * 
- * @author Diego Nóbrega
+ * @author Diego NÃ³brega
  * @author Miuey
  * 
- * @see {@linkplain com.miuey.happytree.TreeManager}
- * @see {@linkplain com.miuey.happytree.TreeTransaction}
- * @see {@linkplain com.miuey.happytree.TreeSession}
- * @see {@linkplain com.miuey.happytree.Element}
+ * @see TreeSession
+ * @see Element
  * 
- * @version %I%, %G%
- *
  */
 public final class HappyTree {
 
 	/*
-	 * Protected Helper constructor class.
+	 * Protects the Helper constructor class.
 	 */
 	private HappyTree() {}
 
 	
 	/**
-	 * Return a <b><i>singleton</i></b> instance of <code>TreeManager</code>,
-	 * representing the entry point of the HappyTree API.
+	 * Returns an instance of <code>TreeManager</code> interface, representing
+	 * the entry point of the HappyTree API.
 	 * 
-	 * @return the instance of <code>TreeManager</code>
+	 * <p>Each thread that use the HappyTree API needs to create its respective
+	 * TreeManager</code> interface instance. Therefore each thread will have
+	 * its instance. This is not a <i>Singleton</i> instance.</p>
+	 * 
+	 * @return an instance of <code>TreeManager</code>
 	 */
 	public static TreeManager createTreeManager() {
 		return TreeManagerCore.getTreeManagerInstance();

@@ -3,6 +3,10 @@ package com.miuey.happytree.core;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.exception.TreeException;
 
+/*
+ * All specific validations class must inheritance this one. This must be no
+ * possible to instantiate this class.
+ */
 abstract class TreeValidator {
 	
 	private TreeManager manager;

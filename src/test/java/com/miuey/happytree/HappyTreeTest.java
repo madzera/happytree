@@ -26,6 +26,4 @@ import com.miuey.happytree.transaction.TreeTransactionSuiteTest;
 	//Real cases adopted in real projects.
 	ContextMenuTest.class
 })
-public class HappyTreeTest {
-
-}
+public class HappyTreeTest {}
