@@ -8,6 +8,10 @@ import com.miuey.happytree.exception.TreeException;
 
 abstract class ATPGenericPhase<T> extends ATPPhase<T> {
 
+	/*
+	 * Protects this constructor. The API Client must not initialization no one
+	 * ATP Phase. This constructor should be protected into the children classes.
+	 */
 	protected ATPGenericPhase() {}
 	
 	

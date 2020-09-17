@@ -8,8 +8,15 @@ import com.miuey.happytree.Element;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class PostValidation<T> extends ATPGenericPhase<T> {
+class PostValidation<T> extends ATPGenericPhase<T> {
 
+	protected PostValidation() {}
+	
+	
+	/*
+	 * Verify if the resulting element list corresponds to the input list used
+	 * in this transformation
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
@@ -40,8 +47,12 @@ public class PostValidation<T> extends ATPGenericPhase<T> {
 			Object parentIdSource = nodesParentMap.get(id);
 			Object object = nodesMap.get(id);
 			
-			if (!object.equals(wrappedNode) || 
-					parentIdSource.equals(parentId)) {
+			/*
+			 * The same wrapped node inside of this element must be equals to
+			 * the node used as input of this transformation.
+			 */
+			if (!object.equals(wrappedNode) || (parentIdSource != null &&
+					!parentIdSource.equals(parentId))) {
 				throw this.throwTreeException(ATPRepositoryMessage.
 						POST_VALID_INCONS);
 			}

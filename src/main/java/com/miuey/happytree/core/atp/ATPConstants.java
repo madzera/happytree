@@ -13,8 +13,10 @@ class ATPConstants {
 	
 	class Error {
 		private Error() {}
+		
 		//---------------RUNTIME--------------
 		static final String INVALID_INPUT_ELEMENTS = "com.miuey.happytree.error.runtime.params";
+		
 		//----------------TREE----------------
 		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
 		static final String NO_TREE_ERROR = "com.miuey.happytree.error.checked.tree.notree";
@@ -23,7 +25,7 @@ class ATPConstants {
 		static final String DIFFERENT_TYPES_ID_ERROR = "com.miuey.happytree.error.checked.tree.mismatchid";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
 		static final String INCONSISTENCY_POST_VALID = "com.miuey.happytree.error.checked.tree.inconsistency";
-		//---------------SESSION--------------
+		
 		class Internal {
 			private Internal() {}
 			//---------------RUNTIME--------------

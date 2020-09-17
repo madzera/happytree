@@ -9,8 +9,14 @@ import com.miuey.happytree.annotation.Parent;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class Extraction<T> extends ATPGenericPhase<T> {
+class Extraction<T> extends ATPGenericPhase<T> {
 
+	protected Extraction() {}
+	
+
+	/*
+	 * Separates the own nodes and their parents.
+	 */
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		Map<Object, Object> nodesMap = this.createHashMap();

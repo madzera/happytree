@@ -11,8 +11,15 @@ import com.miuey.happytree.annotation.Tree;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class PreValidation<T> extends ATPGenericPhase<T> {
+class PreValidation<T> extends ATPGenericPhase<T> {
 
+	protected PreValidation() {}
+	
+	
+	/*
+	 * Checks that the node has a non-null id and that your class has
+	 * annotations and getters and setters.
+	 */
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")

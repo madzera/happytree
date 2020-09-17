@@ -10,8 +10,15 @@ import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class Initialization<T> extends ATPGenericPhase<T> {
+class Initialization<T> extends ATPGenericPhase<T> {
 
+	protected Initialization() {}
+	
+
+	/*
+	 * Instantiate each element with the id and their respective parents
+	 * informed in the previous phase.
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {

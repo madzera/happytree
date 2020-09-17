@@ -48,10 +48,12 @@ class ATPLifecycle<T> {
 		ATPPhase<T> extraction = lifecycleFactory.initExtraction();
 		ATPPhase<T> initialization = lifecycleFactory.initInitialization();
 		ATPPhase<T> binding = lifecycleFactory.initBinding();
+		ATPPhase<T> postValidation = lifecycleFactory.initPostValidation();
 		
 		preValidation.next(extraction);
 		extraction.next(initialization);
 		initialization.next(binding);
+		binding.next(postValidation);
 		
 		try {
 			preValidation.run(pipeline);

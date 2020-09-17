@@ -8,10 +8,8 @@ import java.util.Properties;
 
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
-import com.miuey.happytree.core.atp.Binding;
-import com.miuey.happytree.core.atp.Extraction;
-import com.miuey.happytree.core.atp.Initialization;
-import com.miuey.happytree.core.atp.PreValidation;
+import com.miuey.happytree.core.atp.ATPFactory;
+import com.miuey.happytree.core.atp.ATPFactory.ATPPhaseInstance;
 import com.miuey.happytree.exception.TreeException;
 
 /*
@@ -113,19 +111,23 @@ class TreeFactory {
 		}
 		
 		<T> ATPPhase<T> initPreValidation() {
-			return new PreValidation<>();
+			return ATPFactory.getPhaseInstance(ATPPhaseInstance.PRE_VALIDATION);
 		}
 		
 		<T> ATPPhase<T> initExtraction() {
-			return new Extraction<>();
+			return ATPFactory.getPhaseInstance(ATPPhaseInstance.EXTRACTION);
 		}
 		
 		<T> ATPPhase<T> initInitialization() {
-			return new Initialization<>();
+			return ATPFactory.getPhaseInstance(ATPPhaseInstance.INITIALIZATION);
 		}
 		
 		<T> ATPPhase<T> initBinding() {
-			return new Binding<>();
+			return ATPFactory.getPhaseInstance(ATPPhaseInstance.BINDING);
+		}
+		
+		<T> ATPPhase<T> initPostValidation() {
+			return ATPFactory.getPhaseInstance(ATPPhaseInstance.POST_VALIDATION);
 		}
 	}
 	

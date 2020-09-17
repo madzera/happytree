@@ -18,6 +18,18 @@ class TreeValidatorFacade {
 	}
 
 	
+	/*
+	 * Validates mandatory inputs.
+	 */
+	void validateMandatory(Object... args) {
+		TreeMandatoryValidator validator = TreeFactory.validatorFactory().
+				createMandatoryValidator();
+		validator.validateMandatoryInput(args);
+	}
+	
+	/*
+	 * Validates TreeTransaction.initializeSession().
+	 */
 	void validateSessionInitialization(String identifier) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
 				createPipelineValidator();
@@ -31,6 +43,9 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedSessionId(pipeline);
 	}
 	
+	/*
+	 * Validates TreeTransaction.initializeSession().
+	 */
 	void validateSessionInitialization(String identifier, Object typeSession)
 			throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
@@ -47,6 +62,9 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedSessionId(pipeline);
 	}
 	
+	/*
+	 * Validates the session invoking any TreeManager operations.
+	 */
 	void validateSessionTransaction() throws TreeException {
 		TreeSessionValidator validator = TreeFactory.validatorFactory().
 				createSessionValidator(manager);
@@ -55,12 +73,9 @@ class TreeValidatorFacade {
 		validator.validateNoActiveSession();
 	}
 	
-	void validateMandatory(Object... args) {
-		TreeMandatoryValidator validator = TreeFactory.validatorFactory().
-				createMandatoryValidator();
-		validator.validateMandatoryInput(args);
-	}
-	
+	/*
+	 * Validates TreeManager.cut().
+	 */
 	void validateCutOperation(Element<?> sourceElement,
 			Element<?> targetElement) throws TreeException {
 		final Operation operation = Operation.CUT;
@@ -75,6 +90,9 @@ class TreeValidatorFacade {
 				currentSession(), targetElement, operation, validator);
 	}
 	
+	/*
+	 * Validates TreeManager.copy().
+	 */
 	void validateCopyOperation(Element<?> sourceElement,
 			Element<?> targetElement) throws TreeException {
 		final Operation operation = Operation.COPY;
@@ -90,6 +108,9 @@ class TreeValidatorFacade {
 				currentSession(), targetElement, operation, validator);
 	}
 	
+	/*
+	 * Validates TreeManager.removeElement().
+	 */
 	void validateRemoveOperation(Element<?> sourceElement) throws TreeException {
 		final Operation operation = Operation.REMOVE;
 		
@@ -111,6 +132,9 @@ class TreeValidatorFacade {
 		validator.validateDetachedElement(pipeline);
 	}
 	
+	/*
+	 * Validates TreeManager.persistElement().
+	 */
 	void validatePersistOperation(Element<?> sourceElement)
 			throws TreeException {
 		final Operation operation = Operation.PERSIST;
@@ -136,6 +160,9 @@ class TreeValidatorFacade {
 		validator.validateDuplicatedIdElement(pipeline);
 	}
 	
+	/*
+	 * Validates TreeManager.updateElement().
+	 */
 	void validateUpdateOperation(Element<?> sourceElement) throws TreeException {
 		final Operation operation = Operation.UPDATE;
 		

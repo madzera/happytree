@@ -4,6 +4,7 @@ class ATPPipelineAttributes {
 
 	private ATPPipelineAttributes() {}
 	
+	
 	/*
 	 * Extraction Phase.
 	 */

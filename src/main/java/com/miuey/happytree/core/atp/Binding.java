@@ -6,8 +6,14 @@ import com.miuey.happytree.Element;
 import com.miuey.happytree.core.TreePipeline;
 import com.miuey.happytree.exception.TreeException;
 
-public class Binding<T> extends ATPGenericPhase<T> {
+class Binding<T> extends ATPGenericPhase<T> {
 
+	protected Binding() {}
+	
+
+	/*
+	 * Connect one element inside another, building the tree.
+	 */
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")
