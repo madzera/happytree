@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeSession;
-import com.miuey.happytree.exception.TreeException;
 
 class TreeElementCore<T> implements Element<T> {
 
@@ -134,7 +133,7 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	@Override
-	public void wrap(T object) throws TreeException {
+	public void wrap(T object) {
 		this.wrappedNode = object;
 		
 		if (this.wrappedNode != null) {
@@ -151,6 +150,11 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public TreeSession attachedTo() {
 		return this.session;
+	}
+	
+	@Override
+	public String lifecycle() {
+		return getState().name();
 	}
 	
 	@Override

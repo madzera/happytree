@@ -87,12 +87,10 @@ import com.miuey.happytree.exception.TreeException;
  * 	</tr>
  * </table>
  * 
- * @author Diego Nóbrega
+ * @author Diego NÃ³brega
  * @author Miuey
  * 
  * @see TreeSession
- * 
- * @version %I%, %G%
  *
  */
 public interface TreeManager {
