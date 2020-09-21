@@ -87,8 +87,7 @@ import com.miuey.happytree.exception.TreeException;
  * 	</tr>
  * </table>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
  * @see TreeSession
  *

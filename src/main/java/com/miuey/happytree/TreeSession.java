@@ -53,13 +53,10 @@ import java.util.Collection;
  * session never returns to its natural state. Represents its end of life cycle.
  * </p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  * 
- * @see {@link TreeManager}
+ * @see TreeManager
  * 
- * @version %I%, %G%
- *
  */
 public interface TreeSession {
 	

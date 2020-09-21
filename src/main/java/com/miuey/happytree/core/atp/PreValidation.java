@@ -60,8 +60,8 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 		
 		validateTreeAnnotation(treeAnnotation);
 		validateFieldAnnotation(fieldIdAnnotation, ATPRepositoryMessage.NO_ID);
-		validateFieldAnnotation(fieldParentAnnotation,
-				ATPRepositoryMessage.NO_PARENT);
+		validateFieldAnnotation(fieldParentAnnotation, ATPRepositoryMessage.
+				NO_PARENT);
 		
 		if (!fieldIdAnnotation.getType().equals(fieldParentAnnotation.
 				getType())) {

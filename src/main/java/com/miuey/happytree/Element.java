@@ -93,8 +93,7 @@ import com.miuey.happytree.exception.TreeException;
  * never be <code>null</code> and if a parent of an element is <code>null</code>
  * or not found, that same element is moved to the root level of the tree.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
  * @see TreeTransaction
  * 
