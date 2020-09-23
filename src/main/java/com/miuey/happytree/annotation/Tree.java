@@ -65,8 +65,7 @@ import com.miuey.happytree.TreeManager;
  * <p><b>The <i>getters</i> and <i>setters</i> of the annotated attributes are
  * mandatory.</b></p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
  * @see Id
  * @see Parent

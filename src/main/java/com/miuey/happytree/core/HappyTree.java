@@ -1,8 +1,6 @@
 package com.miuey.happytree.core;
 
-import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
-import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 
 /**
@@ -19,11 +17,10 @@ import com.miuey.happytree.TreeTransaction;
  * consequently the elements within the trees, thus contemplating the absolute
  * use of the API.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
- * @see TreeSession
- * @see Element
+ * @see com.miuey.happytree.TreeSession
+ * @see com.miuey.happytree.Element
  * 
  */
 public final class HappyTree {

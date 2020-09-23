@@ -47,10 +47,7 @@ package com.miuey.happytree.exception;
  * 	trying to insert/update or cut/copy an element between the trees;</li>
  * </ul>
  * 
- * @author Diego Nóbrega
- * @author Miuey
- * 
- * @see Throwable
+ * @author Diego Madson de Andrade Nóbrega
  *
  */
 public class TreeException extends Exception {

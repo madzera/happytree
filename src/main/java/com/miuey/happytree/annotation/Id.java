@@ -31,8 +31,7 @@ import java.lang.annotation.Target;
  * 	}
  * </pre>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
  * @see Tree
  * @see Parent

@@ -34,8 +34,7 @@ import java.lang.annotation.Target;
  * <b>The {@literal @Id} and {@literal @Parent} must have the same class type.
  * </b>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade Nóbrega
  * 
  * @see Tree
  * @see Id
