@@ -125,7 +125,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session or the session which the <code>to</code> element
@@ -190,7 +190,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -253,7 +253,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session or the session which the <code>to</code> element
@@ -321,7 +321,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -371,7 +371,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -422,7 +422,7 @@ public interface TreeManager {
 	 * 
 	 * @return an identical copy of the found element
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public <T> Element<T> getElementById(Object id) throws TreeException;
@@ -449,7 +449,7 @@ public interface TreeManager {
 	 * contains the <code>descendant</code> element, <code>false</code>
 	 * otherwise
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
@@ -479,7 +479,7 @@ public interface TreeManager {
 	 * contains the <code>descendant</code> element, <code>false</code>
 	 * otherwise
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public boolean containsElement(Object parent, Object descendant) 
@@ -499,7 +499,7 @@ public interface TreeManager {
 	 * @return <code>true</code> value if the tree contains the
 	 * <code>element</code>, <code>false</code> otherwise
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public boolean containsElement(Element<?> element) throws TreeException;
@@ -516,7 +516,7 @@ public interface TreeManager {
 	 * @return <code>true</code> value if the tree contains the respective
 	 * element, <code>false</code> otherwise
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public boolean containsElement(Object id) throws TreeException;
@@ -551,7 +551,7 @@ public interface TreeManager {
 	 * @return a new element containing the <i>NOT_EXISTED</i> state in life
 	 * cycle
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
+	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
 	 */
 	public <T> Element<T> createElement(Object id, Object parent,
@@ -612,7 +612,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -702,7 +702,7 @@ public interface TreeManager {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>
-	 * 		The transaction has no session selected to work;
+	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
 	 * 		The current session is not active;
@@ -764,11 +764,13 @@ public interface TreeManager {
 	 * contains a collection of children, and so on. All this structure is
 	 * returned in this method.</p>
 	 * 
-	 * <p>The root element represents the top of the tree and its
-	 * <code>id</code> is always defined with the respective session id value.
-	 * Because that, every element with <code>null {@literal @Parent}</code> or
-	 * an unknown {@literal @Parent} will be attached to the tree become
-	 * immediately child of root.</p>
+	 * <p>The root element represents the top of the tree and its id is always
+	 * defined with the respective session identifier name. Because that, every
+	 * node object with <code>null {@literal @Parent}</code> or an unknown
+	 * {@literal @Parent} will be attached to the tree become immediately child
+	 * of root (in the <b>API Transformation Process</b>). After that, its
+	 * {@literal Parent} attribute will have the same id of the session
+	 * identifier name.</p>
 	 * 
 	 * <p>Operations to copy, cut, remove or update cannot be applied to roots
 	 * elements. An exception will be threw and the execution aborted.</p>
@@ -789,10 +791,10 @@ public interface TreeManager {
 	 * @param <T> the class type of the wrapped node that will be encapsulated
 	 * into the {@link Element} object
 	 * 
-	 * @return the root level representing the top of the tree
+	 * @return the root element
 	 * 
-	 * @throws TreeException when the transaction has no session selected to
-	 * work or the current session is not active
+	 * @throws TreeException when the transaction has no selected session to
+	 * work or if the current session is not active
 	 */
 	public <T> Element<T> root() throws TreeException; 
 }
