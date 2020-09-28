@@ -39,8 +39,9 @@ to manipulate them.
 
 <p><b>If you have something like this:</b></p>
 <code>
-//Linear structure representing a tree through parent attribute<br/>
-public class Node {  <br />
+<pre>
+//Linear structure representing a tree through parent attribute<br/>  
+public class Node {  
 	//Own ID  
 	private int id;  
 	//Super node reference  
@@ -48,14 +49,17 @@ public class Node {  <br />
 	//Simple attribute  
 	private String name;  
 }  
+</pre>
 </code>
 <p><b>But you want do this:</b></p>
 <code>
+<pre>
 //Tree structure representing a tree through parent attribute<br/>
 public class Node {  
 	private Collection&lt;Node&gt; children;  
 	private String name;  
 }  
+</pre>
 </code>
 
 ### Documentation
