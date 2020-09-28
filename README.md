@@ -40,7 +40,7 @@ to manipulate them.
 <p><b>If you have something like this:</b></p>
 <code>
 //Linear structure representing a tree through parent attribute<br/>
-public class Node {  
+public class Node {  <br />
 	//Own ID  
 	private int id;  
 	//Super node reference  
