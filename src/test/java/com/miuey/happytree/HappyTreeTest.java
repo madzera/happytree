@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.miuey.happytree.demo.ContextMenuTest;
+import com.miuey.happytree.demo.TaxonomyNodeTest;
 import com.miuey.happytree.demo.VerifyCloneDescendantsTest;
 import com.miuey.happytree.element.ElementSuiteTest;
 import com.miuey.happytree.manager.TreeManagerSuiteTest;
@@ -24,6 +25,7 @@ import com.miuey.happytree.transaction.TreeTransactionSuiteTest;
 	VerifyCloneDescendantsTest.class,
 	
 	//Real cases adopted in real projects.
-	ContextMenuTest.class
+	ContextMenuTest.class,
+	TaxonomyNodeTest.class
 })
 public class HappyTreeTest {}

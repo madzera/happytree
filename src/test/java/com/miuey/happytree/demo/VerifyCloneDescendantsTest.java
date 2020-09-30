@@ -27,8 +27,6 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * <p>Utility Tree Assembler:</p>
  * {@link TreeAssembler}
- * 
- * @author Diego Nóbrega
  */
 public class VerifyCloneDescendantsTest {
 

@@ -30,8 +30,6 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * <p>Utility Tree Assembler:</p>
  * {@link ContextMenuAssembler}
- * 
- * @author Diego Nóbrega.
  */
 public class ContextMenuTest {
 
