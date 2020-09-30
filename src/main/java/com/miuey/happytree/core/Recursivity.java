@@ -82,6 +82,7 @@ class Recursivity {
 	 */
 	static <T> boolean iterateForDuplicatedId(Element<T> source,
 			Element<T> target) {
+		Set<Object> sourceIds = TreeFactory.collectionFactory().createHashSet();
 		Set<Object> targetIds = TreeFactory.collectionFactory().createHashSet();
 		
 		Collection<Element<T>> targetPlainTree = toPlainList(target);
@@ -93,9 +94,13 @@ class Recursivity {
 		Collection<Element<T>> sourcePlainTree = toPlainList(source);
 		for (Element<T> sourceElement : sourcePlainTree) {
 			Object iteratorId = sourceElement.getId();
-			if (targetIds.contains(iteratorId)) {
+			
+			if (targetIds.contains(iteratorId)
+					|| sourceIds.contains(iteratorId)) {
 				return Boolean.TRUE;
 			}
+			
+			sourceIds.add(iteratorId);
 		}
 		
 		return Boolean.FALSE;
