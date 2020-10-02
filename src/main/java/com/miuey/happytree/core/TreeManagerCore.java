@@ -354,6 +354,11 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validatePersistOperation(newElement);
 		
 		/*
+		 * Clone the input element so as not to save real instances in the tree.
+		 */
+		newElement = ((TreeElementCore<T>) newElement).cloneElement();
+		
+		/*
 		 * Group the child and parent elements.
 		 */
 		TreeElementCore<T> parent = this.searchElement(newElement.getParent());
