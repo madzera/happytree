@@ -23,7 +23,7 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class represents the <i>error scenarios</i> for the operations
  * of {@link TreeManager}.</p>
  * 
- * @author Diego Nóbrega
+ * @author Diego Nï¿½brega
  * @author Miuey
  *
  */
@@ -2314,14 +2314,14 @@ public class TreeManagerErrorTest {
 	 * Test for the {@link TreeManager#persistElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to persist an element
-	 * into a tree where the element to be persisted has a child with the same
+	 * into a tree which the element to be persisted has a child with the same
 	 * id as one of the elements in the tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to persist an element into a tree where the element to be persisted
+	 * Try to persist an element into a tree which the element to be persisted
 	 * has a child with the same id as one of the elements in the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
@@ -2331,7 +2331,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Create two elements, which one of them has the duplicate id related
+	 * 	<li>Create two elements, which one of them has the duplicated id related
 	 * 	to the tree which this element will be persisted;</li>
 	 * 	<li>Put the element with the duplicated id as the child of the other;
 	 * 	</li>
@@ -2380,6 +2380,78 @@ public class TreeManagerErrorTest {
 		}
 	}
 
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an element
+	 * into a tree which this element to be persisted has a child with the same
+	 * id as one of the elements inside of its own children list.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Metadata</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element into a tree which the element to be persisted
+	 * has a child with the same id as one of the elements inside of its own
+	 * children list.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create four elements in which two of them have duplicated IDs;</li>
+	 * 	<li>Put the elements inside each other and so on;</li>
+	 * 	<li>Try to persist the element that represents the parent element of
+	 * 	others;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_duplicatedOwnChildId() {
+		final String sessionId = "persistElement_duplicatedOwnChildId";
+		final String messageError = "Duplicated ID.";
+		String error = null;
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		final String musicId = "Music";
+		final String categoryId = "Category";
+		final String albumId = "AlbumId";
+		final String duplicatedCategoryId = categoryId;
+		
+		try {
+			transaction.initializeSession(sessionId, Metadata.class);
+			
+			Element<Metadata> music = manager.createElement(musicId, null,
+					null);
+			Element<Metadata> category = manager.createElement(categoryId, null,
+					null);
+			Element<Metadata> album = manager.createElement(albumId, null, null);
+			Element<Metadata> duplicatedCategory = manager.createElement(
+					duplicatedCategoryId, null, null);
+			
+			music.addChild(category);
+			category.addChild(album);
+			album.addChild(duplicatedCategory);
+			
+			/*
+			 * Error trying to persist an element which the own element has
+			 * duplicated children Id.
+			 */
+			manager.persistElement(music);
+			
+		} catch (TreeException e) {
+			error = e.getMessage();
+		} finally {
+			assertEquals(messageError, error);
+		}
+	}
+	
 	/**
 	 * Test for the {@link TreeManager#persistElement(Element)} operation.
 	 * 
