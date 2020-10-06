@@ -40,6 +40,8 @@ class TreeTransactionCore implements TreeTransaction {
 		TreeElementCore<T> root = serviceFactory.createElement(
 				identifier, null, null, newSession);
 		
+		root.setRoot(Boolean.TRUE);
+		
 		Collection<TreeElementCore<T>> rootChildren = TreeFactory.
 				collectionFactory().createHashSet();
 		

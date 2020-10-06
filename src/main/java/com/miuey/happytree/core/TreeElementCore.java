@@ -24,12 +24,14 @@ class TreeElementCore<T> implements Element<T> {
 	private boolean isRoot;
 	private Class<?> type;
 	private Object newId;
+	private Object oldParentId;
 	
 	
 	TreeElementCore(Object id, Object parentId, T wrappedNode,
 			TreeSession session) {
 		this.id = id;
 		this.parentId = parentId;
+		this.oldParentId = parentId;
 		this.children = TreeFactory.collectionFactory().createHashSet();
 		
 		this.wrappedNode = wrappedNode;
@@ -238,9 +240,15 @@ class TreeElementCore<T> implements Element<T> {
 		this.id = id;
 		this.setNewId(null);
 		
-		for (Element<T> child : getChildren()) {
+		for (Element<T> iterator : getChildren()) {
+			TreeElementCore<T> child = (TreeElementCore<T>) iterator; 
 			child.setParent(id);
+			child.syncParentId();
 		}
+	}
+
+	void syncParentId() {
+		this.oldParentId = this.parentId;  
 	}
 	
 	/*
@@ -314,7 +322,19 @@ class TreeElementCore<T> implements Element<T> {
 		
 		return clone;
 	}
+
+	void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
 	
+	Object getOldParentId() {
+		return oldParentId;
+	}
+
+	void setOldParentId(Object oldParentId) {
+		this.oldParentId = oldParentId;
+	}
+
 	private int calculateHashForId(Object id) {
 		final int perfectNumber = 32;
 		if (id instanceof Byte || id instanceof Short || id instanceof Integer) {
@@ -332,10 +352,6 @@ class TreeElementCore<T> implements Element<T> {
 		} else {
 			return ((id == null) ? 0 : id.hashCode());
 		}
-	}
-	
-	private void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
 	}
 
 	private void setType(Class<?> type) {

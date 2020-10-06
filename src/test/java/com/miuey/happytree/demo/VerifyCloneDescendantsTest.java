@@ -33,9 +33,8 @@ public class VerifyCloneDescendantsTest {
 	@Test
 	public void isReallyCloneInstance() throws TreeException {
 		final String sessionId = "isReallyCloneInstance";
-		final String msgError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String msgError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		
 		String error = null;
 		

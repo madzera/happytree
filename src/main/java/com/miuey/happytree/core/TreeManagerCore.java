@@ -1,5 +1,7 @@
 package com.miuey.happytree.core;
 
+import java.util.HashSet;
+
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
 import com.miuey.happytree.TreeSession;
@@ -396,23 +398,15 @@ class TreeManagerCore implements TreeManager {
 		Object oldParentId = source.getParent();
 		
 		/*
-		 * Obtains the id to be updated. If it is not null then implies that
-		 * there is a change in the id attribute.
-		 */
-		Object updatedId = updatedElement.getUpdatedId();
-		
-		/*
 		 * References the id of old parent.
 		 */
 		Object updatedParentId = updatedElement.getParent();
 		
 		/*
-		 * If there is a change to the element id, refresh the id and reference
-		 * the parent of each child element for this one.
+		 * There is a possibility of the element to be moved to the root level
 		 */
-		if (updatedId != null) {
-			source.mergeUpdatedId(updatedId);
-		}
+		TreeElementCore<T> root = this.searchElement(transaction.
+				currentSession().getSessionId());
 		
 		/*
 		 * If there is a change to the parent of this element, then remove this
@@ -425,14 +419,70 @@ class TreeManagerCore implements TreeManager {
 			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
 					searchElement(updatedParentId);
 			
+			/*
+			 * In a case of a non-existent or parent not found, then this
+			 * element will be moved to the root level.
+			 */
+			if (newParent == null) {
+				newParent = root;
+			}
+			
 			oldParent.removeChild(source);
 			newParent.addChild(source);
+			newParent.getChildren();
 		}
 		
 		/*
-		 * Save changes.
+		 * This loop guarantees that the old child's parent removes the
+		 * reference from the child.
 		 */
-		transaction.commitTransaction();
+		for (Element<T> iterator : updatedElement.getChildren()) {
+			TreeElementCore<T> child = (TreeElementCore<T>) iterator;
+			Object oldParentChild = child.getOldParentId();
+			Object parentChild = child.getParent();
+			
+			if (parentChild != null && !parentChild.equals(oldParentChild)) {
+				Element<T> oldParent = this.searchElement(oldParentChild);
+				
+				if (oldParent != null) {
+					HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
+							oldParent.getChildren();
+					Element<T> childParent = this.searchElement(child.getId());
+					childrenParent.remove(childParent);
+				}
+				
+				child.syncParentId();
+			}
+		}
+		
+		/*
+		 * Update children.
+		 */
+		source.getChildren().clear();
+		source.getChildren().addAll(updatedElement.getChildren());
+
+		/*
+		 * Obtains the id to be updated. If it is not null then implies that
+		 * there is a change in the id attribute.
+		 */
+		Object updatedId = updatedElement.getUpdatedId();
+		
+		/*
+		 * If there is a change to the element id, refresh the id and reference
+		 * the parent of each child element for this one.
+		 */
+		if (updatedId != null) {
+			source.mergeUpdatedId(updatedId);
+		}
+		
+		source.syncParentId();
+		
+		/*
+		 * Save changes in the root element. There is a possibility of the 
+		 * element to be moved to the root level. So, this is necessary to
+		 * invoke this method instead commitTransaction().
+		 */
+		transaction.commitElement(root);
 		
 		return source.cloneElement();
 	}

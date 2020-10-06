@@ -611,8 +611,8 @@ public class TreeManagerErrorTest {
 	 * Try cut a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;No possible to copy/cut/remove elements. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -629,9 +629,8 @@ public class TreeManagerErrorTest {
 	@Test
 	public void cut_detachedElement() {
 		final String sessionId = "cut_detachedElement";
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		
 		String error = null;
 		
@@ -679,8 +678,8 @@ public class TreeManagerErrorTest {
 	 * Try to cut an element with a detached child.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;No possible to copy/cut/remove elements. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -698,9 +697,8 @@ public class TreeManagerErrorTest {
 	public void cut_detachedChild() {
 		final String sessionId = "cut_detachedChild";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -1406,8 +1404,8 @@ public class TreeManagerErrorTest {
 	 * Try to copy a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Detached element. Not possible to
-	 * copy/cut/remove elements not synchronized inside of the tree.&quot;</i>
+	 * with the message: <i>&quot;No possible to copy/cut/remove elements.
+	 * Invalid lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1431,9 +1429,8 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		
 		String error = null;
 		final long officeId = 53024;
@@ -1482,8 +1479,8 @@ public class TreeManagerErrorTest {
 	 * Try to copy an element for inside of a detached element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Detached element. Not possible to
-	 * copy/cut/remove elements not synchronized inside of the tree.&quot;</i>
+	 * with the message: <i>&quot;No possible to copy/cut/remove elements.
+	 * Invalid lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1507,9 +1504,8 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		String error = null;
 		
 		final long officeId = 53024;
@@ -1557,8 +1553,8 @@ public class TreeManagerErrorTest {
 	 * its children detached.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;No possible to copy/cut/remove elements. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1581,9 +1577,8 @@ public class TreeManagerErrorTest {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -1923,8 +1918,8 @@ public class TreeManagerErrorTest {
 	 * Try to remove a detached element from the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;No possible to copy/cut/remove elements. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1941,9 +1936,8 @@ public class TreeManagerErrorTest {
 	public void removeElement_detachedElement() {
 		final String sessionId = "removeElement_detachedElement";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		String error = null;
 		
 		final long readmeId = 495833;
@@ -1989,8 +1983,8 @@ public class TreeManagerErrorTest {
 	 * Try to remove an element with a detached child.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Detached element. Not possible to copy/cut/remove
-	 * elements not synchronized inside of the tree.&quot;</i>
+	 * message: <i>&quot;No possible to copy/cut/remove elements. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -2008,9 +2002,8 @@ public class TreeManagerErrorTest {
 	public void removeElement_detachedChild() {
 		final String sessionId = "remove_detachedChild";
 		
-		final String messageError = "Detached element. Not possible to"
-				+ " copy/cut/remove elements not synchronized inside of the"
-				+ " tree.";
+		final String messageError = "No possible to copy/cut/remove elements."
+				+ " Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -2465,9 +2458,8 @@ public class TreeManagerErrorTest {
 	 * Try to persist an element which already existed in the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Already existed element. Not possible to
-	 * persist elements which are already persisted before. Try to update
-	 * instead.&quot;</i>
+	 * with the message: <i>&quot;No possible to persist the element. Invalid
+	 * lifecycle state.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -2485,9 +2477,8 @@ public class TreeManagerErrorTest {
 	public void persistElement_existedElement() {
 		final String sessionId = "persistElement_existedElement";
 		
-		final String messageError = "Already existed element. Not possible to"
-				+ " persist elements which are already persisted before. Try to"
-				+ " update instead.";
+		final String messageError = "No possible to persist the element. Invalid"
+				+ " lifecycle state.";
 		String error = null;
 		
 		final long filesId = 8484934;
@@ -2834,8 +2825,8 @@ public class TreeManagerErrorTest {
 	 * Try to update a not existing element in the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Not existed element. Not possible to update
-	 * elements which are not persisted before. Try to persist instead.&quot;
+	 * with the message: <i>&quot;No possible to update the element. Invalid
+	 * lifecycle state.&quot;
 	 * </i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
@@ -2852,9 +2843,8 @@ public class TreeManagerErrorTest {
 	public void updateElement_notExistedElement() {
 		final String sessionId = "updateElement_notExistedElement";
 		
-		final String messageError = "Not existed element. Not possible to update"
-				+ " elements which are not persisted before. Try to persist"
-				+ " instead.";
+		final String messageError = "No possible to update the element. Invalid"
+				+ " lifecycle state.";
 		String error = null;
 		
 		final long id = Long.MAX_VALUE;
