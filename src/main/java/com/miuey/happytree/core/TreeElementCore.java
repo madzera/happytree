@@ -107,15 +107,22 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChildren(Collection<Element<T>> children) {
-		this.children.removeAll(children);
+		Iterator<Element<T>> iterator = children.iterator();
+		while (iterator.hasNext()) {
+			Element<T> element = iterator.next();
+			this.removeChild(element);
+		}
 	}
 
 	@Override
 	public void removeChild(Element<T> child) {
 		if (child != null) {
-			this.children.remove(child);
-			child.setParent(null);
-			transitionState(ElementState.DETACHED);
+			boolean isRemoved = this.children.remove(child);
+			
+			if (isRemoved) {
+				child.setParent(null);
+				transitionState(ElementState.DETACHED);
+			}
 		}
 	}
 

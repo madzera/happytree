@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -469,5 +470,174 @@ public class ComplexTest_EmptyTree {
 			assertEquals(error3, e.getMessage());
 		}
 		
+		computerScience = manager.getElementById("Computer Science");
+		security = manager.getElementById("Security");
+		cryptography = manager.getElementById("Cryptography");
+		concurrent = manager.getElementById("Concurrent");
+		
+		assertEquals(computerScience.getId(), computerSystems.getParent());
+		assertEquals(computerScience.getId(), security.getParent());
+		assertEquals(computerScience.getId(), cryptography.getParent());
+		assertEquals(computerScience.getId(), concurrent.getParent());
+		
+		security.setParent(computerSystems.getId());
+		security = manager.updateElement(security);
+		computerScience = manager.getElementById("Computer Science");
+		computerSystems = manager.getElementById("Computer Systems");
+		
+		assertNotEquals(computerScience.getId(), security.getParent());
+		assertEquals(computerSystems.getId(), security.getParent());
+		assertEquals(4, computerSystems.getChildren().size());
+		assertTrue(manager.containsElement(computerSystems, security));
+		
+		cryptography.setParent(computerSystems.getId());
+		cryptography = manager.updateElement(cryptography);
+		computerScience = manager.getElementById("Computer Science");
+		computerSystems = manager.getElementById("Computer Systems");
+		
+		assertNotEquals(computerScience.getId(), cryptography.getParent());
+		assertEquals(computerSystems.getId(), cryptography.getParent());
+		assertEquals(5, computerSystems.getChildren().size());
+		assertTrue(manager.containsElement(computerSystems, cryptography));
+		
+		concurrent.setParent(computerSystems.getId());
+		concurrent = manager.updateElement(concurrent);
+		computerScience = manager.getElementById("Computer Science");
+		computerSystems = manager.getElementById("Computer Systems");
+		
+		assertNotEquals(computerScience.getId(), concurrent.getParent());
+		assertEquals(computerSystems.getId(), concurrent.getParent());
+		assertEquals(6, computerSystems.getChildren().size());
+		assertTrue(manager.containsElement(computerSystems, concurrent));
+		
+		
+		computerScience = manager.getElementById("Computer Science");
+		computerApplications = manager.getElementById("Computer Applications");
+		computerGraphics = manager.getElementById("Computer Graphics");
+		ai = manager.getElementById("Artificial Intelligence");
+
+		assertEquals(0, computerApplications.getChildren().size());
+		assertEquals(computerScience.getId(), computerApplications.getParent());
+		assertEquals(computerScience.getId(), computerGraphics.getParent());
+		assertEquals(computerScience.getId(), ai.getParent());
+		
+		assertNotNull(computerScience.getElementById(computerApplications.
+				getId()));
+		assertEquals(6, computerScience.getChildren().size());
+		
+		manager.cut(computerApplications, computerScience);
+		
+		computerScience = manager.getElementById("Computer Science");
+		computerApplications = manager.getElementById("Computer Applications");
+		
+		assertEquals(0, computerApplications.getChildren().size());
+		assertEquals(computerScience.getId(), computerApplications.getParent());
+		
+		assertEquals(6, computerScience.getChildren().size());
+		assertNotNull(computerScience.getElementById(computerApplications.
+				getId()));
+		assertTrue(manager.containsElement(computerScience,
+				computerApplications));
+		
+		computerGraphics = manager.cut(computerGraphics, computerApplications);
+		
+		computerScience = manager.getElementById("Computer Science");
+		computerApplications = manager.getElementById("Computer Applications");
+		
+		assertEquals(5, computerScience.getChildren().size());
+		assertEquals(1, computerApplications.getChildren().size());
+		assertEquals(computerApplications.getId(), computerGraphics.getParent());
+		assertTrue(manager.containsElement(computerApplications.getId(),
+				computerGraphics.getId()));
+		
+		ai = manager.cut(ai, computerApplications);
+		
+		computerScience = manager.getElementById("Computer Science");
+		computerApplications = manager.getElementById("Computer Applications");
+		
+		assertEquals(4, computerScience.getChildren().size());
+		assertEquals(2, computerApplications.getChildren().size());
+		assertEquals(computerApplications.getId(), ai.getParent());
+		assertTrue(manager.containsElement(computerApplications.getId(),
+				ai.getId()));
+		
+		ai.setParent(3333);
+		List<Element<Science>> compAppsList = new ArrayList<>();
+		compAppsList.add(ai);
+		
+		try {
+			manager.removeElement(ai);
+		} catch (TreeException e) {
+			String error4 = "No possible to copy/cut/remove elements. Invalid"
+					+ " lifecycle state.";
+			assertEquals(error4, e.getMessage());
+		}
+		
+		computerApplications = manager.getElementById("Computer Applications");
+		ai = manager.getElementById("Artificial Intelligence");
+		
+		assertTrue(manager.containsElement(computerApplications.getId(),
+				ai.getId()));
+		assertEquals(2, computerApplications.getChildren().size());
+		
+		compAppsList.clear();
+		
+		assertEquals("ATTACHED", computerApplications.lifecycle());
+		assertEquals("ATTACHED", computerGraphics.lifecycle());
+		
+		compAppsList.add(ai);
+		compAppsList.add(computerGraphics);
+		
+		computerApplications.removeChildren(compAppsList);
+		
+		assertEquals("DETACHED", computerApplications.lifecycle());
+		
+		try {
+			manager.persistElement(computerApplications);
+		} catch (TreeException e) {
+			String error5 = "No possible to persist the element. Invalid"
+					+ " lifecycle state.";
+			assertEquals(error5, e.getMessage());
+		}
+		
+		assertEquals("DETACHED", computerGraphics.lifecycle());
+		assertEquals("DETACHED", ai.lifecycle());
+		
+		computerApplications = manager.getElementById("Computer Applications");
+		computerGraphics = manager.getElementById("Computer Graphics");
+		ai = manager.getElementById("Artificial Intelligence");
+		
+		assertEquals("ATTACHED", computerApplications.lifecycle());
+		assertEquals("ATTACHED", computerGraphics.lifecycle());
+		assertEquals("ATTACHED", ai.lifecycle());
+		
+		compAppsList.clear();
+		compAppsList.add(ai);
+		compAppsList.add(computerGraphics);
+		
+		computerApplications.removeChildren(compAppsList);
+		
+		computerScience = manager.getElementById("Computer Science");
+		ai = manager.getElementById("Artificial Intelligence");
+		computerGraphics = manager.getElementById("Computer Graphics");
+		
+		assertTrue(manager.containsElement(computerScience, ai));
+		assertTrue(manager.containsElement(computerScience, computerGraphics));
+		
+		computerApplications = manager.updateElement(computerApplications);
+		
+		computerScience = manager.getElementById("Computer Science");
+		ai = manager.getElementById("Artificial Intelligence");
+		computerGraphics = manager.getElementById("Computer Graphics");
+		
+		assertEquals(0, computerApplications.getChildren().size());
+		assertNull(ai);
+		assertNull(computerGraphics);
+		
+		assertFalse(manager.containsElement(computerApplications, ai));
+		assertFalse(manager.containsElement(computerApplications,
+				computerGraphics));
+		assertFalse(manager.containsElement(computerScience, ai));
+		assertFalse(manager.containsElement(computerScience, computerGraphics));
 	}
 }
