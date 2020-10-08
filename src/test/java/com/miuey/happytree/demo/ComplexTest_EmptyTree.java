@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.miuey.happytree.Element;
 import com.miuey.happytree.TreeManager;
+import com.miuey.happytree.TreeSession;
 import com.miuey.happytree.TreeTransaction;
 import com.miuey.happytree.core.HappyTree;
 import com.miuey.happytree.demo.model.Science;
@@ -64,6 +65,7 @@ public class ComplexTest_EmptyTree {
 	@Test
 	public void newEmptyTree() throws TreeException {
 		final String sessionId = "newEmptyTree";
+		final String clonedSessionId = "clonedTree";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -639,5 +641,78 @@ public class ComplexTest_EmptyTree {
 				computerGraphics));
 		assertFalse(manager.containsElement(computerScience, ai));
 		assertFalse(manager.containsElement(computerScience, computerGraphics));
+		
+		computerScience = manager.getElementById("Computer Science");
+		softwareEngineering = manager.getElementById(softwareEngineering.
+				getId());
+		
+		assertEquals(4, computerScience.getChildren().size());
+		assertTrue(manager.containsElement(computerScience,
+				softwareEngineering));
+		assertEquals(computerScience.getId(), softwareEngineering.getParent());
+		
+		assertEquals("ATTACHED", softwareEngineering.lifecycle());
+		
+		softwareEngineering = manager.removeElement(softwareEngineering);
+		
+		computerScience = manager.getElementById("Computer Science");
+		
+		assertEquals("NOT_EXISTED", softwareEngineering.lifecycle());
+		assertEquals(3, computerScience.getChildren().size());
+		assertFalse(manager.containsElement(computerScience,
+				softwareEngineering));
+		assertNotEquals(computerScience.getId(), softwareEngineering.
+				getParent());
+		
+		assertNull(transaction.sessionCheckout(clonedSessionId));
+		assertNotNull(transaction.sessionCheckout(sessionId));
+		
+		TreeSession clonedSession = transaction.cloneSession(sessionId,
+				clonedSessionId);
+		
+		assertNotNull(clonedSession);
+		
+		transaction.sessionCheckout(clonedSessionId);
+		
+		Element<Science> clonedMedicine = manager.getElementById(medicine.
+				getId());
+		
+		Element<Science> clonedComputerScience = manager.getElementById(
+				computerScience.getId());
+		
+		assertNotNull(clonedMedicine);
+		assertNotNull(clonedComputerScience);
+		
+		assertEquals(3, clonedMedicine.getChildren().size());
+		assertEquals(transaction.currentSession().getSessionId(),
+				clonedMedicine.attachedTo().getSessionId());
+		
+		assertEquals(3, clonedComputerScience.getChildren().size());
+		assertEquals(transaction.currentSession().getSessionId(),
+				clonedComputerScience.attachedTo().getSessionId());
+		
+		transaction.sessionCheckout(sessionId);
+		
+		medicine = manager.getElementById("Medicine");
+		
+		assertNotNull(medicine);
+		assertEquals(sessionId, medicine.attachedTo().getSessionId());
+		
+		transaction.deactivateSession(clonedSessionId);
+		
+		clonedSession = transaction.sessionCheckout(clonedSessionId);
+		
+		assertNotNull(clonedSession);
+		assertFalse(clonedSession.isActive());
+		
+		TreeSession session = transaction.sessionCheckout(sessionId);
+		
+		assertNotNull(session);
+		
+		transaction.destroySession(clonedSessionId);
+		
+		clonedSession = transaction.sessionCheckout(clonedSessionId);
+		
+		assertNull(clonedSession);
 	}
 }

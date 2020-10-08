@@ -1,5 +1,6 @@
 package com.miuey.happytree.core;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import com.miuey.happytree.Element;
@@ -455,11 +456,20 @@ class TreeManagerCore implements TreeManager {
 			}
 		}
 		
+		Collection<Element<T>> updatedChildren = updatedElement.getChildren();
+		Collection<Element<T>> sourceChildren = source.getChildren();
+		
 		/*
 		 * Update children.
 		 */
-		source.getChildren().clear();
-		source.getChildren().addAll(updatedElement.getChildren());
+		if (!updatedChildren.equals(sourceChildren)) {
+			for (Element<T> child : sourceChildren) {
+				child.setParent(null);
+				transaction.rollbackElement(child);
+			}
+			sourceChildren.clear();
+			sourceChildren.addAll(updatedElement.getChildren());
+		}
 
 		/*
 		 * Obtains the id to be updated. If it is not null then implies that
