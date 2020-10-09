@@ -112,7 +112,7 @@ public interface TreeSession {
 	 * 
 	 * @return the root of the tree
 	 * 
-	 * @see {@link TreeManager#root()}
+	 * @see TreeManager#root()
 	 */
 	public <T> Element<T> tree();
 }
