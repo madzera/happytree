@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.miuey</groupId>
 	<artifactId>happytree</artifactId>
-	<version>0.0.0</version>
+	<version>0.0.5</version>
 	<name>Happy Tree</name>
 	<description>
 		The Java Object Model API to handle objects in a tree structure.
@@ -22,12 +22,11 @@
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 <!-- ################################ SCM ################################## -->
 	<scm>
 		<connection>scm:git:git://github.com/Miuey/happytree.git</connection>
-		<tag>HEAD</tag>
-		<url>scm:git:git://github.com/Miuey/happytree.git</url>
 	</scm>
 <!-- ############################# Dependencies ############################ -->
 	<dependencies>
@@ -64,15 +63,13 @@
           			</execution>
         		</executions>
         		<configuration>
-          			<doCheck>true</doCheck>
-          			<doUpdate>true</doUpdate>
+          			<doCheck>false</doCheck>
+          			<doUpdate>false</doUpdate>
           			<useLastCommittedRevision>true</useLastCommittedRevision>
-					<buildNumberPropertyName>buildRevision</buildNumberPropertyName>
+					<scmBranchPropertyName>buildVersion</scmBranchPropertyName>
 					<shortRevisionLength>5</shortRevisionLength>
         		</configuration>
       		</plugin>
 		</plugins>
-		
-		<finalName>$\{project.artifactId}-$\{project.version}-r$\{buildNumber}</finalName>
 	</build>
 </project>
