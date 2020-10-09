@@ -23,6 +23,12 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
+<!-- ################################ SCM ################################## -->
+	<scm>
+		<connection>scm:git:git://github.com/Miuey/happytree.git</connection>
+		<tag>HEAD</tag>
+		<url>scm:git:git://github.com/Miuey/happytree.git</url>
+	</scm>
 <!-- ############################# Dependencies ############################ -->
 	<dependencies>
 		<dependency>
@@ -44,6 +50,29 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+		        <artifactId>buildnumber-maven-plugin</artifactId>
+		        <version>1.4</version>
+        		<executions>
+          			<execution>
+            			<phase>validate</phase>
+            			<goals>
+              				<goal>create</goal>
+            			</goals>
+          			</execution>
+        		</executions>
+        		<configuration>
+          			<doCheck>true</doCheck>
+          			<doUpdate>true</doUpdate>
+          			<useLastCommittedRevision>true</useLastCommittedRevision>
+					<buildNumberPropertyName>buildRevision</buildNumberPropertyName>
+					<shortRevisionLength>5</shortRevisionLength>
+        		</configuration>
+      		</plugin>
 		</plugins>
+		
+		<finalName>$\{project.artifactId}-$\{project.version}-r$\{buildNumber}</finalName>
 	</build>
 </project>
