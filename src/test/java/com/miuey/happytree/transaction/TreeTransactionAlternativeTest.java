@@ -24,8 +24,7 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class represents the <i>alternative scenarios</i> for the
  * operations of {@link TreeTransaction}.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego NÃ³brega
  *
  */
 public class TreeTransactionAlternativeTest {

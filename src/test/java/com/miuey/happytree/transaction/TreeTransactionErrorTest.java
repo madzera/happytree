@@ -27,8 +27,7 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class also includes tests related to the API Transformation
  * Process.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  *
  */
 public class TreeTransactionErrorTest {

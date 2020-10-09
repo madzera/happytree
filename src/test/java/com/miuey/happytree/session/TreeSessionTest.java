@@ -19,8 +19,7 @@ import com.miuey.happytree.exception.TreeException;
  * 
  * Test class for {@link TreeSession} operations.
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  *
  */
 public class TreeSessionTest {

@@ -15,8 +15,7 @@ import com.miuey.happytree.demo.model.Metadata;
  * {@link Directory} and the objective is to simulate a directory structure in a
  * file system.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  *
  */
 public final class TreeAssembler {

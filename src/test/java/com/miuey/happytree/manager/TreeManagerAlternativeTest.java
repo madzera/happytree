@@ -30,8 +30,7 @@ import com.miuey.happytree.exception.TreeException;
  * <code>Directory</code> and <code>TreeAssembler. Please consider see
  * these sample classes to understand the tests scenarios.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  *
  */
 public class TreeManagerAlternativeTest {

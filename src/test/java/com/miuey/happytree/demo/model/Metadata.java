@@ -14,7 +14,7 @@ import com.miuey.happytree.annotation.Tree;
  * <p>Therefore, a <codeDirectory</code> type tree cannot have an element
  * inserted in a <code>Metadata</code> type tree.</p>
  * 
- * @author Diego Nóbrega
+ * @author Diego Madson de Andrade NÃ³brega
  * 
  */
 @Tree

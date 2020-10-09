@@ -25,8 +25,7 @@ import com.miuey.happytree.annotation.Tree;
  * <p>These objects can easily represent a hierarchical tree structure through
  * the conceptual nature of these objects.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  *
  */
 @Tree

@@ -11,6 +11,5 @@ public class ContextMenuAssembler {
 	public static List<EManagementContextMenu> getContextMenuListTree()
 			throws TreeException {
 		return Arrays.asList(EManagementContextMenu.values());
-		
 	}
 }

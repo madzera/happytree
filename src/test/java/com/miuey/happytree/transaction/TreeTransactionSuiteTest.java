@@ -11,5 +11,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	TreeTransactionErrorTest.class
 })
 public class TreeTransactionSuiteTest {
-
 }

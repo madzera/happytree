@@ -24,8 +24,7 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class represents the <i>happy scenario</i> for all operations of
  * {@link TreeManager}.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego NÃ³brega
  *
  */
 public class TreeManagerTest {

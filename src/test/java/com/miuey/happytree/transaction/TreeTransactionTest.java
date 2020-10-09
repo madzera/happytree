@@ -26,11 +26,10 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class represents the <i>happy scenario</i> for all operations of
  * {@link TreeTransaction}.</p>
  * 
- * @author Diego Nóbrega
- * @author Miuey
+ * @author Diego Madson de Andrade NÃ³brega
  * 
- * @see {@link TreeAssembler}
- * @see {@link Directory}
+ * @see TreeAssembler
+ * @see Directory
  */
 public class TreeTransactionTest {
 
