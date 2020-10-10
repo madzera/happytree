@@ -5,9 +5,9 @@
 Following the Open-Source atmosphere, this code of conduct aims to
 define recommendations in order to guarantee the freedom of
 collaborators to contribute, suggest and make use of the HappyTree
-API, in order to respect all members of this community, making the
-environment conducive to technological development and personal
-spontaneously.
+API, in order to respect all members of this community, making
+spontaneously the environment conducive to technological and personal
+development.
 
 ## Behavior Standards
 
