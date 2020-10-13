@@ -81,14 +81,14 @@ development (the collaborator's developments are always based on the
 *Branch* of the current version - *Milestone*). Just below the main
 *Branch* (*master branch*), there will be several *Branches* that
 correspond to their respective *Milestones*, and following the same
-structure, below the *Branch* (which corresponds to its respective
-*Milestone*) there will be several *Sub-Branches* that correspond to
+structure, below the *Branch* which corresponds to its respective
+*Milestone*, there will be several *Sub-Branches* that correspond to
 the respective Labels indicated in the **Issue** to which the
 collaborator is working. For example, if the collaborator is solving
 a *Bug*, then the collaborator has to submit his work within the
 *Sub-Branch Bug*. This submitted work represents another *Branch*
 created by the collaborator himself that will be used to perform the
-*commit*. This *Branch*, created by the collaborator must indicate
+*commit*. This *Branch*, created by the collaborator, must indicate
 exactly the **Issue** number that he is working on.
 
 The following is a simple example if the collaborator wishes to
