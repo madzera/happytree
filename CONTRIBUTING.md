@@ -57,7 +57,7 @@ same order:
 	done.
 2. What happened;
 	* Describe in an objective and summarized way the result of what
-	was done.
+	happened.
 3. What was expected to happen;
 	* Describe in an objective and summarized way the result that was
 	expected.
