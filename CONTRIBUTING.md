@@ -36,7 +36,7 @@ the labels that will define what each **Issue** proposes:
 |---|---|
 | adaptive  | Request/Feature change  |
 | bug  | Something isn't working  |
-| documentation  | Oficial documents and .md Files  |
+| documentation  | Official documents and .md Files  |
 | enhancement  | Improvements and refactoring  |
 | feature  | New functionality/feature  |
 | important  | Notify for very urgent or important issue  |
