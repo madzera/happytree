@@ -42,8 +42,7 @@ the labels that will define what each **Issue** proposes:
 | important  | Notify for very urgent or important issue  |
 | invalid  | This doesn't seem right  |
 | question  | Further information is requested  |
-| suggestion  | Give us any suggestion about functionality or
-anything else  |
+| suggestion  | Give us any suggestion about functionality or anything else  |
 | test  | Testing issue  |
 
 Whatever the type of **Issue**, the collaborator may feel free to
