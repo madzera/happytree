@@ -42,10 +42,11 @@ the labels that will define what each **Issue** proposes:
 | important  | Notify for very urgent or important issue  |
 | invalid  | This doesn't seem right  |
 | question  | Further information is requested  |
-| suggestion  | Give us any suggestion about functionality or anything else  |
+| suggestion  | Give us any suggestion about functionality or
+anything else  |
 | test  | Testing issue  |
 
-Whatever the type of **Issue**, the employee may feel free to
+Whatever the type of **Issue**, the collaborator may feel free to
 organize ideas as he wishes, with the exception of the
 **Bug-type Issue**. This **Issue** deserves special treatment in its
 description. Therefore, it facilitates the work of correcting bugs,
@@ -103,3 +104,10 @@ is accepted, the collaborator's work will be incorporated within the
 can be released already in the current version of the HappyTree API.
 However, when it comes to new features, it can be reallocated for
 future releases, a question that is decided soon after analysis.
+
+## Requirements (soon)
+
+* Required/recommended technologies
+* HappyTree API coding standards
+* Writing tests
+* Documentation
