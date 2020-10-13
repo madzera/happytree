@@ -95,7 +95,7 @@ The following is a simple example if the collaborator wishes to
 contribute within Branch/Milestone/Version 1.0.2:
 
 <p align="center">
-  <a href="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/branch_info.png" target="_blank" >
+  <img alt="Example of a Branch" src="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/branch_info.png"/>
   </a>
 </p>
 
