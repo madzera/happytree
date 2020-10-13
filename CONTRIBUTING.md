@@ -91,8 +91,8 @@ created by the collaborator himself that will be used to perform the
 *commit*. This *Branch*, created by the collaborator, must indicate
 exactly the **Issue** number that he is working on.
 
-The following is a simple example if the collaborator wishes to
-contribute within Branch/Milestone/Version 1.0.2:
+The following image is a simple example when the collaborator wishes
+to contribute within Branch/Milestone/Version 1.0.2:
 
 <p align="center">
   <img alt="Example of a Branch" src="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/branch_info.png"/>
