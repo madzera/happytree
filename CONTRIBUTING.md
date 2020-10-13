@@ -91,6 +91,15 @@ used to perform the *commit*. This *Branch*, created by the
 collaborator must indicate exactly the **Issue** number that he is
 working on.
 
+The following is a simple example if the collaborator wishes to
+contribute within Branch/Milestone/Version 1.0.2:
+
+<p align="center">
+  <a href="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/branch_info.png" target="_blank" >
+  </a>
+</p>
+
+
 The numbers indicated in the column on the right represent the
 *Branches* created by the collaborator that will be used to commit.
 Each of these *Branches* created by the collaborator will be inserted
