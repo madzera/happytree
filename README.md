@@ -17,9 +17,9 @@ have none or several other objects of the same type. It is similar
 to the Document Object Model (DOM) and provides an interface for 
 manipulating these objects in various trees.
 
-In addition to the transformation process, the HappyTree API provides
-mechanisms to handle these objects within trees, as if these objects
-were tree nodes, all in an easy and intuitive way.
+In addition to the **Transformation Process**, the HappyTree API
+provides mechanisms to handle these objects within trees, as if these
+objects were tree nodes, all in an easy and intuitive way.
 
 ### What is your purpose?
 
