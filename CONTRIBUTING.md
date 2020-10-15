@@ -10,7 +10,7 @@ collaborator can contribute both simultaneously.
 
 ## Code of Conduct
 
-Before you start, stick to our [code of conduct](https://github.com/Miuey/happytree/blob/0.0.5/CODE_OF_CONDUCT.md)
+Before you start, stick to our [code of conduct](https://github.com/Miuey/happytree/blob/master/CODE_OF_CONDUCT.md)
 to help us keep open and inclusive.
 
 ## Contributing
@@ -95,7 +95,7 @@ The following image is a simple example when the collaborator wishes
 to contribute within Branch/Milestone/Version 1.0.2:
 
 <p align="center">
-  <img alt="Example of a Branch" src="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/branch_info.png"/>
+  <img alt="Example of a Branch" src="https://github.com/Miuey/happytree/blob/master/.github/resources/branch_info.png"/>
   </a>
 </p>
 
