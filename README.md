@@ -62,37 +62,92 @@ opportunity to use Happy Tree, since objects will now be inside
 each other thus assembling a tree, as well as offering interfaces 
 to handle them.
 
-<b>If you have something like this:</b>
+<b>If you have something like this:</b><br>
 <code>
 <pre>
-//Linear structure representing a tree through parent attribute<br/>  
-public class Node {  
-	//Own ID  
-	private int id;  
-	//Super node reference  
-	private int parent;  
-	//Simple attribute  
-	private String name;  
+//Linear tree structure.<br/>  
+public class Directory {
+	//Own ID
+	private int dirId;
+	//Super node reference
+	private int dirParentId;
+	//Simple attribute
+	private String dirName;
 }  
 </pre>
 </code>
 
-<b>But you want do this:</b>
+<b>But you want this:</b><br>
 <code>
 <pre>
-//Tree structure representing a tree through parent attribute<br/>
-public class Node {  
-	private Collection&lt;Node&gt; children;  
-	private String name;  
-}  
+//Recursive tree structure.<br/>
+public class Directory {
+	private Collection&lt;Node&gt; subDirs;
+	private String dirName;
+}
 </pre>
 </code>
 
 ### How to use?
 
+If you want to do something described above, that is, using the
+HappyTree API to transform a linear structure into a tree structure,
+you must first add the following annotations to the
+**Java Model class (POJO)** to which they will be inserted as a tree
+node:
+
+<code>
+<pre>
+//Linear tree structure.<br/>
+@Tree
+public class Directory {
+	@Id
+	private int dirId;
+	@Parent
+	private int dirParentId;
+	//Simple attribute
+	private String dirName;
+}  
+</pre>
+</code>
+
+After that, just group these elements into a collection.
+
+A tree can be created either through the **Transformation Process**
+of a previously available linear structure or be created freely
+through an empty tree.
+
+For the case of the **Transformation Process**, the initialization is
+something similar to the code below:
+
+<code>
+<pre>
+	Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+	TreeManager manager = HappyTree.createTreeManager();
+	TreeTransaction transaction = manager.getTransaction();
+	transaction.initializeSession("myFirstHappyTree", directories);
+</pre>
+</code>
+
+To initialize an empty tree, the code snippet looks something like
+the code below:
+
+<code>
+<pre>
+	TreeManager manager = HappyTree.createTreeManager();
+	TreeTransaction transaction = manager.getTransaction();
+	transaction.initializeSession("mySecondHappyTree", Directory.class);
+</pre>
+</code>
+
+Once created, the trees start to work on Element type objects, which
+will encapsulate the "original objects" represented as the respective
+nodes. From there, just use the TreeManager interface to handle these
+elements.
+
 ### Official documentation
 
-The oficial HappyTree documentation is in:
+The official HappyTree documentation is in: (soon).
 
 
 ## HappyTree Metadata
