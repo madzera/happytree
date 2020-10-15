@@ -140,10 +140,12 @@ the code below:
 </pre>
 </code>
 
-Once created, the trees start to work on Element type objects, which
-will encapsulate the "original objects" represented as the respective
-nodes. From there, just use the TreeManager interface to handle these
-elements.
+Once created, the trees start to work on
+[Element](https://github.com/Miuey/happytree/blob/master/src/main/java/com/miuey/happytree/Element.java)
+type objects, which will encapsulate the "original objects"
+represented as the respective nodes. From there, just use the
+[TreeManager](https://github.com/Miuey/happytree/blob/master/src/main/java/com/miuey/happytree/TreeManager.java)
+interface to handle these elements.
 
 ### Official documentation
 
