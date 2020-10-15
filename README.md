@@ -165,7 +165,23 @@ See [Contributing](https://github.com/Miuey/happytree/blob/0.0.5/CONTRIBUTING.md
 
 ### Requirements
 
+Because it acts on a specific layer of the architecture of a
+**Java Project**, the HappyTree API has a very limited list of
+requirements, so in addition to being easy to use, the HappyTree API
+also has an easy installation.
+
+Both to make use of, as well as to contribute, the requirements are:
+
+* **Java 7 above**;
+* **Maven 3.2.3 above**;
+* **The Java and Maven environment variables must be well configured.**
+
 ### Dependencies
+
+The Happy Tree API has only one dependency, which is used to perform
+unit tests:
+
+* **JUnit 4.13.1**.
 
 ### Code structure
 
@@ -176,4 +192,14 @@ HappyTree API is structured into different directories:
 
 ### Build
 
+For building, go to the project root and enter the following command:
+
+<code>
+<pre>
+	mvn package
+</pre>
+</code>
+
 ### Testing
+
+(Soon).
