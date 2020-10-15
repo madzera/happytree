@@ -188,7 +188,7 @@ unit tests:
 HappyTree API is structured into different directories:
 
 - [`src/main`](./src/main): API code.
-- [`src/test`](./src/test): JUnit unit test code.
+- [`src/test`](./src/test): JUnit test code.
 
 ### Build
 
