@@ -122,7 +122,7 @@ something similar to the code below:
 
 <code>
 <pre>
-	Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+	Collection<Directory> directories = myObject.myMethodToGetDirectories();
 	TreeManager manager = HappyTree.createTreeManager();
 	TreeTransaction transaction = manager.getTransaction();
 	transaction.initializeSession("myFirstHappyTree", directories);
@@ -157,16 +157,22 @@ The official HappyTree documentation is in: (soon).
 
 ### How to contribute?
 
+In order to contribute with us?
+We are extremely grateful to collaborators.
+Thank you.
+
+See [Contributing](https://github.com/Miuey/happytree/blob/0.0.5/CONTRIBUTING.md)
+
 ### Requirements
 
 ### Dependencies
 
 ### Code structure
 
-HappyTree is structured into different directories:
+HappyTree API is structured into different directories:
 
 - [`src/main`](./src/main): API code.
-- [`src/test`](./src/test): JUnit unitary test code.
+- [`src/test`](./src/test): JUnit unit test code.
 
 ### Build
 
