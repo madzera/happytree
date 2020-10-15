@@ -161,7 +161,7 @@ In order to contribute with us?
 We are extremely grateful to collaborators.
 Thank you.
 
-See [Contributing](https://github.com/Miuey/happytree/blob/0.0.5/CONTRIBUTING.md)
+See [Contributing.](https://github.com/Miuey/happytree/blob/0.0.5/CONTRIBUTING.md)
 
 ### Requirements
 
