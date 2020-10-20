@@ -68,24 +68,27 @@ to handle them.
 //Linear tree structure.  
 public class Directory {
 	//Own ID
-	private int dirId;
+	private Integer dirId;
 	//Super node reference
-	private int dirParentId;
+	private Integer dirParentId;
 	//Simple attribute
 	private String dirName;
+	
+		...
 }  
 ```
 
 <b>But you want this:</b><br>
-<code>
-<pre>
+
+```java
 //Recursive tree structure.
 public class Directory {
 	private Collection&lt;Node&gt; subDirs;
 	private String dirName;
+	
+		...
 }
-</pre>
-</code>
+```
 
 ### How to use?
 
@@ -95,20 +98,20 @@ you must first add the following annotations to the
 **Java Model class (POJO)** to which they will be inserted as a tree
 node:
 
-<code>
-<pre>
+```java
 //Linear tree structure.
 @Tree
 public class Directory {
 	@Id
-	private int dirId;
+	private Integer dirId;
 	@Parent
-	private int dirParentId;
+	private Integer dirParentId;
 	//Simple attribute
 	private String dirName;
-}  
-</pre>
-</code>
+	
+		...
+}
+```
 
 After that, just group these elements into a collection.
 
@@ -119,25 +122,21 @@ through an empty tree.
 For the case of the **Transformation Process**, the initialization is
 something similar to the code below:
 
-<code>
-<pre>
+```java
 	Collection<Directory> directories = myObject.myMethodToGetDirectories();
 	TreeManager manager = HappyTree.createTreeManager();
 	TreeTransaction transaction = manager.getTransaction();
 	transaction.initializeSession("myFirstHappyTree", directories);
-</pre>
-</code>
+```
 
 To initialize an empty tree, the code snippet looks something like
 the code below:
 
-<code>
-<pre>
+```java
 	TreeManager manager = HappyTree.createTreeManager();
 	TreeTransaction transaction = manager.getTransaction();
 	transaction.initializeSession("mySecondHappyTree", Directory.class);
-</pre>
-</code>
+```
 
 Once created, the trees start to work on
 [Element](https://github.com/Miuey/happytree/blob/master/src/main/java/com/miuey/happytree/Element.java)
@@ -194,9 +193,7 @@ HappyTree API is structured into different directories:
 For building, go to the project root and enter the following command:
 
 <code>
-<pre>
 	mvn package
-</pre>
 </code>
 
 ### Testing
