@@ -63,24 +63,20 @@ each other thus assembling a tree, as well as offering interfaces
 to handle them.
 
 <b>If you have something like this:</b><br>
-<code>
-<pre>
-//Linear tree structure.<br/>  
-public class Directory {
-	//Own ID
-	private int dirId;
-	//Super node reference
-	private int dirParentId;
-	//Simple attribute
-	private String dirName;
-}  
-</pre>
-</code>
+    //Linear tree structure.  
+    public class Directory {
+	    //Own ID
+	    private int dirId;
+	    //Super node reference
+	    private int dirParentId;
+	    //Simple attribute
+	    private String dirName;
+    }  
 
 <b>But you want this:</b><br>
 <code>
 <pre>
-//Recursive tree structure.<br/>
+//Recursive tree structure.
 public class Directory {
 	private Collection&lt;Node&gt; subDirs;
 	private String dirName;
@@ -98,7 +94,7 @@ node:
 
 <code>
 <pre>
-//Linear tree structure.<br/>
+//Linear tree structure.
 @Tree
 public class Directory {
 	@Id
