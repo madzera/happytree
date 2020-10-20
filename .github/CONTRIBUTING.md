@@ -10,7 +10,7 @@ collaborator can contribute both simultaneously.
 
 ## Code of Conduct
 
-Before you start, stick to our [code of conduct](https://github.com/Miuey/happytree/blob/master/CODE_OF_CONDUCT.md)
+Before you start, stick to our [code of conduct](./CODE_OF_CONDUCT.md)
 to help us keep open and inclusive.
 
 ## Contributing
@@ -114,7 +114,7 @@ can be released already in the current version of the HappyTree API.
 However, when it comes to new features, it can be reallocated for
 future releases, a question that is decided soon after analysis.
 
-## Requirements (soon)
+## See Before Contributing (soon)
 
 * Required/recommended technologies
 * HappyTree API coding standards

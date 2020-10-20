@@ -139,10 +139,10 @@ the code below:
 ```
 
 Once created, the trees start to work on
-[Element](https://github.com/Miuey/happytree/blob/master/src/main/java/com/miuey/happytree/Element.java)
+[Element](./src/main/java/com/miuey/happytree/Element.java)
 type objects, which will encapsulate the "original objects"
 represented as the respective nodes. From there, just use the
-[TreeManager](https://github.com/Miuey/happytree/blob/master/src/main/java/com/miuey/happytree/TreeManager.java)
+[TreeManager](./src/main/java/com/miuey/happytree/TreeManager.java)
 interface to handle these elements.
 
 ### Official documentation
@@ -159,7 +159,7 @@ In order to contribute with us?
 We are extremely grateful to collaborators.
 Thank you.
 
-See [Contributing.](https://github.com/Miuey/happytree/blob/master/CONTRIBUTING.md)
+See [Contributing.](./.github/CONTRIBUTING.md)
 
 ### Requirements
 
@@ -188,6 +188,12 @@ HappyTree API is structured into different directories:
 - [`src/main`](./src/main): API code.
 - [`src/test`](./src/test): JUnit test code.
 
+### Coding (soon)
+
+* HappyTree API coding standards
+* Writing tests
+* Checklist
+
 ### Build
 
 For building, go to the project root and enter the following command:
@@ -195,7 +201,3 @@ For building, go to the project root and enter the following command:
 <code>
 	mvn package
 </code>
-
-### Testing
-
-(Soon).
