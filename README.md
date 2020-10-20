@@ -63,15 +63,18 @@ each other thus assembling a tree, as well as offering interfaces
 to handle them.
 
 <b>If you have something like this:</b><br>
-    //Linear tree structure.  
-    public class Directory {
-	    //Own ID
-	    private int dirId;
-	    //Super node reference
-	    private int dirParentId;
-	    //Simple attribute
-	    private String dirName;
-    }  
+
+```java
+//Linear tree structure.  
+public class Directory {
+	//Own ID
+	private int dirId;
+	//Super node reference
+	private int dirParentId;
+	//Simple attribute
+	private String dirName;
+}  
+```
 
 <b>But you want this:</b><br>
 <code>
