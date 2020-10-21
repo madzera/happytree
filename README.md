@@ -83,7 +83,7 @@ public class Directory {
 ```java
 //Recursive tree structure.
 public class Directory {
-	private Collection&lt;Node&gt; subDirs;
+	private Collection<Directory> subDirs;
 	private String dirName;
 	
 		...
