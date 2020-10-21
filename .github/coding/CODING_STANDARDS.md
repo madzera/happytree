@@ -1,5 +1,5 @@
 
-# Happy Tree
+# HappyTree API Coding Standards
 
 The HappyTree API is characterized by being a simple and flexible
 project, in which collaborators have some freedom to help us. To
@@ -137,7 +137,7 @@ In the most part, the HappyTree API follows the
 ## Indentation
 
 Each hierarchy of code blocks must have the indentation of a single
-tab.  The model follows:
+tab. The model follows:
 
 ```java
 public class Example {
@@ -178,12 +178,28 @@ public class Example {
 The braces is used beside of the class instead the variable.
 
 Compliant:
-<code>public static void main(String[] args) {</code>
-<code>String[] names = new String[size-1];</code>
+
+```java
+public static void main(String[] args) {
+
+}
+```
+
+```java
+String[] names = new String[size-1];
+```
 
 Non-Compliant:
-<code>public static void main(String args[]) {</code>
-<code>String names[] = new String[size-1];</code>
+
+```java
+public static void main(String args[]) {
+
+}
+```
+
+```java
+String names[] = new String[size-1];
+```
 
 ### Parentheses
 
@@ -191,19 +207,43 @@ There is no space between the parentheses and arguments or the
 parentheses and the name of the method.
 
 Compliant:
-<code>public static void main(String[] args) {</code>
+
+```java
+public static void main(String[] args) {
+
+}
+```
 
 Non-Compliant:
-<code>public static void main( String args[] ) {</code>
-<code>public static void main (String args[]) {</code>
+
+```java
+public static void main( String args[] ) {
+
+}
+```
+```java
+public static void main (String args[]) {
+
+}
+```
 
 There is only one space between the parentheses and a key word.
 
 Compliant:
-<code>if (!foo) {</code>
+
+```java
+if (!foo) {
+
+}
+```
 
 Non-Compliant:
-<code>if(!foo) {</code>
+
+```java
+if(!foo) {
+
+}
+```
 
 ### Braces
 
