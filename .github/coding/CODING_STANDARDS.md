@@ -254,7 +254,7 @@ loop, *switch*, etc.
 Compliant:
 
 ```java
-public static void main (String[] args) {
+public static void main(String[] args) {
 
 }
 ```
@@ -262,7 +262,7 @@ public static void main (String[] args) {
 Non-Compliant (it will be considered a crime!):
 
 ```java
-public static void main (String[] args)
+public static void main(String[] args)
 {
 
 }
