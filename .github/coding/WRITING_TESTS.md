@@ -105,10 +105,10 @@ Following are other recommendations:
  	* A quick description of what is expected from the test;
  	* The enumerated steps of what the test does.
  	
-###Example
+### Example
 
 <p align="center">
-  <img alt="Example of a test comment" src="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/ex_unit_test_comment.png"/>
+  <img alt="Example of a test comment" src="./resources/ex_unit_test_comment.png"/>
   </a>
 </p>
 
@@ -119,5 +119,5 @@ package.
 ## Questions
 
 Any questions regarding testing, create an **Issue** with the
-*question* and *test* labels, or contact support.
+*question* and *test* labels, or contact the support.
 
