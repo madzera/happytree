@@ -268,6 +268,15 @@ public static void main(String[] args)
 }
 ```
 
+### Commenting
+
+Comments are only required on API client interfaces. The collaborator
+can feel free to elaborate line comments in internal methods, if the
+collaborator thinks it is necessary.
+
+In public interfaces, the HappyTree API adopts **Javadoc** as a
+comment convention.
+
 ### Edge margin
 
 The HappyTree API is coded with a margin of 80 characters.
