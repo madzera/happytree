@@ -10,7 +10,7 @@ collaborator can contribute both simultaneously.
 
 ## Code of Conduct
 
-Before you start, stick to our [code of conduct](./CODE_OF_CONDUCT.md)
+Before you start, stick to our [Code of Conduct](./CODE_OF_CONDUCT.md)
 to help us keep open and inclusive.
 
 ## Contributing
