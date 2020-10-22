@@ -108,7 +108,7 @@ Following are other recommendations:
 ### Example
 
 <p align="center">
-  <img alt="Example of a test comment" src="./resources/ex_unit_test_comment.png"/>
+  <img alt="Example of a test comment" src="../resources/ex_unit_test_comment.png"/>
   </a>
 </p>
 
