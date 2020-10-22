@@ -73,13 +73,51 @@ class has to be added to the **HappyTreeTest**.
 
 ```
 HappyTreeTest -> TreeManagerSuiteTest -> TreeManagerTest
-														 -> TreeManagerAlternativeTest
-														 -> TreeManagerErrorTest
+                                      -> TreeManagerAlternativeTest
+                                      -> TreeManagerErrorTest
 ```
 
 ## Standards
 
+Before starting, the most important recommendation is below:
 
-> Each interface method **must** have at least one test in the happy
-scenario..
+> Each interface (mentioned above) method **must** have at least one
+test in the happy scenario.
+
+Following are other recommendations:
+
+* If your test is related to an interface of which the API client is
+ integrated, your test must be located within the respective package
+ to which the interface in question is represented.
+* Implement your test and place it within the class to which the type
+ of scenario the test indicates.
+* It is highly recommended that the name of the test method matches
+ something close to the method name of the interface to which the
+ test refers. If, in addition, it is an error or alternative test, it
+ would be appropriate to concatenate with "_" plus the description of
+ the situation:
+ 	* e.g: <code>public void foo_nullArgument()</code>.
+* It is highly recommended to write comments, compatible with the
+ **Javadoc** convention, and define the following criteria within the
+ comments:
+ 	* The interface method to which the test refers;
+ 	* A quick description of the test objective;
+ 	* A quick description of what is expected from the test;
+ 	* The enumerated steps of what the test does.
+ 	
+###Example
+
+<p align="center">
+  <img alt="Example of a test comment" src="https://github.com/Miuey/happytree/blob/0.0.5/.github/resources/ex_unit_test_comment.png"/>
+  </a>
+</p>
+
+* It is not recommended to change tests already implemented.
+* If your test is just a **demo**, it should be located in the demo
+package.
+
+## Questions
+
+Any questions regarding testing, create an **Issue** with the
+*question* and *test* labels, or contact support.
 
