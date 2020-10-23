@@ -274,7 +274,7 @@ public static void main(String[] args) {
 }
 ```
 
-Non-Compliant (it will be considered a crime!):
+Non-Compliant:
 
 ```java
 public static void main(String[] args)
