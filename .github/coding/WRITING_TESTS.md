@@ -11,7 +11,7 @@ determining standards/recommendations of writing tests.
 
 ## The unit tests structure
 
-Currently, the Happy Tree API provides to the API client, four
+Currently, the HappyTree API provides to the API client, four
 interfaces for handling trees. Each interface contains a set of
 services (methods) that helps the API Client to handle trees. Those
 interfaces are:

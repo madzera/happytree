@@ -1,5 +1,5 @@
 
-# Happy Tree
+# HappyTree
 
 “Java POJO API to transform linear objects into real trees. Handle
 these objects as if they were nodes of a tree, similar to the
@@ -58,7 +58,7 @@ If, for example, the API client has a directory structure in its
 system, or if it needs to assemble a screen of visual components, 
 through objects that are not inside each other, but objects that 
 refer others through simple attributes, then this is the right 
-opportunity to use Happy Tree, since objects will now be inside 
+opportunity to use HappyTree, since objects will now be inside 
 each other thus assembling a tree, as well as offering interfaces 
 to handle them.
 
@@ -95,7 +95,7 @@ public class Directory {
 If you want to do something described above, that is, using the
 HappyTree API to transform a linear structure into a tree structure,
 you must first add the following annotations to the
-**Java Model class (POJO)** to which they will be inserted as a tree
+**Java Model Class (POJO)** to which they will be inserted as a tree
 node:
 
 ```java
@@ -178,7 +178,7 @@ Both to make use of, as well as to contribute, the requirements are:
 
 ### Dependencies
 
-The Happy Tree API has only one dependency, which is used to perform
+The HappyTree API has only one dependency, which is used to perform
 unit tests:
 
 * **JUnit 4.13.1**.
@@ -187,10 +187,10 @@ unit tests:
 
 HappyTree API is structured into different directories:
 
-- [`src/main`](./src/main): API code.
-- [`src/test`](./src/test): JUnit test code.
+- [`src/main`](./src/main/java/com/miuey/happytree): API code.
+- [`src/test`](./src/test/java/com/miuey/happytree): JUnit test code.
 
-### Coding (soon)
+### Coding
 
 * [HappyTree API coding standards](/.github/coding/CODING_STANDARDS.md)
 * [Writing tests](/.github/coding/WRITING_TESTS.md)

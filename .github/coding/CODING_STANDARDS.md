@@ -111,7 +111,7 @@ The same as for the Core Package.
 
 ## Encoding
 
-The encoding used in the Happy Tree API is UTF-8.
+The encoding used in the HappyTree API is UTF-8.
 
 ## Naming Conventions
 
