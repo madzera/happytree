@@ -59,6 +59,18 @@ For happy scenario, the **[Scenario Test]** is omitted.
 * **Error Scenario:** *TreeManagerErrorTest*
 * **Suited Test Class:** *TreeManagerSuiteTest*
 
+For methods, the name of the test method matches the interface method
+which this test refers. Example: **updateElement()**.
+When testing an alternative or error scenarios, a short description
+is recommended.
+
+
+| Scenario  | Name  |
+|---|---|
+| Happy  | updateElement()  |
+| Alternative  | updateElement_nullIdElement()  |
+| Error  | updateElement_duplicatedId()  |
+
 ### Main Test Class
 
 The main test class of the HappyTree API is in:

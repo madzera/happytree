@@ -27,7 +27,7 @@ The HappyTree API has two main purposes:
 
 <ol>
 <li>Transform the linear data structure of
- **POJO/Model Java objects** into trees;</li>
+ <b>POJO/Model Java objects</b> into trees;</li>
 <li>Handle nodes within trees, in order to perform operations such as
  copying, cutting, removing, creating, persisting or updating;</li>
 </ol>
@@ -190,8 +190,8 @@ HappyTree API is structured into different directories:
 
 ### Coding (soon)
 
-* HappyTree API coding standards
-* Writing tests
+* [HappyTree API coding standards](/.github/coding/CODING_STANDARDS.md)
+* [Writing tests](/.github/coding/WRITING_TESTS.md)
 * Checklist
 
 ### Build
