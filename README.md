@@ -173,6 +173,8 @@ Both to make use of, as well as to contribute, the requirements are:
 * **Java 7 above**;
 * **Maven 3.2.3 above**;
 * **The Java and Maven environment variables must be well configured.**
+* **SonarLint**: It is optional, but highly recommended to fix code
+ issues.
 
 ### Dependencies
 
@@ -192,7 +194,7 @@ HappyTree API is structured into different directories:
 
 * [HappyTree API coding standards](/.github/coding/CODING_STANDARDS.md)
 * [Writing tests](/.github/coding/WRITING_TESTS.md)
-* Checklist
+* [Checklist](/.github/coding/CHECKLIST.md)
 
 ### Build
 

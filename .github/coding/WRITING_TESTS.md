@@ -60,9 +60,8 @@ For happy scenario, the **[Scenario Test]** is omitted.
 * **Suited Test Class:** *TreeManagerSuiteTest*
 
 For methods, the name of the test method matches the interface method
-which this test refers. Example: **updateElement()**.
-When testing an alternative or error scenarios, a short description
-is recommended.
+which this test refers. When testing an alternative or error
+scenarios, a short description is recommended. Example: **updateElement()**.
 
 
 | Scenario  | Name  |

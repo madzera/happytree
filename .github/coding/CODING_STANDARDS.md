@@ -25,6 +25,21 @@ client uses the functionalities through the interfaces and the
 This is the only standard in which collaborators must follow strictly
 in order not to violate the HappyTree API specifications.
 
+In a class, the order of its members is:
+
+1. Static constants;
+2. Attributes;
+3. Constructors;
+4. Methods;
+5. Inner classes.
+
+In a class, the order of the access modifiers is:
+
+1. public;
+2. protected;
+3. default;
+4. private.
+
 ## Packages
 
 The HappyTree API has 4 Java class packages:
