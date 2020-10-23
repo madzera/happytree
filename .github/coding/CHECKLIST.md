@@ -9,7 +9,7 @@
 - [ ] Does each class member have the correct access modifier order?
 - [ ] Did you run the **HappyTreeTest** before *Pull Request*?
 - [ ] Did you run the **SonarLint** to confirm that there aren't opened code issues?
-- [ ] Has your code respected the 80 character margin limit in the text editor?
+- [ ] Has your code respected the 80 character edge margin in the text editor?
 - [ ] Has your code complied with our class name standard?
 - [ ] Has your code complied with our method name standard?
 - [ ] Has your code complied with our variable/constant name standard?
