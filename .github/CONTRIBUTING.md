@@ -114,7 +114,7 @@ can be released already in the current version of the HappyTree API.
 However, when it comes to new features, it can be reallocated for
 future releases, a question that is decided soon after analysis.
 
-## See Before Contributing (soon)
+## See Before Contributing
 
 * [Required/recommended technologies](../README.md#techs)
 * [HappyTree API coding standards](./coding/CODING_STANDARDS.md)
