@@ -1,15 +1,13 @@
 package com.miuey.happytree.core.atp;
 
-class ATPConstants {
+import com.miuey.happytree.core.TreeConstants;
+
+class ATPConstants extends TreeConstants {
+	static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
+
 	
 	private ATPConstants() {}
 
-	
-	class Config {
-		static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
-		
-		private Config() {}
-	}
 	
 	class Error {
 		private Error() {}

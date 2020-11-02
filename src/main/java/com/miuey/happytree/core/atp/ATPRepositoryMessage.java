@@ -34,7 +34,7 @@ enum ATPRepositoryMessage {
 	}
 	
 	private static void loadProperties() throws IOException {
-		properties.load(ClassLoader.getSystemResourceAsStream(
-				ATPConstants.Config.ERROR_MESSAGE_FILE_LOCATION));
+		properties.load(ClassLoader.getSystemResourceAsStream(ATPConstants.
+				ERROR_MESSAGE_FILE_LOCATION));
 	}
 }

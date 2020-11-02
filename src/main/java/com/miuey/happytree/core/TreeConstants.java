@@ -1,14 +1,21 @@
 package com.miuey.happytree.core;
 
-class TreeConstants {
+public class TreeConstants {
 	
-	private TreeConstants() {}
+	protected TreeConstants() {}
 
 	
-	class Config {
+	/*
+	 * Configuration constants to be accessed within the ATP package.
+	 */
+	protected class Config {
 		static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
 		
-		private Config() {}
+		protected Config() {}
+		
+		protected String getExceptionFileLocation() {
+			return ERROR_MESSAGE_FILE_LOCATION;
+		}
 	}
 	
 	class Error {
