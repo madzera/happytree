@@ -1,4 +1,4 @@
-<!--- This issue is for the Bug-Type Issue. Other type issue, feel free to elaborate. -->
+<!--- This issue template is for the Bug-Type Issue. Other type issue, feel free to elaborate. -->
 
 <!--- Put this example in the title: [X.X.X] - NullPointerException. -->
 <!--- X.X.X represents the branch version, that is, the current milestone. -->

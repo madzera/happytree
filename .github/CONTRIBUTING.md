@@ -116,7 +116,6 @@ future releases, a question that is decided soon after analysis.
 
 ## See Before Contributing (soon)
 
-* Required/recommended technologies
-* HappyTree API coding standards
-* Writing tests
-* Documentation
+* [Required/recommended technologies](../README.md#techs)
+* [HappyTree API coding standards](./coding/CODING_STANDARDS.md)
+* [Writing tests](./coding/WRITING_TESTS.md)

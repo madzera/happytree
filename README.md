@@ -12,7 +12,10 @@ these objects as if they were nodes of a tree, similar to the
     </a>
     <a href="https://github.com/Miuey/happytree/actions?query=workflow%3ABuild" target="_blank">
         <img alt="Build Status" src="https://github.com/Miuey/happytree/workflows/Build/badge.svg">
-    </a> 
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Code Quality" src="https://sonarcloud.io/dashboard?id=Miuey_happytree">
+    </a>
 </p>
 
 
@@ -172,6 +175,8 @@ Thank you.
 See [Contributing.](./.github/CONTRIBUTING.md)
 
 ### Requirements
+
+<a name="techs"></a>
 
 Because it acts on a specific layer of the architecture of a
 **Java Project**, the HappyTree API has a very limited list of
