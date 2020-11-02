@@ -6,6 +6,13 @@ these objects as if they were nodes of a tree, similar to the
 *JavaScript HTML DOM*.”
 
 
+<p align="center">
+    <a href="LICENSE" target="_blank">
+        <img alt="Software License" src="https://img.shields.io/github/license/Miuey/happytree">
+    </a>
+</p>
+
+
 ## About the HappyTree API
 
 ### What is it?
