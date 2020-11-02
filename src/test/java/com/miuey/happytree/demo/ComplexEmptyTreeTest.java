@@ -1,11 +1,6 @@
 package com.miuey.happytree.demo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,7 @@ import com.miuey.happytree.exception.TreeException;
  * <p>The purpose of this test is build manually a new empty tree and handle it.
  * </p>
  */
-public class ComplexTest_EmptyTree {
+public class ComplexEmptyTreeTest extends CommonDemoTest {
 
 	Science _medicine = new Science("Medicine");
 	Science _pediatrics = new Science("Pediatrics");
@@ -63,7 +58,7 @@ public class ComplexTest_EmptyTree {
 	
 	
 	@Test
-	public void newEmptyTree() throws TreeException {
+	public void execute() throws TreeException {
 		final String sessionId = "newEmptyTree";
 		final String clonedSessionId = "clonedTree";
 		
@@ -71,6 +66,8 @@ public class ComplexTest_EmptyTree {
 		TreeTransaction transaction = manager.getTransaction();
 		
 		transaction.initializeSession(sessionId, Science.class);
+		
+		assertNotNull(transaction);
 		
 		Element<Science> medicine = manager.createElement("Medicine", null,
 				_medicine);
@@ -158,8 +155,8 @@ public class ComplexTest_EmptyTree {
 		medicine.addChildren(medicineList);
 		computerScience.addChildren(compScienceList);
 		
-		assertEquals("NOT_EXISTED", medicine.lifecycle());
-		assertEquals("NOT_EXISTED", computerScience.lifecycle());
+		isEquals("NOT_EXISTED", medicine.lifecycle());
+		isEquals("NOT_EXISTED", computerScience.lifecycle());
 		
 		manager.persistElement(medicine);
 		manager.persistElement(computerScience);
@@ -167,17 +164,17 @@ public class ComplexTest_EmptyTree {
 		medicine = manager.getElementById("Medicine");
 		computerScience = manager.getElementById("Computer Science");
 		
-		assertEquals("ATTACHED", medicine.lifecycle());
-		assertEquals("ATTACHED", computerScience.lifecycle());
+		isEquals("ATTACHED", medicine.lifecycle());
+		isEquals("ATTACHED", computerScience.lifecycle());
 		
-		assertEquals(12, medicine.getChildren().size());
-		assertEquals(17, computerScience.getChildren().size());
+		isEquals(12, medicine.getChildren().size());
+		isEquals(17, computerScience.getChildren().size());
 		
 		for (Element<Science> science : medicine.getChildren()) {
-			assertEquals("ATTACHED", science.lifecycle());
+			isEquals("ATTACHED", science.lifecycle());
 		}
 		for (Element<Science> science : computerScience.getChildren()) {
-			assertEquals("ATTACHED", science.lifecycle());
+			isEquals("ATTACHED", science.lifecycle());
 		}
 		
 		pediatrics = medicine.getElementById("Pediatrics");
@@ -190,11 +187,11 @@ public class ComplexTest_EmptyTree {
 		pediatrics.addChild(primaryCare);
 		//pediatrics = manager.getElementById("Pediatrics");
 		
-		assertEquals("DETACHED", pediatrics.lifecycle());
-		assertEquals("NOT_EXISTED", pediatricOncology.lifecycle());
-		assertEquals("NOT_EXISTED", pediatricCardiology.lifecycle());
-		assertEquals("NOT_EXISTED", criticalCare.lifecycle());
-		assertEquals("NOT_EXISTED", primaryCare.lifecycle());
+		isEquals("DETACHED", pediatrics.lifecycle());
+		isEquals("NOT_EXISTED", pediatricOncology.lifecycle());
+		isEquals("NOT_EXISTED", pediatricCardiology.lifecycle());
+		isEquals("NOT_EXISTED", criticalCare.lifecycle());
+		isEquals("NOT_EXISTED", primaryCare.lifecycle());
 		
 		String error = "No possible to update the element. Invalid lifecycle"
 				+ " state.";
@@ -205,9 +202,9 @@ public class ComplexTest_EmptyTree {
 		try {
 			criticalCare = manager.updateElement(criticalCare);
 		} catch (TreeException e) {
-			assertEquals(error, e.getMessage());
+			isEquals(error, e.getMessage());
 		}
-		assertEquals("NOT_EXISTED", criticalCare.lifecycle());
+		isEquals("NOT_EXISTED", criticalCare.lifecycle());
 
 		/*
 		 * Trying to update an element which all children are NOT_EXISTED will
@@ -218,7 +215,7 @@ public class ComplexTest_EmptyTree {
 		try {
 			pediatrics = manager.updateElement(pediatrics);
 		} catch (TreeException e) {
-			assertEquals(error, e.getMessage());
+			isEquals(error, e.getMessage());
 		}
 		
 		/*
@@ -230,7 +227,7 @@ public class ComplexTest_EmptyTree {
 			manager.persistElement(criticalCare);
 		} catch (TreeException e) {
 			String error2 = "Duplicated ID.";
-			assertEquals(error2, e.getMessage());
+			isEquals(error2, e.getMessage());
 		}
 		
 		/*
@@ -243,12 +240,12 @@ public class ComplexTest_EmptyTree {
 		criticalCare = manager.getElementById(criticalCare.getId());
 		primaryCare = manager.getElementById(primaryCare.getId());
 		
-		assertNotNull(pediatricCardiology);
-		assertNotNull(pediatricOncology);
-		assertNotNull(criticalCare);
-		assertNotNull(primaryCare);
+		isNotNull(pediatricCardiology);
+		isNotNull(pediatricOncology);
+		isNotNull(criticalCare);
+		isNotNull(primaryCare);
 		
-		assertEquals(0, pediatrics.getChildren().size());
+		isEquals(0, pediatrics.getChildren().size());
 		
 		List<Element<Science>> pedMedicine = new ArrayList<>();
 		pedMedicine.add(criticalCare);
@@ -258,24 +255,24 @@ public class ComplexTest_EmptyTree {
 		
 		pediatrics = manager.updateElement(pediatrics);
 		
-		assertEquals(3, pediatrics.getChildren().size());
+		isEquals(3, pediatrics.getChildren().size());
 		
 		pediatricCardiology = manager.getElementById(pediatricCardiology.
 				getId());
 		pediatricOncology = manager.getElementById(pediatricOncology.getId());
 		criticalCare = manager.getElementById(criticalCare.getId());
 		
-		assertEquals("Pediatrics", pediatricCardiology.getParent());
-		assertEquals("Pediatrics", pediatricOncology.getParent());
-		assertEquals("Pediatrics", criticalCare.getParent());
+		isEquals("Pediatrics", pediatricCardiology.getParent());
+		isEquals("Pediatrics", pediatricOncology.getParent());
+		isEquals("Pediatrics", criticalCare.getParent());
 		
 		primaryCare = manager.cut(primaryCare, pediatrics);
 		
 		pediatrics = manager.getElementById(pediatrics.getId());
 		
-		assertEquals(4, pediatrics.getChildren().size());
-		assertNotEquals("Medicine", primaryCare.getParent());
-		assertEquals("Pediatrics", primaryCare.getParent());
+		isEquals(4, pediatrics.getChildren().size());
+		isNotEquals("Medicine", primaryCare.getParent());
+		isEquals("Pediatrics", primaryCare.getParent());
 		
 		
 		medicalOncology = manager.getElementById(medicalOncology.getId());
@@ -296,19 +293,19 @@ public class ComplexTest_EmptyTree {
 		 * particularly, this element had its parent intentionally defined in a
 		 * wrong way so that this element is moved to the root.
 		 */
-		assertEquals(sessionId, medicalOncology.getParent());
+		isEquals(sessionId, medicalOncology.getParent());
 		
-		assertEquals("Oncology", radiationOncology.getParent());
-		assertEquals("Oncology", surgicalOncology.getParent());
+		isEquals("Oncology", radiationOncology.getParent());
+		isEquals("Oncology", surgicalOncology.getParent());
 		
 		/*
 		 * particularly, this element had its parent intentionally defined in a
 		 * wrong way so that this element is moved to the root.
 		 */
-		assertTrue(manager.containsElement(sessionId, medicalOncology.getId()));
+		isTrue(manager.containsElement(sessionId, medicalOncology.getId()));
 		
-		assertTrue(manager.containsElement(oncology, radiationOncology));
-		assertTrue(manager.containsElement(oncology, surgicalOncology));
+		isTrue(manager.containsElement(oncology, radiationOncology));
+		isTrue(manager.containsElement(oncology, surgicalOncology));
 		
 		
 		pathology = manager.getElementById(pathology.getId());
@@ -316,10 +313,10 @@ public class ComplexTest_EmptyTree {
 				getId());
 		clinicalPathology = manager.getElementById(clinicalPathology.getId());
 		
-		assertEquals("Medicine", pathology.getParent());
-		assertEquals(0, pathology.getChildren().size());
-		assertEquals("Medicine", anatomicalPathology.getParent());
-		assertEquals("Medicine", clinicalPathology.getParent());
+		isEquals("Medicine", pathology.getParent());
+		isEquals(0, pathology.getChildren().size());
+		isEquals("Medicine", anatomicalPathology.getParent());
+		isEquals("Medicine", clinicalPathology.getParent());
 		
 		anatomicalPathology = manager.cut(anatomicalPathology.getId(),
 				pathology.getId());
@@ -328,13 +325,13 @@ public class ComplexTest_EmptyTree {
 		
 		pathology = manager.getElementById(pathology.getId());
 		
-		assertEquals(2, pathology.getChildren().size());
-		assertEquals("Pathology", anatomicalPathology.getParent());
-		assertEquals("Pathology", clinicalPathology.getParent());
+		isEquals(2, pathology.getChildren().size());
+		isEquals("Pathology", anatomicalPathology.getParent());
+		isEquals("Pathology", clinicalPathology.getParent());
 		
-		assertTrue(manager.containsElement(pathology.getId(),
+		isTrue(manager.containsElement(pathology.getId(),
 				anatomicalPathology.getId()));
-		assertTrue(manager.containsElement(pathology.getId(),
+		isTrue(manager.containsElement(pathology.getId(),
 				clinicalPathology.getId()));
 		
 		computerScience = manager.getElementById("Computer Science");
@@ -344,19 +341,19 @@ public class ComplexTest_EmptyTree {
 		dataStructures = manager.getElementById("Data Structures");
 		algorithms = manager.getElementById("Algorithms");
 		
-		assertEquals(sessionId, computerScience.getParent());
-		assertEquals(0, theoretical.getChildren().size());
-		assertEquals(computerScience.getId(), theoretical.getParent());
-		assertEquals(computerScience.getId(), theoryOfComputation.getParent());
-		assertEquals(computerScience.getId(), codingTheory.getParent());
-		assertEquals(computerScience.getId(), dataStructures.getParent());
-		assertEquals(computerScience.getId(), algorithms.getParent());
+		isEquals(sessionId, computerScience.getParent());
+		isEquals(0, theoretical.getChildren().size());
+		isEquals(computerScience.getId(), theoretical.getParent());
+		isEquals(computerScience.getId(), theoryOfComputation.getParent());
+		isEquals(computerScience.getId(), codingTheory.getParent());
+		isEquals(computerScience.getId(), dataStructures.getParent());
+		isEquals(computerScience.getId(), algorithms.getParent());
 		
-		assertTrue(manager.containsElement(computerScience, theoretical));
-		assertTrue(manager.containsElement(computerScience, theoryOfComputation));
-		assertTrue(manager.containsElement(computerScience, codingTheory));
-		assertTrue(manager.containsElement(computerScience, dataStructures));
-		assertTrue(manager.containsElement(computerScience, algorithms));
+		isTrue(manager.containsElement(computerScience, theoretical));
+		isTrue(manager.containsElement(computerScience, theoryOfComputation));
+		isTrue(manager.containsElement(computerScience, codingTheory));
+		isTrue(manager.containsElement(computerScience, dataStructures));
+		isTrue(manager.containsElement(computerScience, algorithms));
 		
 		List<Element<Science>> theoreticalList = new ArrayList<>();
 		theoreticalList.add(theoryOfComputation);
@@ -366,32 +363,32 @@ public class ComplexTest_EmptyTree {
 		
 		theoretical.addChildren(theoreticalList);
 		
-		assertEquals(17, computerScience.getChildren().size());
+		isEquals(17, computerScience.getChildren().size());
 		
 		theoretical = manager.updateElement(theoretical);
 		
 		computerScience = manager.getElementById(computerScience.getId());
 		
-		assertEquals(13, computerScience.getChildren().size());
+		isEquals(13, computerScience.getChildren().size());
 		
-		assertEquals(computerScience.getId(), theoretical.getParent());
-		assertEquals(4, theoretical.getChildren().size());
-		assertEquals(theoretical.getId(), theoryOfComputation.getParent());
-		assertEquals(theoretical.getId(), codingTheory.getParent());
-		assertEquals(theoretical.getId(), dataStructures.getParent());
-		assertEquals(theoretical.getId(), algorithms.getParent());
+		isEquals(computerScience.getId(), theoretical.getParent());
+		isEquals(4, theoretical.getChildren().size());
+		isEquals(theoretical.getId(), theoryOfComputation.getParent());
+		isEquals(theoretical.getId(), codingTheory.getParent());
+		isEquals(theoretical.getId(), dataStructures.getParent());
+		isEquals(theoretical.getId(), algorithms.getParent());
 		
-		assertTrue(manager.containsElement(theoretical, theoryOfComputation));
-		assertTrue(manager.containsElement(theoretical, codingTheory));
-		assertTrue(manager.containsElement(theoretical, dataStructures));
-		assertTrue(manager.containsElement(theoretical, algorithms));
+		isTrue(manager.containsElement(theoretical, theoryOfComputation));
+		isTrue(manager.containsElement(theoretical, codingTheory));
+		isTrue(manager.containsElement(theoretical, dataStructures));
+		isTrue(manager.containsElement(theoretical, algorithms));
 		
 		try {
 			Element<Science> root = manager.root();
 			manager.copy(theoretical, root);
 		} catch (TreeException e) {
 			String error2 = "Duplicated ID.";
-			assertEquals(error2, e.getMessage());
+			isEquals(error2, e.getMessage());
 		}
 		
 		computerScience = manager.getElementById("Computer Science");
@@ -401,18 +398,18 @@ public class ComplexTest_EmptyTree {
 		computerNetwork = manager.getElementById("Computer Network");
 		databases = manager.getElementById("Databases");
 		
-		assertEquals(0, computerSystems.getChildren().size());
-		assertEquals(computerScience.getId(), computerSystems.getParent());
-		assertEquals(computerScience.getId(), computerArchitecture.getParent());
-		assertEquals(computerScience.getId(), computerEngineering.getParent());
-		assertEquals(computerScience.getId(), computerNetwork.getParent());
-		assertEquals(computerScience.getId(), databases.getParent());
+		isEquals(0, computerSystems.getChildren().size());
+		isEquals(computerScience.getId(), computerSystems.getParent());
+		isEquals(computerScience.getId(), computerArchitecture.getParent());
+		isEquals(computerScience.getId(), computerEngineering.getParent());
+		isEquals(computerScience.getId(), computerNetwork.getParent());
+		isEquals(computerScience.getId(), databases.getParent());
 		
-		assertTrue(manager.containsElement(computerScience, computerSystems));
-		assertTrue(manager.containsElement(computerScience, computerArchitecture));
-		assertTrue(manager.containsElement(computerScience, computerEngineering));
-		assertTrue(manager.containsElement(computerScience, computerNetwork));
-		assertTrue(manager.containsElement(computerScience, databases));
+		isTrue(manager.containsElement(computerScience, computerSystems));
+		isTrue(manager.containsElement(computerScience, computerArchitecture));
+		isTrue(manager.containsElement(computerScience, computerEngineering));
+		isTrue(manager.containsElement(computerScience, computerNetwork));
+		isTrue(manager.containsElement(computerScience, databases));
 		
 		computerArchitecture = manager.cut(computerArchitecture,
 				computerSystems);
@@ -423,45 +420,45 @@ public class ComplexTest_EmptyTree {
 		
 		computerSystems = manager.getElementById("Computer Systems");
 		
-		assertEquals(4, computerSystems.getChildren().size());
-		assertEquals(computerSystems.getId(), computerArchitecture.getParent());
-		assertEquals(computerSystems.getId(), computerEngineering.getParent());
-		assertEquals(computerSystems.getId(), computerNetwork.getParent());
-		assertEquals(computerSystems.getId(), databases.getParent());
+		isEquals(4, computerSystems.getChildren().size());
+		isEquals(computerSystems.getId(), computerArchitecture.getParent());
+		isEquals(computerSystems.getId(), computerEngineering.getParent());
+		isEquals(computerSystems.getId(), computerNetwork.getParent());
+		isEquals(computerSystems.getId(), databases.getParent());
 		
-		assertTrue(manager.containsElement(computerSystems, computerArchitecture));
-		assertTrue(manager.containsElement(computerSystems, computerEngineering));
-		assertTrue(manager.containsElement(computerSystems, computerNetwork));
-		assertTrue(manager.containsElement(computerSystems, databases));
+		isTrue(manager.containsElement(computerSystems, computerArchitecture));
+		isTrue(manager.containsElement(computerSystems, computerEngineering));
+		isTrue(manager.containsElement(computerSystems, computerNetwork));
+		isTrue(manager.containsElement(computerSystems, databases));
 		
-		assertEquals("ATTACHED", computerSystems.lifecycle());
+		isEquals("ATTACHED", computerSystems.lifecycle());
 		
 		computerSystems.removeChild(computerEngineering);
 		
-		assertEquals("DETACHED", computerSystems.lifecycle());
-		assertEquals(3, computerSystems.getChildren().size());
+		isEquals("DETACHED", computerSystems.lifecycle());
+		isEquals(3, computerSystems.getChildren().size());
 		
 		computerSystems = manager.getElementById(computerSystems.getId());
 		computerEngineering = manager.getElementById(computerEngineering.getId());
 		
-		assertEquals("ATTACHED", computerSystems.lifecycle());
-		assertEquals(4, computerSystems.getChildren().size());
+		isEquals("ATTACHED", computerSystems.lifecycle());
+		isEquals(4, computerSystems.getChildren().size());
 
-		assertTrue(manager.containsElement(computerSystems, computerEngineering));
+		isTrue(manager.containsElement(computerSystems, computerEngineering));
 		
 		computerSystems.removeChild(computerEngineering);
 		
 		/*
 		 * Detached computerSystems element.
 		 */
-		assertFalse(manager.containsElement(computerSystems, computerEngineering));
+		isFalse(manager.containsElement(computerSystems, computerEngineering));
 		
-		assertTrue(manager.containsElement(computerSystems.getId(),
+		isTrue(manager.containsElement(computerSystems.getId(),
 				computerEngineering.getId()));
 		
 		computerSystems = manager.updateElement(computerSystems);
-		assertEquals(3, computerSystems.getChildren().size());
-		assertFalse(manager.containsElement(computerSystems.getId(),
+		isEquals(3, computerSystems.getChildren().size());
+		isFalse(manager.containsElement(computerSystems.getId(),
 				computerEngineering.getId()));
 		
 		try {
@@ -469,7 +466,7 @@ public class ComplexTest_EmptyTree {
 		} catch (TreeException e) {
 			String error3 = "No possible to persist the element. Invalid"
 					+ " lifecycle state.";
-			assertEquals(error3, e.getMessage());
+			isEquals(error3, e.getMessage());
 		}
 		
 		computerScience = manager.getElementById("Computer Science");
@@ -477,40 +474,40 @@ public class ComplexTest_EmptyTree {
 		cryptography = manager.getElementById("Cryptography");
 		concurrent = manager.getElementById("Concurrent");
 		
-		assertEquals(computerScience.getId(), computerSystems.getParent());
-		assertEquals(computerScience.getId(), security.getParent());
-		assertEquals(computerScience.getId(), cryptography.getParent());
-		assertEquals(computerScience.getId(), concurrent.getParent());
+		isEquals(computerScience.getId(), computerSystems.getParent());
+		isEquals(computerScience.getId(), security.getParent());
+		isEquals(computerScience.getId(), cryptography.getParent());
+		isEquals(computerScience.getId(), concurrent.getParent());
 		
 		security.setParent(computerSystems.getId());
 		security = manager.updateElement(security);
 		computerScience = manager.getElementById("Computer Science");
 		computerSystems = manager.getElementById("Computer Systems");
 		
-		assertNotEquals(computerScience.getId(), security.getParent());
-		assertEquals(computerSystems.getId(), security.getParent());
-		assertEquals(4, computerSystems.getChildren().size());
-		assertTrue(manager.containsElement(computerSystems, security));
+		isNotEquals(computerScience.getId(), security.getParent());
+		isEquals(computerSystems.getId(), security.getParent());
+		isEquals(4, computerSystems.getChildren().size());
+		isTrue(manager.containsElement(computerSystems, security));
 		
 		cryptography.setParent(computerSystems.getId());
 		cryptography = manager.updateElement(cryptography);
 		computerScience = manager.getElementById("Computer Science");
 		computerSystems = manager.getElementById("Computer Systems");
 		
-		assertNotEquals(computerScience.getId(), cryptography.getParent());
-		assertEquals(computerSystems.getId(), cryptography.getParent());
-		assertEquals(5, computerSystems.getChildren().size());
-		assertTrue(manager.containsElement(computerSystems, cryptography));
+		isNotEquals(computerScience.getId(), cryptography.getParent());
+		isEquals(computerSystems.getId(), cryptography.getParent());
+		isEquals(5, computerSystems.getChildren().size());
+		isTrue(manager.containsElement(computerSystems, cryptography));
 		
 		concurrent.setParent(computerSystems.getId());
 		concurrent = manager.updateElement(concurrent);
 		computerScience = manager.getElementById("Computer Science");
 		computerSystems = manager.getElementById("Computer Systems");
 		
-		assertNotEquals(computerScience.getId(), concurrent.getParent());
-		assertEquals(computerSystems.getId(), concurrent.getParent());
-		assertEquals(6, computerSystems.getChildren().size());
-		assertTrue(manager.containsElement(computerSystems, concurrent));
+		isNotEquals(computerScience.getId(), concurrent.getParent());
+		isEquals(computerSystems.getId(), concurrent.getParent());
+		isEquals(6, computerSystems.getChildren().size());
+		isTrue(manager.containsElement(computerSystems, concurrent));
 		
 		
 		computerScience = manager.getElementById("Computer Science");
@@ -518,27 +515,27 @@ public class ComplexTest_EmptyTree {
 		computerGraphics = manager.getElementById("Computer Graphics");
 		ai = manager.getElementById("Artificial Intelligence");
 
-		assertEquals(0, computerApplications.getChildren().size());
-		assertEquals(computerScience.getId(), computerApplications.getParent());
-		assertEquals(computerScience.getId(), computerGraphics.getParent());
-		assertEquals(computerScience.getId(), ai.getParent());
+		isEquals(0, computerApplications.getChildren().size());
+		isEquals(computerScience.getId(), computerApplications.getParent());
+		isEquals(computerScience.getId(), computerGraphics.getParent());
+		isEquals(computerScience.getId(), ai.getParent());
 		
-		assertNotNull(computerScience.getElementById(computerApplications.
+		isNotNull(computerScience.getElementById(computerApplications.
 				getId()));
-		assertEquals(6, computerScience.getChildren().size());
+		isEquals(6, computerScience.getChildren().size());
 		
 		manager.cut(computerApplications, computerScience);
 		
 		computerScience = manager.getElementById("Computer Science");
 		computerApplications = manager.getElementById("Computer Applications");
 		
-		assertEquals(0, computerApplications.getChildren().size());
-		assertEquals(computerScience.getId(), computerApplications.getParent());
+		isEquals(0, computerApplications.getChildren().size());
+		isEquals(computerScience.getId(), computerApplications.getParent());
 		
-		assertEquals(6, computerScience.getChildren().size());
-		assertNotNull(computerScience.getElementById(computerApplications.
+		isEquals(6, computerScience.getChildren().size());
+		isNotNull(computerScience.getElementById(computerApplications.
 				getId()));
-		assertTrue(manager.containsElement(computerScience,
+		isTrue(manager.containsElement(computerScience,
 				computerApplications));
 		
 		computerGraphics = manager.cut(computerGraphics, computerApplications);
@@ -546,10 +543,10 @@ public class ComplexTest_EmptyTree {
 		computerScience = manager.getElementById("Computer Science");
 		computerApplications = manager.getElementById("Computer Applications");
 		
-		assertEquals(5, computerScience.getChildren().size());
-		assertEquals(1, computerApplications.getChildren().size());
-		assertEquals(computerApplications.getId(), computerGraphics.getParent());
-		assertTrue(manager.containsElement(computerApplications.getId(),
+		isEquals(5, computerScience.getChildren().size());
+		isEquals(1, computerApplications.getChildren().size());
+		isEquals(computerApplications.getId(), computerGraphics.getParent());
+		isTrue(manager.containsElement(computerApplications.getId(),
 				computerGraphics.getId()));
 		
 		ai = manager.cut(ai, computerApplications);
@@ -557,10 +554,10 @@ public class ComplexTest_EmptyTree {
 		computerScience = manager.getElementById("Computer Science");
 		computerApplications = manager.getElementById("Computer Applications");
 		
-		assertEquals(4, computerScience.getChildren().size());
-		assertEquals(2, computerApplications.getChildren().size());
-		assertEquals(computerApplications.getId(), ai.getParent());
-		assertTrue(manager.containsElement(computerApplications.getId(),
+		isEquals(4, computerScience.getChildren().size());
+		isEquals(2, computerApplications.getChildren().size());
+		isEquals(computerApplications.getId(), ai.getParent());
+		isTrue(manager.containsElement(computerApplications.getId(),
 				ai.getId()));
 		
 		ai.setParent(3333);
@@ -572,46 +569,46 @@ public class ComplexTest_EmptyTree {
 		} catch (TreeException e) {
 			String error4 = "No possible to copy/cut/remove elements. Invalid"
 					+ " lifecycle state.";
-			assertEquals(error4, e.getMessage());
+			isEquals(error4, e.getMessage());
 		}
 		
 		computerApplications = manager.getElementById("Computer Applications");
 		ai = manager.getElementById("Artificial Intelligence");
 		
-		assertTrue(manager.containsElement(computerApplications.getId(),
+		isTrue(manager.containsElement(computerApplications.getId(),
 				ai.getId()));
-		assertEquals(2, computerApplications.getChildren().size());
+		isEquals(2, computerApplications.getChildren().size());
 		
 		compAppsList.clear();
 		
-		assertEquals("ATTACHED", computerApplications.lifecycle());
-		assertEquals("ATTACHED", computerGraphics.lifecycle());
+		isEquals("ATTACHED", computerApplications.lifecycle());
+		isEquals("ATTACHED", computerGraphics.lifecycle());
 		
 		compAppsList.add(ai);
 		compAppsList.add(computerGraphics);
 		
 		computerApplications.removeChildren(compAppsList);
 		
-		assertEquals("DETACHED", computerApplications.lifecycle());
+		isEquals("DETACHED", computerApplications.lifecycle());
 		
 		try {
 			manager.persistElement(computerApplications);
 		} catch (TreeException e) {
 			String error5 = "No possible to persist the element. Invalid"
 					+ " lifecycle state.";
-			assertEquals(error5, e.getMessage());
+			isEquals(error5, e.getMessage());
 		}
 		
-		assertEquals("DETACHED", computerGraphics.lifecycle());
-		assertEquals("DETACHED", ai.lifecycle());
+		isEquals("DETACHED", computerGraphics.lifecycle());
+		isEquals("DETACHED", ai.lifecycle());
 		
 		computerApplications = manager.getElementById("Computer Applications");
 		computerGraphics = manager.getElementById("Computer Graphics");
 		ai = manager.getElementById("Artificial Intelligence");
 		
-		assertEquals("ATTACHED", computerApplications.lifecycle());
-		assertEquals("ATTACHED", computerGraphics.lifecycle());
-		assertEquals("ATTACHED", ai.lifecycle());
+		isEquals("ATTACHED", computerApplications.lifecycle());
+		isEquals("ATTACHED", computerGraphics.lifecycle());
+		isEquals("ATTACHED", ai.lifecycle());
 		
 		compAppsList.clear();
 		compAppsList.add(ai);
@@ -623,8 +620,8 @@ public class ComplexTest_EmptyTree {
 		ai = manager.getElementById("Artificial Intelligence");
 		computerGraphics = manager.getElementById("Computer Graphics");
 		
-		assertTrue(manager.containsElement(computerScience, ai));
-		assertTrue(manager.containsElement(computerScience, computerGraphics));
+		isTrue(manager.containsElement(computerScience, ai));
+		isTrue(manager.containsElement(computerScience, computerGraphics));
 		
 		computerApplications = manager.updateElement(computerApplications);
 		
@@ -632,45 +629,45 @@ public class ComplexTest_EmptyTree {
 		ai = manager.getElementById("Artificial Intelligence");
 		computerGraphics = manager.getElementById("Computer Graphics");
 		
-		assertEquals(0, computerApplications.getChildren().size());
-		assertNull(ai);
-		assertNull(computerGraphics);
+		isEquals(0, computerApplications.getChildren().size());
+		isNull(ai);
+		isNull(computerGraphics);
 		
-		assertFalse(manager.containsElement(computerApplications, ai));
-		assertFalse(manager.containsElement(computerApplications,
+		isFalse(manager.containsElement(computerApplications, ai));
+		isFalse(manager.containsElement(computerApplications,
 				computerGraphics));
-		assertFalse(manager.containsElement(computerScience, ai));
-		assertFalse(manager.containsElement(computerScience, computerGraphics));
+		isFalse(manager.containsElement(computerScience, ai));
+		isFalse(manager.containsElement(computerScience, computerGraphics));
 		
 		computerScience = manager.getElementById("Computer Science");
 		softwareEngineering = manager.getElementById(softwareEngineering.
 				getId());
 		
-		assertEquals(4, computerScience.getChildren().size());
-		assertTrue(manager.containsElement(computerScience,
+		isEquals(4, computerScience.getChildren().size());
+		isTrue(manager.containsElement(computerScience,
 				softwareEngineering));
-		assertEquals(computerScience.getId(), softwareEngineering.getParent());
+		isEquals(computerScience.getId(), softwareEngineering.getParent());
 		
-		assertEquals("ATTACHED", softwareEngineering.lifecycle());
+		isEquals("ATTACHED", softwareEngineering.lifecycle());
 		
 		softwareEngineering = manager.removeElement(softwareEngineering);
 		
 		computerScience = manager.getElementById("Computer Science");
 		
-		assertEquals("NOT_EXISTED", softwareEngineering.lifecycle());
-		assertEquals(3, computerScience.getChildren().size());
-		assertFalse(manager.containsElement(computerScience,
+		isEquals("NOT_EXISTED", softwareEngineering.lifecycle());
+		isEquals(3, computerScience.getChildren().size());
+		isFalse(manager.containsElement(computerScience,
 				softwareEngineering));
-		assertNotEquals(computerScience.getId(), softwareEngineering.
+		isNotEquals(computerScience.getId(), softwareEngineering.
 				getParent());
 		
-		assertNull(transaction.sessionCheckout(clonedSessionId));
-		assertNotNull(transaction.sessionCheckout(sessionId));
+		isNull(transaction.sessionCheckout(clonedSessionId));
+		isNotNull(transaction.sessionCheckout(sessionId));
 		
 		TreeSession clonedSession = transaction.cloneSession(sessionId,
 				clonedSessionId);
 		
-		assertNotNull(clonedSession);
+		isNotNull(clonedSession);
 		
 		transaction.sessionCheckout(clonedSessionId);
 		
@@ -680,39 +677,39 @@ public class ComplexTest_EmptyTree {
 		Element<Science> clonedComputerScience = manager.getElementById(
 				computerScience.getId());
 		
-		assertNotNull(clonedMedicine);
-		assertNotNull(clonedComputerScience);
+		isNotNull(clonedMedicine);
+		isNotNull(clonedComputerScience);
 		
-		assertEquals(3, clonedMedicine.getChildren().size());
-		assertEquals(transaction.currentSession().getSessionId(),
+		isEquals(3, clonedMedicine.getChildren().size());
+		isEquals(transaction.currentSession().getSessionId(),
 				clonedMedicine.attachedTo().getSessionId());
 		
-		assertEquals(3, clonedComputerScience.getChildren().size());
-		assertEquals(transaction.currentSession().getSessionId(),
+		isEquals(3, clonedComputerScience.getChildren().size());
+		isEquals(transaction.currentSession().getSessionId(),
 				clonedComputerScience.attachedTo().getSessionId());
 		
 		transaction.sessionCheckout(sessionId);
 		
 		medicine = manager.getElementById("Medicine");
 		
-		assertNotNull(medicine);
-		assertEquals(sessionId, medicine.attachedTo().getSessionId());
+		isNotNull(medicine);
+		isEquals(sessionId, medicine.attachedTo().getSessionId());
 		
 		transaction.deactivateSession(clonedSessionId);
 		
 		clonedSession = transaction.sessionCheckout(clonedSessionId);
 		
-		assertNotNull(clonedSession);
-		assertFalse(clonedSession.isActive());
+		isNotNull(clonedSession);
+		isFalse(clonedSession.isActive());
 		
 		TreeSession session = transaction.sessionCheckout(sessionId);
 		
-		assertNotNull(session);
+		isNotNull(session);
 		
 		transaction.destroySession(clonedSessionId);
 		
 		clonedSession = transaction.sessionCheckout(clonedSessionId);
 		
-		assertNull(clonedSession);
+		isNull(clonedSession);
 	}
 }

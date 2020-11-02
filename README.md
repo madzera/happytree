@@ -186,8 +186,8 @@ also has an easy installation.
 
 Both to make use of, as well as to contribute, the requirements are:
 
-* **Java 7 above**;
-* **Maven 3.2.3 above**;
+* **Java 8**;
+* **Maven 3.2.3**;
 * **The Java and Maven environment variables must be well configured.**
 * **SonarLint**: It is optional, but highly recommended to fix code
  issues.

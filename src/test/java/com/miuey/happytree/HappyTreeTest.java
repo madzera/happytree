@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.miuey.happytree.demo.ComplexTest_EmptyTree;
+import com.miuey.happytree.demo.ComplexEmptyTreeTest;
 import com.miuey.happytree.demo.ContextMenuTest;
 import com.miuey.happytree.demo.TaxonomyNodeTest;
 import com.miuey.happytree.demo.VerifyCloneDescendantsTest;
@@ -24,7 +24,7 @@ import com.miuey.happytree.transaction.TreeTransactionSuiteTest;
 	
 	//Custom tests.
 	VerifyCloneDescendantsTest.class,
-	ComplexTest_EmptyTree.class,
+	ComplexEmptyTreeTest.class,
 	
 	//Real cases adopted in real projects.
 	ContextMenuTest.class,

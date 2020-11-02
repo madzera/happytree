@@ -1,9 +1,6 @@
 package com.miuey.happytree.demo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -33,10 +30,10 @@ import com.miuey.happytree.exception.TreeException;
  * <p>Utility Tree Assembler:</p>
  * {@link TaxonomyNodeAssembler}
  */
-public class TaxonomyNodeTest {
+public class TaxonomyNodeTest extends CommonDemoTest {
 
 	@Test
-	public void taxonomyNode() throws TreeException {
+	public void execute() throws TreeException {
 		final String sessionId = "Taxonomy";
 		
 		List<TaxonomyNode> nodes = TaxonomyNodeAssembler.getTaxonomyNodeList();
@@ -46,6 +43,8 @@ public class TaxonomyNodeTest {
 		
 		transaction.initializeSession(sessionId, nodes);
 		
+		assertNotNull(transaction);
+		
 		Element<TaxonomyNode> root = manager.root();
 		Element<TaxonomyNode> dispatches = manager.getElementById(92);
 		Element<TaxonomyNode> _2020 = manager.getElementById(4002);
@@ -53,34 +52,34 @@ public class TaxonomyNodeTest {
 		Element<TaxonomyNode> august = manager.getElementById(98474);
 		Element<TaxonomyNode> september = manager.getElementById(93549);
 		
-		assertNotNull(root);
-		assertNotNull(september);
-		assertNotNull(august);
-		assertNotNull(_2020);
-		assertNotNull(dispatches);
-		assertNotNull(september);
+		isNotNull(root);
+		isNotNull(september);
+		isNotNull(august);
+		isNotNull(_2020);
+		isNotNull(dispatches);
+		isNotNull(september);
 		
-		assertFalse(manager.containsElement(july, september));
-		assertFalse(manager.containsElement(september, july));
-		assertFalse(manager.containsElement(august.getId(), september.getId()));
+		isFalse(manager.containsElement(july, september));
+		isFalse(manager.containsElement(september, july));
+		isFalse(manager.containsElement(august.getId(), september.getId()));
 		
-		assertFalse(manager.containsElement(august, root));
-		assertTrue(manager.containsElement(root, august));
+		isFalse(manager.containsElement(august, root));
+		isTrue(manager.containsElement(root, august));
 		
-		assertTrue(manager.containsElement(_2020, july));
-		assertTrue(manager.containsElement(_2020, august));
-		assertTrue(manager.containsElement(_2020, september));
+		isTrue(manager.containsElement(_2020, july));
+		isTrue(manager.containsElement(_2020, august));
+		isTrue(manager.containsElement(_2020, september));
 		
-		assertTrue(manager.containsElement(dispatches, july));
-		assertTrue(manager.containsElement(dispatches, august));
-		assertTrue(manager.containsElement(dispatches, september));
-		assertTrue(manager.containsElement(dispatches, _2020));
+		isTrue(manager.containsElement(dispatches, july));
+		isTrue(manager.containsElement(dispatches, august));
+		isTrue(manager.containsElement(dispatches, september));
+		isTrue(manager.containsElement(dispatches, _2020));
 		
-		assertEquals("Dispatches", dispatches.unwrap().getNodeName());
-		assertEquals("2020", _2020.unwrap().getNodeName());
-		assertEquals("July", july.unwrap().getNodeName());
-		assertEquals("August", august.unwrap().getNodeName());
-		assertEquals("September", september.unwrap().getNodeName());
+		isEquals("Dispatches", dispatches.unwrap().getNodeName());
+		isEquals("2020", _2020.unwrap().getNodeName());
+		isEquals("July", july.unwrap().getNodeName());
+		isEquals("August", august.unwrap().getNodeName());
+		isEquals("September", september.unwrap().getNodeName());
 		
 		TaxonomyNode tProcesses = new TaxonomyNode();
 		TaxonomyNode tCriminal = new TaxonomyNode();
@@ -104,7 +103,7 @@ public class TaxonomyNodeTest {
 		criminal.addChild(january);
 		processes.addChild(criminal);
 		
-		assertEquals("NOT_EXISTED", processes.lifecycle());
+		isEquals("NOT_EXISTED", processes.lifecycle());
 		
 		/*
 		 * Doing any operation inside of the tree, this is necessary to 'refresh'
@@ -115,38 +114,38 @@ public class TaxonomyNodeTest {
 		criminal = manager.getElementById(criminal.getId());
 		january = manager.getElementById(january.getId());
 		
-		assertEquals("ATTACHED", processes.lifecycle());
+		isEquals("ATTACHED", processes.lifecycle());
 		
-		assertTrue(manager.containsElement(processes, criminal));
-		assertTrue(manager.containsElement(criminal, january));
-		assertTrue(manager.containsElement(processes, january));
+		isTrue(manager.containsElement(processes, criminal));
+		isTrue(manager.containsElement(criminal, january));
+		isTrue(manager.containsElement(processes, january));
 		
-		assertFalse(manager.containsElement(dispatches, processes));
-		assertTrue(manager.containsElement(root, processes));
+		isFalse(manager.containsElement(dispatches, processes));
+		isTrue(manager.containsElement(root, processes));
 		
-		assertEquals(2, root.getChildren().size());
+		isEquals(2, root.getChildren().size());
 
 		/*
 		 * Passing Ids instead elements, this is not necessary to 'refresh' the
 		 * elements.
 		 */
 		processes = manager.cut(processes, _2020);
-		assertTrue(manager.containsElement(_2020.getId(), processes.getId()));
-		assertTrue(manager.containsElement(_2020.getId(), criminal.getId()));
-		assertTrue(manager.containsElement(_2020.getId(), january.getId()));
-		assertTrue(manager.containsElement(dispatches.getId(),
+		isTrue(manager.containsElement(_2020.getId(), processes.getId()));
+		isTrue(manager.containsElement(_2020.getId(), criminal.getId()));
+		isTrue(manager.containsElement(_2020.getId(), january.getId()));
+		isTrue(manager.containsElement(dispatches.getId(),
 				processes.getId()));
-		assertTrue(manager.containsElement(dispatches.getId(),
+		isTrue(manager.containsElement(dispatches.getId(),
 				criminal.getId()));
-		assertTrue(manager.containsElement(dispatches.getId(), january.getId()));
-		assertEquals(1, manager.root().getChildren().size());
+		isTrue(manager.containsElement(dispatches.getId(), january.getId()));
+		isEquals(1, manager.root().getChildren().size());
 		
 		processes = manager.removeElement(processes);
 		
-		assertFalse(manager.containsElement(_2020.getId(), _2020.getId()));
-		assertFalse(manager.containsElement(_2020.getId(),
+		isFalse(manager.containsElement(_2020.getId(), _2020.getId()));
+		isFalse(manager.containsElement(_2020.getId(),
 				criminal.getId()));
-		assertFalse(manager.containsElement(_2020.getId(), january.getId()));
+		isFalse(manager.containsElement(_2020.getId(), january.getId()));
 		
 	}
 }
