@@ -17,9 +17,6 @@ these objects as if they were nodes of a tree, similar to the
         <img alt="Code Quality" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=alert_status">
     </a>
     <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Coding Smell" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=code_smells">
-    </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
         <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=sqale_rating">
     </a>
     <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
@@ -27,9 +24,6 @@ these objects as if they were nodes of a tree, similar to the
     </a>
     <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
         <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=security_rating">
-    </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=coverage">
     </a>
 </p>
 
@@ -172,10 +166,6 @@ type objects, which will encapsulate the "original objects"
 represented as the respective nodes. From there, just use the
 [TreeManager](./src/main/java/com/miuey/happytree/TreeManager.java)
 interface to handle these elements.
-
-### Official documentation
-
-The official HappyTree documentation is in: (soon).
 
 
 ## HappyTree Metadata
