@@ -16,6 +16,21 @@ these objects as if they were nodes of a tree, similar to the
     <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
         <img alt="Code Quality" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=alert_status">
     </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Coding Smell" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=code_smells">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=sqale_rating">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Reliability" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=reliability_rating">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=security_rating">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
+        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=coverage">
+    </a>
 </p>
 
 
@@ -186,9 +201,9 @@ also has an easy installation.
 
 Both to make use of, as well as to contribute, the requirements are:
 
-* **Java 8**;
-* **Maven 3.2.3**;
-* **The Java and Maven environment variables must be well configured.**
+* **Java 1.8**;
+* **Maven 3.6.3**;
+* **The Java and Maven environment variables must be well configured ($JAVA_HOME, $MAVEN_HOME and $PATH).**
 * **SonarLint**: It is optional, but highly recommended to fix code
  issues.
 
@@ -214,8 +229,9 @@ HappyTree API is structured into different directories:
 
 ### Build
 
-For building, go to the project root and enter the following command:
+For building, go to the project root folder and enter the following
+command:
 
 <code>
-	mvn package
+	mvn clean package
 </code>
