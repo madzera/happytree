@@ -1,5 +1,12 @@
 package com.miuey.happytree.demo;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.miuey.happytree.exception.TreeException;
@@ -10,27 +17,27 @@ abstract class CommonDemoTest {
 	
 	
 	protected void isEquals(Object expected, Object actual) {
-		org.junit.Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
 	protected void isNotEquals(Object expected, Object actual) {
-		org.junit.Assert.assertNotEquals(expected, actual);
+		assertNotEquals(expected, actual);
 	}
 	
 	protected void isNull(Object object) {
-		org.junit.Assert.assertNull(object);
+		assertNull(object);
 	}
 	
 	protected void isNotNull(Object object) {
-		org.junit.Assert.assertNotNull(object);
+		assertNotNull(object);
 	}
 	
 	protected void isTrue(boolean condition) {
-		org.junit.Assert.assertTrue(condition);
+		assertTrue(condition);
 	}
 	
 	protected void isFalse(boolean condition) {
-		org.junit.Assert.assertFalse(condition);
+		assertFalse(condition);
 	}
 	
 	@Test
