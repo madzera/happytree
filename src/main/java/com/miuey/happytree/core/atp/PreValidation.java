@@ -17,8 +17,9 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 	
 	
 	/*
-	 * Checks that the node has a non-null id and that your class has
-	 * annotations and getters and setters.
+	 * Checks that the node has a non-null or empty collection of the objects
+	 * that will be transformed. It checks too that the class of those objects
+	 * have annotations and getters and setters.
 	 */
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {

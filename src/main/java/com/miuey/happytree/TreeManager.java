@@ -748,9 +748,10 @@ public interface TreeManager {
 	 * to work. This transaction object has this objective, provide and handle
 	 * the sessions.</p>
 	 * 
-	 * 		<pre>
-	 * MANAGER (invokes) -&gt; TRANSACTION (to handle) -&gt; SESSIONS
-	 * 		</pre>
+	 * <b>
+	 * TREEMANAGER (invokes) -&gt; TREETRANSACTION (to store) -&gt;
+	 * TREESESSION (that contains) -&gt; ELEMENT
+	 * </b>
 	 * 
 	 * 
 	 * @return the transaction associated to this manager

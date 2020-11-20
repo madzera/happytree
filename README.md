@@ -56,7 +56,7 @@ The HappyTree API has two main purposes:
 
 The first purpose is suitable for situations in which the API client
 needs to transform a collection of plain objects of which there is a
-logical tree relation between them, but which is not being
+tree logical relation between them, but which is not being
 represented structurally as a tree.
 
 The second purpose represents the basic operations on the trees, when
@@ -96,7 +96,7 @@ public class Directory {
 	//Simple attribute
 	private String dirName;
 	
-		...
+		//getters and setters
 }  
 ```
 
@@ -108,7 +108,7 @@ public class Directory {
 	private Collection<Directory> subDirs;
 	private String dirName;
 	
-		...
+		//getters and setters
 }
 ```
 
@@ -131,7 +131,7 @@ public class Directory {
 	//Simple attribute
 	private String dirName;
 	
-		...
+		//getters and setters
 }
 ```
 

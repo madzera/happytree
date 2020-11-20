@@ -23,7 +23,6 @@ public class TreeConstants {
 		//---------------RUNTIME--------------
 		static final String INVALID_INPUT_ELEMENTS = "com.miuey.happytree.error.runtime.params";
 		//----------------TREE----------------
-		static final String GENERAL_ERROR = "com.miuey.happytree.error.checked.tree.general";
 		static final String DUPLICATED_ID_ERROR = "com.miuey.happytree.error.checked.tree.duplicatedid";
 		static final String INCORRECT_SESSION = "com.miuey.happytree.error.checked.tree.notbelongstosession";
 		static final String DIFFERENT_TYPES_ERROR = "com.miuey.happytree.error.checked.tree.mismatchelement";
