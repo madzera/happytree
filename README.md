@@ -167,6 +167,10 @@ represented as the respective nodes. From there, just use the
 [TreeManager](./src/main/java/com/miuey/happytree/TreeManager.java)
 interface to handle these elements.
 
+### Documentation
+
+[HappyTree Official Documentation](https://happytreeapi.vercel.app/)
+ 
 
 ## HappyTree Metadata
 
