@@ -14,11 +14,17 @@
 	<name>HappyTree API</name>
 	<url>https://happytreeapi.vercel.app/</url>
 	<description>
-		The Java Object Model API to handle objects in a tree structure.
-		Be able to transform legacy linear structure with tree behavior in a
-		real hierarquical tree structure and handle it as if it were Javascript
-		DOM.
+		The Java Model Object API to handle Java objects in a tree structure as
+		it is nodes in a tree. Be able to transform legacy linear structure with
+		tree behavior in a real tree structure and handle it as if it were
+		Javascript DOM.
 	</description>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
 <!-- ############################## Properties ############################# -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
