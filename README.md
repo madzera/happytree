@@ -1,5 +1,5 @@
 
-# HappyTree
+# HappyTree API
 
 “Java POJO API to transform linear objects into real trees. Handle
 these objects as if they were nodes of a tree, similar to the
@@ -45,13 +45,15 @@ objects were tree nodes, all in an easy and intuitive way.
 
 ### What is your purpose?
 
-The HappyTree API has two main purposes:
+The HappyTree API has three main purposes:
 
 <ol>
-<li>Transform the linear data structure of
- <b>POJO/Model Java objects</b> into trees;</li>
-<li>Handle nodes within trees, in order to perform operations such as
- copying, cutting, removing, creating, persisting or updating;</li>
+<li>Handle Java Model Objects as it is nodes within trees, in order
+ to perform operations such as copying, cutting, removing, creating,
+ persisting or updating;</li>
+<li>Transform linear data structures of <b>Java Model Objects</b> into
+ trees;</li>
+ <li>Create and manage multiple trees of these objects.</li>
 </ol>
 
 The first purpose is suitable for situations in which the API client
@@ -62,6 +64,9 @@ represented structurally as a tree.
 The second purpose represents the basic operations on the trees, when
 the API client desires to reallocate nodes (officially called
 **Elements** in the context of the API) on the trees.
+
+The last one allows the API client to activate, deactivate or destroy
+the trees.
 
 ### For who?
 
