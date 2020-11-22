@@ -48,9 +48,9 @@ objects were tree nodes, all in an easy and intuitive way.
 The HappyTree API has three main purposes:
 
 <ol>
-<li>Handle Java Model Objects as it is nodes within trees, in order
- to perform operations such as copying, cutting, removing, creating,
- persisting or updating;</li>
+<li>Handle <b>Java Model Objects</b> as it is nodes within trees, in
+ order to perform operations such as copying, cutting, removing,
+ creating, persisting or updating;</li>
 <li>Transform linear data structures of <b>Java Model Objects</b> into
  trees;</li>
  <li>Create and manage multiple trees of these objects.</li>
