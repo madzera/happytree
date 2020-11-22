@@ -200,7 +200,7 @@ also has an easy installation.
 
 Both to make use of, as well as to contribute, the requirements are:
 
-* **Java 1.8**;
+* **Java 8**;
 * **Maven 3.6.3**;
 * **The Java and Maven environment variables must be well configured ($JAVA_HOME, $MAVEN_HOME and $PATH).**
 * **SonarLint**: It is optional, but highly recommended to fix code
