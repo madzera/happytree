@@ -54,7 +54,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroySession_thatIsCurrentSession() throws TreeException {
@@ -105,7 +105,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	the session identifier of the transaction.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroySession_noCurrentSession() throws TreeException {
@@ -156,7 +156,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	the session identifier of the transaction.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroySession_arg_nullIdentifier() throws TreeException {
@@ -191,7 +191,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Invoke {@link TreeTransaction#destroyAllSessions()};</li>
 	 * 	<li>Verify that the transaction has no sessions anymore.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroyAllSessions_noInitializedSession() throws TreeException {
@@ -225,7 +225,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Assert the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void sessionCheckout_noInitializedSession() throws TreeException {
@@ -261,7 +261,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Assert the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void activateSession_noCurrentSession() throws TreeException {
@@ -299,7 +299,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void activateSession_arg_nullIdentifier() throws TreeException {
@@ -334,7 +334,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify if the current session is <code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void deactivateSession_noCurrentSession() throws TreeException {
@@ -368,7 +368,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void deactivateSession_arg_nullIdentifier() throws TreeException {
@@ -399,7 +399,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify if the list of sessions is empty.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void sessions_empty() throws TreeException {
@@ -436,7 +436,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cloneSessionById_arg_nullIdentifier() throws TreeException {
@@ -485,7 +485,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cloneSession_arg_nullIdentifier() throws TreeException {
@@ -529,7 +529,7 @@ public class TreeTransactionAlternativeTest {
 	 * 	using the session which does not exists;</li>
 	 * 	<li>Verify the <code>null</code> value for the session returned.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cloneSession_nullSession() throws TreeException {

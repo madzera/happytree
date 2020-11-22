@@ -147,6 +147,15 @@
 		      			</goals>
 		     		</execution>
 		    	</executions>
+<!-- ############## DUE TO A KNOW BUG: error: invalid entity ############### -->
+<!-- ######### https://bugs.openjdk.java.net/browse/JDK-8148480 ############ -->
+		    	<configuration>
+         			<additionalparam>-Xdoclint:none</additionalparam>
+         			<additionalOptions>-Xdoclint:none</additionalOptions>
+         			<additionalJOption>-Xdoclint:none</additionalJOption>
+      			</configuration>
+<!-- ############## DUE TO A KNOW BUG: error: invalid entity ############### -->
+<!-- ######### https://bugs.openjdk.java.net/browse/JDK-8148480 ############ -->
 		   	</plugin>
 		   	<plugin>
 		    	<groupId>org.apache.maven.plugins</groupId>

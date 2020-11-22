@@ -36,8 +36,8 @@ public final class HappyTree {
 	 * the entry point of the HappyTree API.
 	 * 
 	 * <p>Each thread that use the HappyTree API needs to create its respective
-	 * TreeManager</code> interface instance. Therefore each thread will have
-	 * its instance. This is not a <i>Singleton</i> instance.</p>
+	 * <code>TreeManager</code> interface instance. Therefore each thread will
+	 * have its instance. This is not a <i>Singleton</i> instance.</p>
 	 * 
 	 * @return an instance of <code>TreeManager</code>
 	 */

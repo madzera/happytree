@@ -34,7 +34,7 @@ import com.miuey.happytree.exception.TreeException;
 public class TreeTransactionTest {
 
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Object)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
@@ -52,7 +52,7 @@ public class TreeTransactionTest {
 	 * 	<li>Verify that session is not <code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void initializeSession() throws TreeException {
@@ -102,7 +102,7 @@ public class TreeTransactionTest {
 	 * 	<i>happytree</i> parent id (true).</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void initializeSession_apiTransformationProcess()
@@ -150,7 +150,7 @@ public class TreeTransactionTest {
 	 * 	not <code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroySession() throws TreeException {
@@ -197,7 +197,7 @@ public class TreeTransactionTest {
 	 * 	not	<code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroySession_arg() throws TreeException {
@@ -236,7 +236,7 @@ public class TreeTransactionTest {
 	 * 	<li>Invoke {@link TreeTransaction#destroyAllSessions()};</li>
 	 * 	<li>Verify that the transaction has no sessions anymore.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void destroyAllSessions() throws TreeException {
@@ -287,7 +287,8 @@ public class TreeTransactionTest {
 	 * 	the session;</li>
 	 * 	<li>Verify if the session status is activated.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void activateSession() throws TreeException {
@@ -326,7 +327,7 @@ public class TreeTransactionTest {
 	 * 	<li>Verify if the session status is activated.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void activateSession_arg() throws TreeException {
@@ -363,7 +364,7 @@ public class TreeTransactionTest {
 	 * 	<li>Verify if the session status is deactivated.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void deactivateSession() throws TreeException {
@@ -397,7 +398,7 @@ public class TreeTransactionTest {
 	 * 	<li>Verify if the session status is deactivated.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void deactivateSession_arg() throws TreeException {
@@ -431,7 +432,7 @@ public class TreeTransactionTest {
 	 * 	of sessions is the same as the number of initialized sessions;</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void sessions() throws TreeException {
@@ -491,7 +492,7 @@ public class TreeTransactionTest {
 	 * 	element (VLC) in this session.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cloneSessionByIdentifiers() throws TreeException {
@@ -569,7 +570,7 @@ public class TreeTransactionTest {
 	 * 	source session.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cloneSession() throws TreeException {

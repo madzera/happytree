@@ -27,7 +27,7 @@ import com.miuey.happytree.exception.TreeException;
  * operations of {@link TreeManager}.</p>
  * 
  * <p>Some operations in this class will use the sample model class
- * <code>Directory</code> and <code>TreeAssembler. Please consider see
+ * <code>Directory</code> and <code>TreeAssembler</code>. Please consider see
  * these sample classes to understand the tests scenarios.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega
@@ -65,7 +65,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Now, verify that this element is <code>null</code> too.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getElementById_nullArg_notExists() throws TreeException {
@@ -119,7 +119,7 @@ public class TreeManagerAlternativeTest {
 	 * 	&quot;photoshop&quot; element anymore (because it is in the root).</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_elementToRoot() throws TreeException {
@@ -176,7 +176,7 @@ public class TreeManagerAlternativeTest {
 	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_notExistingToElement() throws TreeException {
@@ -245,7 +245,7 @@ public class TreeManagerAlternativeTest {
 	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_notExistingToObjectId() throws TreeException {
@@ -320,7 +320,7 @@ public class TreeManagerAlternativeTest {
 	 * 	{@link TreeManager#containsElement(Element, Element)}.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_toAnotherTree() throws TreeException {
@@ -394,7 +394,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Also verify if the children of the source element were cut too.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_toRootOfAnotherTree() throws TreeException {
@@ -472,7 +472,7 @@ public class TreeManagerAlternativeTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void copy_toRootOfAnotherTree() throws TreeException {
@@ -534,7 +534,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeElement_nullElement() throws TreeException {
@@ -574,7 +574,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeElement_nullObjectId() throws TreeException {
@@ -614,7 +614,8 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Try to remove the previous return element;</li>
 	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void remove_notExistingElement() throws TreeException {
@@ -655,7 +656,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Verify if the return of the operation is <code>false</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void remove_notExistingObjectId() throws TreeException {
@@ -698,7 +699,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Receive the <code>false</code> value.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void containsElement_nullElement() throws TreeException {
@@ -749,7 +750,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Receive the <code>false</code> value.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void containsElement_mismatchElement() throws TreeException {
@@ -805,7 +806,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Receive the <code>false</code> value.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void containsElement_detachedElement() throws TreeException {
@@ -864,7 +865,7 @@ public class TreeManagerAlternativeTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void updateElement_nullIdElement() throws TreeException {
@@ -917,7 +918,7 @@ public class TreeManagerAlternativeTest {
 	 * 	<li>Verify now that the element has the new id;</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void updateElement_setId() throws TreeException {

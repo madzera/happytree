@@ -49,7 +49,7 @@ public class ElementTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getId() throws TreeException {
@@ -68,7 +68,7 @@ public class ElementTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#setId()}.
+	 * Test for the {@link Element#setId(Object)}.
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
@@ -89,7 +89,7 @@ public class ElementTest {
 	 * 	<li>Verify if the value still is the same.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void setId() throws TreeException {
@@ -136,7 +136,7 @@ public class ElementTest {
 	 * 	parent Id.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getParent() throws TreeException {
@@ -156,7 +156,7 @@ public class ElementTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#setParent()}.
+	 * Test for the {@link Element#setParent(Object)}.
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
@@ -176,7 +176,7 @@ public class ElementTest {
 	 * 	<li>Compare again the parent identifiers.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void setParent() throws TreeException {
@@ -221,7 +221,7 @@ public class ElementTest {
 	 * 	<li>Compare the resulting list with the two child elements.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getChildren() throws TreeException {
@@ -273,7 +273,7 @@ public class ElementTest {
 	 * 	<li>Verify if the resulting list has three elements.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void addChild() throws TreeException {
@@ -339,7 +339,7 @@ public class ElementTest {
 	 * 	<li>Verify if the resulting list has five elements.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void addChildren() throws TreeException {
@@ -413,7 +413,7 @@ public class ElementTest {
 	 * 	<li>Verify if the resulting list has three elements.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeChildren() throws TreeException {
@@ -490,7 +490,7 @@ public class ElementTest {
 	 * 	<li>Verify if the children list has no one element.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeChild() throws TreeException {
@@ -543,7 +543,7 @@ public class ElementTest {
 	 * 	<li>Verify if the children list has no one element.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeChildById() throws TreeException {
@@ -596,7 +596,7 @@ public class ElementTest {
 	 * 	<li>Verify if the object is named by <b>&quot;Photos&quot;</b>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void wrap_unwrap() throws TreeException {

@@ -11,7 +11,7 @@ import com.miuey.happytree.annotation.Tree;
  * when a attempt of put an element inside of a tree which is not of its type,
  * thus resulting in error.</p>
  * 
- * <p>Therefore, a <codeDirectory</code> type tree cannot have an element
+ * <p>Therefore, a <code>Directory</code> type tree cannot have an element
  * inserted in a <code>Metadata</code> type tree.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega

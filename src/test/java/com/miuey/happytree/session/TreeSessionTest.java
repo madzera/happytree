@@ -41,7 +41,7 @@ public class TreeSessionTest {
 	 * 	previous identifier.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getSessionId() throws TreeException {
@@ -75,7 +75,7 @@ public class TreeSessionTest {
 	 * 	<li>Verify if the same session is not active anymore.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void isActive() throws TreeException {
@@ -112,7 +112,7 @@ public class TreeSessionTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void tree() throws TreeException {

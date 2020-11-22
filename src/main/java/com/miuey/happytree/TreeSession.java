@@ -28,9 +28,10 @@ import java.util.Collection;
  *
  * <p>A session contains 3 fundamentals state:</p>
  * 
- * <p>
- * <table>
- * 	<th>State</th><th>Exists?</th><th>Can be handled?</th>
+ * <table summary="Session States">
+ * 	<tr>
+ * 		<th>State</th><th>Exists?</th><th>Can be handled?</th>
+ * 	</tr>
  * 	<tr>
  * 		<td><b>Activated</b></td><td>&#10004;</td><td>&#10004;</td>
  * 	</tr>
@@ -41,7 +42,6 @@ import java.util.Collection;
  * 		<td><b>Destroyed</b></td><td>X</td><td>X</td>
  * 	</tr>
  * </table>
- * </p>
  * 
  * <p>An active session, as is already known, exists and can be freely handled.
  * A deactivated session, on the other hand, although it is not possible to be

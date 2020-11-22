@@ -24,13 +24,12 @@ import com.miuey.happytree.exception.TreeException;
  * within the <code>TreeManager</code> by invoking
  * {@link TreeManager#getTransaction()}.</p>
  * 
- * <p>There are two ways of creating tree sessions:
+ * <p>There are two ways of creating tree sessions:</p>
  * 	<ol>
  * 		<li>Create a new empty tree session;</li>
  * 		<li>Create a tree session from the <b>API Transformation Process</b>.
  * 		</li>
  * 	</ol>
- * </p>
  * 
  * <p>The first one happens when the API client just wants create a default
  * empty tree session by invoking {@link #initializeSession(String, Class)}.
@@ -101,7 +100,7 @@ public interface TreeTransaction {
 	 * 
 	 * <p>These requirements are validated throughout the API life cycle of the
 	 * transformation process. This process implements a life cycle with 3
-	 * general phases:
+	 * general phases:</p>
 	 * 
 	 * 	<ol>
 	 * 		<li><b>Pre-Validation</b></li>
@@ -109,9 +108,10 @@ public interface TreeTransaction {
 	 * 		<li><b>Post-Validation</b></li>
 	 * 	</ol>
 	 * 
-	 * 	<table>
-	 * 		<th>Phase</th><th>Description</th><th>Sub-Phases</th>
-	 * 
+	 * 	<table summary="ATP Lifecycle">
+	 * 		<tr>
+	 * 			<th>Phase</th><th>Description</th><th>Sub-Phases</th>
+	 * 		</tr>
 	 * 		<tr>
 	 * 			<td>Pre-Validation</td><td>Validates each node's requirements.
 	 * 			</td><td></td>
@@ -128,12 +128,11 @@ public interface TreeTransaction {
 	 * 			source nodes used as input.</td><td></td>
 	 * 		</tr>
 	 * 	</table>
-	 * </p>
 	 * 
 	 * <p><b>Pre-Validation:</b></p>
 	 * <p>This phase represents the begin of the API Transformation Process. In
 	 * this phase, the core API needs that all inputs aspects to be transformed
-	 * need to conform. The following validations will be done:
+	 * need to conform. The following validations will be done:</p>
 	 * 
 	 * 	<ul>
 	 * 		<li>The <code>identifier</code> or <code>nodes</code> are
@@ -153,7 +152,6 @@ public interface TreeTransaction {
 	 * 		type.
 	 * 		</li>
 	 * 	</ul>
-	 * </p>
 	 * 
 	 * <p><b>Core Engine:</b></p>
 	 * <p><i>Extraction:</i></p>
@@ -163,18 +161,19 @@ public interface TreeTransaction {
 	 * 		<li>Iterates over each node to be extracted;</li>
 	 * 		<li>Creates a map to store these nodes and for each node:
 	 * 		</li>
+	 * 		<li>
 	 * 			<ol>
 	 * 				<li>The key map will be the {@literal @Id} attribute value
 	 * 				from the node object to be transformed;</li>
 	 * 				<li>The value map will be the own node object to be
 	 * 				transformed.</li>
 	 * 			</ol>
+	 * 		</li>
 	 * 	</ol>
 	 * 
 	 * <p><i>Initialization:</i></p>
 	 * <p>After having filling out the map with stored nodes, then the API will
 	 * iterate over it and for each node object:</p>
-	 * <p>
 	 * 	<ol>
 	 * 		<li>Will instantiate an <code>Element</code> object;</li>
 	 * 		<li>The element <code>id</code> attribute will be the corresponding
@@ -183,7 +182,6 @@ public interface TreeTransaction {
 	 * 		corresponding parent attribute of the source node to be	transformed.
 	 * 		</li>
 	 * 	</ol>
-	 * </p>
 	 * 
 	 * <p><i>Binding:</i></p>
 	 * <p>Once having the resulting collection of initialized elements, the
@@ -192,7 +190,6 @@ public interface TreeTransaction {
 	 * and each child can have other children, and so on. That is done through
 	 * the <code>id</code> attribute. So, for this work, the core API will seek
 	 * for each element and:</p>
-	 * <p>
 	 * 	<ol>
 	 * 		<li>Wraps the transformed node (the source object which it has the
 	 * 		{@literal Tree}, {@literal Id} and {@literal Parent} annotations)
@@ -206,9 +203,7 @@ public interface TreeTransaction {
 	 * 		it (as children), as a real tree structure of elements, ready to be
 	 * 		handled.</li>
 	 * 	</ol>
-	 * </p>
 	 * <p>So, the resulting <code>Element</code> object will have:</p>
-	 * <p>
 	 * 	<ul>
 	 * 		<li>The <code>id</code> attribute value;</li>
 	 * 		<li>The <code>parent</code> attribute value;</li>
@@ -217,12 +212,11 @@ public interface TreeTransaction {
 	 * 		<li>The collection of children elements;</li>
 	 * 		<li>The tree session which this element belongs in.</li>
 	 * 	</ul>
-	 * </p>
 	 * 
 	 * <p><b>Post-Validation:</b></p>
 	 * <p>In this phase, the core API will compare the resulting elements with
 	 * the source node objects used in this transformation process. If there is
-	 * a single difference, then a <codeTreeException</code> must be threw.</p>
+	 * a single difference, then a <code>TreeException</code> must be threw.</p>
 	 * 
 	 * <p>this life cycle is only triggered in the API Transformation Process,
 	 * by invoking this method, passing a collection of a linear structure to be

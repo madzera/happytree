@@ -120,7 +120,7 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#createElement(Object, Object)}.
+	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}.
 	 * 
 	 * <p>Error scenario for the operations when trying to create an element
 	 * with <code>null</code> id.</p>
@@ -138,10 +138,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Create an element with <code>null</code> id;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
 	 * 	<li>Verify the message error.</li>
-	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void createElement_nullElementId() throws TreeException {
@@ -262,7 +261,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_deactivatedTargetSession() throws TreeException {
@@ -331,7 +331,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_nullFromElement() throws TreeException {
@@ -387,7 +387,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_notExistingFromElement() throws TreeException {
@@ -445,7 +445,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_nullFromObjectId() throws TreeException {
@@ -500,7 +500,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_notExistingFromObjectId() throws TreeException {
@@ -1137,7 +1137,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
-	 * @throws TreeException
+	 * 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void copy_deactivatedTargetSession() throws TreeException {
@@ -1211,7 +1212,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void copy_nullFromElement() throws TreeException {
@@ -1282,7 +1283,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void copy_nullToElement() throws TreeException {
@@ -2182,7 +2183,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void persistElement_nullElement() throws TreeException {
@@ -2225,7 +2226,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void persistElement_nullIdElement() throws TreeException {
@@ -2591,7 +2592,7 @@ public class TreeManagerErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void updateElement_nullElement() throws TreeException {

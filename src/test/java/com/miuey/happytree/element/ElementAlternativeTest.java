@@ -52,7 +52,7 @@ public class ElementAlternativeTest {
 	 * 	<code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void setId_nullArg() throws TreeException {
@@ -107,7 +107,7 @@ public class ElementAlternativeTest {
 	 * 	<code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void setParent_nullArg() throws TreeException {
@@ -158,7 +158,7 @@ public class ElementAlternativeTest {
 	 * 	<li>Verify if the children list has only one element again.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeChild_nullArgElement() throws TreeException {
@@ -212,7 +212,7 @@ public class ElementAlternativeTest {
 	 * 	<li>Verify if the children list has only one element again.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeChild_nullArgId() throws TreeException {
@@ -263,7 +263,7 @@ public class ElementAlternativeTest {
 	 * 	<li>Verify if the object is <code>null</code>.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void unwrap_nullWrappedNode() throws TreeException {

@@ -33,7 +33,7 @@ import com.miuey.happytree.exception.TreeException;
 public class TreeTransactionErrorTest {
 
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Object)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
 	 * 
 	 * <p>Error scenario for this operation when the session identifier is
 	 * <code>null</code>.</p>
@@ -52,7 +52,7 @@ public class TreeTransactionErrorTest {
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
-	 * @throws TreeException 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void initializeSession_nullSessionIdentifier() throws TreeException {
@@ -73,7 +73,7 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Object)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
 	 * 
 	 * <p>Error scenario for this operation when the type of session is
 	 * <code>null</code>.</p>
@@ -94,7 +94,7 @@ public class TreeTransactionErrorTest {
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void initializeSession_nullTypeSession() throws TreeException {
@@ -117,7 +117,7 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Object)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
 	 * 
 	 * <p>Error scenario for this operation when the session identifier is
 	 * already initialized.</p>
@@ -385,6 +385,8 @@ public class TreeTransactionErrorTest {
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error.</li>
 	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void initializeSession_atpNullElementId() throws TreeException {

@@ -52,7 +52,7 @@ public class TreeManagerTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeManager#createElement(Object, Object)}.
+	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}.
 	 * 
 	 * <p>Happy scenario for this operation.</p>
 	 * 
@@ -67,13 +67,13 @@ public class TreeManagerTest {
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize the session with the previous defined session identifier;
 	 * 	</li>
-	 * 	<li>Invoke {@link TreeManager#createElement(Object, Object)} to create
-	 * 	a new detached element with the specified element id;</li>
+	 * 	<li>Invoke {@link TreeManager#createElement(Object, Object, Object)} to
+	 * 	create a new detached element with the specified element id;</li>
 	 * 	<li>Verify if the new element is not <code>null</code>.</li>
 	 * 	<li>Verify if the element id corresponds.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void createElement() throws TreeException {
@@ -126,7 +126,7 @@ public class TreeManagerTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void getElementById() throws TreeException {
@@ -193,7 +193,7 @@ public class TreeManagerTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_element() throws TreeException {
@@ -266,7 +266,7 @@ public class TreeManagerTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void cut_objectId() throws TreeException {
@@ -339,7 +339,7 @@ public class TreeManagerTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void copy() throws TreeException {
@@ -423,7 +423,7 @@ public class TreeManagerTest {
 	 * 	Dreamweaver).</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeElement() throws TreeException {
@@ -493,7 +493,7 @@ public class TreeManagerTest {
 	 * 	Dreamweaver).</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void removeObject() throws TreeException {
@@ -558,7 +558,7 @@ public class TreeManagerTest {
 	 * 	</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void containsElement() throws TreeException {
@@ -606,7 +606,7 @@ public class TreeManagerTest {
 	 * 	through only the element id.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void containsObject() throws TreeException {
@@ -651,7 +651,7 @@ public class TreeManagerTest {
 	 * 	{@link TreeManager#containsElement(Element)}.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void treeContainsElement() throws TreeException {
@@ -695,7 +695,7 @@ public class TreeManagerTest {
 	 * 	{@link TreeManager#containsElement(Object)}.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void treeContainsObjectId() throws TreeException {
@@ -743,7 +743,7 @@ public class TreeManagerTest {
 	 * 	inserted element as well as its child.</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void persistElement() throws TreeException {
@@ -811,7 +811,7 @@ public class TreeManagerTest {
 	 * 	instead of (VLC).</li>
 	 * </ol>
 	 * 
-	 * @throws TreeException
+	 * @throws TreeException in case of an error
 	 */
 	@Test
 	public void updateElement() throws TreeException {
