@@ -970,7 +970,7 @@ public class TreeManagerErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to cut an element for
 	 * inside of another tree which this tree has different type of object
-	 * (<code>Directory</code> -> <code>Metadata</code>).</p>
+	 * (<code>Directory</code> -&gt; <code>Metadata</code>).</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>,
 	 * <code>Metadata</code> and <code>TreeAssembler</code> sample classes.</p>

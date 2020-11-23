@@ -92,15 +92,13 @@ public interface TreeTransaction {
 	 * Automatically, after of creating the session, this is already available
 	 * to work as current session.
 	 * 
-	 * <p>It corresponds to one of the main features. When this is necessary to
-	 * convert a linear list of objects (nodes) that behave as a tree into
-	 * a real tree structure. For this, the transformed nodes needs to follow
-	 * some requirements for the API transformation process occurs
+	 * <p>It corresponds to one of the main features of the HappyTree API. When
+	 * this is necessary, it converts a linear list of objects that behave as a
+	 * tree into a real tree structure. For this, these objects need to follow
+	 * some requirements for the <b>API Transformation Process</b> occurs
 	 * successfully.</p>
 	 * 
-	 * <p>These requirements are validated throughout the API life cycle of the
-	 * transformation process. This process implements a life cycle with 3
-	 * general phases:</p>
+	 * <p>This process implements a life cycle with 5 general phases:</p>
 	 * 
 	 * 	<ol>
 	 * 		<li><b>Pre-Validation</b></li>
@@ -108,119 +106,108 @@ public interface TreeTransaction {
 	 * 		<li><b>Post-Validation</b></li>
 	 * 	</ol>
 	 * 
+	 * <p><b>Note: The concept of sub-phase is merely illustrative and serves
+	 * only to distinguish the phases of validations from the phases of the tree
+	 * transformation process.</b></p>
+	 * 
 	 * 	<table summary="ATP Lifecycle">
 	 * 		<tr>
 	 * 			<th>Phase</th><th>Description</th><th>Sub-Phases</th>
 	 * 		</tr>
 	 * 		<tr>
-	 * 			<td>Pre-Validation</td><td>Validates each node's requirements.
-	 * 			</td><td></td>
+	 * 			<td>Pre-Validation</td><td>Validates each input object
+	 * 			requirements.</td><td></td>
 	 * 		</tr>
 	 * 
 	 * 		<tr>
-	 * 			<td>Core Engine</td><td>Processes the tree assembly and
-	 * 			transformation/migration from the nodes list into a real tree
-	 * 			structure.</td><td>Extraction - Initialization - Binding</td>
+	 * 			<td>Core Engine</td>
+	 * 			<td>Processes the tree assembly and transformation from the
+	 * 			source objects list into a real tree structure.
+	 * 			</td>
+	 * 			<td>Extraction - Initialization - Binding</td>
 	 * 		</tr>
 	 * 
 	 * 		<tr>
-	 * 			<td>Post-Validation</td><td>Compares the assembled tree with the
-	 * 			source nodes used as input.</td><td></td>
+	 * 			<td>Post-Validation</td>
+	 * 			<td>Confirms that the elements of the built tree correspond to
+	 * 			their respective input objects.</td><td></td>
 	 * 		</tr>
 	 * 	</table>
 	 * 
 	 * <p><b>Pre-Validation:</b></p>
 	 * <p>This phase represents the begin of the API Transformation Process. In
 	 * this phase, the core API needs that all inputs aspects to be transformed
-	 * need to conform. The following validations will be done:</p>
+	 * need to conform. The following validations are done:</p>
 	 * 
 	 * 	<ul>
-	 * 		<li>The <code>identifier</code> or <code>nodes</code> are
-	 * 		<code>null</code> or <code>nodes</code> collection is empty;</li>
-	 * 		<li>There is a existing session with the same identifier passed
-	 * 		through;</li>
-	 * 		<li>The node class to be transformed has the {@literal @Tree}
-	 * 		annotation;</li>
-	 * 		<li>The identifier attribute of the node to be transformed has
-	 * 		the	{@literal @Id} annotation;</li>
-	 * 		<li>The parent attribute of the node to be transformed has the
-	 * 		{@literal @Parent} annotation;</li>
-	 * 		<li>Verify whether the identifier attribute of each node is
+	 * 		<li>Verifies whether the list of objects to be transformed is not
+	 * 		<code>null</code> or empty;</li>
+	 * 		<li>Verifies whether there is an existing session with the same
+	 * 		identifier;</li>
+	 * 		<li>Verifies whether the class of the objects to be transformed is
+	 * 		annotated with {@literal @Tree};</li>
+	 * 		<li>Verifies whether the identifier attribute of the object to be
+	 * 		transformed has the	{@literal @Id} annotation;</li>
+	 * 		<li>Verifies whether the parent attribute of the object to be
+	 * 		transformed has the {@literal @Parent} annotation;</li>
+	 * 		<li>Verifies whether the identifier attribute of each object is
 	 * 		<code>null</code>;</li>
-	 * 		<li>Validates whether all node objects have all of them the
+	 * 		<li>Validates whether all source objects have all of them the
 	 * 		{@literal @Id} and {@literal @Parent} attributes with the same class
-	 * 		type.
-	 * 		</li>
+	 * 		type;</li>
+	 * 		<li>Checks for duplicate {@literal @Id};</li>
+	 * 		<li>Verifies whether the class of the objects to be transformed has
+	 * 		getters and setters.</li>
 	 * 	</ul>
 	 * 
 	 * <p><b>Core Engine:</b></p>
 	 * <p><i>Extraction:</i></p>
-	 * <p>If all node requirements are right, then the tree assembly process
-	 * will be carried out at this stage.</p>
-	 * 	<ol>
-	 * 		<li>Iterates over each node to be extracted;</li>
-	 * 		<li>Creates a map to store these nodes and for each node:
-	 * 		</li>
-	 * 		<li>
-	 * 			<ol>
-	 * 				<li>The key map will be the {@literal @Id} attribute value
-	 * 				from the node object to be transformed;</li>
-	 * 				<li>The value map will be the own node object to be
-	 * 				transformed.</li>
-	 * 			</ol>
-	 * 		</li>
-	 * 	</ol>
+	 * <p>If the input represented by the list of objects to be transformed
+	 * passed all validations from the previous phase, then the HappyTree API
+	 * takes them and extracts them in order to separate them from their
+	 * respective parents. Therefore, as a product for the next phase, there
+	 * will be the objects and their respective parents separated into two
+	 * blocks.</p>
 	 * 
 	 * <p><i>Initialization:</i></p>
-	 * <p>After having filling out the map with stored nodes, then the API will
-	 * iterate over it and for each node object:</p>
-	 * 	<ol>
-	 * 		<li>Will instantiate an <code>Element</code> object;</li>
-	 * 		<li>The element <code>id</code> attribute will be the corresponding
-	 * 		identifier attribute of the source node to be transformed;</li>
-	 * 		<li>The <code>parent</code> attribute of the element will be the
-	 * 		corresponding parent attribute of the source node to be	transformed.
-	 * 		</li>
-	 * 	</ol>
+	 * <p>In this phase, the HappyTree API instantiates an object of type
+	 * {@link Element} for each source object used as input and passes the
+	 * respective {@literal @Id} and {@literal @Parent} attributes of the source
+	 * object to that element. In addition, the source object itself is
+	 * automatically wrapped into that element, thus making the source object
+	 * liable to be a tree node, since the element naturally represents a node
+	 * in the context of the HappyTree API. After the tree is built, to retrieve
+	 * the source object just invoke the {@link Element#unwrap()} method.</p>
 	 * 
 	 * <p><i>Binding:</i></p>
-	 * <p>Once having the resulting collection of initialized elements, the
-	 * core API will bind each element and transform it into a parent-child
-	 * relationship, where each element can contain multiple children within it
-	 * and each child can have other children, and so on. That is done through
-	 * the <code>id</code> attribute. So, for this work, the core API will seek
-	 * for each element and:</p>
-	 * 	<ol>
-	 * 		<li>Wraps the transformed node (the source object which it has the
-	 * 		{@literal Tree}, {@literal Id} and {@literal Parent} annotations)
-	 * 		into this own element;</li>
-	 * 		<li>Puts this own element into another one, as child, compounding
-	 * 		the <code>parent</code> attribute of the child with the
-	 * 		<code>id</code> attribute of the parent element (<b>if the parent
-	 * 		element is not found, then the element will be moved to the tree
-	 * 		root level</b>);</li>
-	 * 		<li>In the end, each element will contains other elements inside of
-	 * 		it (as children), as a real tree structure of elements, ready to be
-	 * 		handled.</li>
-	 * 	</ol>
-	 * <p>So, the resulting <code>Element</code> object will have:</p>
+	 * <p>After obtaining the list of resulting elements from the previous phase,
+	 * the HappyTree API will now bind each element to its respective parent,
+	 * through the block of separated parent objects in the Extraction phase.
+	 * </p>
+	 * 
+	 * <p>Therefore, it is at this phase that the tree is actually assembled.
+	 * Thus, for each node in the tree we have a represented element object,
+	 * where each element has:</p>
+	 * 
 	 * 	<ul>
-	 * 		<li>The <code>id</code> attribute value;</li>
-	 * 		<li>The <code>parent</code> attribute value;</li>
-	 * 		<li>The <code>wrappedNode</code> corresponding the source node
-	 * 		object used in this transformation process;</li>
-	 * 		<li>The collection of children elements;</li>
-	 * 		<li>The tree session which this element belongs in.</li>
+	 * 		<li>The {@literal @Id} attribute value;</li>
+	 * 		<li>The {@literal @Parent} attribute value;</li>
+	 * 		<li>The <code>wrappedNode</code> corresponding the source object
+	 * 		used in this process;</li>
+	 * 		<li>The collection of <code>children</code>, corresponding to other
+	 * 		elements in which they are children of this;</li>
+	 * 		<li>The tree <code>session</code>, which this element belongs.</li>
 	 * 	</ul>
 	 * 
 	 * <p><b>Post-Validation:</b></p>
-	 * <p>In this phase, the core API will compare the resulting elements with
-	 * the source node objects used in this transformation process. If there is
-	 * a single difference, then a <code>TreeException</code> must be threw.</p>
+	 * <p>This phase confirms that the provided input corresponds exactly to the
+	 * generated output (the tree itself). If there is any inconsistency, a
+	 * <code>TreeException</code> is threw, immediately aborting the process and
+	 * rolling back the session.</p>
 	 * 
-	 * <p>this life cycle is only triggered in the API Transformation Process,
-	 * by invoking this method, passing a collection of a linear structure to be
-	 * transformed.</p>
+	 * <p>this life cycle is only triggered in the <b>API Transformation
+	 * Process</b>, by invoking this method, passing a collection of a linear
+	 * structure to be transformed (<code>nodes</code>).</p>
 	 * 
 	 * @param <T> the class type of the session which will store elements with
 	 * this type of nodes
@@ -233,15 +220,18 @@ public interface TreeTransaction {
 	 * @throws TreeException when:
 	 * <ul>
 	 * 	<li>There is another session with the same identifier;</li>
-	 * 	<li>When the class of node object to be converted has not been annotated
-	 * 	by {@literal @Tree};</li>
-	 * 	<li>The identifier attribute of node object to be converted has not been
-	 * 	annotated by {@literal @Id};</li>
-	 * 	<li>The parent attribute of node object to be converted has not been
-	 * 	annotated by {@literal @Parent};</li>
+	 * 	<li>When the class of the object to be converted has not been annotated
+	 * 	with {@literal @Tree};</li>
+	 * 	<li>The identifier attribute of the object to be converted has not been
+	 * 	annotated with {@literal @Id};</li>
+	 * 	<li>The parent attribute of the object to be converted has not been
+	 * 	annotated with {@literal @Parent};</li>
 	 * 	<li>When the annotated {@literal @Id} and {@literal @Parent} attributes
 	 * 	have incompatible types;</li>
-	 * 	<li>When the API Transformation Process was not well processed at Post
+	 * 	<li>When there are duplicate IDs;</li>
+	 * 	<li>When the class of the object to be transformed has not
+	 * 	{@literal getters & setters};</li>
+	 * 	<li>When the API Transformation Process was not well processed at Post-
 	 * 	Validation phase.</li>
 	 * </ul>
 	 * 
