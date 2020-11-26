@@ -232,5 +232,5 @@ For building, go to the project root folder and enter the following
 command:
 
 <code>
-	mvn clean package
+	mvn clean package -Dgpg.skip=true
 </code>
