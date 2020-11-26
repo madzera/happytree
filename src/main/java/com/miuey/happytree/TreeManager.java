@@ -428,8 +428,8 @@ public interface TreeManager {
 	public <T> Element<T> getElementById(Object id) throws TreeException;
 	
 	/**
-	 * Verifies if the <code>parent</code> element contains inside of it the
-	 * <code>descendant</code> element in this current session.
+	 * Verifies whether the <code>parent</code> element contains inside of it
+	 * the <code>descendant</code> element in this current session.
 	 * 
 	 * <p>If both <code>parent</code> and <code>descendant</code> element is
 	 * <code>null</code> or their (including the children) state are not
@@ -456,8 +456,8 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Verifies if the <code>parent</code> element contains inside of it the
-	 * <code>descendant</code> element in this current session.
+	 * Verifies whether the <code>parent</code> element contains inside of it
+	 * the <code>descendant</code> element in this current session.
 	 * 
 	 * <p>The <code>parent</code> and <code>descendant</code> identifiers are
 	 * used to bring the respective elements. If both <code>parent</code> and
@@ -486,7 +486,7 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Verifies if the current tree session has the specified
+	 * Verifies that the current tree session has the specified
 	 * <code>element</code>.
 	 * 
 	 * <p>If the <code>element</code> is <code>null</code> or if the
@@ -505,7 +505,7 @@ public interface TreeManager {
 	public boolean containsElement(Element<?> element) throws TreeException;
 	
 	/**
-	 * Verifies if the current tree session has the specified element
+	 * Verifies that the current tree session has the specified element
 	 * <code>id</code>.
 	 * 
 	 * <p>If the element is not found in the tree or the <code>id</code> is

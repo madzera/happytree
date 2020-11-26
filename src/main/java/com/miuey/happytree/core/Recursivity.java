@@ -53,7 +53,7 @@ class Recursivity {
 	}
 	
 	/*
-	 * Iterates over the tree and verifies if each element inside of the tree
+	 * Iterates over the tree and verifies that each element inside of the tree
 	 * can run a determined operation according the its life cycle state.
 	 */
 	static <T> boolean iterateForInvalidStateOperationValidation(

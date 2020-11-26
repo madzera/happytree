@@ -77,7 +77,7 @@ public interface TreeSession {
 	public String getSessionId();
 	
 	/**
-	 * Verifies if the session is active.
+	 * Verifies that the session is active.
 	 * 
 	 * <p>Here, the method consider just two of session states:</p>
 	 * <ul>
