@@ -22,7 +22,7 @@ import com.miuey.happytree.exception.TreeException;
  * thrown an exception, as it is only possible to cut <i>ATTACHED</i>
  * elements.</p>
  * 
- * <p>Model:</p>
+ * <p>Object Model:</p>
  * {@link Directory}
  * 
  * <p>Utility Tree Assembler:</p>

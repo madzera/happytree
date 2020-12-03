@@ -26,9 +26,9 @@ import com.miuey.happytree.exception.TreeException;
  * <p>This test class represents the <i>alternative scenarios</i> for the
  * operations of {@link TreeManager}.</p>
  * 
- * <p>Some operations in this class will use the sample model class
- * <code>Directory</code> and <code>TreeAssembler</code>. Please consider see
- * these sample classes to understand the tests scenarios.</p>
+ * <p>Some operations in this class will use the sample in
+ * <code>Directory</code> and <code>TreeAssembler</code> model classes. Please
+ * consider see these sample classes to understand the tests scenarios.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  *

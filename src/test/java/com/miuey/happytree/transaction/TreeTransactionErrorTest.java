@@ -174,14 +174,14 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * with no {@literal @Tree}.
+	 * class without the {@literal @Tree} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;There is no {@literal @TREE} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoTree} model object with no {@literal @Tree}
+	 * 	<li>Create a {@link Node_NoTree} object with no {@literal @Tree}
 	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -223,14 +223,14 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * with no {@literal @Id}.
+	 * class without the {@literal @Id} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;There is no {@literal @ID} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoId} model object with no {@literal @Id}
+	 * 	<li>Create a {@link Node_NoId} object with no {@literal @Id}
 	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -272,15 +272,15 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * with no {@literal @Parent}.
+	 * class without the {@literal @Parent} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;There is no {@literal @PARENT} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoParent} model object with no
-	 * 	{@literal @Parent} annotation;</li>
+	 * 	<li>Create a {@link Node_NoParent} object with no {@literal @Parent}
+	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
@@ -322,14 +322,15 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * with mismatch type between {@literal @Id} and {@literal @Parent}.
+	 * class with mismatch type attributes annotated by {@literal @Id} and
+	 * {@literal @Parent}.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;Mismatch type ID error.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_MismatchId} model object with mismatch type
+	 * 	<li>Create a {@link Node_MismatchId} object with mismatch type
 	 * 	{@literal @Id} and {@literal @Parent} attributes;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -366,20 +367,20 @@ public class TreeTransactionErrorTest {
 	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
-	 * by API Transformation Process using a model object which would will
+	 * by API Transformation Process using an object which would will
 	 * transformed with a <code>null</code> attribute {@literal @Id} value.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * with <code>null</code> {@literal @Id}.
+	 * class with a <code>null</code> {@literal @Id} value.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node} model object with a <code>null</code>
-	 * 	{@literal @Id} attribute value;</li>
+	 * 	<li>Create a {@link Node} object with a <code>null</code> {@literal @Id}
+	 * 	attribute value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
@@ -417,8 +418,8 @@ public class TreeTransactionErrorTest {
 	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
-	 * by API Transformation Process using a collection with model objects input
-	 * having the same {@literal @Id} attribute value.</p>
+	 * by API Transformation Process using a collection of objects having the
+	 * same {@literal @Id} attribute value.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using two
@@ -429,8 +430,8 @@ public class TreeTransactionErrorTest {
 	 * <i>&quot;Duplicated ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create two {@link Node} model objects both with the same
-	 * 	{@literal @Id} attribute value;</li>
+	 * 	<li>Create two {@link Node} objects, both with the same {@literal @Id}
+	 * 	attribute value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>

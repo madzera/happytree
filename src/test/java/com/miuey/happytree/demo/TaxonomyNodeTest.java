@@ -20,11 +20,11 @@ import com.miuey.happytree.exception.TreeException;
  * <p>The purpose of this test is to simulate a taxonomy node structure in a
  * corporate system business.</p>
  * 
- * <p>The model (<code>TaxonomyNode</code>) consists in a real model
- * class that is used in a real project. The class got some annotations by
+ * <p>The model (<code>TaxonomyNode</code>) consists in a real class model
+ * that is used in a real project. The class got some annotations by
  * HappyTree to make possible to assemble the tree.</p>
  * 
- * <p>Model:</p>
+ * <p>Object Model:</p>
  * {@link TaxonomyNode}
  * 
  * <p>Utility Tree Assembler:</p>
