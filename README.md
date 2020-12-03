@@ -1,10 +1,7 @@
 
 # HappyTree API
 
-“**Java Object Model API** designed for the Java programming language
-that consists of transforming linear structures of **Java Objects**
-with a tree behavior into a real tree structure and allowing its
-handling.”
+“*Java Object Model API designed for the Java programming language that consists of transforming linear structures of Java Objects with a tree behavior into a real tree structure and allowing its handling.*”
 
 
 <p align="center">
