@@ -1,5 +1,9 @@
 
-# HappyTree API
+<p align="center">
+  <a href="https://happytreeapi.vercel.app/" target="_blank" >
+    <img alt="HappyTree API" src="./.github/resources/happytree_logo.png" width="400" />
+  </a>
+</p>
 
 “*Java Object Model API designed for the Java programming language that consists of transforming linear structures of Java Objects with a tree behavior into a real tree structure and allowing its handling.*”
 
