@@ -16,10 +16,10 @@ interfaces for handling trees. Each interface contains a set of
 services (methods) that helps the API Client to handle trees. Those
 interfaces are:
 
-* [Element](../../src/main/java/com/miuey/happytree/Element.java)
-* [TreeManager](../../src/main/java/com/miuey/happytree/TreeManager.java)
-* [TreeTransaction](../../src/main/java/com/miuey/happytree/TreeTransaction.java)
-* [TreeSession](../../src/main/java/com/miuey/happytree/TreeSession.java)
+* [Element](../../src/main/java/com/madzera/happytree/Element.java)
+* [TreeManager](../../src/main/java/com/madzera/happytree/TreeManager.java)
+* [TreeTransaction](../../src/main/java/com/madzera/happytree/TreeTransaction.java)
+* [TreeSession](../../src/main/java/com/madzera/happytree/TreeSession.java)
 
 With this in mind, the unit tests structure are based in two types of
 tests:
@@ -28,7 +28,7 @@ tests:
 
 They are customized tests, free of any rule. Any collaborator can
 perform any type of tests for the HappyTree API here. The test
-classes are localized in: [demo](../../src/test/java/com/miuey/happytree/demo).
+classes are localized in: [demo](../../src/test/java/com/madzera/happytree/demo).
 
 Already, there are **model** and **util** sub-packages, for better
 organization.
@@ -73,10 +73,10 @@ scenarios, a short description is recommended. Example: **updateElement()**.
 ### Main Test Class
 
 The main test class of the HappyTree API is in:
-[HappyTreeTest](../../src/test/java/com/miuey/happytree/HappyTreeTest.java)
+[HappyTreeTest](../../src/test/java/com/madzera/happytree/HappyTreeTest.java)
 in the root level of the test package.
 
-Just as [HappyTree](../../src/main/java/com/miuey/happytree/core/HappyTree.java)
+Just as [HappyTree](../../src/main/java/com/madzera/happytree/core/HappyTree.java)
 represents an entry class for the API, **HappyTreeTest** represents
 an entry test class to perform all unit tests of the HappyTree API.
 It seems like a *Master Suited Test Class*. Every new suited test

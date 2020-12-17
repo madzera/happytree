@@ -82,7 +82,7 @@ where all the implemented specifications of the HappyTree API are
 contained.
 
 **Everything in this package must not be accessible to the API client**
-(except the [HappyTree](../../src/main/java/com/miuey/happytree/core/HappyTree.java)
+(except the [HappyTree](../../src/main/java/com/madzera/happytree/core/HappyTree.java)
 class).
 
 The core package consists of:

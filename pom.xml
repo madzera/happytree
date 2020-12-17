@@ -8,7 +8,7 @@
 
 <!-- ############################### Header ################################ -->
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.miuey</groupId>
+	<groupId>com.madzera</groupId>
 	<artifactId>happytree</artifactId>
 	<version>1.0.0</version>
 	<name>HappyTree API</name>

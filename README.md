@@ -177,10 +177,10 @@ the code below:
 ```
 
 Once created, the trees start to work on
-[Element](./src/main/java/com/miuey/happytree/Element.java)
+[Element](./src/main/java/com/madzera/happytree/Element.java)
 type objects, which will encapsulate (wrap) the "original objects"
 (Directory) represented as the respective nodes. From there, just use the
-[TreeManager](./src/main/java/com/miuey/happytree/TreeManager.java)
+[TreeManager](./src/main/java/com/madzera/happytree/TreeManager.java)
 interface to handle these elements.
 
 ### Documentation
@@ -228,8 +228,8 @@ unit tests:
 
 HappyTree API is structured into different directories:
 
-- [`src/main`](./src/main/java/com/miuey/happytree): API code.
-- [`src/test`](./src/test/java/com/miuey/happytree): JUnit test code.
+- [`src/main`](./src/main/java/com/madzera/happytree): API code.
+- [`src/test`](./src/test/java/com/madzera/happytree): JUnit test code.
 
 ### Coding
 

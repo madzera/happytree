@@ -47,7 +47,7 @@ standards:
 ## Enforcement
 
 If a member feels offended, he/she can report such occurrence through
-the following email: contact@miuey.com.
+the following email: contact@madzera.com.
 
 The attacked person in question can be sure that his report will be
 analyzed confidentially and totally impartial in light of the facts
