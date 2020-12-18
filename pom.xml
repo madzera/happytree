@@ -30,16 +30,16 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar.projectKey>Miuey_happytree</sonar.projectKey>
-  		<sonar.organization>miuey</sonar.organization>
+		<sonar.projectKey>madzera_happytree</sonar.projectKey>
+  		<sonar.organization>madzera</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 <!-- ################################ SCM ################################## -->
 	<scm>
-		<connection>scm:git:git://github.com/Miuey/happytree.git</connection>
-		<developerConnection>scm:git:ssh://github.com:Miuey/happytree.git
+		<connection>scm:git:git://github.com/madzera/happytree.git</connection>
+		<developerConnection>scm:git:ssh://github.com:madzera/happytree.git
 		</developerConnection>
-		<url>http://github.com/Miuey/happytree/tree/master</url>
+		<url>http://github.com/madzera/happytree/tree/master</url>
 	</scm>
 <!-- ############################# DISTRIBUTION ############################ -->	
 	<distributionManagement>

@@ -10,22 +10,22 @@
 
 <p align="center">
     <a href="LICENSE" target="_blank">
-        <img alt="Software License" src="https://img.shields.io/github/license/Miuey/happytree">
+        <img alt="Software License" src="https://img.shields.io/github/license/madzera/happytree">
     </a>
-    <a href="https://github.com/Miuey/happytree/actions?query=workflow%3ABuild" target="_blank">
-        <img alt="Build Status" src="https://github.com/Miuey/happytree/workflows/Build/badge.svg">
+    <a href="https://github.com/madzera/happytree/actions?query=workflow%3ABuild" target="_blank">
+        <img alt="Build Status" src="https://github.com/madzera/happytree/workflows/Build/badge.svg">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Code Quality" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=alert_status">
+    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+        <img alt="Code Quality" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=alert_status">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=sqale_rating">
+    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+        <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=sqale_rating">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Reliability" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=reliability_rating">
+    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+        <img alt="Reliability" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=reliability_rating">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=Miuey_happytree" target="_blank">
-        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=Miuey_happytree&metric=security_rating">
+    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=security_rating">
     </a>
 </p>
 
