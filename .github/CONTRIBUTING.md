@@ -104,7 +104,13 @@ The numbers indicated in the column on the right represent the
 *Branches* created by the collaborator that will be used to commit.
 Each of these *Branches* created by the collaborator will be inserted
 within their respective *Sub-Branch* which indicates what type of
-development has been done.
+development has been done. It is recommended that the *Issue Branch*
+indicates which *Milestone* it belongs. A good example of a
+*Issue Branch* pattern is something like
+**[1.0.2-103] - Short Description**, which the *1.0.2* corresponds to
+the current *Milestone* and *103* indicates the *Issue*. Through the
+labels, it is possible to identifier which *Sub-Branch* it will
+refer in the *Pull Request* phase.
 
 Then, it is enough that the collaborator makes the *Pull Request* of
 the *Branch* created by himself for the HappyTree repository. If it
@@ -113,6 +119,13 @@ is accepted, the collaborator's work will be incorporated within the
 can be released already in the current version of the HappyTree API.
 However, when it comes to new features, it can be reallocated for
 future releases, a question that is decided soon after analysis.
+
+For a code contribution to be successful, it has to pass the
+following steps:
+
+1. **Coding Standards;**
+2. **Unity Tests;**
+3. **Sonar Analysis.**
 
 ## See Before Contributing
 
