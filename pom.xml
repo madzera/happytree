@@ -11,20 +11,28 @@
 	<groupId>com.madzera</groupId>
 	<artifactId>happytree</artifactId>
 	<version>1.0.0</version>
-	<name>HappyTree API</name>
-	<url>https://happytreeapi.vercel.app/</url>
+	<name>happytree</name>
 	<description>
 		Java Object Model API to handle Java Objects in a tree structure. Be
 		able to transform a linear structure of objects with a tree behavior
 		into a real tree structure and handle them as if it were nodes in a
 		tree.
 	</description>
+	<url>https://happytreeapi.vercel.app/</url>
 	<licenses>
 		<license>
 			<name>MIT License</name>
 			<url>http://www.opensource.org/licenses/mit-license.php</url>
 		</license>
 	</licenses>
+	<developers>
+    	<developer>
+      		<name>Diego Madson de Andrade Nóbrega</name>
+      		<email>diegomadson@msn.com</email>
+      		<organization>MadZera</organization>
+      		<organizationUrl>http://www.madzera.com</organizationUrl>
+    	</developer>
+  	</developers>
 <!-- ############################## Properties ############################# -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
