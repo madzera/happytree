@@ -245,6 +245,6 @@ HappyTree API is structured into different directories:
 For building, go to the project root folder and enter the following
 command:
 
-<code>
+```mvn
 mvn clean package -Dgpg.skip=true
-</code>
+```
