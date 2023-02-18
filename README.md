@@ -108,7 +108,7 @@ public class Directory {
 	//Simple attribute
 	private String dirName;
 	
-		//getters and setters
+	//getters and setters
 }  
 ```
 
