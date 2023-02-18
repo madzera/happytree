@@ -189,7 +189,7 @@ interface to handle these elements.
 ### Documentation
 
 [HappyTree Official Documentation](https://happytreeapi.vercel.app/happytree-1.0.0.pdf)
- 
+
 
 ## HappyTree Metadata
 
@@ -246,5 +246,5 @@ For building, go to the project root folder and enter the following
 command:
 
 <code>
-	mvn clean package -Dgpg.skip=true
+mvn clean package -Dgpg.skip=true
 </code>
