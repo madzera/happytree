@@ -212,7 +212,7 @@ Because it acts on a specific layer of the architecture of a
 requirements, so in addition to being easy to use, the HappyTree API
 also has an easy installation.
 
-Both to make use of as well as to contribute, the requirements are:
+Both to make use of, as well as to contribute, the requirements are:
 
 * **Java 8**;
 * **Maven 3.6.x**;
