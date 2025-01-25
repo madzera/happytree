@@ -47,7 +47,7 @@
 		<connection>scm:git:git://github.com/madzera/happytree.git</connection>
 		<developerConnection>scm:git:ssh://github.com:madzera/happytree.git
 		</developerConnection>
-		<url>http://github.com/madzera/happytree/tree/master</url>
+		<url>http://github.com/madzera/happytree/tree/main</url>
 	</scm>
 <!-- ############################# DISTRIBUTION ############################ -->	
 	<distributionManagement>
