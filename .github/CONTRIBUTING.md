@@ -1,4 +1,4 @@
-# CONTRIBUTING
+# Contributing
 
 HappyTree API has a contribution organization in a very simple way, without
 bureaucracy. All of this in order to further encourage the act of contributing
@@ -21,7 +21,7 @@ project. Each **Milestone** represents a version number (the current
 **Milestone** is 2.0.0), the official API version being developed at the moment.
 Also, for each **Milestone**, there always will exist its respective **Branch**,
 in this case named **2.0.0**, and **every development must be done under this
-branch, know as version branch.** So, there always will have a connection among
+branch, known as version branch.** So, there always will have a connection among
 **Issue**, **Milestone** and **Branch** and this link is identified by the
 current version of the API being developed at the moment.
 
@@ -104,7 +104,7 @@ on version, in other words, a version number drives the link among **Issues**,
   </a>
 </p>
 
-This strategy of workflow is know as **Release Flow**, where, from the **main**
+This strategy of workflow is known as **Release Flow**, where, from the **main**
 branch, a respective branch for each release is created, in this case, creating
 the **2.0.0** branch under **main** branch.
 
