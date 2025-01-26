@@ -16,7 +16,7 @@ us keep open and inclusive.
 ## Workflow
 
 Every contribution is inserted within the **Issue** context which can be reported
-by anyone and this *Issue* is related with the actual **Milestone** of the
+by anyone and this **Issue** is related with the actual **Milestone** of the
 project. Each **Milestone** represents a version number (the current
 **Milestone** is 2.0.0), the official API version being developed at the moment.
 Also, for each **Milestone**, there always will exist its respective **Branch**,
