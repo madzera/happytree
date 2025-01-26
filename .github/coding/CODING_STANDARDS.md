@@ -295,3 +295,12 @@ comment convention.
 ### Edge margin
 
 The HappyTree API is coded with a margin of 80 characters.
+
+## Prerequisites
+
+For a code contribution to be successful, it has to pass the
+following steps:
+
+1. **Coding Standards;**
+2. **Unity Tests;**
+3. **Sonar Analysis.**

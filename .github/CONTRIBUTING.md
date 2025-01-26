@@ -4,53 +4,69 @@ HappyTree API has a contribution organization in a very simple way,
 without bureaucracy. All of this in order to further encourage the
 act of contributing by third parties.
 
-Basically, there are only two types of contribution: the contribution
-by **Issues** and the contribution by **Coding**. Obviously, every
-collaborator can contribute both simultaneously.
+Basically, you as a person who wants to contribute, you just need to
+fork the project and work over the actual version of the project, that 
+version which is specified in every reported issue, through the millestone
+section.
 
 ## Code of Conduct
 
 Before you start, stick to our [Code of Conduct](./CODE_OF_CONDUCT.md)
 to help us keep open and inclusive.
 
-## Contributing
+## Workflow
 
-Every contribution is inserted within the context of *Milestone*.
-Each *Milestone* represents a version number (example: [1.0.0],
-[1.0.1], [1.0.2], etc.) of the API being developed within a period of
-time and each contribution is made on the current *Milestone*. With
-this in mind, below are the types of contributions.
+Every contribution is inserted within the *Issue* context which can be 
+reported by anyone and this *Issue* is related with the actual 
+*Milestone* of the project. Each *Milestone* represents a version 
+number (the current *Milestone* is 2.0.0), the official API
+version being developed at the moment. Also, for each *Milestone*,
+there always will exist its respective *Branch*, in this case named
+**2.0.0**, and **every development must be done under this
+branch, know as version branch.** So, there always will have a
+connection among *Issue*, *Milestone* and *Branch* and this link
+is identified by the current version of the API being developed at
+the moment.
+
+### Milestone
+
+Each milestone represents a version of the project and have an estimated
+date to be concluded. The project can have the same number of
+milestone as the project versions, being currently the version
+**2.0.0**.
+
+The milestone is a concept that is used only for internal 
+purpose, the external collaborators can not handle it.
 
 ### Issues
 
-Any collaborator can create new **Issues**. To do this, just put in
-the title the prefix corresponding to the current *Milestone*
-(version), for example: **[1.0.2] - Print Hello World**. It is very
-important that this prefix (**[1.0.2] -**) be placed.
+Any collaborator can create new issues. To do this, just put in
+the title, the prefix corresponding to the current *Milestone*
+version, for example: **[2.0.0] - Print Hello World**. It is very
+important that this prefix (**[2.0.0] -**) be placed.
 
 In addition, it is only necessary to define the type of **Issue** to
 be created. Each type is represented by a *Github Label*. Below are
-the labels that will define what each **Issue** proposes:
+the labels that will define what each issue proposes:
 
 | Label  | Description  |
 |---|---|
-| adaptive  | Request/Feature change  |
-| bug  | Something isn't working  |
-| documentation  | Official documents and .md Files  |
-| enhancement  | Improvements and refactoring  |
-| feature  | New functionality/feature  |
-| important  | Notify for very urgent or important issue  |
-| invalid  | This doesn't seem right  |
-| question  | Further information is requested  |
-| suggestion  | Give us any suggestion about functionality or anything else  |
-| test  | Testing issue  |
+| type: adaptive  | Request/Feature change issue  |
+| type: bug  | Bug found  |
+| type: documentation  | Issue for API doc and .md Files  |
+| type: enhancement  | Issue for improvements and refactoring  |
+| type: feature  | Issue for new functionality/feature  |
+| type: question  | I've a question  |
+| type: suggestion  | Give us any suggestion about everything  |
+| type: test  | Issue for unit test  |
+| type: urgent-bug  | Notification for high priority bug  |
 
-Whatever the type of **Issue**, the collaborator may feel free to
-organize ideas as he wishes, with the exception of the
-**Bug-type Issue**. This **Issue** deserves special treatment in its
-description. Therefore, it facilitates the work of correcting bugs,
-if an **Issue**, in its description, has the following topics in the
-same order:
+Whatever the type of the issue, the collaborator may feel free to
+organize ideas as he wishes, with the exceptions of the
+**type: bug** and **type: urgent-bug** issues. Those types
+deserve special treatment in its description, because it facilitates
+the work of correcting bugs if an issue, in its description, has
+the following topics in this order:
 
 1. What was done;
 	* Describe in an objective and summarized manner what has been
@@ -65,70 +81,69 @@ same order:
 	* List and detail the step-by-step of what was done, if
 	preferable, with some screenshots.
 	
-### Coding
 
-For **Coding**, the process remains simple, but a little more complex
-than the contribution by **Issues**. In fact, this type of
-contribution also requires the collaborator pay attention to the
-respective **Issue** to which he is developing. In addition to the
-**Issue**, the collaborator needs to stick to the current version of
-the API, which corresponds to the development of the current
-*Milestone*.	
+When a collaborator publish a new issue, it doesn't mean that the issue
+will be trated immediately, as this issue will receive a feedback by the
+HappyTree team, represented by black labels and these labels can be:
 
-When *Forking* the project, the collaborator will have access to the
-*Branch* of the current version that will be used to incorporate his
-development (the collaborator's developments are always based on the
-*Branch* of the current version - *Milestone*). Just below the main
-*Branch* (*master branch*), there will be several *Branches* that
-correspond to their respective *Milestones*, and following the same
-structure, below the *Branch* which corresponds to its respective
-*Milestone*, there will be several *Sub-Branches* that correspond to
-the respective Labels indicated in the **Issue** to which the
-collaborator is working. For example, if the collaborator is solving
-a *Bug*, then the collaborator has to submit his work within the
-*Sub-Branch Bug*. This submitted work represents another *Branch*
-created by the collaborator himself that will be used to perform the
-*commit*. This *Branch*, created by the collaborator, must indicate
-exactly the **Issue** number that he is working on.
+| status: waiting-for-triage  | Issue which was not seen yet  |
+| status: accepted  | Accepted issue  |
+| status: declined  | Declined issue  |
+| status: declined-duplicate  | Declined. Duplicate issue  |
 
-The following image is a simple example when the collaborator wishes
-to contribute within Branch/Milestone/Version 1.0.2:
+After the collaborator have your issue been accepted, for sure that
+this issue will be present in the next release. So, the collaborator has
+the possibility of tracking your issue through the white labels
+information provided by HappyTree team over the course of time:
+
+| phase: backlog  | Issue that is in backlog phase  |
+| phase: in-progress  | In progress issue  |
+| phase: testing  | Issue in testing phase  |
+| phase: done  | Issue that is concluded and will be in next release  |
+
+### Branches
+
+HappyTree API strategy of handling development branches consists
+in work based on version, in other words, a version number drives
+the link among **Issues**, **Branches** and **Milestone**.
 
 <p align="center">
-  <img alt="Example of a Branch" src="./resources/branch_info.png"/>
+  <img alt="Image of version 2.0.0" src="./resources/versioning.png"/>
   </a>
 </p>
 
+This strategy of workflow is know as **Release Flow**, where, from
+the **main** branch, a respective branch for each release is created,
+in this case, creating the **2.0.0** branch under **main** branch.
 
-The numbers indicated in the column on the right represent the
-*Branches* created by the collaborator that will be used to commit.
-Each of these *Branches* created by the collaborator will be inserted
-within their respective *Sub-Branch* which indicates what type of
-development has been done. It is recommended that the *Issue Branch*
-indicates which *Milestone* it belongs. A good example of a
-*Issue Branch* pattern is something like
-**[1.0.2-103] - Short Description**, which the *1.0.2* corresponds to
-the current *Milestone* and *103* indicates the *Issue*. Through the
-labels, it is possible to identifier which *Sub-Branch* it will
-refer in the *Pull Request* phase.
+<p align="center">
+  <img alt="Image of version 2.0.0" src="./resources/happytree_branches.png"/>
+  </a>
+</p>
 
-Then, it is enough that the collaborator makes the *Pull Request* of
-the *Branch* created by himself for the HappyTree repository. If it
-is accepted, the collaborator's work will be incorporated within the
-*Sub-Branch* and will be available already within *Milestone*, which
-can be released already in the current version of the HappyTree API.
-However, when it comes to new features, it can be reallocated for
-future releases, a question that is decided soon after analysis.
+In this way, new features and fixes are made in dedicated branches
+and merged into **2.0.0** branch first before going to
+**master/main**, ensuring a good separation between stable and
+development code.
 
-For a code contribution to be successful, it has to pass the
-following steps:
+Knowing the current version which the work will be done, through the
+milestone, there will have only a branch below the **main**, and
+its name will represent the current version. **All developments,
+made by HappyTree Team and external collaborators must be
+child of this branch.** In a example of the v2.0.0, the **main**
+branch will have only one branch child called **2.0.0**.
 
-1. **Coding Standards;**
-2. **Unity Tests;**
-3. **Sonar Analysis.**
+Below of version branch, **2.0.0**, the collaborator creates his branch
+with no restriction, but as a recommendation, it will be nice whether the
+created branch follows the format: **2.0.0-issueId**, where *issueId*
+is the GitHub Issue ID reported by any user. For example, if there is an
+Issue #100, the branch name would be **2.0.0-100**.
 
-## See Before Contributing
+## Coding
 
-* [Required/recommended technologies](../README.md#techs)
-* [HappyTree API coding standards](./coding/CODING_STANDARDS.md)
-* [Writing tests](./coding/WRITING_TESTS.md)
+You as a developer who want to contribute, you must read, in the specified
+order, the following documents before start:
+
+1. [HappyTree API Coding Standards](./coding/CODING_STANDARDS.md)
+2. [Writing Tests](./coding/WRITING_TESTS.md)
+3. [Checklist](./coding/CHECKLIST.md)
