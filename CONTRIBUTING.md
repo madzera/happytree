@@ -81,7 +81,7 @@ current version of the API being developed at the moment.
 ### Milestones
 
 Each milestone represents a version of the project and have an estimated date to
-be concluded. The project can have the same number of milestone as the project
+be concluded. The project can have the same number of milestones as the project
 versions, being currently the version **2.0.0**.
 
 The milestone is a concept that is used only for internal purpose, the external
@@ -164,11 +164,6 @@ This strategy of workflow is known as **Release Flow**, where, from the **main**
 branch, a respective branch for each release is created, in this case, creating
 the **2.0.0** branch under **main** branch.
 
-<p align="center">
-  <img alt="Image of version 2.0.0" src="./.github/resources/happytree_branches.png"/>
-  </a>
-</p>
-
 In this way, new features and fixes are made in dedicated branches and merged
 into **2.0.0** branch first before going to **master/main**, ensuring a good
 separation between stable and development code.
@@ -184,6 +179,11 @@ restriction, but as a recommendation, it will be nice whether the created branch
 follows the format: **2.0.0-issueId**, where *issueId* is the GitHub Issue ID
 reported by any user. For example, if there is an Issue #100, the branch name
 would be **2.0.0-100**.
+
+<p align="center">
+  <img alt="Image of version 2.0.0" src="./.github/resources/happytree_branches.png"/>
+  </a>
+</p>
 
 ### Workflow
 
