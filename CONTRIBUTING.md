@@ -129,6 +129,8 @@ When a collaborator publish a new issue, it doesn't mean that the issue will be
 treated immediately, as this issue will receive a feedback by the HappyTree Team,
 represented by black labels and these labels can be:
 
+| Label  | Description  |
+|---|---|
 | status: waiting-for-triage  | Issue which was not seen yet  |
 | status: accepted  | Accepted issue  |
 | status: declined  | Declined issue  |
@@ -139,6 +141,8 @@ will be present in the next release. So, the collaborator has the possibility of
 tracking your issue through the white labels information provided by HappyTree
 Team over the course of time:
 
+| Label  | Description  |
+|---|---|
 | phase: backlog  | Issue that is in backlog phase  |
 | phase: in-progress  | In progress issue  |
 | phase: testing  | Issue in testing phase  |
