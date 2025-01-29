@@ -165,8 +165,8 @@ branch, a respective branch for each release is created, in this case, creating
 the **2.0.0** branch under **main** branch.
 
 In this way, new features and fixes are made in dedicated branches and merged
-into **2.0.0** branch first before going to **master/main**, ensuring a good
-separation between stable and development code.
+into **2.0.0** branch first before going to **main**, ensuring a good separation
+between stable and development code.
 
 Knowing the current version which the work will be done, through the milestone,
 there will have only a branch below the **main**, and its name will represent
@@ -215,7 +215,7 @@ compliant code would look like.
 
 ### Exposure
 
-The most important thing about Coding Standard is the exposure. The HappyTree API
+The most important thing about code style is the exposure. The HappyTree API
 has a specification indicating that the API only publicly exposes classes and
 methods when a feature for the API client is made available, that is:
 
