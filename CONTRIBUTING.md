@@ -78,7 +78,7 @@ branch, known as version branch.** So, there always will have a connection among
 **Issue**, **Milestone** and **Branch** and this link is identified by the
 current version of the API being developed at the moment.
 
-### Milestone
+### Milestones
 
 Each milestone represents a version of the project and have an estimated date to
 be concluded. The project can have the same number of milestone as the project
