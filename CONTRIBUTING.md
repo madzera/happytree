@@ -10,17 +10,18 @@ HappyTree API has a contribution organization in a very simple way, without
 bureaucracy. All of this in order to further encourage the act of contributing
 by third parties.
 
-Basically, you as a person who wants to contribute, you just need to fork the
-project and work over the actual version of the project, that version which is
-specified in every reported issue, through the milestone section.
+If you want to contribute, you just need to fork the project and work on the
+current version of the project, which is specified in every reported issue
+through the milestone section.
 
-Before you start, stick to our [Code of Conduct](./.github/CODE_OF_CONDUCT.md)
-to help us keep open and inclusive.
+Before you start, please adhere to our
+[Code of Conduct](./.github/CODE_OF_CONDUCT.md) to help us maintain an open and
+inclusive environment.
 
 ## Table of Contents
 
-- [Branches & Issues & Milestone](#branches--issues--milestone)
-  - [Milestone](#milestone)
+- [Branches & Issues & Milestones](#branches--issues--milestones)
+  - [Milestones](#milestones)
   - [Issues](#issues)
   - [Branches](#branches)
   - [Workflow](#workflow)
@@ -125,7 +126,7 @@ the following topics in this order:
 	* List and detail the step-by-step of what was done, if	preferable, with
 	some screenshots.
 
-When a collaborator publish a new issue, it doesn't mean that the issue will be
+When a collaborator publishes a new issue, it doesn't mean that the issue will be
 treated immediately, as this issue will receive a feedback by the HappyTree Team,
 represented by black labels and these labels can be:
 

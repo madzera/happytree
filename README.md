@@ -5,7 +5,9 @@
   </a>
 </p>
 
-“*Java Object Model API designed for the Java programming language that consists of transforming linear structures of Java Objects with a tree behavior into a real tree structure and allowing its handling.*”
+“*Java Object Model API designed for the Java programming language that consists
+of transforming linear structures of Java Objects with a tree behavior into a
+real tree structure and allowing its handling.*”
 
 
 <p align="center">
@@ -190,61 +192,10 @@ interface to handle these elements.
 
 [HappyTree Official Documentation](https://happytreeapi.vercel.app/happytree-1.0.0.pdf)
 
-
-## HappyTree Metadata
-
-
-### How to contribute?
+### Contributing
 
 In order to contribute with us?
 We are extremely grateful to collaborators.
 Thank you.
 
-See [Contributing.](./.github/CONTRIBUTING.md)
-
-<a name="techs"></a>
-
-### Requirements
-
-
-Because it acts on a specific layer of the architecture of a
-**Java Project**, the HappyTree API has a very limited list of
-requirements, so in addition to being easy to use, the HappyTree API
-also has an easy installation.
-
-Both to make use of, as well as to contribute, the requirements are:
-
-* **Java 8**;
-* **Maven 3.6.x**;
-* **The Java and Maven environment variables must be well configured ($JAVA_HOME, $MAVEN_HOME and $PATH).**
-* **SonarLint**: It is optional, but highly recommended to fix code
- issues.
-
-### Dependencies
-
-The HappyTree API has only one dependency, which is used to perform
-unit tests:
-
-* **JUnit 4.13.1**.
-
-### Code structure
-
-HappyTree API is structured into different directories:
-
-- [`src/main`](./src/main/java/com/madzera/happytree): API code.
-- [`src/test`](./src/test/java/com/madzera/happytree): JUnit test code.
-
-### Coding
-
-* [HappyTree API coding standards](/.github/coding/CODING_STANDARDS.md)
-* [Writing tests](/.github/coding/WRITING_TESTS.md)
-* [Checklist](/.github/coding/CHECKLIST.md)
-
-### Build
-
-For building, go to the project root folder and enter the following
-command:
-
-```mvn
-mvn clean package -Dgpg.skip=true
-```
+See [Contributing.](CONTRIBUTING.md)
