@@ -14,8 +14,8 @@ Basically, you as a person who wants to contribute, you just need to fork the
 project and work over the actual version of the project, that version which is
 specified in every reported issue, through the milestone section.
 
-Before you start, stick to our [Code of Conduct](./CODE_OF_CONDUCT.md) to help
-us keep open and inclusive.
+Before you start, stick to our [Code of Conduct](./.github/CODE_OF_CONDUCT.md)
+to help us keep open and inclusive.
 
 ## Table of Contents
 
@@ -278,7 +278,7 @@ Represents the most important package of the HappyTree API. This is where all
 the implemented specifications of the HappyTree API are contained.
 
 **Everything in this package must not be accessible to the API client**
-(except the [HappyTree](../../src/main/java/com/madzera/happytree/core/HappyTree.java)
+(except the [HappyTree](./src/main/java/com/madzera/happytree/core/HappyTree.java)
 class).
 
 The core package consists of:
@@ -551,10 +551,10 @@ interfaces for handling trees. Each interface contains a set of
 services (methods) that helps the API Client to handle trees. Those
 interfaces are:
 
-* [Element](../../src/main/java/com/madzera/happytree/Element.java)
-* [TreeManager](../../src/main/java/com/madzera/happytree/TreeManager.java)
-* [TreeTransaction](../../src/main/java/com/madzera/happytree/TreeTransaction.java)
-* [TreeSession](../../src/main/java/com/madzera/happytree/TreeSession.java)
+* [Element](./src/main/java/com/madzera/happytree/Element.java)
+* [TreeManager](./src/main/java/com/madzera/happytree/TreeManager.java)
+* [TreeTransaction](./src/main/java/com/madzera/happytree/TreeTransaction.java)
+* [TreeSession](./src/main/java/com/madzera/happytree/TreeSession.java)
 
 With this in mind, the unit tests structure are based in two types of
 tests:
@@ -563,7 +563,7 @@ tests:
 
 They are customized tests, free of any rule. Any collaborator can perform any
 type of tests for the HappyTree API here. The test classes are localized in:
-[demo](../../src/test/java/com/madzera/happytree/demo).
+[demo](./src/test/java/com/madzera/happytree/demo).
 
 Already, there are **model** and **util** sub-packages, for better organization.
 
@@ -608,10 +608,10 @@ is recommended. Example: **updateElement()**.
 #### Main Test Class
 
 The main test class of the HappyTree API is in:
-[HappyTreeTest](../../src/test/java/com/madzera/happytree/HappyTreeTest.java)
+[HappyTreeTest](./src/test/java/com/madzera/happytree/HappyTreeTest.java)
 in the root level of the test package.
 
-Just as [HappyTree](../../src/main/java/com/madzera/happytree/core/HappyTree.java)
+Just as [HappyTree](./src/main/java/com/madzera/happytree/core/HappyTree.java)
 represents an entry class for the API, **HappyTreeTest** represents an entry
 test class to perform all unit tests of the HappyTree API. It seems like a
 *Master Suited Test Class*. Every new suited test class has to be added to the
