@@ -151,7 +151,7 @@ on version, in other words, a version number drives the link among **Issues**,
 **Branches** and **Milestone**.
 
 <p align="center">
-  <img alt="Image of version 2.0.0" src="./resources/versioning.png"/>
+  <img alt="Image of version 2.0.0" src="./.github/resources/versioning.png"/>
   </a>
 </p>
 
@@ -160,7 +160,7 @@ branch, a respective branch for each release is created, in this case, creating
 the **2.0.0** branch under **main** branch.
 
 <p align="center">
-  <img alt="Image of version 2.0.0" src="./resources/happytree_branches.png"/>
+  <img alt="Image of version 2.0.0" src="./.github/resources/happytree_branches.png"/>
   </a>
 </p>
 
@@ -652,7 +652,7 @@ convention, and define the following criteria within the comments:
 #### Example
 
 <p align="center">
-  <img alt="Example of a test comment" src="../resources/ex_unit_test_comment.png"/>
+  <img alt="Example of a test comment" src="./.github/resources/ex_unit_test_comment.png"/>
   </a>
 </p>
 
