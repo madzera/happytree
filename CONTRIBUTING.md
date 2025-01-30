@@ -500,10 +500,12 @@ requirements, dependencies and build command.
 ### Requirements
 
 Because it acts on a specific layer of the architecture of a **Java Project**,
-the HappyTree API has a very limited list of requirements, so in addition to
-being easy to use, the HappyTree API also has an easy installation.
+the HappyTree API has a very limited list of requirements, so, in addition to
+being easy to use, the HappyTree API almost has not requirements.
 
-Both to make use of, as well as to contribute, the requirements are:
+To use the HappyTree API as project dependency, you just need of **Java 8**.
+
+To contribute for the HappyTree API, the requirements are:
 
 * **Java 8**;
 * **Maven 3.6.x**;
@@ -519,10 +521,10 @@ For a code contribution to be successful, it has to pass the following steps:
 
 ### Dependencies
 
-The HappyTree API has only one dependency, which is used to perform
-unit tests:
+The HappyTree API has two dependencies:
 
-* **JUnit 4.13.1**.
+* **JUnit 4.13.1** for unit tests;
+* **Jackson 2.17.2** for conversions from Java objects.
 
 ### Code structure
 
@@ -543,26 +545,25 @@ mvn clean package -Dgpg.skip=true
 
 The HappyTree API has a well-defined structure of unit tests for each method and
 each interface made available to the API client. In this context, JUnit is
-adopted for unit testing.
+adopted for unit tests.
 
-In the first part, will be showed up the unit tests structure. Lastly this
+In the first part, will be shown up the unit tests structure. Lastly this
 section will introduce how the collaborators can help us, by determining
 standards/recommendations of writing tests.
 
 ### The unit tests structure
 
-Currently, the HappyTree API provides to the API client, four
-interfaces for handling trees. Each interface contains a set of
-services (methods) that helps the API Client to handle trees. Those
-interfaces are:
+Currently, the HappyTree API provides to the API client, four interfaces for
+handling trees. Each interface contains a set of services (methods) that help
+the API Client to handle trees. Those interfaces
+are:
 
 * [Element](./src/main/java/com/madzera/happytree/Element.java)
 * [TreeManager](./src/main/java/com/madzera/happytree/TreeManager.java)
 * [TreeTransaction](./src/main/java/com/madzera/happytree/TreeTransaction.java)
 * [TreeSession](./src/main/java/com/madzera/happytree/TreeSession.java)
 
-With this in mind, the unit tests structure are based in two types of
-tests:
+With this in mind, the unit tests structure are based in two types of tests:
 
 #### Demo tests
 
@@ -571,12 +572,13 @@ type of tests for the HappyTree API here. The test classes are localized in:
 [demo](./src/test/java/com/madzera/happytree/demo).
 
 Already, there are **model** and **util** sub-packages, for better organization.
+You can feel free to create sub packages inside **demo**.
 
 #### API client interfaces tests
 
 These tests are fundamentals for each available service provided by their
 respective interfaces. So, each interface are represented by a package, and each
-package can contain:
+package can contains:
 
 * The happy scenario tests (mandatory);
 * The alternative scenario tests (optional);
@@ -612,44 +614,50 @@ is recommended. Example: **updateElement()**.
 
 #### Main Test Class
 
-The main test class of the HappyTree API is in:
+The main test class of the HappyTree API is 
 [HappyTreeTest](./src/test/java/com/madzera/happytree/HappyTreeTest.java)
 in the root level of the test package.
 
 Just as [HappyTree](./src/main/java/com/madzera/happytree/core/HappyTree.java)
 represents an entry class for the API, **HappyTreeTest** represents an entry
 test class to perform all unit tests of the HappyTree API. It seems like a
-*Master Suited Test Class*. Every new suited test class has to be added to the
-**HappyTreeTest**.
+*Master Suited Test Class*. **Every new suited test class has to be added to the
+HappyTreeTest.**
 
 ```
-HappyTreeTest -> TreeManagerSuiteTest -> TreeManagerTest
-                                      -> TreeManagerAlternativeTest
-                                      -> TreeManagerErrorTest
+HappyTreeTest -> TreeManagerSuiteTest     -> TreeManagerTest
+                                          -> TreeManagerAlternativeTest
+                                          -> TreeManagerErrorTest
+              -> ElementSuiteTest         -> ElementTest
+                                          -> ElementAlternativeTest
+              -> TreeSessionSuiteTest     -> TreeSessionTest
+              -> TreeTransactionSuiteTest -> TreeTransactionTest
+                                          -> TreeTransactionAlternativeTest
+                                          -> TreeTransactionErrorTest
+
 ```
 
 ### Standards
 
 Before starting, the most important recommendation is below:
 
-> Each interface (mentioned above) method **must** have at least one test in the
-happy scenario.
+> Each interface (mentioned in [this section](#the-unit-tests-structure)) method
+**must** have at least one test in the happy scenario.
 
-Following are other recommendations:
+The recommendations are:
 
-* If your test is related to an interface of which the API client is integrated,
-your test must be located within the respective package to which the interface
-in question is represented.
+* If your test is related with one of those API interfaces, your test must be
+located within the respective package related to its respective interface.
 * Implement your test and place it within the class to which the type of
-scenario the test indicates.
+scenario the test indicates (happy, alternative or error scenarios).
 * It is highly recommended that the name of the test method matches something
 close to the method name of the interface to which the test refers. If, in
 addition, it is an error or alternative test, it would be appropriate to
 concatenate with "_" plus the description of the situation:
- 	* e.g: <code>public void foo_nullArgument()</code>.
+ 	* e.g: <code>public void updateElement_nullArgument()</code>.
 * It is highly recommended to write comments, compatible with the **Javadoc**
 convention, and define the following criteria within the comments:
- 	* The interface method to which the test refers;
+ 	* The interface method which the test refers;
  	* A quick description of the test objective;
  	* A quick description of what is expected from the test;
  	* The enumerated steps of what the test does.
@@ -666,5 +674,5 @@ convention, and define the following criteria within the comments:
 
 ### Questions
 
-Any questions regarding testing, create an **Issue** with the *question* or
-*test* labels.
+Any questions regarding tests, create an **Issue** with the *question* or *test*
+labels.
