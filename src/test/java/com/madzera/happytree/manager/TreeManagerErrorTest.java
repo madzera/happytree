@@ -2,6 +2,7 @@ package com.madzera.happytree.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -24,7 +25,6 @@ import com.madzera.happytree.exception.TreeException;
  * of {@link TreeManager}.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega
- *
  */
 public class TreeManagerErrorTest {
 
@@ -44,7 +44,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Get the manager;</li>
 	 * 	<li>Try to create an element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -65,8 +66,10 @@ public class TreeManagerErrorTest {
 			manager.createElement(elementId, parentElementId, null);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
 		}
 	}
 	
@@ -88,7 +91,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Deactivate the same session;</li>
 	 * 	<li>Try to create an element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -114,8 +118,10 @@ public class TreeManagerErrorTest {
 			manager.createElement(elementId, parentElementId, null);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
 		}
 	}
 	
@@ -137,7 +143,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Initialize a new session;</li>
 	 * 	<li>Create an element with <code>null</code> id;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -159,8 +167,10 @@ public class TreeManagerErrorTest {
 			manager.createElement(nullablElementId,	null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
 		}
 	}
 
@@ -187,7 +197,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Still in target session, try to cut the first element from the
 	 * 	source session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -225,8 +236,10 @@ public class TreeManagerErrorTest {
 			manager.cut(dreamweaver, drivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -259,7 +272,8 @@ public class TreeManagerErrorTest {
 	 * 	source session for inside of the target session, which is deactivated;
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -300,8 +314,10 @@ public class TreeManagerErrorTest {
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertTrue(manager.containsElement(usersId, administratorId));
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -328,7 +344,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to invoke {@link TreeManager#cut(Element, Element)} with a
 	 * 	<code>null</code> value in the <code>from</code> parameter;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -356,8 +374,10 @@ public class TreeManagerErrorTest {
 			manager.cut(nullableElement, programFiles);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
 		}
 	}
 	
@@ -384,7 +404,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut this element (<code>null</code>) for inside of an existed
 	 * 	element;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -414,8 +436,10 @@ public class TreeManagerErrorTest {
 			manager.cut(nullableElement, programFiles);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
 		}
 	}
 	
@@ -442,7 +466,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to invoke {@link TreeManager#cut(Object, Object)} with a
 	 * 	<code>null</code> value in the <code>from</code> parameter;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -468,8 +494,10 @@ public class TreeManagerErrorTest {
 			manager.cut(nullableId, programFilesId);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
 		}
 	}
 	
@@ -497,7 +525,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut a not existed element by its id for inside of an existed
 	 * 	element;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -522,8 +552,10 @@ public class TreeManagerErrorTest {
 			manager.cut(notExistingFromId, wordExeId);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
 		}
 	}
 	
@@ -557,7 +589,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to cut the source root element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -592,8 +625,10 @@ public class TreeManagerErrorTest {
 			manager.cut(root, windows);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -622,7 +657,8 @@ public class TreeManagerErrorTest {
 	 * 	&quot;foo&quot; element;</li>
 	 * 	<li>Try now to cut this changed element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -657,8 +693,10 @@ public class TreeManagerErrorTest {
 			manager.cut(tmp, administrator);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -689,7 +727,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Try to cut the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -734,8 +773,10 @@ public class TreeManagerErrorTest {
 			manager.cut(sdk, bin);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -768,7 +809,8 @@ public class TreeManagerErrorTest {
 	 * 	&quot;System32&quot; element of the target tree;</li>
 	 * 	<li>Catch the <code>TreeException</code> because &quot;Entry&quot;
 	 * 	element already exists in target tree;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -811,8 +853,10 @@ public class TreeManagerErrorTest {
 			manager.cut(sourceEntry, system32);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -844,7 +888,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut the &quot;Entry&quot; element from the source tree to
 	 * 	&quot;Entry&quot; element of the target tree;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -886,8 +931,10 @@ public class TreeManagerErrorTest {
 			manager.cut(sourceEntry, targetEntry);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -920,7 +967,8 @@ public class TreeManagerErrorTest {
 	 * 	id as one of the children of the target element;</li>
 	 * 	<li>Try to cut the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -956,8 +1004,10 @@ public class TreeManagerErrorTest {
 			manager.cut(sourceDrivers, targetDrivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -993,7 +1043,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut the source element typified by <code>Directory</code>
 	 * 	inside of the target typified by <code>Metadata</code>;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 * 
 	 */
@@ -1034,8 +1085,10 @@ public class TreeManagerErrorTest {
 			manager.cut(mp4, type);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1063,7 +1116,8 @@ public class TreeManagerErrorTest {
 	 * 	source session into the target element through of incorrect current
 	 * 	session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1101,8 +1155,10 @@ public class TreeManagerErrorTest {
 			manager.copy(dreamweaver, drivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1135,7 +1191,8 @@ public class TreeManagerErrorTest {
 	 * 	source session for inside of the target session, which is deactivated;
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -1176,8 +1233,10 @@ public class TreeManagerErrorTest {
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertTrue(manager.containsElement(usersId, administratorId));
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1209,7 +1268,9 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Try to copy the source element;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	message error and original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -1245,8 +1306,10 @@ public class TreeManagerErrorTest {
 			manager.copy(nullableElement, drivers);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
 		}
 	}
 	
@@ -1280,7 +1343,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element into the not existing target element;
 	 * 	</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	message error and original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -1316,8 +1381,10 @@ public class TreeManagerErrorTest {
 			manager.copy(readme, nullableElement);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
 		}
 	}
 	
@@ -1351,7 +1418,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source root element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1386,8 +1454,10 @@ public class TreeManagerErrorTest {
 			manager.copy(root, windows);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1421,7 +1491,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source element which was detached;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1460,8 +1531,10 @@ public class TreeManagerErrorTest {
 			manager.copy(office, drivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1496,7 +1569,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element into the detached target element;
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1533,8 +1607,10 @@ public class TreeManagerErrorTest {
 			manager.copy(office, drivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1569,7 +1645,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1615,8 +1692,10 @@ public class TreeManagerErrorTest {
 			manager.copy(sdk, system32);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1650,7 +1729,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1693,8 +1773,10 @@ public class TreeManagerErrorTest {
 			manager.copy(duplicatedEntry, system32);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1728,7 +1810,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the session for the source session;</li>
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1770,8 +1853,10 @@ public class TreeManagerErrorTest {
 			manager.copy(sourceEntry, targetEntry);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1804,7 +1889,8 @@ public class TreeManagerErrorTest {
 	 * 	id as one of the children of the target element;</li>
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1839,8 +1925,10 @@ public class TreeManagerErrorTest {
 			manager.copy(sourceDrivers, targetDrivers);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 
@@ -1869,7 +1957,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Try to copy the element. Both belong to the same tree;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1899,8 +1988,10 @@ public class TreeManagerErrorTest {
 			manager.copy(realtek, readme);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -1929,7 +2020,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the element to become it as &quot;detached&quot;;</li>
 	 * 	<li>Try to remove this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1963,8 +2055,10 @@ public class TreeManagerErrorTest {
 			manager.removeElement(readme);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 
@@ -1995,7 +2089,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Try to remove the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2038,8 +2133,10 @@ public class TreeManagerErrorTest {
 			manager.removeElement(sdk);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2066,7 +2163,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Get the root of the tree;</li>
 	 * 	<li>Try to remove the root element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2092,8 +2190,10 @@ public class TreeManagerErrorTest {
 			manager.removeElement(root);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2125,7 +2225,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to remove an element typified by <code>Metadata</code> from
 	 * 	inside of the tree typified by <code>Directory</code>;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 * 
 	 */
@@ -2157,8 +2258,10 @@ public class TreeManagerErrorTest {
 			manager.removeElement(type);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2180,7 +2283,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Declare a <code>null</code> element;</li>
 	 * 	<li>Try to persist the element;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	message error and original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -2200,8 +2305,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(nullableElement);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
 		}
 	}
 	
@@ -2223,7 +2330,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Create an element with <code>null</code> id attribute value;</li>
 	 * 	<li>Try to persist the element;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	message error and original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -2246,8 +2355,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(element);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
 		}
 	}
 	
@@ -2274,7 +2385,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Create an element with duplicated id;</li>
 	 * 	<li>Try to persist this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2298,8 +2410,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2331,7 +2445,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to persist the element that its child has the duplicated id;
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2368,8 +2483,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 
@@ -2400,7 +2517,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to persist the element that represents the parent element of
 	 * 	others;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2440,8 +2558,10 @@ public class TreeManagerErrorTest {
 			
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2470,7 +2590,8 @@ public class TreeManagerErrorTest {
 	 * 	element status from &quot;ATTACHED&quot; to &quot;DETACHED&quot;;</li>
 	 * 	<li>Try to persist the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2505,8 +2626,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2534,7 +2657,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Create an element with the <code>Metadata</code> type;</li>
 	 * 	<li>Try to persist the mismatch element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2562,8 +2686,10 @@ public class TreeManagerErrorTest {
 			manager.persistElement(mismatchElement);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2589,7 +2715,9 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to get an element through a not existing id;</li>
 	 * 	<li>Try to update an element with <code>null</code> argument value;</li>
 	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	message error and original exception.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -2614,8 +2742,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(nullableElement);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
 		}
 	}
 	
@@ -2643,7 +2773,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change its id to another existing id inside of the tree;</li>
 	 * 	<li>Try to update this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2674,8 +2805,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(ide);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2706,7 +2839,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to update the element which its grand child has now the
 	 * 	duplicated id;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2753,8 +2887,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(realtek);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2782,7 +2918,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the id of the root (not necessary);</li>
 	 * 	<li>Try to update the root element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2810,8 +2947,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(root);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 	
@@ -2836,7 +2975,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to update this element, which has not been persisted in the tree
 	 * 	before;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2862,8 +3002,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 
@@ -2893,7 +3035,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Invoke the {@link TreeManager#updateElement(Element)} passing
 	 * 	through the element from the source tree session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error.</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2928,8 +3071,10 @@ public class TreeManagerErrorTest {
 			manager.updateElement(eclipseExe);
 		} catch (TreeException e) {
 			error = e.getMessage();
-		} finally {
 			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
 		}
 	}
 }
