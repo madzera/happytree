@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Before working on an issue
+    url: https://github.com/madzera/happytree/blob/2.0.0/CONTRIBUTING.md
+    about: Before opening a new issue, please make sure to read CONTRIBUTING.md

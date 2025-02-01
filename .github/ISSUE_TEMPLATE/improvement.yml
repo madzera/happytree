@@ -1,0 +1,48 @@
+name: Improvement
+description: Suggest an changing or improvement
+title: "[2.0.0] - "
+labels: ["type:enhancement", "type:suggestion"]
+projects:
+  - "[2.0.0] - HappyTree"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to properly describe your suggestion of improvement.
+  - type: dropdown
+    id: enhancement_type
+    attributes:
+      label: What sort of improvement are you suggesting?
+      options:
+        - "Branching strategy"
+        - "Markdown Documentation"
+        - "Something in the code"
+        - "Something in the CI/CD pipeline"
+        - "Testing strategy"
+        - "Wiki Documentation"
+        - "Other"
+  - type: textarea
+    id: enhancement_details
+    attributes:
+      label: Description of the improvement
+      placeholder: |
+        A new strategy of caching should be adopted because...
+    validations:
+      required: true
+  - type: textarea
+    id: enhancement_context
+    attributes:
+      label: Additional context
+      placeholder: |
+        Add any other context or screenshots about the feature request here.
+  - type: checkboxes
+    id: enhancement_assign_me
+    attributes:
+      label: "Extra fields"
+      options:
+        - label: "I want to work on this issue"
+          required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion! Let's see together if it can be changed or implemented.

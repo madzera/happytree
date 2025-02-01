@@ -1,39 +1,48 @@
 name: Bug Report
 description: Report a bug
-labels: ["bug"]
+title: "[2.0.0] - "
+labels: ["type:bug"]
+projects:
+  - "[2.0.0] - HappyTree"
 body:
   - type: markdown
     attributes:
       value: |
         Please fill out the sections below to help everyone identify and fix the bug
   - type: textarea
-    id: what_was_done
+    id: bug_what_was_done
     attributes:
       label: What was done?
     validations:
       required: true
   - type: textarea
-    id: what_happened
+    id: bug_what_happened
     attributes:
       label: What happened?
     validations:
       required: true
   - type: textarea
-    id: what_was_expected
+    id: bug_what_was_expected
     attributes:
       label: What was expected to happen?
+    validations:
+      required: true
   - type: textarea
-    id: steps
+    id: bug_steps
     attributes:
       label: Steps (optional)
-  - type: textarea
-    id: assign
-    attributes:
-      label: "Would you like to work on this issue?"
       placeholder: |
-        1. Go to page X
-        2. Click here
-        3. Click there
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+  - type: checkboxes
+    id: bug_assign_me
+    attributes:
+      label: "Extra fields"
+      options:
+        - label: "I want to work on this issue"
+          required: false
   - type: markdown
     attributes:
       value: |

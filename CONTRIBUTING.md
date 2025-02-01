@@ -89,7 +89,21 @@ collaborators can not handle it.
 
 ### Issues
 
-Any collaborator can create new issues. To do this, just put in the title, the
+Any collaborator can create new issues. There are two ways of creating new
+issues:
+  - By a template;
+  - By creating an empty issue.
+
+When the collaborator push the button to create a new issue, he will going to a
+page to specify the type of the issue through a template or just create a new
+empty issue.
+
+By selecting a template, it automatically will generate all inputs that the
+collaborator needs to fill, there is no worries here.
+
+Another option occurs when the collaborator decides to create a empty issue
+without templates. To do this, the collaborator has to respect some rules, for
+better comprehension and ideas organization. just put in the title, the
 prefix corresponding to the current *Milestone* version, for example:
 **[2.0.0] - Print Hello World**. It is very important that this prefix
 (**[2.0.0] -**) be placed.
