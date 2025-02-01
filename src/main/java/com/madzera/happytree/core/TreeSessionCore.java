@@ -52,24 +52,16 @@ class TreeSessionCore implements TreeSession {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((identifier == null) ?
-				0 : identifier.hashCode());
-		return result;
+		return prime * result + identifier.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TreeSessionCore other = (TreeSessionCore) obj;
-		if (identifier == null) {
-			if (other.identifier != null)
-				return false;
-		} else if (!identifier.equals(other.identifier)) {
+		else if ((obj == null)
+			|| (getClass() != obj.getClass())
+			|| !((TreeSessionCore) obj).identifier.equals(this.identifier)) {
 			return false;
 		}
 		return true;
