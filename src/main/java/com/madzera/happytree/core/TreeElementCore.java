@@ -338,13 +338,13 @@ class TreeElementCore<T> implements Element<T> {
 		return oldParentId;
 	}
 
-	void setOldParentId(Object oldParentId) {
-		this.oldParentId = oldParentId;
-	}
-
 	private int calculateHashForId(Object id) {
 		final int perfectNumber = 32;
-		if (id instanceof Byte || id instanceof Short || id instanceof Integer) {
+		if (id instanceof Byte) {
+			return (byte) id;
+		} else if (id instanceof Short) {
+			return (short) id;
+		} else if (id instanceof Integer) {
 			return (int) id;
 		} else if (id instanceof Long) {
 			long convertedId = (Long) id;

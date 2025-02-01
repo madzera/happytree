@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
+import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
@@ -620,5 +621,175 @@ public class ElementTest {
 		
 		assertNotNull(wrappedDirectory);
 		assertEquals(directoryName, wrappedDirectory.getName());
+	}
+
+	/**
+	 * Test for the {@link Object#hashCode()} local implementation.
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Compare hash codes from 4 different decimal Java types and 2 different
+	 * floating point types. The comparison occurs between the same values for
+	 * each different decimal type. For decimal type, the value is the maximum
+	 * capacity of the <code>byte</code> type (127). 
+	 * <p><b>Expected:</b></p>
+	 * The test consists in proving that the decimal types have the same hash
+	 * when using the same value (<code>Byte.MAX_VALUE</code>). Opposing to this,
+	 * the floating point types have different hash codes when using the same
+	 * value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare 4 variable with the maximum <code>byte</code> type capacity,
+	 * 	each of one with different types: byte, short, int and long;</li>
+	 * 	<li>Declare one <code>long</code variable with the maximum
+	 * 	<code>byte</code> value type + 1;</li>
+	 * 	<li>Declare another 2 variable with different floating point types: 
+	 * 	float and double;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create the elements with the identifiers specified above;</li>
+	 * 	<li>Create more two elements representing the maximum <code>byte</code>
+	 * 	value + 1 and a hypothetical parent of all of them;</li>
+	 * 	<li>Assert that these 4 elements, without parent, have the same hash
+	 * 	code and different hash code from that has the maximum <code>byte</code>
+	 * 	value + 1 element;</li>
+	 * 	<li>Assert that the those elements representing the <code>float</code
+	 * 	and <code>double</code> types have different hash codes even though they
+	 * 	have the same value;</li>
+	 * 	<li>Set the parent with a random <code>double</code> value for all of
+	 * 	them;</li>
+	 * 	<li>Repeat exactly the same asserts.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void elementHashCode() throws TreeException {
+		final String sessionId = "elementHashCode";
+
+		final int elementId1 = (int) Byte.MAX_VALUE;
+		final short elementId2 = (short) Byte.MAX_VALUE;
+		final byte elementId3 = Byte.MAX_VALUE;
+		final long elementId4 = Byte.MAX_VALUE;
+		final long elementId5 = Byte.MAX_VALUE+1;
+		
+		final float elementId6 = 3478524.35924f;
+		final float elementId7 = 3478524.35924f;
+		final double elementId8 = 3478524.35924;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId, Directory.class);
+
+		Element<Directory> element1 = manager.createElement(elementId1,
+		null, null);		
+		Element<Directory> element2 = manager.createElement(elementId2,
+		null, null);
+		Element<Directory> element3 = manager.createElement(elementId3,
+		null, null);
+		Element<Directory> element4 = manager.createElement(elementId4,
+		null, null);
+		Element<Directory> element5 = manager.createElement(elementId5,
+		null, null);
+
+		Element<Directory> element6 = manager.createElement(elementId6,
+		null, null);
+		Element<Directory> element7 = manager.createElement(elementId7,
+		null, null);
+		Element<Directory> element8 = manager.createElement(elementId8,
+		null, null);
+
+		Element<Directory> parent = manager.createElement(Math.random(),
+			null, null);
+
+		validateHashCodes(
+			element1,
+			element2,
+			element3,
+			element4,
+			element5,
+			element6,
+			element7,
+			element8
+		);
+
+		element1.setParent(parent.getId());
+		element2.setParent(parent.getId());
+		element3.setParent(parent.getId());
+		element4.setParent(parent.getId());
+
+		element6.setParent(parent.getId());
+		element7.setParent(parent.getId());
+
+		validateHashCodes(
+			element1,
+			element2,
+			element3,
+			element4,
+			element5,
+			element6,
+			element7,
+			element8
+		);
+	}
+
+	@Test
+	public void elementEquals() throws TreeException {
+		final String sessionId1 = "elementEquals1";
+		final String sessionId2 = "elementEquals2";
+
+		final Object elementId1 = BigDecimal.ONE.doubleValue();
+		final Object elementId12 = BigDecimal.ONE.doubleValue();
+
+		final String diffTypeElementId = BigDecimal.ONE.doubleValue() + "";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId1, Directory.class);	
+		transaction.initializeSession(sessionId2, Directory.class);
+
+		TreeSession session1 = transaction.sessionCheckout(sessionId1);
+
+		Element<Directory> element1 = manager.createElement(elementId1,
+		null, null);
+		Element<Directory> sameElement1 = manager.createElement(elementId1,
+		null, null);
+		Element<Directory> diffElement1 = manager.createElement(
+			diffTypeElementId,null, null);
+			
+		assertEquals(sameElement1, sameElement1);
+		assertNotEquals(element1, null);
+		assertNotEquals(element1, new Object());
+		
+		element1 = manager.persistElement(element1);
+
+		element1.setId(null);
+		element1 = manager.updateElement(element1);
+		assertNotEquals(element1, diffElement1);
+		assertNotEquals(element1, diffElement1);
+	}
+
+	private void validateHashCodes(
+		Element<Directory> element1,
+		Element<Directory> element2,
+		Element<Directory> element3,
+		Element<Directory> element4,
+		Element<Directory> element5,
+		Element<Directory> element6,
+		Element<Directory> element7,
+		Element<Directory> element8) {
+		assertEquals(element1.hashCode(), element2.hashCode());
+		assertEquals(element1.hashCode(), element3.hashCode());
+		assertEquals(element2.hashCode(), element3.hashCode());
+		assertEquals(element1.hashCode(), element4.hashCode());
+		assertEquals(element2.hashCode(), element4.hashCode());
+		assertEquals(element3.hashCode(), element4.hashCode());
+
+		assertNotEquals(element1.hashCode(), element5.hashCode());
+		assertNotEquals(element2.hashCode(), element5.hashCode());
+		assertNotEquals(element3.hashCode(), element5.hashCode());
+		assertNotEquals(element4.hashCode(), element5.hashCode());
+		
+		assertEquals(element6.hashCode(), element7.hashCode());
+		assertNotEquals(element7.hashCode(), element8.hashCode());
 	}
 }
