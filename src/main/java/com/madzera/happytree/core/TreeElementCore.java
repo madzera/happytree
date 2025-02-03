@@ -179,7 +179,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public boolean equals(Object another) {
-		Boolean isEqual = Boolean.TRUE;
+		boolean isEqual = Boolean.TRUE;
 		if (this == another) {
 			return isEqual;
 		}
@@ -195,22 +195,12 @@ class TreeElementCore<T> implements Element<T> {
 		
 		TreeSession otherSession = other.attachedTo();
 
-		if ((this.id == null && otherId != null) ||
-				(this.id != null && !this.id.equals(otherId))) {
-			return Boolean.FALSE;
-		}
+		isEqual = (this.id != null && this.id.equals(otherId))
+			&& (this.parentId != null && this.parentId.equals(otherParentId)
+				|| this.parentId == null && otherParentId == null)
+			&& (this.session != null && this.session.equals(otherSession)
+				|| this.session == null && otherSession == null); 
 		
-		if ((this.parentId == null && otherParentId != null) ||
-				(this.parentId != null &&
-				!this.parentId.equals(otherParentId))) {
-			return Boolean.FALSE;
-		}
-		
-		if ((this.session == null && otherSession != null) ||
-				(this.session != null &&
-				!this.session.equals(otherSession))) {
-			return Boolean.FALSE;
-		}
 		return isEqual;
 	}
 	

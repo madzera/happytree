@@ -553,6 +553,9 @@ public interface TreeManager {
 	 * 
 	 * @throws TreeException when the transaction has no selected session to
 	 * work or the current session is not active
+	 * 
+	 * @throws IllegalArgumentException when the <code>id</code> parameter is
+	 * <code>null</code>
 	 */
 	public <T> Element<T> createElement(Object id, Object parent,
 			T wrappedNode) throws TreeException;
@@ -652,10 +655,10 @@ public interface TreeManager {
 	 * 
 	 * <p>A <i>DETACHED</i> element represents an element, or one of its
 	 * children, in which it has undergone some change, whether it be the id,
-	 * the parent id or the wrapped node. Ensure yourself to avoid duplicated
-	 * id in current session by an id change. To move up the
-	 * element for the root level, just set the parent id as <code>null</code>
-	 * or reference an unknown parent id.</p>
+	 * the parent id or the wrapped node. <b>Ensure yourself to avoid duplicated
+	 * id in current session by an id change</b>. To move up the element for the
+	 * root level, just set the parent id as <code>null</code> or reference an
+	 * unknown parent id.</p>
 	 * 
 	 * <p>This operation is for <i>DETACHED</i> elements. Trying to update a
 	 * <i>NOT_EXISTED</i> element in the tree, an exception is threw. For

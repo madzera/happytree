@@ -738,9 +738,7 @@ public class ElementTest {
 		final String sessionId2 = "elementEquals2";
 
 		final Object elementId1 = BigDecimal.ONE.doubleValue();
-		final Object elementId12 = BigDecimal.ONE.doubleValue();
-
-		final String diffTypeElementId = BigDecimal.ONE.doubleValue() + "";
+		final Object elementId2 = BigDecimal.ONE.doubleValue();
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -751,21 +749,17 @@ public class ElementTest {
 
 		Element<Directory> element1 = manager.createElement(elementId1,
 		null, null);
+		Element<Directory> element2 = manager.createElement(elementId2,
+		null, null);
+
 		Element<Directory> sameElement1 = manager.createElement(elementId1,
 		null, null);
-		Element<Directory> diffElement1 = manager.createElement(
-			diffTypeElementId,null, null);
-			
+
 		assertEquals(sameElement1, sameElement1);
 		assertNotEquals(element1, null);
 		assertNotEquals(element1, new Object());
 		
-		element1 = manager.persistElement(element1);
-
-		element1.setId(null);
-		element1 = manager.updateElement(element1);
-		assertNotEquals(element1, diffElement1);
-		assertNotEquals(element1, diffElement1);
+		assertEquals(element1, element2);
 	}
 
 	private void validateHashCodes(
