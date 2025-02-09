@@ -1,6 +1,7 @@
 package com.madzera.happytree.element;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
+import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
@@ -282,5 +284,127 @@ public class ElementAlternativeTest {
 		
 		Directory wrappedDirectory = element.unwrap();
 		assertNull(wrappedDirectory);
+	}
+
+	/**
+	 * Test for the {@link Object#equals(Object)} local implementation.
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Compare inequality between two <code>TreeElement</code> objects.
+	 * <p><b>Expected:</b></p>
+	 * Two <code>TreeElement</code> objects not equals in those scenarios:
+	 * <ul>
+	 * 	<li>The element passed as parameter has a different class type;</li>
+	 * 	<li>The element passed as parameter is <code>null</code>;</li>
+	 * 	<li>Both elements have same identifier and same parent but into in
+	 * 	different sessions;</li>
+	 * 	<li>Both element, contained into the same session, have the same
+	 * 	identifier but different parents;</li>
+	 * 	<li>Both element, contained into the same session, have same parent but
+	 * 	different identifiers.</li>
+	 * </ul>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize the <code>equals_notEquals1</code> session;</li>
+	 * 	<li>Create the <code>element1</code>;</li>
+	 * 	<li>Assert that the <code>element1</code> is not equal to a new
+	 * 	<code>Object</code> neither <code>null</code>;</li>
+	 * 	<li>Initialize the <code>equals_notEquals2</code> session;</li>
+	 * 	<li>Create the <code>element2</code> with the same identifier as the
+	 * 	<code>element1</code>;</li>
+	 * 	<li>Assert that the both elements are no equals because have different
+	 * 	sessions;</li>
+	 * 	<li>Force the both of elements to use the same session;</li>
+	 * 	<li>Assert that the both elements are not equals when the
+	 * 	<code>element1</code> has a <code>null</code> parent;</li>
+	 * 	<li>Assert that the both elements are not equals when the
+	 * 	<code>element1</code> and <code>element2</code> have different parents;
+	 * 	</li>
+	 * 	<li>Force the both of elements to have the same parent;</li>
+	 * 	<li>Reassign the <code>element2</code> with a different identifier
+	 * 	compared to the <code>element1</code>;</li>
+	 * 	<li>Assert that they are not equals.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void equals_notEquals() throws TreeException {
+		final String sessionId1 = "equals_notEquals1";
+		final String sessionId2 = "equals_notEquals2";
+
+		final String elementId1 = "elementId1";
+		final String elementId2 = "elementId2";
+
+		final String sameParentId = "sameParentId";
+		final String parentId1 = "parentId1";
+		final String parentId2 = "parentId2";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId1, Directory.class);
+		Element<Directory> element1 = manager.createElement(elementId1,
+			parentId1, null);
+		
+		assertNotEquals(element1, new Object());
+		assertNotEquals(element1, null);
+
+		transaction.initializeSession(sessionId2, Directory.class);
+		Element<Directory> element2 = manager.createElement(elementId1,
+			parentId1, null);
+		
+		assertNotEquals(element1, element2);
+
+		transaction.destroySession(sessionId2);
+		transaction.sessionCheckout(sessionId1);
+
+		element1.setParent(null);
+		element2 = manager.createElement(elementId1, parentId2, null);
+		assertNotEquals(element1, element2);
+
+		element1.setParent(parentId1);
+		assertNotEquals(element1, element2);
+
+		element1.setParent(sameParentId);
+		element2.setParent(sameParentId);
+
+		element2 = manager.createElement(elementId2, element2.getParent(), null);
+		assertNotEquals(element1, element2);
+	}
+
+	/**
+	 * Test for the {@link Object#toString(Object)} local implementation.
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Compare equality between the <code>toString()</code> method from the
+	 * element and the &quot;[null]&quot; value.
+	 * <p><b>Expected:</b></p>
+	 * When an element has no any wrapped node, then its <code>toString()</code>
+	 * implementation must print the &quot;[null]&quot; value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an empty element without a node inside of it;</li>
+	 * 	<li>Confirm that the <code>toString()</code> method from the element
+	 *  prints &quot;[null]&quot;.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void elementToString_nullWrappedNode() throws TreeException {
+		final String sessionId = "elementToString_nullWrappedNode";
+		final String nullToString = "[null]";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(1,null, null);
+
+		assertEquals(nullToString, element.toString());
 	}
 }

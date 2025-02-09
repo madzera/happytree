@@ -25,7 +25,6 @@ class TreeFactory {
 	private static ValidatorFactory validatorFactory;
 	private static FacadeFactory facadeFactory;
 	private static PipelineFactory pipelineFactory;
-	private static IOFactory ioFactory;
 	private static ExceptionFactory exceptionFactory;
 	private static UtilFactory utilFactory;
 	
@@ -59,13 +58,6 @@ class TreeFactory {
 			mapFactory = getInstance().new MapFactory();
 		}
 		return mapFactory;
-	}
-	
-	static IOFactory ioFactory() {
-		if(ioFactory == null) {
-			ioFactory = getInstance().new IOFactory();
-		}
-		return ioFactory;
 	}
 	
 	static ValidatorFactory validatorFactory() {
@@ -172,14 +164,6 @@ class TreeFactory {
 		}
 	}
 
-	class IOFactory extends TreeFactory {
-		IOFactory() {}
-		
-		Properties createPropertiesFile() {
-			return new Properties();
-		}
-	}
-	
 	class ValidatorFactory extends TreeFactory {
 		ValidatorFactory() {}
 		

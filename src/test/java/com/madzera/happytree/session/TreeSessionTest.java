@@ -142,11 +142,11 @@ public class TreeSessionTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a first session with the identifier called
-	 * 	<i>HASH_CODE_1</i>;</li>
+	 * 	<i>sessionHashCode1</i>;</li>
 	 * 	<li>Get the first session and assign to <code>session1</code> variable;
 	 * 	</li>
 	 * 	<li>Initialize a second session with the identifier called
-	 * 	<i>HASH_CODE_2</i>;</li>
+	 * 	<i>sessionHashCode2</i>;</li>
 	 * 	<li>Get, again, the first session and reassign to a new variable called
 	 * 	<code>session2</code>;</li>
 	 * 	<li>Compare the hash codes from the <code>session1</code> and
@@ -158,8 +158,8 @@ public class TreeSessionTest {
 	 */
 	@Test
 	public void sessionHashCode() throws TreeException {
-		final String sessionId1 = "HASH_CODE_1";
-		final String sessionId2 = "HASH_CODE_2";
+		final String sessionId1 = "sessionHashCode1";
+		final String sessionId2 = "sessionHashCode2";
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -186,11 +186,11 @@ public class TreeSessionTest {
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a first session with the identifier called
-	 * 	<i>EQUALS_1</i>;</li>
+	 * 	<i>sessionEquals1</i>;</li>
 	 * 	<li>Get the first session and assign to the <code>session1</code>
 	 * 	variable;</li>
 	 * 	<li>Initialize a second session with the identifier called
-	 * 	<i>EQUALS_2</i>;</li>
+	 * 	<i>sessionEquals2</i>;</li>
 	 * 	<li>Get a second session and assign to the <code>session2</code>
 	 * 	variable;</li>
 	 * 	<li>Destroy all sessions;</li>
@@ -208,8 +208,8 @@ public class TreeSessionTest {
 	 */
 	@Test
 	public void sessionEquals() throws TreeException {
-		final String sessionId1 = "EQUALS_1";
-		final String sessionId2 = "EQUALS_2";
+		final String sessionId1 = "sessionEquals1";
+		final String sessionId2 = "sessionEquals2";
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -239,13 +239,13 @@ public class TreeSessionTest {
 	 * <p><b>Expected:</b></p>
 	 * A <code>true</code> result between a <code>toString()</code> comparison
 	 * from a initialized session and the
-	 * &quot;TreeSessionCore [identifier=TO_STRING]&quot; value.
+	 * &quot;TreeSessionCore [identifier=sessionToString]&quot; value.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Declare a constant with a expected result value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session with the identifier called
-	 * 	<i>TO_STRING</i>;</li>
+	 * 	<i>sessionToString</i>;</li>
 	 * 	<li>Get the session and assign to <code>session</code> variable;</li>
 	 * 	<li>Compare the <code>session.toString()</code> with the
 	 * 	<code>expectedResult</code> value - should be <code>true</code>.</li>
@@ -256,7 +256,7 @@ public class TreeSessionTest {
 	 */
 	@Test
 	public void sessionToString() throws TreeException {
-		final String sessionId = "TO_STRING";
+		final String sessionId = "sessionToString";
 		final String expectedResult =
 			"TreeSessionCore [identifier=" + sessionId + "]";
 		

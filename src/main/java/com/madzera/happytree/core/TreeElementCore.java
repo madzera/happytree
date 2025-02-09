@@ -195,11 +195,10 @@ class TreeElementCore<T> implements Element<T> {
 		
 		TreeSession otherSession = other.attachedTo();
 
-		isEqual = (this.id != null && this.id.equals(otherId))
-			&& (this.parentId != null && this.parentId.equals(otherParentId)
-				|| this.parentId == null && otherParentId == null)
-			&& (this.session != null && this.session.equals(otherSession)
-				|| this.session == null && otherSession == null); 
+		isEqual = (this.id.equals(otherId))
+			&& ((this.parentId != null && this.parentId.equals(otherParentId))
+				|| (this.parentId == null && otherParentId == null))
+			&& (this.session.equals(otherSession)); 
 		
 		return isEqual;
 	}

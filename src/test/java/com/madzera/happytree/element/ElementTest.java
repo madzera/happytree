@@ -732,34 +732,101 @@ public class ElementTest {
 		);
 	}
 
+	/**
+	 * Test for the {@link Object#equals(Object)} local implementation.
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Compare equality between two <code>TreeElement</code> objects.
+	 * <p><b>Expected:</b></p>
+	 * Two <code>TreeElement</code> objects are equal when they have the same
+	 * identifier, same parent and are contained in the same session.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create two elements with the same identifier;</li>
+	 * 	<li>Assert that the elements are equals when their parents are
+	 * 	<code>null</code>;</li>
+	 * 	<li>Also, create an element who will represent the parent for both of
+	 * 	them;</li>
+	 * 	<li>Assert that they are equals;</li>
+	 * 	<li>Assign one of those elements to a third variable, occasioning two
+	 * 	variables pointing to a same object instance;</li>
+	 * 	<li>Confirm also that they are equals;</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
 	public void elementEquals() throws TreeException {
-		final String sessionId1 = "elementEquals1";
-		final String sessionId2 = "elementEquals2";
+		final String sessionId = "elementEquals";
 
-		final Object elementId1 = BigDecimal.ONE.doubleValue();
-		final Object elementId2 = BigDecimal.ONE.doubleValue();
+		final String sameId = "sameId";
+		final String parentId = "parentId1";
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		transaction.initializeSession(sessionId1, Directory.class);	
-		transaction.initializeSession(sessionId2, Directory.class);
 
-		TreeSession session1 = transaction.sessionCheckout(sessionId1);
+		transaction.initializeSession(sessionId, Directory.class);	
 
-		Element<Directory> element1 = manager.createElement(elementId1,
+		Element<Directory> element1 = manager.createElement(sameId,
 		null, null);
-		Element<Directory> element2 = manager.createElement(elementId2,
+		Element<Directory> element2 = manager.createElement(sameId,
 		null, null);
 
-		Element<Directory> sameElement1 = manager.createElement(elementId1,
+		assertEquals(element1, element2);
+
+		Element<Directory> parentElement = manager.createElement(parentId,
 		null, null);
 
-		assertEquals(sameElement1, sameElement1);
-		assertNotEquals(element1, null);
-		assertNotEquals(element1, new Object());
+		parentElement.addChild(element1);
+		parentElement.addChild(element2);
 		
 		assertEquals(element1, element2);
+		assertEquals(element1, element2);
+
+		Element<Directory> element3 = element1;
+		assertEquals(element1, element3);
+	}
+
+	/**
+	 * Test for the {@link Object#toString(Object)} local implementation.
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Compare equality between the <code>toString()</code> method from the
+	 * element and the <code>toString()</code> method from the wrapped node
+	 * inside of this element.
+	 * <p><b>Expected:</b></p>
+	 * The <code>toString()</code> method from the wrapped node must be the same
+	 * as the <code>toString()</code> method from the {@link Element} object
+	 * when the wrapped node is not <code>null</code>.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create an object from the <code>Directory</code> class with the
+	 * 	attribute name &quot;Photos&quot;;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an element with the wrapped object at the step 1;</li>
+	 * 	<li>Confirm that the <code>toString()</code> methods of the wrapped
+	 * 	object and the element are equals.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void elementToString() throws TreeException {
+		final String sessionId = "elementToString";
+
+		Directory directory = new Directory(1, 0, "Photos");
+		String toStringDirectory = directory.toString();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(1,null, directory);
+
+		assertEquals(toStringDirectory, element.toString());
 	}
 
 	private void validateHashCodes(
