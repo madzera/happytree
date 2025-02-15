@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
-import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;

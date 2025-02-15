@@ -207,4 +207,43 @@ class TreeTransactionCore implements TreeTransaction {
 	<T> TreeElementCore<T> refresh() {
 		return (TreeElementCore<T>) currentSession.tree();
 	}
+
+	/*
+	 * This is a helper method to test the inconsistency between the size of
+	 * the resulting node list and the size of the resulting element list when
+	 * the tree is being assembled in those ATP phases.
+	 * 
+	 * This helper method force an error on ATP post validation phase, as it
+	 * represents a phase to confirm the consistency of the resulting element
+	 * list.
+	 * 
+	 * Theoretically, this phase should not throw any exception, because all
+	 * elements of the session was created in previous phases. So, to guarantee
+	 * the quality of the Tree assembly, this phase is necessary, as if an error,
+	 * by a unknown reason, occurs, the PostValidation class inside of the ATP
+	 * lifecycle will be prepared to throw an exception.
+	 * 
+	 * Note: This method is not used in the main code, it is just for test
+	 * purposes.
+	 */
+	void testInitializeSessionWithErrorATPPostValidationPhase() {
+		Collection<Object> nodes = TreeFactory.collectionFactory().
+			createArrayList();
+		Collection<Object> nodesMap = TreeFactory.collectionFactory().
+			createArrayList();
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+
+		pipeline.addAttribute(TreePipelineAttributes.SESSION_ID, "identifier");
+		pipeline.addAttribute(TreePipelineAttributes.NODES, nodes);
+		
+		final String NODES_MAP = "nodesMap";
+		pipeline.addAttribute(NODES_MAP, nodesMap);
+
+		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
+		ATPLifecycle<Object> lifecycle = lifecycleFactory.createLifecycle(
+			pipeline);
+		
+		
+	}
 }
