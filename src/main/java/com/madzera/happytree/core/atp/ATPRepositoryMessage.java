@@ -11,7 +11,7 @@ enum ATPRepositoryMessage {
 	NO_PARENT(ATPConstants.Error.NO_PARENT_ERROR),
 	MISMATCH_TYPE_ID(ATPConstants.Error.DIFFERENT_TYPES_ID_ERROR),
 	DUPLICATED_ID(ATPConstants.Error.DUPLICATED_ID_ERROR),
-	POST_VALID_INCONS(ATPConstants.Error.INCONSISTENCY_POST_VALID);
+	POST_VALID_INCONSISTENCY(ATPConstants.Error.INCONSISTENCY_POST_VALID);
 	
 	private String errorDesc;
 	private static Properties properties = new Properties();

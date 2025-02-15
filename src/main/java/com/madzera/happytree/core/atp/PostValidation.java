@@ -32,7 +32,7 @@ class PostValidation<T> extends ATPGenericPhase<T> {
 		
 		if (allElements.size() != nodes.size()) {
 			throw this.throwTreeException(ATPRepositoryMessage.
-					POST_VALID_INCONS);
+				POST_VALID_INCONSISTENCY);
 		}
 		
 		Object id = null;
@@ -54,10 +54,9 @@ class PostValidation<T> extends ATPGenericPhase<T> {
 			if (!object.equals(wrappedNode) || (parentIdSource != null &&
 					!parentIdSource.equals(parentId))) {
 				throw this.throwTreeException(ATPRepositoryMessage.
-						POST_VALID_INCONS);
+					POST_VALID_INCONSISTENCY);
 			}
 		}
-		
 		doChain(pipeline);
 	}
 }
