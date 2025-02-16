@@ -3,15 +3,7 @@ package com.madzera.happytree.core;
 import com.madzera.happytree.exception.TreeException;
 
 public abstract class ATPPhase<T> {
-	
-   /*
-	* A pipeline used exclusively for unit test purposes.
-	*/
-	protected TreePipeline pipelineMock = TreeFactory.pipelineFactory().
-		createPipelineValidator();
-	
 	private ATPPhase<T> phase;
-	
 	
 	protected ATPPhase() {}
 	

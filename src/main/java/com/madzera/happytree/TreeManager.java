@@ -49,7 +49,7 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * <p>For operations to work, the following validations are made:</p>
  * <ul>
- * 		<li>The transaction must have a session binded, <b>always</b>.</li>
+ * 		<li>The transaction must have a session bind, <b>always</b>.</li>
  * 		<li>This is <b>mandatory</b> that the session be <b>activated.</b></li>
  * 		<li>
  * 			According with the method, the elements must have in the proper

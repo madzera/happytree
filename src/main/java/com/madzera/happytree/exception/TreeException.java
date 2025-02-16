@@ -13,14 +13,11 @@ package com.madzera.happytree.exception;
  * 	a new session;</li>
  * 
  * 	<li>When the class of the object to be transformed has not been annotated by
- * 	{@literal @Tree}, {@literal @Id} and {@literal @Parent}, when initializing a
+ * 	{@code @Tree}, {@code @Id} and {@code @Parent}, when initializing a
  * 	new session;</li>
  * 
- * 	<li>When the annotated attribute {@literal @Id} and {@literal @Parent} have
+ * 	<li>When the annotated attribute {@code @Id} and {@code @Parent} have
  * 	different types;</li>
- * 
- * 	<li>When the API Transformation Process was not well processed at
- * 	<i>Post-Validation</i> phase;</li>
  * 
  * 	<li>When the transaction has no session selected to work;</li>
  * 

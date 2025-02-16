@@ -1,7 +1,6 @@
 package com.madzera.happytree.transaction;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
-import com.madzera.happytree.core.atp.ATPTestHelper;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.model.node.Node;
 import com.madzera.happytree.demo.model.node.Node_MismatchId;
@@ -468,57 +466,6 @@ public class TreeTransactionErrorTest {
 			error = e.getMessage();
 		} finally {
 			assertEquals(messageError, error);
-		}
-	}
-
-	@Test
-	public void initializeSession_atpWithErrorDiffSizeElementList()
-		throws TreeException {
-		final String msgError = "There is a inconsistency in assembling tree "
-			+ "process. This is not possible generate tree.";
-
-		ATPTestHelper<?> testHelper = new ATPTestHelper<>();
-		try {
-			testHelper.testPostValidationWithErrorDiffSizeElementList();
-		} catch (TreeException e) {
-			assertEquals(msgError, e.getMessage());
-			assertThrows(TreeException.class, () -> {
-				throw new TreeException();
-			});
-		}
-	}
-
-	@Test
-	public void initializeSession_atpWithErrorDiffWrappedParentNodes()
-		throws TreeException {
-		final String msgError = "There is a inconsistency in assembling tree "
-			+ "process. This is not possible generate tree.";
-
-		ATPTestHelper<?> testHelper = new ATPTestHelper<>();
-		try {
-			testHelper.testPostValidationWithErrorDiffWrappedParentNodes();
-		} catch (TreeException e) {
-			assertEquals(msgError, e.getMessage());
-			assertThrows(TreeException.class, () -> {
-				throw new TreeException();
-			});
-		}
-	}
-
-	@Test
-	public void initializeSession_atpWithErrorDiffWrappedOwnNodes()
-		throws TreeException {
-		final String msgError = "There is a inconsistency in assembling tree "
-			+ "process. This is not possible generate tree.";
-
-		ATPTestHelper<?> testHelper = new ATPTestHelper<>();
-		try {
-			testHelper.testPostValidationWithErrorDiffWrappedOwnNodes();
-		} catch (TreeException e) {
-			assertEquals(msgError, e.getMessage());
-			assertThrows(TreeException.class, () -> {
-				throw new TreeException();
-			});
 		}
 	}
 }

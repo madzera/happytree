@@ -116,10 +116,6 @@ class TreeFactory {
 		<T> ATPPhase<T> initBinding() {
 			return ATPFactory.getPhaseInstance(ATPPhaseInstance.BINDING);
 		}
-		
-		<T> ATPPhase<T> initPostValidation() {
-			return ATPFactory.getPhaseInstance(ATPPhaseInstance.POST_VALIDATION);
-		}
 	}
 	
 	class ServiceFactory extends TreeFactory {

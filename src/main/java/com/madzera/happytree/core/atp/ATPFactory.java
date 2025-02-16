@@ -32,7 +32,6 @@ public class ATPFactory {
 			case EXTRACTION:		return new Extraction<>();
 			case INITIALIZATION: 	return new Initialization<>();
 			case BINDING:			return new Binding<>();
-			case POST_VALIDATION:	return new PostValidation<>();
 		}
 		return null;
 	}
@@ -91,7 +90,6 @@ public class ATPFactory {
 		PRE_VALIDATION,
 		EXTRACTION,
 		INITIALIZATION,
-		BINDING,
-		POST_VALIDATION;
+		BINDING;
 	}
 }

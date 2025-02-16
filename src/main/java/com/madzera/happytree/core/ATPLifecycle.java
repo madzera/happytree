@@ -12,7 +12,7 @@ import com.madzera.happytree.exception.TreeException;
  * linear structure of objects that behaves like a tree into a structural tree
  * itself.
  * 
- * @author Diego Nóbrega
+ * @author Diego Madson de Andrade Nóbrega
  *
  * @param <T> the type of wrapped node inside of <code>Element</code>
  */
@@ -39,7 +39,6 @@ class ATPLifecycle<T> {
 	 * 2. Extraction
 	 * 3. Initialization
 	 * 4. Binding
-	 * 5. Post-Validation
 	 */
 	void run() throws TreeException {
 		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
@@ -48,12 +47,10 @@ class ATPLifecycle<T> {
 		ATPPhase<T> extraction = lifecycleFactory.initExtraction();
 		ATPPhase<T> initialization = lifecycleFactory.initInitialization();
 		ATPPhase<T> binding = lifecycleFactory.initBinding();
-		ATPPhase<T> postValidation = lifecycleFactory.initPostValidation();
 		
 		preValidation.next(extraction);
 		extraction.next(initialization);
 		initialization.next(binding);
-		binding.next(postValidation);
 		
 		try {
 			preValidation.run(pipeline);
