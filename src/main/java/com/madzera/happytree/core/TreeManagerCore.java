@@ -241,10 +241,10 @@ class TreeManagerCore implements TreeManager {
 			return containsChild;
 		}
 		
-		boolean notAttachedParent = Recursivity.
+		boolean notAttachedParent = Recursion.
 				iterateForInvalidStateOperationValidation(
 						parentCore.getChildren(), operation);
-		boolean notAttachedChild = Recursivity.
+		boolean notAttachedChild = Recursion.
 				iterateForInvalidStateOperationValidation(
 						childCore.getChildren(), operation);
 		
@@ -313,7 +313,7 @@ class TreeManagerCore implements TreeManager {
 		if (source != null && currentSession.equals(source.attachedTo())) {
 			boolean isAttached = source.getState().canExecuteOperation(
 					operation)
-					&& !Recursivity.iterateForInvalidStateOperationValidation(
+					&& !Recursion.iterateForInvalidStateOperationValidation(
 							source.	getChildren(), operation);
 			
 			if (isAttached) {

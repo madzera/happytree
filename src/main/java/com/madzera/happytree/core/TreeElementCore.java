@@ -82,7 +82,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public Element<T> getElementById(Object id) {
-		return Recursivity.searchElementById(getChildren(), id);
+		return Recursion.searchElementById(getChildren(), id);
 	}
 	
 	@Override

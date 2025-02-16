@@ -34,28 +34,25 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
     public void testPostValidationWithErrorDiffSizeElementList()
         throws TreeException {
         preparePostValidationDiffSizeElementList();
-        PostValidation<TestATPNode> postValidation = new PostValidation<>();
-        postValidation.run(pipelineMock);
+        this.run(pipelineMock);
 	}
     
     public void testPostValidationWithErrorDiffWrappedParentNodes()
         throws TreeException {
         preparePostValidationDiffWrappedParentNodes();
-        PostValidation<TestATPNode> postValidation = new PostValidation<>();
-        postValidation.run(pipelineMock);
+        this.run(pipelineMock);
     }
 
     public void testPostValidationWithErrorDiffWrappedOwnNodes()
         throws TreeException {
         preparePostValidationDiffWrappedOwnNodes();
-        PostValidation<TestATPNode> postValidation = new PostValidation<>();
-        postValidation.run(pipelineMock);
+        this.run(pipelineMock);
     }
 
     @Override
     protected void run(TreePipeline pipeline) throws TreeException {
-        final String msg = "Do not run it with a test class.";
-        throw new UnsupportedOperationException(msg);
+        PostValidation<TestATPNode> postValidation = new PostValidation<>();
+        postValidation.run(pipelineMock);
     }
 
     private void preparePostValidationDiffSizeElementList()
@@ -65,13 +62,13 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
         Collection<TestATPNode> nodesSecondList = createHashSet();
         Collection<Element<TestATPNode>> mockedElements = createHashSet();
 
-        nodesFirstList.add(new TestATPNode(0, null, "Root"));
-        nodesFirstList.add(new TestATPNode(1, 0, "Child 1 - Parent Root"));
-        nodesFirstList.add(new TestATPNode(2, 0, "Child 2 - Parent Root"));
-        nodesFirstList.add(new TestATPNode(3, 1, "Child 3 - Parent Child 1"));
-        nodesFirstList.add(new TestATPNode(4, 1, "Child 4 - Parent Child 1"));
-        nodesSecondList.add(new TestATPNode(5, 2, "Child 5 - Parent Child 2"));
-        nodesSecondList.add(new TestATPNode(6, 2, "Child 6 - Parent Child 2"));
+        nodesFirstList.add(new TestATPNode(0, null));
+        nodesFirstList.add(new TestATPNode(1, 0));
+        nodesFirstList.add(new TestATPNode(2, 0));
+        nodesFirstList.add(new TestATPNode(3, 1));
+        nodesFirstList.add(new TestATPNode(4, 1));
+        nodesSecondList.add(new TestATPNode(5, 2));
+        nodesSecondList.add(new TestATPNode(6, 2));
         
         TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -95,13 +92,13 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
         Collection<TestATPNode> parentNodes = createHashSet();
         Collection<Element<TestATPNode>> mockedElements = createHashSet();
 
-        nodes.add(new TestATPNode(0, null, "Root"));
-        nodes.add(new TestATPNode(1, 0, "Child 1 - Parent Root"));
-        nodes.add(new TestATPNode(2, 1, "Child 2 - Parent Child 1"));
+        nodes.add(new TestATPNode(0, null));
+        nodes.add(new TestATPNode(1, 0));
+        nodes.add(new TestATPNode(2, 1));
 
-        parentNodes.add(new TestATPNode(350, null, "Root"));
-        parentNodes.add(new TestATPNode(45431, 350, "Foo"));
-        parentNodes.add(new TestATPNode(43453, 350, "Bar"));
+        parentNodes.add(new TestATPNode(350, null));
+        parentNodes.add(new TestATPNode(45431, 350));
+        parentNodes.add(new TestATPNode(43453, 350));
         
         TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -136,11 +133,11 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
         Collection<TestATPNode> parentNodes = createHashSet();
         Collection<Element<TestATPNode>> mockedElements = createHashSet();
 
-        nodes.add(new TestATPNode(0, null, "Root"));
-        nodes.add(new TestATPNode(1, 0, "Child 1"));
-        nodes.add(new TestATPNode(2, 1, "Child 2"));
+        nodes.add(new TestATPNode(0, null));
+        nodes.add(new TestATPNode(1, 0));
+        nodes.add(new TestATPNode(2, 1));
 
-        parentNodes.add(new TestATPNode(0, null, "Root"));
+        parentNodes.add(new TestATPNode(0, null));
         
         TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -161,7 +158,7 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
                 new Element[mockedElements.size()])[index];
                 
             nodesMap.put(element.getId(),
-                new TestATPNode(0, null, "Root Changed"));
+                new TestATPNode(0, null));
             nodesParentMap.put(element.getId(), element.getParent());
         }
 
@@ -177,13 +174,10 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
         private Integer id;
         @Parent
         private Integer parentId;
-        private String name;
 
-
-        TestATPNode(Integer id, Integer parentId, String name) {
+        TestATPNode(Integer id, Integer parentId) {
             this.id = id;
             this.parentId = parentId;
-            this.name = name;
         }
 
 
@@ -192,18 +186,6 @@ public final class ATPTestHelper<T> extends ATPGenericPhase<Element<T>> {
         }
         public Integer getParentId() {
             return parentId;
-        }
-        public String getName() {
-            return name;
-        }
-        public void setId(Integer id) {
-            this.id = id;
-        }
-        public void setParentId(Integer parentId) {
-            this.parentId = parentId;
-        }
-        public void setName(String name) {
-            this.name = name;
         }
     }
 }

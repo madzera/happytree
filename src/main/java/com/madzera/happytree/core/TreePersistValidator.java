@@ -24,7 +24,7 @@ class TreePersistValidator extends TreeElementValidator {
 					ATTACHED_ELEMENT);
 		}
 		
-		if (Recursivity.iterateForInvalidStateOperationValidation(element.
+		if (Recursion.iterateForInvalidStateOperationValidation(element.
 				getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					ATTACHED_ELEMENT);
@@ -40,7 +40,7 @@ class TreePersistValidator extends TreeElementValidator {
 		TreeSession session = source.attachedTo();
 		Element<Object> root = session.tree();
 		
-		if (Recursivity.iterateForDuplicatedId(source, root)) {
+		if (Recursion.iterateForDuplicatedId(source, root)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);
 		}

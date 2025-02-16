@@ -27,7 +27,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 					NOT_EXISTED_ELEMENT);
 		}
 		
-		if (Recursivity.iterateForInvalidStateOperationValidation(element.
+		if (Recursion.iterateForInvalidStateOperationValidation(element.
 				getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					NOT_EXISTED_ELEMENT);
@@ -45,7 +45,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 		
 		Set<Object> rootIds = TreeFactory.collectionFactory().createHashSet();
 		
-		Collection<Element<Object>> targetPlainTree = Recursivity.toPlainList(
+		Collection<Element<Object>> targetPlainTree = Recursion.toPlainList(
 				root);
 		for (Element<Object> rootElement : targetPlainTree) {
 			TreeElementCore<Object> rootChild = (TreeElementCore<Object>)
@@ -53,7 +53,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 			rootIds.add(rootChild.getId());
 		}
 		
-		Collection<Element<Object>> sourcePlainTree = Recursivity.toPlainList(
+		Collection<Element<Object>> sourcePlainTree = Recursion.toPlainList(
 				source);
 		for (Element<Object> sourceElement : sourcePlainTree) {
 			TreeElementCore<Object> sourceChild = (TreeElementCore<Object>)

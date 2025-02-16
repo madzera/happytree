@@ -23,7 +23,7 @@ class TreeRemoveValidator extends TreeCutValidator {
 					DETACHED_ELEMENT);
 		}
 		
-		if (Recursivity.iterateForInvalidStateOperationValidation(element.
+		if (Recursion.iterateForInvalidStateOperationValidation(element.
 				getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);

@@ -53,7 +53,7 @@ abstract class TreeElementValidator extends TreeValidator {
 				TreePipelineAttributes.OPERATION);
 		
 		if (!source.getState().canExecuteOperation(operation)
-				|| Recursivity.iterateForInvalidStateOperationValidation(source.
+				|| Recursion.iterateForInvalidStateOperationValidation(source.
 						getChildren(), operation)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);
@@ -61,7 +61,7 @@ abstract class TreeElementValidator extends TreeValidator {
 		
 		if ((target != null)
 				&& (!target.getState().canExecuteOperation(operation)
-				|| Recursivity.iterateForInvalidStateOperationValidation(target.
+				|| Recursion.iterateForInvalidStateOperationValidation(target.
 						getChildren(), operation))) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DETACHED_ELEMENT);

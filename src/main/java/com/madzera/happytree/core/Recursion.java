@@ -9,9 +9,9 @@ import com.madzera.happytree.Element;
 /*
  * Utility that assists the operations that involves trees.
  */
-class Recursivity {
+class Recursion {
 
-	private Recursivity() {}
+	private Recursion() {}
 	
 	
 	/*
@@ -21,7 +21,7 @@ class Recursivity {
 			Object id) {
 		Element<T> result = null;
 		
-		if (elements == null || elements.isEmpty()) {
+		if (elements.isEmpty()) {
 			return null;
 		}
 		
@@ -60,7 +60,7 @@ class Recursivity {
 			Collection<Element<T>> elements, Operation operation) {
 		boolean treeHasInvalidState = Boolean.FALSE;
 		
-		if (elements == null || elements.isEmpty()) {
+		if (elements.isEmpty()) {
 			return treeHasInvalidState;
 		}
 		
@@ -110,14 +110,11 @@ class Recursivity {
 			List<Element<T>> elementsToAdd) {
 		Element<T> result = null;
 		
-		if (elements == null || elements.isEmpty()) {
+		if (elements.isEmpty()) {
 			return null;
 		}
 		
 		for (Element<T> element : elements) {
-			if (result != null) {
-				return result;
-			}
 			elementsToAdd.add(element);
 			result = treePlain(element.getChildren(), elementsToAdd);
 		}

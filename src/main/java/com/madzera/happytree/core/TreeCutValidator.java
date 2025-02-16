@@ -37,7 +37,7 @@ class TreeCutValidator extends TreeElementValidator {
 			if (!source.attachedTo().equals(targetSession)) {
 				Element<Object> targetRoot = targetSession.tree();
 				
-				if (Recursivity.iterateForDuplicatedId(source, targetRoot)) {
+				if (Recursion.iterateForDuplicatedId(source, targetRoot)) {
 					throw this.throwTreeException(TreeRepositoryMessage.
 							DUPLICATED_ELEMENT);
 				}

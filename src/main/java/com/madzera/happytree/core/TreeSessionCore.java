@@ -90,12 +90,12 @@ class TreeSessionCore implements TreeSession {
 	}
 
 	<T> void save(Element<T> element) {
-		this.applyRecursivityCacheOperation(element, SessionHandler.SAVE);
+		this.applyRecursionCacheOperation(element, SessionHandler.SAVE);
 	}
 	
 	void delete(Object id) {
 		Element<?> element = this.cache.read(id);
-		this.applyRecursivityCacheOperation(element, SessionHandler.DELETE);
+		this.applyRecursionCacheOperation(element, SessionHandler.DELETE);
 	}
 	
 	<T> TreeElementCore<T> get(Object id) {
@@ -122,9 +122,9 @@ class TreeSessionCore implements TreeSession {
 		return clone;
 	}
 	
-	private <T> void applyRecursivityCacheOperation(Element<T> element,
+	private <T> void applyRecursionCacheOperation(Element<T> element,
 			SessionHandler handler) {
-		Collection<?> descendants = Recursivity.toPlainList(element);
+		Collection<?> descendants = Recursion.toPlainList(element);
 		
 		for (Object object : descendants) {
 			TreeElementCore<?> iterator = (TreeElementCore<?>) object;
@@ -141,7 +141,7 @@ class TreeSessionCore implements TreeSession {
 	
 	private void updateSessionClonedElements(TreeSessionCore clone) {
 		TreeElementCore<?> clonedRoot = (TreeElementCore<?>) clone.tree();
-		Collection<?> descendants = Recursivity.toPlainList(clonedRoot);
+		Collection<?> descendants = Recursion.toPlainList(clonedRoot);
 		
 		for (Object object : descendants) {
 			TreeElementCore<?> iterator = (TreeElementCore<?>) object;

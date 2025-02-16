@@ -23,7 +23,7 @@ class TreeCopyValidator extends TreeElementValidator {
 		TreeSession targetSession = target.attachedTo();
 		Element<Object> targetRoot = targetSession.tree();
 		
-		if (Recursivity.iterateForDuplicatedId(source, targetRoot)) {
+		if (Recursion.iterateForDuplicatedId(source, targetRoot)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					DUPLICATED_ELEMENT);
 		}
