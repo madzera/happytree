@@ -795,7 +795,7 @@ public class TreeManagerErrorTest {
 	 * the same id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Duplicated ID.&quot;</i>
+	 * message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -814,11 +814,11 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void cut_toAnotherTreeDuplicatedId() {
+	public void cut_toAnotherTreeDuplicateId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		
 		String error = null;
 		final long entryId = 77530344;
@@ -848,7 +848,7 @@ public class TreeManagerErrorTest {
 			transaction.sessionCheckout(sourceSessionId);
 			
 			/*
-			 * Duplicated Id error.
+			 * Duplicate Id error.
 			 */
 			manager.cut(sourceEntry, system32);
 		} catch (TreeException e) {
@@ -875,7 +875,7 @@ public class TreeManagerErrorTest {
 	 * which this element has the same id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;Duplicated ID.&quot;</i>
+	 * message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -893,11 +893,11 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void cut_toAnotherTreeElementDuplicatedId() {
+	public void cut_toAnotherTreeElementDuplicateId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		
 		String error = null;
 		final long entryId = 77530344;
@@ -926,7 +926,7 @@ public class TreeManagerErrorTest {
 			transaction.sessionCheckout(sourceSessionId);
 			
 			/*
-			 * Duplicated Id error.
+			 * Duplicate Id error.
 			 */
 			manager.cut(sourceEntry, targetEntry);
 		} catch (TreeException e) {
@@ -954,7 +954,7 @@ public class TreeManagerErrorTest {
 	 * element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -972,11 +972,11 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void cut_duplicatedChildId() {
+	public void cut_duplicateChildId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long sourceDriversId = 220332;
@@ -1714,7 +1714,7 @@ public class TreeManagerErrorTest {
 	 * an element with the same id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1734,14 +1734,14 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void copy_toAnotherTreeDuplicatedId() {
+	public void copy_toAnotherTreeDuplicateId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
-		final long duplicatedEntryId = 77530344;
+		final long duplicateEntryId = 77530344;
 		final long system32Id = 1000;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -1757,8 +1757,8 @@ public class TreeManagerErrorTest {
 			 * The entry element already exists with the same id in the target
 			 * tree session.
 			 */
-			Element<Directory> duplicatedEntry = manager.getElementById(
-					duplicatedEntryId);
+			Element<Directory> duplicateEntry = manager.getElementById(
+					duplicateEntryId);
 			
 			transaction.initializeSession(targetSessionId, targetDir);
 			Element<Directory> system32 = manager.getElementById(system32Id);
@@ -1770,7 +1770,7 @@ public class TreeManagerErrorTest {
 			 * because there is an another element in the target tree with the
 			 * same id.
 			 */
-			manager.copy(duplicatedEntry, system32);
+			manager.copy(duplicateEntry, system32);
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
@@ -1795,7 +1795,7 @@ public class TreeManagerErrorTest {
 	 * which this element already have same id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1815,11 +1815,11 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void copy_toAnotherTreeElementDuplicatedId() {
+	public void copy_toAnotherTreeElementDuplicateId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		
 		String error = null;
 		final long entryId = 77530344;
@@ -1848,7 +1848,7 @@ public class TreeManagerErrorTest {
 			transaction.sessionCheckout(sourceSessionId);
 			
 			/*
-			 * Duplicated Id error.
+			 * Duplicate Id error.
 			 */
 			manager.copy(sourceEntry, targetEntry);
 		} catch (TreeException e) {
@@ -1876,7 +1876,7 @@ public class TreeManagerErrorTest {
 	 * element.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1894,11 +1894,11 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void copy_duplicatedChildId() {
+	public void copy_duplicateChildId() {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long sourceDriversId = 220332;
@@ -1937,7 +1937,7 @@ public class TreeManagerErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to copy an element for
 	 * inside of the same tree. Impossible to copy for the same tree because
-	 * it always will generate duplicated id.</p>
+	 * it always will generate duplicate id.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
@@ -1946,7 +1946,7 @@ public class TreeManagerErrorTest {
 	 * Try to copy an element for inside of the same tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -1962,10 +1962,10 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void copy_duplicatedIdSameTree() {
-		final String sessionId = "duplicatedExample";
+	public void copy_duplicateIdSameTree() {
+		final String sessionId = "duplicateExample";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long realtekId = 94034;
@@ -1983,7 +1983,7 @@ public class TreeManagerErrorTest {
 			
 			/*
 			 * Impossible to copy for inside of the same tree. It always have
-			 * duplicated id. 
+			 * duplicate id. 
 			 */
 			manager.copy(realtek, readme);
 		} catch (TreeException e) {
@@ -2373,16 +2373,16 @@ public class TreeManagerErrorTest {
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to persist an element with duplicated id.
+	 * Try to persist an element with duplicate id.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Create an element with duplicated id;</li>
+	 * 	<li>Create an element with duplicate id;</li>
 	 * 	<li>Try to persist this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
@@ -2390,13 +2390,13 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void persistElement_duplicatedId() {
+	public void persistElement_duplicateId() {
 		final String sessionId = "persistElement_nullElement";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
-		Object duplicatedWinampExeId = 395524L;
+		Object duplicateWinampExeId = 395524L;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -2406,7 +2406,7 @@ public class TreeManagerErrorTest {
 		try {
 			transaction.initializeSession(sessionId, directories);
 			Element<Directory> element = manager.createElement(
-					duplicatedWinampExeId, null, null);
+					duplicateWinampExeId, null, null);
 			manager.persistElement(element);
 		} catch (TreeException e) {
 			error = e.getMessage();
@@ -2432,17 +2432,17 @@ public class TreeManagerErrorTest {
 	 * has a child with the same id as one of the elements in the tree.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Create two elements, which one of them has the duplicated id related
+	 * 	<li>Create two elements, which one of them has the duplicate id related
 	 * 	to the tree which this element will be persisted;</li>
-	 * 	<li>Put the element with the duplicated id as the child of the other;
+	 * 	<li>Put the element with the duplicate id as the child of the other;
 	 * 	</li>
-	 * 	<li>Try to persist the element that its child has the duplicated id;
+	 * 	<li>Try to persist the element that its child has the duplicate id;
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
@@ -2450,14 +2450,14 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void persistElement_duplicatedChildId() {
-		final String sessionId = "persistElement_duplicatedChildId";
+	public void persistElement_duplicateChildId() {
+		final String sessionId = "persistElement_duplicateChildId";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long id = Long.MAX_VALUE;
-		final long duplicatedId = 77530344;
+		final long duplicateId = 77530344;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -2472,13 +2472,13 @@ public class TreeManagerErrorTest {
 			 */
 			Element<Directory> element = manager.createElement(id, null, null);
 			Element<Directory> childElement = manager.createElement(
-					duplicatedId, id, null);
+					duplicateId, id, null);
 			
 			element.addChild(childElement);
 			
 			/*
 			 * Error trying to persist an element which this element has a child
-			 * with duplicated id.
+			 * with duplicate id.
 			 */
 			manager.persistElement(element);
 		} catch (TreeException e) {
@@ -2506,13 +2506,13 @@ public class TreeManagerErrorTest {
 	 * children list.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session, previously loaded from
 	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Create four elements in which two of them have duplicated IDs;</li>
+	 * 	<li>Create four elements in which two of them have duplicate IDs;</li>
 	 * 	<li>Put the elements inside each other and so on;</li>
 	 * 	<li>Try to persist the element that represents the parent element of
 	 * 	others;</li>
@@ -2522,9 +2522,9 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void persistElement_duplicatedOwnChildId() {
-		final String sessionId = "persistElement_duplicatedOwnChildId";
-		final String messageError = "Duplicated ID.";
+	public void persistElement_duplicateOwnChildId() {
+		final String sessionId = "persistElement_duplicateOwnChildId";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -2533,7 +2533,7 @@ public class TreeManagerErrorTest {
 		final String musicId = "Music";
 		final String categoryId = "Category";
 		final String albumId = "AlbumId";
-		final String duplicatedCategoryId = categoryId;
+		final String duplicateCategoryId = categoryId;
 		
 		try {
 			transaction.initializeSession(sessionId, Metadata.class);
@@ -2543,16 +2543,16 @@ public class TreeManagerErrorTest {
 			Element<Metadata> category = manager.createElement(categoryId, null,
 					null);
 			Element<Metadata> album = manager.createElement(albumId, null, null);
-			Element<Metadata> duplicatedCategory = manager.createElement(
-					duplicatedCategoryId, null, null);
+			Element<Metadata> duplicateCategory = manager.createElement(
+					duplicateCategoryId, null, null);
 			
 			music.addChild(category);
 			category.addChild(album);
-			album.addChild(duplicatedCategory);
+			album.addChild(duplicateCategory);
 			
 			/*
 			 * Error trying to persist an element which the own element has
-			 * duplicated children Id.
+			 * duplicate children Id.
 			 */
 			manager.persistElement(music);
 			
@@ -2763,7 +2763,7 @@ public class TreeManagerErrorTest {
 	 * Try to update an id of element with this id already existing.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -2778,14 +2778,14 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void updateElement_duplicatedId() {
-		final String sessionId = "updateElement_duplicatedId";
+	public void updateElement_duplicateId() {
+		final String sessionId = "updateElement_duplicateId";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long ideId = 13823;
-		final long readmeDuplicatedId = 495833;
+		final long readmeDuplicateId = 495833;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -2800,7 +2800,7 @@ public class TreeManagerErrorTest {
 			 * Setting the new id with the same id value than the reader
 			 * element.
 			 */
-			ide.setId(readmeDuplicatedId);
+			ide.setId(readmeDuplicateId);
 			
 			manager.updateElement(ide);
 		} catch (TreeException e) {
@@ -2827,7 +2827,7 @@ public class TreeManagerErrorTest {
 	 * existing.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Duplicated ID.&quot;</i>
+	 * with the message: <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -2837,17 +2837,17 @@ public class TreeManagerErrorTest {
 	 * 	<li>Change the id of a grand child to another existing id inside of the
 	 * 	tree;</li>
 	 * 	<li>Try to update the element which its grand child has now the
-	 * 	duplicated id;</li>
+	 * 	duplicate id;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
 	 * 	<li>Throw the same <code>TreeException</code>.</li>
 	 * </ol>
 	 */
 	@Test
-	public void updateElement_duplicatedGrandChildId() {
-		final String sessionId = "updateElement_duplicatedGrandChildId";
+	public void updateElement_duplicateGrandChildId() {
+		final String sessionId = "updateElement_duplicateGrandChildId";
 		
-		final String messageError = "Duplicated ID.";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		final long ideId = 13823;
@@ -2881,8 +2881,8 @@ public class TreeManagerErrorTest {
 			files.setId(ideId);
 			
 			/*
-			 * Duplicated id error because child of sdk element has now a
-			 * duplicated id.
+			 * Duplicate id error because child of sdk element has now a
+			 * duplicate id.
 			 */
 			manager.updateElement(realtek);
 		} catch (TreeException e) {

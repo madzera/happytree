@@ -106,7 +106,7 @@ public interface TreeManager {
 	 * level of the same tree.</p>
 	 * 
 	 * <p>When cutting for the target element, the <code>from</code> parameter
-	 * element cannot have the duplicated identifier in the tree where the
+	 * element cannot have the duplicate identifier in the tree where the
 	 * <code>to</code> parameter element is in. It includes also the children
 	 * identifiers of the <code>from</code> element.</p>
 	 * 
@@ -220,7 +220,7 @@ public interface TreeManager {
 	 * 
 	 * <p><b>This method only should be used when the client desires copy the
 	 * element between different trees. This is no possible to copy elements
-	 * inside of the same own tree, because it will throw duplicated <i>Id</i> 
+	 * inside of the same own tree, because it will throw duplicate <i>Id</i> 
 	 * exception.</b></p>
 	 * 
 	 * <p>The following steps are done internally inside of the core API to copy
@@ -574,8 +574,8 @@ public interface TreeManager {
 	 * even its children (in case of creating children inside this element).</p>
 	 * 
 	 * <p>This method also can allows new chained children elements to be
-	 * persisted at once. If the element has duplicated identifier or there is a
-	 * child in this new created element that has duplicated identifier in
+	 * persisted at once. If the element has duplicate identifier or there is a
+	 * child in this new created element that has duplicate identifier in
 	 * relation to the tree, then an exception will threw.</p>
 	 * 
 	 * <p>The <i>NOT_EXISTED</i> state represents a &quot;free up&quot; element,
@@ -655,7 +655,7 @@ public interface TreeManager {
 	 * 
 	 * <p>A <i>DETACHED</i> element represents an element, or one of its
 	 * children, in which it has undergone some change, whether it be the id,
-	 * the parent id or the wrapped node. <b>Ensure yourself to avoid duplicated
+	 * the parent id or the wrapped node. <b>Ensure yourself to avoid duplicate
 	 * id in current session by an id change</b>. To move up the element for the
 	 * root level, just set the parent id as <code>null</code> or reference an
 	 * unknown parent id.</p>

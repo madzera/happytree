@@ -40,7 +40,7 @@ package com.madzera.happytree.exception;
  * 	<li>When the element to be persisted is not with the <i>NOT_EXISTED</i>
  * 	state in life cycle;</li>
  * 
- * 	<li>When there is an <code>Element</code> object with duplicated id, by
+ * 	<li>When there is an <code>Element</code> object with duplicate id, by
  * 	trying to insert/update or cut/copy an element between the trees;</li>
  * </ul>
  * 

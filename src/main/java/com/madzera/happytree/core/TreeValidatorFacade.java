@@ -40,7 +40,7 @@ class TreeValidatorFacade {
 				createSessionValidator(manager);
 		
 		validator.validateMandatorySessionId(pipeline);
-		validator.validateDuplicatedSessionId(pipeline);
+		validator.validateDuplicateSessionId(pipeline);
 	}
 	
 	/*
@@ -59,7 +59,7 @@ class TreeValidatorFacade {
 		
 		validator.validateMandatorySessionId(pipeline);
 		validator.validateMandatoryTypeSession(pipeline);
-		validator.validateDuplicatedSessionId(pipeline);
+		validator.validateDuplicateSessionId(pipeline);
 	}
 	
 	/*
@@ -157,7 +157,7 @@ class TreeValidatorFacade {
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateSessionElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedIdElement(pipeline);
+		validator.validateDuplicateIdElement(pipeline);
 	}
 	
 	/*
@@ -185,7 +185,7 @@ class TreeValidatorFacade {
 		validator.validateSessionElement(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedIdElement(pipeline);
+		validator.validateDuplicateIdElement(pipeline);
 	}
 	
 	private void validateCutCopyOperation(Element<?> sourceElement,
@@ -206,6 +206,6 @@ class TreeValidatorFacade {
 		validator.validateSessionElement(pipeline);
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
-		validator.validateDuplicatedIdElement(pipeline);
+		validator.validateDuplicateIdElement(pipeline);
 	}
 }

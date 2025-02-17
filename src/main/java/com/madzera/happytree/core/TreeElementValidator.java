@@ -103,6 +103,6 @@ abstract class TreeElementValidator extends TreeValidator {
 		}
 	}
 	
-	abstract void validateDuplicatedIdElement(TreePipeline pipeline)
+	abstract void validateDuplicateIdElement(TreePipeline pipeline)
 			throws TreeException;
 }

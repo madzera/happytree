@@ -624,7 +624,7 @@ is recommended. Example: **updateElement()**.
 |---|---|
 | Happy  | updateElement()  |
 | Alternative  | updateElement_nullIdElement()  |
-| Error  | updateElement_duplicatedId()  |
+| Error  | updateElement_duplicateId()  |
 
 #### Main Test Class
 

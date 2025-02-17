@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -143,7 +144,7 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_duplicateSessionIdentifier() {
 		final String nameTree = "duplicateSessionIdentifier";
-		final String nameTreeDuplicated = nameTree;
+		final String nameTreeDuplicate = nameTree;
 		final String messageError = "Already existing initialized session.";
 		String error = null;
 		
@@ -157,7 +158,7 @@ public class TreeTransactionErrorTest {
 			/*
 			 * Try to init an existing identifier session.
 			 */
-			transaction.initializeSession(nameTreeDuplicated, Directory.class);
+			transaction.initializeSession(nameTreeDuplicate, Directory.class);
 		} catch (TreeException e) {
 			error = e.getMessage();
 		} finally {
@@ -170,18 +171,18 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
-	 * {@literal @Tree}} annotation.</p>
+	 * {@code @Tree}} annotation.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * class without the {@literal @Tree} annotation.
+	 * class without the {@code @Tree} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
-	 * <i>&quot;There is no {@literal @TREE} associated.&quot;</i>
+	 * <i>&quot;There is no {@code @TREE} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoTree} object with no {@literal @Tree}
+	 * 	<li>Create a {@link Node_NoTree} object with no {@code @Tree}
 	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -197,7 +198,7 @@ public class TreeTransactionErrorTest {
 		
 		Collection<Node_NoTree> nodes = new ArrayList<Node_NoTree>();
 		Node_NoTree node = new Node_NoTree();
-		node.setId((int)Math.random()*100);
+		node.setId((int) new Random().nextInt(10) * 100);
 		node.setParent(null);
 		node.setName("foo");
 		nodes.add(node);
@@ -219,18 +220,18 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
-	 * {@literal @Id} annotation.</p>
+	 * {@code @Id} annotation.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * class without the {@literal @Id} annotation.
+	 * class without the {@code @Id} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
-	 * <i>&quot;There is no {@literal @ID} associated.&quot;</i>
+	 * <i>&quot;There is no {@code @ID} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoId} object with no {@literal @Id}
+	 * 	<li>Create a {@link Node_NoId} object with no {@code @Id}
 	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -246,7 +247,7 @@ public class TreeTransactionErrorTest {
 		
 		Collection<Node_NoId> nodes = new ArrayList<Node_NoId>();
 		Node_NoId node = new Node_NoId();
-		node.setId((int)Math.random()*100);
+		node.setId((int) new Random().nextInt(10) * 100);
 		node.setParent(null);
 		node.setName("foo");
 		nodes.add(node);
@@ -268,18 +269,18 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
-	 * {@literal @Parent} annotation.</p>
+	 * {@code @Parent} annotation.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * class without the {@literal @Parent} annotation.
+	 * class without the {@code @Parent} annotation.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
-	 * <i>&quot;There is no {@literal @PARENT} associated.&quot;</i>
+	 * <i>&quot;There is no {@code @PARENT} associated.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node_NoParent} object with no {@literal @Parent}
+	 * 	<li>Create a {@link Node_NoParent} object with no {@code @Parent}
 	 * 	annotation;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -295,7 +296,7 @@ public class TreeTransactionErrorTest {
 		
 		Collection<Node_NoParent> nodes = new ArrayList<Node_NoParent>();
 		Node_NoParent node = new Node_NoParent();
-		node.setId((int)Math.random()*100);
+		node.setId((int) new Random().nextInt(10) * 100);
 		node.setParent(null);
 		node.setName("foo");
 		nodes.add(node);
@@ -317,13 +318,13 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a source object/model input which
-	 * there is a mismatch type {@literal @Id} and {@literal @Parent}
+	 * there is a mismatch type {@code @Id} and {@code @Parent}
 	 * attributes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * class with mismatch type attributes annotated by {@literal @Id} and
-	 * {@literal @Parent}.
+	 * class with mismatch type attributes annotated by {@code @Id} and
+	 * {@code @Parent}.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
@@ -331,7 +332,7 @@ public class TreeTransactionErrorTest {
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Create a {@link Node_MismatchId} object with mismatch type
-	 * 	{@literal @Id} and {@literal @Parent} attributes;</li>
+	 * 	{@code @Id} and {@code @Parent} attributes;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
@@ -346,7 +347,7 @@ public class TreeTransactionErrorTest {
 		
 		Collection<Node_MismatchId> nodes = new ArrayList<Node_MismatchId>();
 		Node_MismatchId node = new Node_MismatchId();
-		node.setId((int)Math.random()*100);
+		node.setId((int) new Random().nextInt(10) * 100);
 		node.setParent(0);
 		node.setName("foo");
 		nodes.add(node);
@@ -368,18 +369,18 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using an object which would will
-	 * transformed with a <code>null</code> attribute {@literal @Id} value.</p>
+	 * transformed with a <code>null</code> attribute {@code @Id} value.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using a model
-	 * class with a <code>null</code> {@literal @Id} value.
+	 * class with a <code>null</code> {@code @Id} value.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
 	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create a {@link Node} object with a <code>null</code> {@literal @Id}
+	 * 	<li>Create a {@link Node} object with a <code>null</code> {@code @Id}
 	 * 	attribute value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -419,18 +420,18 @@ public class TreeTransactionErrorTest {
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a collection of objects having the
-	 * same {@literal @Id} attribute value.</p>
+	 * same {@code @Id} attribute value.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to initialize a session by API Transformation Process using two
-	 * objects with the same {@literal @Id} attribute value.
+	 * objects with the same {@code @Id} attribute value.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message:
-	 * <i>&quot;Duplicated ID.&quot;</i>
+	 * <i>&quot;Duplicate ID.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Create two {@link Node} objects, both with the same {@literal @Id}
+	 * 	<li>Create two {@link Node} objects, both with the same {@code @Id}
 	 * 	attribute value;</li>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process;</li>
@@ -439,9 +440,9 @@ public class TreeTransactionErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void initializeSession_atpDuplicatedElementId() {
-		final String sessionId = "ATP_WITH_DUPLICATED_ELEMENT_ID";
-		final String messageError = "Duplicated ID.";
+	public void initializeSession_atpDuplicateElementId() {
+		final String sessionId = "atpDuplicateElementId";
+		final String messageError = "Duplicate ID.";
 		String error = null;
 		
 		Collection<Node> nodes = new ArrayList<Node>();
@@ -467,5 +468,89 @@ public class TreeTransactionErrorTest {
 		} finally {
 			assertEquals(messageError, error);
 		}
+	}
+
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * 
+	 * <p>Error scenario for this operation when trying to initialize a session
+	 * by API Transformation Process using a <code>null</code> collection of
+	 * objects.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session by API Transformation Process using a
+	 * <code>null</code> collection of objects that would be transformed into
+	 * elements.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message:
+	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a <code>null</code> collection variable;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error different from the expected
+	 */
+	@Test
+	public void initializeSession_atpNullCollection() throws TreeException {
+		final String sessionId = "nullCollection";
+		final String messageError = "Invalid null/empty argument(s).";
+		
+		Collection<Node> nodes = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			transaction.initializeSession(sessionId, nodes);
+		} catch (IllegalArgumentException e) {
+			assertEquals(messageError, e.getMessage());
+		}	
+	}
+
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * 
+	 * <p>Error scenario for this operation when trying to initialize a session
+	 * by API Transformation Process using a empty collection of objects.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session by API Transformation Process using a empty
+	 * collection of objects that would be transformed into elements.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>IllegalArgumentException</code>
+	 * with the message:
+	 * <i>&quot;Invalid null/empty argument(s).&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a empty collection;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process;</li>
+	 * 	<li>Catch the <code>IllegalArgumentException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error different from the expected
+	 */
+	@Test
+	public void initializeSession_atpEmptyCollection() throws TreeException {
+		final String sessionId = "emptyCollection";
+		final String messageError = "Invalid null/empty argument(s).";
+		
+		Collection<Node> nodes = new ArrayList<Node>();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			transaction.initializeSession(sessionId, nodes);
+		} catch (IllegalArgumentException e) {
+			assertEquals(messageError, e.getMessage());
+		}	
 	}
 }

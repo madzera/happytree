@@ -90,8 +90,7 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 			}
 			
 			if (validIds.contains(objId)) {
-				throw this.throwTreeException(ATPRepositoryMessage.
-						DUPLICATED_ID);
+				throw this.throwTreeException(ATPRepositoryMessage.DUPLICATE_ID);
 			}
 			
 			validIds.add(objId);

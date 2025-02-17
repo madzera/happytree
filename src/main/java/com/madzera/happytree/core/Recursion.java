@@ -80,7 +80,7 @@ class Recursion {
 	/*
 	 * Verifies inside of the tree the existence of duplicate id.
 	 */
-	static <T> boolean iterateForDuplicatedId(Element<T> source,
+	static <T> boolean iterateForDuplicateId(Element<T> source,
 			Element<T> target) {
 		Set<Object> sourceIds = TreeFactory.collectionFactory().createHashSet();
 		Set<Object> targetIds = TreeFactory.collectionFactory().createHashSet();

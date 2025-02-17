@@ -33,16 +33,15 @@ class TreePersistValidator extends TreeElementValidator {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
+	void validateDuplicateIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		
 		TreeSession session = source.attachedTo();
 		Element<Object> root = session.tree();
 		
-		if (Recursion.iterateForDuplicatedId(source, root)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATED_ELEMENT);
+		if (Recursion.iterateForDuplicateId(source, root)) {
+			throw this.throwTreeException(TreeRepositoryMessage.DUPLICATE_ELEMENT);
 		}
 	}
 }

@@ -23,38 +23,38 @@ import com.madzera.happytree.exception.TreeException;
  */
 public class ComplexEmptyTreeTest extends CommonDemoTest {
 
-	Science _medicine = new Science("Medicine");
-	Science _pediatrics = new Science("Pediatrics");
-	Science _primaryCare = new Science("Primary Care");
-	Science _pediatricOncology = new Science("Pediatric Oncology");
-	Science _criticalCare = new Science("Critical Care");
-	Science _pediatricCardiology = new Science("Pediatric Cardiology");
-	Science _oncology = new Science("Oncology");
-	Science _medicalOncology = new Science("Medical Oncology");
-	Science _radiationOncology = new Science("Radiation Oncology");
-	Science _surgicalOncology = new Science("Surgical Oncology");
-	Science _pathology = new Science("Pathology");
-	Science _anatomicalPathology = new Science("Anatomical Pathology");
-	Science _clinicalPathology = new Science("Clinical Pathology");
+	Science medicineObj = new Science("Medicine");
+	Science pediatricsObj = new Science("Pediatrics");
+	Science primaryCareObj = new Science("Primary Care");
+	Science pediatricOncologyObj = new Science("Pediatric Oncology");
+	Science criticalCareObj = new Science("Critical Care");
+	Science pediatricCardiologyObj = new Science("Pediatric Cardiology");
+	Science oncologyObj = new Science("Oncology");
+	Science medicalOncologyObj = new Science("Medical Oncology");
+	Science radiationOncologyObj = new Science("Radiation Oncology");
+	Science surgicalOncologyObj = new Science("Surgical Oncology");
+	Science pathologyObj = new Science("Pathology");
+	Science anatomicalPathologyObj = new Science("Anatomical Pathology");
+	Science clinicalPathologyObj = new Science("Clinical Pathology");
 	
-	Science _computerScience = new Science("Computer Science");
-	Science _theoretical = new Science("Theoretical");
-	Science _theoryOfComputation = new Science("Theory of Computation");
-	Science _codingTheory = new Science("Coding Theory");
-	Science _dataStructures = new Science("Data Structures");
-	Science _algorithms = new Science("Algorithms");
-	Science _computerSystems = new Science("Computer Systems");
-	Science _computerArchitecture = new Science("Computer Architecture");
-	Science _computerEngineering = new Science("Computer Engineering");
-	Science _computerNetwork = new Science("Computer Network");
-	Science _databases = new Science("Databases");
-	Science _security = new Science("Security");
-	Science _cryptography = new Science("Cryptography");
-	Science _concurrent = new Science("Concurrent");
-	Science _computerApplications = new Science("Computer Applications");
-	Science _computerGraphics = new Science("Computer Graphics");
-	Science _ai = new Science("Artificial Intelligence");
-	Science _softwareEngineering = new Science("Software Engineering");
+	Science computerScienceObj = new Science("Computer Science");
+	Science theoreticalObj = new Science("Theoretical");
+	Science theoryOfComputationObj = new Science("Theory of Computation");
+	Science codingTheoryObj = new Science("Coding Theory");
+	Science dataStructuresObj = new Science("Data Structures");
+	Science algorithmsObj = new Science("Algorithms");
+	Science computerSystemsObj = new Science("Computer Systems");
+	Science computerArchitectureObj = new Science("Computer Architecture");
+	Science computerEngineeringObj = new Science("Computer Engineering");
+	Science computerNetworkObj = new Science("Computer Network");
+	Science databasesObj = new Science("Databases");
+	Science securityObj = new Science("Security");
+	Science cryptographyObj = new Science("Cryptography");
+	Science concurrentObj = new Science("Concurrent");
+	Science computerApplicationsObj = new Science("Computer Applications");
+	Science computerGraphicsObj = new Science("Computer Graphics");
+	Science aiObj = new Science("Artificial Intelligence");
+	Science softwareEngineeringObj = new Science("Software Engineering");
 	
 	
 	@Test
@@ -70,68 +70,68 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		assertNotNull(transaction);
 		
 		Element<Science> medicine = manager.createElement("Medicine", null,
-				_medicine);
+				medicineObj);
 		Element<Science> pediatrics = manager.createElement("Pediatrics", null,
-				_pediatrics);
+				pediatricsObj);
 		Element<Science> primaryCare = manager.createElement("Primary Care",
-				null, _primaryCare);
+				null, primaryCareObj);
 		Element<Science> pediatricOncology = manager.createElement("Pediatric Oncology", null,
-				_pediatricOncology);
+				pediatricOncologyObj);
 		Element<Science> criticalCare = manager.createElement("Critical Care", null,
-				_criticalCare);
+				criticalCareObj);
 		Element<Science> pediatricCardiology = manager.createElement("Pediatric Cardiology", null,
-				_pediatricCardiology);
+				pediatricCardiologyObj);
 		Element<Science> oncology = manager.createElement("Oncology", null,
-				_oncology);
+				oncologyObj);
 		Element<Science> medicalOncology = manager.createElement("Medical Oncology", null,
-				_medicalOncology);
+				medicalOncologyObj);
 		Element<Science> radiationOncology = manager.createElement("Radiation Oncology", null,
-				_radiationOncology);
+				radiationOncologyObj);
 		Element<Science> surgicalOncology = manager.createElement("Surgical Oncology", null,
-				_surgicalOncology);
+				surgicalOncologyObj);
 		Element<Science> pathology = manager.createElement("Pathology", null,
-				_pathology);
+				pathologyObj);
 		Element<Science> anatomicalPathology = manager.createElement("Anatomical Pathology", null,
-				_anatomicalPathology);
+				anatomicalPathologyObj);
 		Element<Science> clinicalPathology = manager.createElement("Clinical Pathology", null,
-				_clinicalPathology);
+				clinicalPathologyObj);
 		
 		Element<Science> computerScience = manager.createElement("Computer Science", null,
-				_computerScience);
+				computerScienceObj);
 		Element<Science> theoretical = manager.createElement("Theoretical", null,
-				_theoretical);
+				theoreticalObj);
 		Element<Science> theoryOfComputation = manager.createElement("Theory of Computation", null,
-				_theoryOfComputation);
+				theoryOfComputationObj);
 		Element<Science> codingTheory = manager.createElement("Coding Theory", null,
-				_codingTheory);
+				codingTheoryObj);
 		Element<Science> dataStructures = manager.createElement("Data Structures", null,
-				_dataStructures);
+				dataStructuresObj);
 		Element<Science> algorithms = manager.createElement("Algorithms", null,
-				_algorithms);
+				algorithmsObj);
 		Element<Science> computerSystems = manager.createElement("Computer Systems", null,
-				_computerSystems);
+				computerSystemsObj);
 		Element<Science> computerArchitecture = manager.createElement("Computer Architecture", null,
-				_computerArchitecture);
+				computerArchitectureObj);
 		Element<Science> computerEngineering = manager.createElement("Computer Engineering", null,
-				_computerEngineering);
+				computerEngineeringObj);
 		Element<Science> computerNetwork = manager.createElement("Computer Network", null,
-				_computerNetwork);
+				computerNetworkObj);
 		Element<Science> databases = manager.createElement("Databases", null,
-				_databases);
+				databasesObj);
 		Element<Science> security = manager.createElement("Security", null,
-				_security);
+				securityObj);
 		Element<Science> cryptography = manager.createElement("Cryptography", null,
-				_cryptography);
+				cryptographyObj);
 		Element<Science> concurrent = manager.createElement("Concurrent", null,
-				_concurrent);
+				concurrentObj);
 		Element<Science> computerApplications = manager.createElement("Computer Applications", null,
-				_computerApplications);
+				computerApplicationsObj);
 		Element<Science> computerGraphics = manager.createElement("Computer Graphics", null,
-				_computerGraphics);
+				computerGraphicsObj);
 		Element<Science> ai = manager.createElement("Artificial Intelligence", null,
-				_ai);
+				aiObj);
 		Element<Science> softwareEngineering = manager.createElement("Software Engineering", null,
-				_softwareEngineering);
+				softwareEngineeringObj);
 		
 		List<Element<Science>> medicineList = new ArrayList<>();
 		medicineList.add(pediatrics);medicineList.add(primaryCare);
@@ -185,7 +185,6 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		pediatrics.addChild(pediatricCardiology);
 		pediatrics.addChild(criticalCare);
 		pediatrics.addChild(primaryCare);
-		//pediatrics = manager.getElementById("Pediatrics");
 		
 		isEquals("DETACHED", pediatrics.lifecycle());
 		isEquals("NOT_EXISTED", pediatricOncology.lifecycle());
@@ -221,12 +220,12 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		/*
 		 * Impossible to persist the Critical Care element because it was
 		 * already persisted before when Medicine and its children were added
-		 * to the tree. Duplicated ID.
+		 * to the tree. Duplicate ID.
 		 */
 		try {
 			manager.persistElement(criticalCare);
 		} catch (TreeException e) {
-			String error2 = "Duplicated ID.";
+			String error2 = "Duplicate ID.";
 			isEquals(error2, e.getMessage());
 		}
 		
@@ -387,7 +386,7 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 			Element<Science> root = manager.root();
 			manager.copy(theoretical, root);
 		} catch (TreeException e) {
-			String error2 = "Duplicated ID.";
+			String error2 = "Duplicate ID.";
 			isEquals(error2, e.getMessage());
 		}
 		
@@ -462,7 +461,7 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 				computerEngineering.getId()));
 		
 		try {
-			computerEngineering = manager.persistElement(computerEngineering);
+			manager.persistElement(computerEngineering);
 		} catch (TreeException e) {
 			String error3 = "No possible to persist the element. Invalid"
 					+ " lifecycle state.";

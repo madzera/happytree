@@ -14,7 +14,7 @@ class TreeCopyValidator extends TreeElementValidator {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
+	void validateDuplicateIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		Element<Object> target = (Element<Object>) pipeline.getAttribute(
@@ -23,9 +23,8 @@ class TreeCopyValidator extends TreeElementValidator {
 		TreeSession targetSession = target.attachedTo();
 		Element<Object> targetRoot = targetSession.tree();
 		
-		if (Recursion.iterateForDuplicatedId(source, targetRoot)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATED_ELEMENT);
+		if (Recursion.iterateForDuplicateId(source, targetRoot)) {
+			throw this.throwTreeException(TreeRepositoryMessage.DUPLICATE_ELEMENT);
 		}
 	}
 }

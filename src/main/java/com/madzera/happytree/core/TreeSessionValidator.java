@@ -33,7 +33,7 @@ class TreeSessionValidator extends TreeValidator {
 		}
 	}
 	
-	void validateDuplicatedSessionId(TreePipeline pipeline)
+	void validateDuplicateSessionId(TreePipeline pipeline)
 			throws TreeException {
 		String sessionId = (String) pipeline.getAttribute(
 				TreePipelineAttributes.SESSION_ID);
@@ -42,7 +42,7 @@ class TreeSessionValidator extends TreeValidator {
 		for (TreeSession session : sessions) {
 			if (sessionId.equals(session.getSessionId())) {
 				throw this.throwTreeException(TreeRepositoryMessage.
-						DUPLICATED_SESSION);
+					DUPLICATE_SESSION);
 			}
 		}
 	}

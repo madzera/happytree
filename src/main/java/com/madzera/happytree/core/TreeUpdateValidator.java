@@ -36,7 +36,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedIdElement(TreePipeline pipeline) throws TreeException {
+	void validateDuplicateIdElement(TreePipeline pipeline) throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		
@@ -60,7 +60,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 					sourceElement;
 			if (rootIds.contains(sourceChild.getUpdatedId())) {
 				throw this.throwTreeException(TreeRepositoryMessage.
-						DUPLICATED_ELEMENT);
+					DUPLICATE_ELEMENT);
 			}
 		}
 	}

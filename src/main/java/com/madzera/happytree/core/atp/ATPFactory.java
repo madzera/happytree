@@ -27,13 +27,20 @@ public class ATPFactory {
 	 * the super package (core)
 	 */
 	public static <T> ATPPhase<T> getPhaseInstance(ATPPhaseInstance phase) {
-		switch (phase) {
-			case PRE_VALIDATION: 	return new PreValidation<>();
-			case EXTRACTION:		return new Extraction<>();
-			case INITIALIZATION: 	return new Initialization<>();
-			case BINDING:			return new Binding<>();
+		ATPPhase<T> instance = null;
+		if (ATPPhaseInstance.PRE_VALIDATION.equals(phase)) {
+			instance = new PreValidation<>();
 		}
-		return null;
+		if (ATPPhaseInstance.EXTRACTION.equals(phase)) {
+			instance = new Extraction<>();
+		}
+		if (ATPPhaseInstance.INITIALIZATION.equals(phase)) {
+			instance = new Initialization<>();
+		}
+		if (ATPPhaseInstance.BINDING.equals(phase)) {
+			instance = new Binding<>();
+		}
+		return instance;
 	}
 	
 	static ExceptionFactory exceptionFactory() {

@@ -14,7 +14,7 @@ class TreeCutValidator extends TreeElementValidator {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	void validateDuplicatedIdElement(TreePipeline pipeline)
+	void validateDuplicateIdElement(TreePipeline pipeline)
 			throws TreeException {
 		Element<Object> source = (Element<Object>) pipeline.getAttribute(
 				TreePipelineAttributes.SOURCE_ELEMENT);
@@ -26,9 +26,9 @@ class TreeCutValidator extends TreeElementValidator {
 		 * element, the target element can be null, meaning that the source
 		 * element will be cut to the root level of the same tree. If the target
 		 * is not null it is necessary to validate if in the target tree there
-		 * is duplicated id. It is not necessary validate duplicated id from
+		 * is duplicate id. It is not necessary validate duplicate id from
 		 * the source element because cut/copy operations only allow attached
-		 * elements, then while trying to force a duplicated id, these elements
+		 * elements, then while trying to force a duplicate id, these elements
 		 * will turn on as detached, stopping on previous validation.
 		 */
 		if (target != null) {
@@ -37,9 +37,8 @@ class TreeCutValidator extends TreeElementValidator {
 			if (!source.attachedTo().equals(targetSession)) {
 				Element<Object> targetRoot = targetSession.tree();
 				
-				if (Recursion.iterateForDuplicatedId(source, targetRoot)) {
-					throw this.throwTreeException(TreeRepositoryMessage.
-							DUPLICATED_ELEMENT);
+				if (Recursion.iterateForDuplicateId(source, targetRoot)) {
+					throw this.throwTreeException(TreeRepositoryMessage.DUPLICATE_ELEMENT);
 				}
 			}
 		}

@@ -9,7 +9,7 @@ class ATPConstants extends TreeConstants {
 	private ATPConstants() {}
 
 	
-	class Error {
+	static class Error {
 		private Error() {}
 		
 		//---------------RUNTIME--------------
@@ -17,13 +17,13 @@ class ATPConstants extends TreeConstants {
 		
 		//----------------TREE----------------
 		static final String GENERAL_ERROR = "com.madzera.happytree.error.checked.tree.general";
-		static final String NO_TREE_ERROR = "com.madzera.happytree.error.checked.tree.notree";
-		static final String NO_ID_ERROR = "com.madzera.happytree.error.checked.tree.noid";
-		static final String NO_PARENT_ERROR = "com.madzera.happytree.error.checked.tree.noparent";
-		static final String DIFFERENT_TYPES_ID_ERROR = "com.madzera.happytree.error.checked.tree.mismatchid";
-		static final String DUPLICATED_ID_ERROR = "com.madzera.happytree.error.checked.tree.duplicatedid";
+		static final String NO_TREE_ERROR = "com.madzera.happytree.error.checked.tree.no.tree";
+		static final String NO_ID_ERROR = "com.madzera.happytree.error.checked.tree.no.id";
+		static final String NO_PARENT_ERROR = "com.madzera.happytree.error.checked.tree.no.parent";
+		static final String DIFFERENT_TYPES_ID_ERROR = "com.madzera.happytree.error.checked.tree.mismatch.id";
+		static final String DUPLICATE_ID_ERROR = "com.madzera.happytree.error.checked.tree.duplicate.id";
 		
-		class Internal {
+		static class Internal {
 			private Internal() {}
 			//---------------RUNTIME--------------
 			static final String GENERAL_ERROR = "com.madzera.happytree.error.runtime.general";
