@@ -3012,6 +3012,80 @@ public class TreeManagerErrorTest {
 	/**
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
+	 * <p>Error scenario for this operation when trying to update an attached
+	 * element when it receives a new (and detached) element as a child.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to create a new element without persisting it and add it to an
+	 * attached element. After that, try to update the attached element that
+	 * received the new element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No possible to update the element. Invalid 
+	 * lifecycle state.&quot;
+	 * </i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the element <i>happytree</i> inside of <i>project</i> element
+	 *  which is inside of the <i>devel</i> element, all of them through the
+	 *  {@link TreeManager#getElementById(Element)} invocations;</li>
+	 * 	<li>Create a new element and add it as a child of the <i>happytree</i>
+	 * 	element;</li>
+	 * 	<li>Try to update the <i>devel</i> element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_detachedChildElement() {
+		final String sessionId = "updateElement_detachedChildElement";
+		final String messageError = "No possible to update the element. "
+			+ "Invalid lifecycle state.";
+
+		final long develId = 93832;
+		final long projectsId = 93209;
+		final long happytreeId = 859452;
+
+		String error = null;
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			transaction.initializeSession(sessionId, directoryTree);
+			Element<Directory> develElement = manager.getElementById(develId);
+			Element<Directory> projectsElement = develElement.getElementById(
+				projectsId);
+			Element<Directory> happytreeElement = projectsElement.
+				getElementById(happytreeId);
+			
+			Element<Directory> detachedElement = manager.createElement(
+				Integer.MAX_VALUE,
+				happytreeId,
+				new Directory(
+					Integer.MAX_VALUE,
+					happytreeId,
+					"Detached Element"));
+			happytreeElement.addChild(detachedElement);
+
+			manager.updateElement(develElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
 	 * <p>Error scenario for this operation when trying to update an element
 	 * which it has different type of wrapped node.</p>
 	 * 
