@@ -1,8 +1,6 @@
 package com.madzera.happytree.core.atp;
 
-import com.madzera.happytree.core.TreeConstants;
-
-class ATPConstants extends TreeConstants {
+class ATPConstants {
 	static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
 
 	

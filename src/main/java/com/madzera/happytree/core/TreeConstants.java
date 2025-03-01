@@ -2,16 +2,16 @@ package com.madzera.happytree.core;
 
 public class TreeConstants {
 	
-	protected TreeConstants() {}
+	private TreeConstants() {}
 
 	
 	/*
 	 * Configuration constants to be accessed within the ATP package.
 	 */
-	protected static class Config {
-		static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
+	static class Config {
+		private Config() {}
 		
-		protected Config() {}
+		static final String ERROR_MESSAGE_FILE_LOCATION = "exception.properties";
 	}
 	
 	static class Error {

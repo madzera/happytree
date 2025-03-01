@@ -92,7 +92,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to create an element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw a new instance of <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -157,14 +158,14 @@ public class TreeManagerErrorTest {
 		
 		String error = null;
 		
-		final String nullablElementId = null;
+		final String nullableElementId = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
 		try {
 			transaction.initializeSession(sessionId, Directory.class);
-			manager.createElement(nullablElementId,	null, null);
+			manager.createElement(nullableElementId, null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
@@ -198,7 +199,8 @@ public class TreeManagerErrorTest {
 	 * 	source session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -273,7 +275,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -590,7 +593,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut the source root element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -658,7 +662,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try now to cut this changed element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -728,7 +733,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -810,7 +816,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Catch the <code>TreeException</code> because &quot;Entry&quot;
 	 * 	element already exists in target tree;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -889,7 +896,8 @@ public class TreeManagerErrorTest {
 	 * 	&quot;Entry&quot; element of the target tree;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -968,7 +976,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to cut the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1044,7 +1053,8 @@ public class TreeManagerErrorTest {
 	 * 	inside of the target typified by <code>Metadata</code>;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 * 
 	 */
@@ -1117,7 +1127,8 @@ public class TreeManagerErrorTest {
 	 * 	session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1192,7 +1203,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -1419,7 +1431,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source root element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1492,7 +1505,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element which was detached;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1570,7 +1584,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1646,7 +1661,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1730,7 +1746,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1811,7 +1828,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1890,7 +1908,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the source element into the target element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -1958,7 +1977,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to copy the element. Both belong to the same tree;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2021,7 +2041,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to remove this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2090,7 +2111,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to remove the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2164,7 +2186,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to remove the root element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2226,7 +2249,8 @@ public class TreeManagerErrorTest {
 	 * 	inside of the tree typified by <code>Directory</code>;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 * 
 	 */
@@ -2386,7 +2410,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to persist this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2446,7 +2471,8 @@ public class TreeManagerErrorTest {
 	 * 	</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2518,7 +2544,8 @@ public class TreeManagerErrorTest {
 	 * 	others;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2591,7 +2618,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to persist the element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2658,7 +2686,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to persist the mismatch element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2683,6 +2712,71 @@ public class TreeManagerErrorTest {
 			Metadata metadata = new Metadata(foo, null, foo);
 			mismatchElement.wrap(metadata);
 			
+			manager.persistElement(mismatchElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to persist an attached
+	 * element as a child of a new (and detached) element to be persisted.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element that has a child which is already attached.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No possible to persist the element. Invalid 
+	 * lifecycle state.&quot;
+	 * </i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Create two elements, &quot;foo&quot and &quot;bar&quot;;</li>
+	 * 	<li>Persist the &quot;bar&quot; element;</li>
+	 * 	<li>Add the &quot;bar&quot; element as a child of &quot;foo&quot;;</li>
+	 * 	<li>Try to persist the &quot;foo&quot; element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_detachedChildElement() {
+		final String sessionId = "persistElement_detachedChildElement";
+		
+		final String messageError = "No possible to persist the element. "
+			+ "Invalid lifecycle state.";
+		String error = null;
+		
+		final String foo = "foo";
+		final String bar = "bar";
+		
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		try {
+			transaction.initializeSession(sessionId, directories);
+			Element<Metadata> mismatchElement = manager.createElement(foo, null,
+					null);
+			Element<Metadata> attachedElement = manager.createElement(bar, null,
+					null);
+			
+			attachedElement = manager.persistElement(attachedElement);
+
+			mismatchElement.addChild(attachedElement);
+
 			manager.persistElement(mismatchElement);
 		} catch (TreeException e) {
 			error = e.getMessage();
@@ -2774,7 +2868,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to update this element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2840,7 +2935,8 @@ public class TreeManagerErrorTest {
 	 * 	duplicate id;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2919,7 +3015,8 @@ public class TreeManagerErrorTest {
 	 * 	<li>Try to update the root element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -2976,7 +3073,8 @@ public class TreeManagerErrorTest {
 	 * 	before;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
@@ -3000,80 +3098,6 @@ public class TreeManagerErrorTest {
 			 * Error trying to update a not existed element.
 			 */
 			manager.updateElement(element);
-		} catch (TreeException e) {
-			error = e.getMessage();
-			assertEquals(messageError, error);
-			assertThrows(TreeException.class, () -> {
-				throw e;
-			});
-		}
-	}
-
-	/**
-	 * Test for the {@link TreeManager#updateElement(Element)} operation.
-	 * 
-	 * <p>Error scenario for this operation when trying to update an attached
-	 * element when it receives a new (and detached) element as a child.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to create a new element without persisting it and add it to an
-	 * attached element. After that, try to update the attached element that
-	 * received the new element.
-	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;No possible to update the element. Invalid 
-	 * lifecycle state.&quot;
-	 * </i>
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session by API Transformation Process using a
-	 * 	previous assembled tree;</li>
-	 * 	<li>Get the element <i>happytree</i> inside of <i>project</i> element
-	 *  which is inside of the <i>devel</i> element, all of them through the
-	 *  {@link TreeManager#getElementById(Element)} invocations;</li>
-	 * 	<li>Create a new element and add it as a child of the <i>happytree</i>
-	 * 	element;</li>
-	 * 	<li>Try to update the <i>devel</i> element;</li>
-	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
-	 * </ol>
-	 */
-	@Test
-	public void updateElement_detachedChildElement() {
-		final String sessionId = "updateElement_detachedChildElement";
-		final String messageError = "No possible to update the element. "
-			+ "Invalid lifecycle state.";
-
-		final long develId = 93832;
-		final long projectsId = 93209;
-		final long happytreeId = 859452;
-
-		String error = null;
-		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
-
-		TreeManager manager = HappyTree.createTreeManager();
-		TreeTransaction transaction = manager.getTransaction();
-
-		try {
-			transaction.initializeSession(sessionId, directoryTree);
-			Element<Directory> develElement = manager.getElementById(develId);
-			Element<Directory> projectsElement = develElement.getElementById(
-				projectsId);
-			Element<Directory> happytreeElement = projectsElement.
-				getElementById(happytreeId);
-			
-			Element<Directory> detachedElement = manager.createElement(
-				Integer.MAX_VALUE,
-				happytreeId,
-				new Directory(
-					Integer.MAX_VALUE,
-					happytreeId,
-					"Detached Element"));
-			happytreeElement.addChild(detachedElement);
-
-			manager.updateElement(develElement);
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
@@ -3110,39 +3134,113 @@ public class TreeManagerErrorTest {
 	 * 	through the element from the source tree session;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
 	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw the same <code>TreeException</code>.</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
 	 * </ol>
 	 */
 	@Test
 	public void updateElement_mismatchElement() {
 		final String sourceSessionId = "Directory_Session";
 		final String targetSessionId = "Metadata_Session";
-		
+
 		final String messageError = "Mismatch type error. Incompatible"
 				+ " parameterized type tree.";
 		String error = null;
-		
+
 		final long eclipseExeId = 8483742;
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
-		Collection<Metadata> metadata = TreeAssembler.
-				getMetadataTree();
-		
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		Collection<Metadata> metadata = TreeAssembler.getMetadataTree();
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		try {
 			transaction.initializeSession(sourceSessionId, directories);
 			Element<Directory> eclipseExe = manager.getElementById(eclipseExeId);
-			
+
 			transaction.initializeSession(targetSessionId, metadata);
-			
+
 			/*
 			 * Here, there is an attempt to update an element from a tree inside
 			 * of another tree session. Mismatch error.
 			 */
 			manager.updateElement(eclipseExe);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to update an attached
+	 * element when it receives a new (and detached) element as a child.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to create a new element without persisting it and add it to an
+	 * attached element. After that, try to update the attached element that
+	 * received the new element.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code>
+	 * with the message: <i>&quot;No possible to update the element. Invalid 
+	 * lifecycle state.&quot;
+	 * </i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the element <i>happytree</i> inside of <i>project</i> element
+	 *  which is inside of the <i>devel</i> element, all of them through the
+	 *  {@link TreeManager#getElementById(Element)} invocations;</li>
+	 * 	<li>Create a new element and add it as a child of the <i>happytree</i>
+	 * 	element;</li>
+	 * 	<li>Try to update the <i>devel</i> element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
+	 * 	type.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_detachedChildElement() {
+		final String sessionId = "updateElement_detachedChildElement";
+		final String messageError = "No possible to update the element. "
+			+ "Invalid lifecycle state.";
+
+		final long develId = 93832;
+		final long projectsId = 93209;
+		final long happytreeId = 859452;
+
+		String error = null;
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			transaction.initializeSession(sessionId, directoryTree);
+			Element<Directory> develElement = manager.getElementById(develId);
+			Element<Directory> projectsElement = develElement.getElementById(
+				projectsId);
+			Element<Directory> happytreeElement = projectsElement.
+				getElementById(happytreeId);
+			
+			Element<Directory> detachedElement = manager.createElement(
+				Integer.MAX_VALUE,
+				happytreeId,
+				new Directory(
+					Integer.MAX_VALUE,
+					happytreeId,
+					"Detached Element"));
+			happytreeElement.addChild(detachedElement);
+
+			manager.updateElement(develElement);
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
