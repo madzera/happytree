@@ -214,8 +214,6 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> boolean containsElement(Element<T> parent, Element<T> descendant)
 			throws TreeException {
-		final Operation operation = Operation.CONTAINS;
-		
 		/*
 		 * Validates whether the current session is valid.
 		 */
@@ -238,17 +236,6 @@ class TreeManagerCore implements TreeManager {
 		 */
 		if (!parentCore.getState().equals(ElementState.ATTACHED)
 				|| !childCore.getState().equals(ElementState.ATTACHED)) {
-			return containsChild;
-		}
-		
-		boolean notAttachedParent = Recursion.
-				iterateForInvalidStateOperationValidation(
-						parentCore.getChildren(), operation);
-		boolean notAttachedChild = Recursion.
-				iterateForInvalidStateOperationValidation(
-						childCore.getChildren(), operation);
-		
-		if (notAttachedParent || notAttachedChild) {
 			return containsChild;
 		}
 		

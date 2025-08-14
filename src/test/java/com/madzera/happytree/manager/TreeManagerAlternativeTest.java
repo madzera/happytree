@@ -723,6 +723,66 @@ public class TreeManagerAlternativeTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#containsElement(Element, Element)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to verify if an
+	 * element contains another one which one of them have a <i>DETACHED</i>
+	 * child.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify if an element contains another one which one of them have a
+	 * detached child.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Get two elements which one is actually child of the other;</li>
+	 * 	<li>Confirm the <code>true</code> result;</li>
+	 * 	<li>Remove a different child from one of them turning it as
+	 * 	<i>DETACHED</i>;</li>
+	 * 	<li>Confirm the <code>false</code> value.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void containsElement_detachedChild() throws TreeException {
+		final String sessionId = "containsElement_detachedChild";
+
+		final long realtekId = 94034;
+		final long binId = 7753032;
+		final long sdkId = 113009;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+		
+		Element<Directory> realtek = manager.getElementById(realtekId);
+		Element<Directory> bin = manager.getElementById(binId);
+
+		assertTrue(manager.containsElement(realtek, bin));
+
+		Element<Directory> sdk = realtek.getChildren()
+				.stream()
+				.filter(child -> child.getId().equals(sdkId))
+				.findFirst()
+				.get();
+
+		realtek.removeChild(sdk);
+
+		assertFalse(manager.containsElement(realtek, bin));
+	}
+
+	/**
 	 * Test for the {@link TreeManager#containsElement(Object, Object)} and
 	 * {@link TreeManager#containsElement(Element)}.
 	 * 

@@ -403,7 +403,7 @@ public class TreeManagerTest {
 	 * question.</b></p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Remove an element from a tree session.
+	 * Remove elements from a tree session.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element and its children be removed definitely
 	 * from the tree.
@@ -418,9 +418,16 @@ public class TreeManagerTest {
 	 * 	be removed (Adobe) and its children (Reader, Photoshop and Dreamweaver);
 	 * 	</li>
 	 * 	<li>Remove now the element (Adobe);</li>
-	 * 	<li>Confirm now that the parent (Program Files) has not anymore the
-	 * 	removed element (Adobe) and its children (Reader, Photoshop and
-	 * 	Dreamweaver).</li>
+	 * 	<li>Confirm now that the parent element (Program Files) has not the
+	 * 	removed	element (Adobe) and its children (Reader, Photoshop and
+	 * 	Dreamweaver) anymore;</li>
+	 * 	<li>Now get the element (Realtek) which is parent of the element
+	 * 	(Drivers);</li>
+	 * 	<li>Do now the opposite way, confirm that the child element (Drivers)
+	 * 	is contained inside of its parent element (Realtek);</li>
+	 * 	<li>Remove the parent element (Realtek);</li>
+	 * 	<li>Confirm now that the child element (Drivers) is not contained
+	 * 	inside of its parent (Realtek) anymore.</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -434,6 +441,8 @@ public class TreeManagerTest {
 		final long readerId = 403940;
 		final long photoshopId = 909443;
 		final long dreamweaverId = 502010;
+		final long realtekId = 94034;
+		final long driversId = 220332;
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -458,6 +467,15 @@ public class TreeManagerTest {
 		assertFalse(manager.containsElement(programFiles, reader));
 		assertFalse(manager.containsElement(programFiles, photoshop));
 		assertFalse(manager.containsElement(programFiles, dreamweaver));
+
+		Element<Directory> realtek = manager.getElementById(realtekId);
+		Element<Directory> drivers = manager.getElementById(driversId);
+
+		assertTrue(manager.containsElement(realtek, drivers));
+
+		assertNotNull(manager.removeElement(realtek));
+
+		assertFalse(manager.containsElement(realtek, drivers));
 	}
 	
 	/**
