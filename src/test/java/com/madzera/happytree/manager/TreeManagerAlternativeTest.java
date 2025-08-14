@@ -718,6 +718,7 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> office = manager.getElementById(officeId);
 		
 		assertFalse(manager.containsElement(office, nullableElement));
+		assertFalse(manager.containsElement(nullableElement, office));
 		assertFalse(manager.containsElement(nullableElement));
 	}
 	
