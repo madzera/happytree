@@ -85,20 +85,16 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
-		Element<?> fromElement = null;
-		Element<?> toElement = null;
-		
 		/*
-		 * Mismatch parameterized type error. invoking with the parameters
-		 * Element<X> and Element<Y> this method is called instead
+		 * Validation for Mismatch parameterized type error. invoking with the
+		 * parameters Element<X> and Element<Y> this method is called instead
 		 * cut(Element, Element).
 		 */
 		if (from instanceof Element<?> && to instanceof Element<?>) {
-			fromElement = (Element<?>) from;
-			toElement = (Element<?>) to;
-			validatorFacade.validateCutOperation(fromElement, toElement);
+			validatorFacade.validateCutOperation((Element<?>) from,
+					(Element<?>) to);
 		}
-		
+
 		Element<T> source = this.searchElement(from);
 		Element<T> target = this.searchElement(to);
 		
@@ -298,13 +294,10 @@ class TreeManagerCore implements TreeManager {
 		 * returned.
 		 */
 		if (source != null && currentSession.equals(source.attachedTo())) {
-			boolean isAttached = source.getState().canExecuteOperation(
-					operation)
-					&& !Recursion.iterateForInvalidStateOperationValidation(
-							source.	getChildren(), operation);
+			boolean isAttached = source.getState().canExecuteOperation(operation);
 			
 			if (isAttached) {
-				containsElement = this.searchElement(element.getId()) != null;
+				containsElement = Boolean.TRUE;
 			}
 		}
 		
