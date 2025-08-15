@@ -752,8 +752,8 @@ public class TreeManagerAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void containsElement_detachedChild() throws TreeException {
-		final String sessionId = "containsElement_detachedChild";
+	public void containsElement_detachedChildElement() throws TreeException {
+		final String sessionId = "containsElement_detachedChildElement";
 
 		final long realtekId = 94034;
 		final long binId = 7753032;
@@ -898,6 +898,64 @@ public class TreeManagerAlternativeTest {
 		
 		assertFalse(manager.containsElement(vlc, rec2));
 		assertFalse(manager.containsElement(vlc));
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to verify if an
+	 * element contains another one which using the <code>null</code> arguments.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify whether an element contains another one when they are
+	 * <code>null</code>.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare two already existing <code>Object</code> ids corresponding
+	 * 	to their respective elements;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Confirms that one of these elements actually is child of the other;
+	 * 	</li>
+	 * 	<li>Now set one of them as <code>null</code> id;</li>
+	 * 	<li>Confirm the <code>false</code> result;</li>
+	 * 	<li>Set the other as <code>null</code> id;</li>
+	 * 	<li>Confirm the <code>false</code> result.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void containsElement_nullObjectId() throws TreeException {
+		final String sessionId = "containsElement_nullObjectId";
+
+		Long rec2Id = 1038299L;
+		Long recordedId = 848305L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directories);
+
+		assertTrue(manager.containsElement(recordedId, rec2Id));
+
+		rec2Id = null;
+
+		assertFalse(manager.containsElement(recordedId, rec2Id));
+
+		rec2Id = 0L;
+		recordedId = null;
+
+		assertFalse(manager.containsElement(recordedId, rec2Id));
 	}
 	
 	/**
