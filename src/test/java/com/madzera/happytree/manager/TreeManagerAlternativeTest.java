@@ -933,8 +933,8 @@ public class TreeManagerAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void containsElement_nullObjectId() throws TreeException {
-		final String sessionId = "containsElement_nullObjectId";
+	public void containsElement_nullObjectIdArguments() throws TreeException {
+		final String sessionId = "containsElement_nullObjectIdArguments";
 
 		Long rec2Id = 1038299L;
 		Long recordedId = 848305L;
@@ -958,6 +958,51 @@ public class TreeManagerAlternativeTest {
 		assertFalse(manager.containsElement(recordedId, rec2Id));
 	}
 	
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to check if the
+	 * tree session has two elements declared by id when they are non-existent
+	 * and <code>null</code>.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to verify whether the tree session has two declared elements by id
+	 * when they are non-existent and <code>null</code>.
+	 * <p><b>Expected:</b></p>
+	 * Receive the <code>false</code> value.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare two object IDs, one non-existent in the defined tree and the
+	 * 	other <code>null</code>;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Confirm the <code>false</code> result for both.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void containsElement_nullObjectId() throws TreeException {
+		final String sessionId = "containsElement_nullObjectId";
+
+		Long nullObjectId = null;
+		Long notFoundObjectId = 123456789L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directories);
+
+		assertFalse(manager.containsElement(nullObjectId));
+		assertFalse(manager.containsElement(notFoundObjectId));
+	}
+
 	/**
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
