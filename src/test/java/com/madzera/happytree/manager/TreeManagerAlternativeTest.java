@@ -285,6 +285,75 @@ public class TreeManagerAlternativeTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to cut an element
+	 * by only its id for inside of a <code>null</code> target element.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element only by its id for inside of a <code>null</code>
+	 * target element.
+	 * <p><b>Expected:</b></p>
+	 * It is expected that the element to be cut be moved to the root level of
+	 * the tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get the source (<code>from</code>) existed element;</li>
+	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	</li>
+	 * 	<li>Try to cut this element for inside of a <code>null</code> element;
+	 * 	</li>
+	 * 	<li>Verify that the source parent element id is now with the same id
+	 * 	value of the session id, representing the root element id;</li>
+	 * 	<li>Verify if the source child element was moved too by invoking
+	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void cut_nullToObjectId() throws TreeException {
+		final String sessionId = "cut_nullToObjectId";
+		final Long cut_nullToObjectId = null;
+
+		final long sdkDevId = 84709;
+		final long sdkDevChildId = 983533;
+		final String sdkDevParentName = "Devel";
+		final String sdkDevName = "sdk_dev";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+
+		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
+		Element<Directory> sdkDevParentElement = manager.getElementById(
+				sdkDevElement.getParent());
+
+		Directory devel = sdkDevParentElement.unwrap();
+		assertEquals(sdkDevParentName, devel.getName());
+
+		Element<Directory> cutElement = manager.cut(sdkDevId,
+				cut_nullToObjectId);
+
+		/*
+		 * Verify that the element was cut to the root level.
+		 */
+		Element<Directory> root = manager.root();
+		assertEquals(sessionId, cutElement.getParent());
+		assertTrue(manager.containsElement(root, cutElement));
+		assertEquals(sdkDevName, cutElement.unwrap().getName());
+		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
+	}
+
+	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to cut an element

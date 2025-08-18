@@ -563,6 +563,76 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)}.
+	 * 
+	 * <p>Error scenario for this operation when trying to cut an element
+	 * which one is an {@link Element} object and the other one is a
+	 * <code>Long</code> type representing its own object ID, so both are
+	 * different from each other. It occurs because the Java implicitly assign
+	 * the method invocation for {@link TreeManager#cut(Object, Object)} version.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut the <code>from</code> element inside of <code>to</code>
+	 * element when they have different types.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type error. Incompatible parameterized type
+	 * tree.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare two object IDs;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get an element by ID through the (tmpId) object ID;</li>
+	 * 	<li>Try to cut by using the {@link TreeManager#cut(Object, Object)} 
+	 * 	version which the first argument is the element obtained in the previous
+	 * 	step and the second one is the own object ID from (administratorId)
+	 * 	element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * 	<li>Throw a new instance of <code>TreeException</code> wrapping the
+	 * 	original exception.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void cut_diffArgsTypes() throws TreeException {
+		final String sourceSession = "cut_diffArgsTypes";
+
+		final String messageError = "Mismatch type error. Incompatible"
+				+ " parameterized type tree.";
+
+		String error = null;
+
+		final Long tmpId = 583950L;
+		final Long administratorId = 47592L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+		try {
+			transaction.initializeSession(sourceSession, directories);
+			Element<Directory> tmp = manager.getElementById(tmpId);
+
+			manager.cut(tmp, administratorId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw e;
+			});
+		}
+	}
+	
+	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to cut the entire root.
@@ -1059,7 +1129,7 @@ public class TreeManagerErrorTest {
 	 * 
 	 */
 	@Test
-	public void cut_mismatchElement() {
+	public void cut_toAnotherTreeType() {
 		final String source = "source";
 		final String target = "target";
 		final String messageError = "Mismatch type error. Incompatible"
@@ -2674,9 +2744,9 @@ public class TreeManagerErrorTest {
 	 * Try to persist an element into a tree which the tree has different type
 	 * of object.
 	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Mismatch type error. Incompatible
-	 * parameterized type tree.&quot;</i>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type error. Incompatible parameterized type
+	 * tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -3119,9 +3189,9 @@ public class TreeManagerErrorTest {
 	 * <p><b>Test:</b></p>
 	 * Try to update an element from a tree inside of another one.
 	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code>
-	 * with the message: <i>&quot;Mismatch type error. Incompatible
-	 * parameterized type tree.&quot;</i>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;Mismatch type error. Incompatible parameterized type
+	 * tree.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
