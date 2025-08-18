@@ -12,6 +12,12 @@ class TreePipelineAttributes {
 	static final String SESSION_TYPE = "sessionType";
 	
 	/*
+	 * Keys validations for Object IDs validations.
+	 */
+	static final String SOURCE_OBJECT_ID = "sourceObjectId";
+	static final String TARGET_OBJECT_ID = "targetObjectId";
+
+	/*
 	 * Keys validations for Element validations.
 	 */
 	static final String SOURCE_ELEMENT = "sourceElement";

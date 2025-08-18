@@ -489,8 +489,7 @@ public class TreeManagerErrorTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		
 		try {
 			transaction.initializeSession(sessionId, directories);
@@ -538,7 +537,8 @@ public class TreeManagerErrorTest {
 	@Test
 	public void cut_notExistingFromObjectId() throws TreeException {
 		final String sessionId = "cut_notExistingFromObjectId";
-		final String messageError = "Invalid null/empty argument(s).";
+		final String messageError = "No possible to copy/cut elements. "
+			+ "Source element not found.";
 		
 		final long notExistingFromId = Long.MAX_VALUE;
 		final long wordExeId = 4611329;
@@ -553,7 +553,7 @@ public class TreeManagerErrorTest {
 		try {
 			transaction.initializeSession(sessionId, directories);
 			manager.cut(notExistingFromId, wordExeId);
-		} catch (IllegalArgumentException e) {
+		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
 			assertThrows(TreeException.class, () -> {

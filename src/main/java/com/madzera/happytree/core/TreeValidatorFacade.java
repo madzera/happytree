@@ -28,7 +28,7 @@ class TreeValidatorFacade {
 	}
 	
 	/*
-	 * Validates TreeTransaction.initializeSession().
+	 * Validates TreeTransaction.initializeSession()
 	 */
 	void validateSessionInitialization(String identifier) throws TreeException {
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
@@ -44,7 +44,7 @@ class TreeValidatorFacade {
 	}
 	
 	/*
-	 * Validates TreeTransaction.initializeSession().
+	 * Validates TreeTransaction.initializeSession()
 	 */
 	void validateSessionInitialization(String identifier, Object typeSession)
 			throws TreeException {
@@ -74,10 +74,10 @@ class TreeValidatorFacade {
 	}
 	
 	/*
-	 * Validates TreeManager.cut().
+	 * Validates TreeManager.cut()
 	 */
-	void validateCutOperation(Element<?> sourceElement,
-			Element<?> targetElement) throws TreeException {
+	void validateCutOperation(Object sourceElement,
+			Object targetElement) throws TreeException {
 		final Operation operation = Operation.CUT;
 		
 		validateSessionTransaction();
@@ -85,13 +85,19 @@ class TreeValidatorFacade {
 		
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createCutValidator(manager);
-		
-		validateCutCopyOperation(sourceElement, manager.getTransaction().
-				currentSession(), targetElement, operation, validator);
+
+		if (sourceElement instanceof Element<?>
+			&& targetElement instanceof Element<?>) {
+			validateCutCopyOperation(sourceElement, targetElement, manager.
+					getTransaction().currentSession(), operation, validator);
+		} else {
+			validateObjectIdType(sourceElement, targetElement, validator);
+			validateIfSourceElementExists(sourceElement, validator);
+		}
 	}
 	
 	/*
-	 * Validates TreeManager.copy().
+	 * Validates TreeManager.copy()
 	 */
 	void validateCopyOperation(Element<?> sourceElement,
 			Element<?> targetElement) throws TreeException {
@@ -103,9 +109,9 @@ class TreeValidatorFacade {
 		
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createCopyValidator(manager);
-		
-		validateCutCopyOperation(sourceElement, manager.getTransaction().
-				currentSession(), targetElement, operation, validator);
+				
+		validateCutCopyOperation(sourceElement, targetElement, manager.
+				getTransaction().currentSession(), operation, validator);
 	}
 	
 	/*
@@ -161,7 +167,7 @@ class TreeValidatorFacade {
 	}
 	
 	/*
-	 * Validates TreeManager.updateElement().
+	 * Validates TreeManager.updateElement()
 	 */
 	void validateUpdateOperation(Element<?> sourceElement) throws TreeException {
 		final Operation operation = Operation.UPDATE;
@@ -188,8 +194,8 @@ class TreeValidatorFacade {
 		validator.validateDuplicateIdElement(pipeline);
 	}
 	
-	private void validateCutCopyOperation(Element<?> sourceElement,
-			TreeSession session, Element<?> targetElement, Operation operation,
+	private void validateCutCopyOperation(Object sourceElement,
+			Object targetElement, TreeSession session, Operation operation,
 			TreeElementValidator validator) throws TreeException {
 		
 		TreePipeline pipeline = TreeFactory.pipelineFactory().
@@ -207,5 +213,35 @@ class TreeValidatorFacade {
 		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicateIdElement(pipeline);
+	}
+	
+	private void validateObjectIdType(Object sourceObjectId,
+			Object targetObjectId, TreeElementValidator validator)
+			throws TreeException {
+		
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+		
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_OBJECT_ID,
+				sourceObjectId);
+		pipeline.addAttribute(TreePipelineAttributes.TARGET_OBJECT_ID,
+				targetObjectId);
+		
+		validator.validateMismatchObjectIdType(pipeline);
+	}
+	
+	private void validateIfSourceElementExists(Object sourceElement,
+			TreeElementValidator validator) throws TreeException {
+		TreeTransactionCore transaction = (TreeTransactionCore) manager.
+				getTransaction();
+		Element<?> element = transaction.refreshElement(sourceElement);
+
+		TreePipeline pipeline = TreeFactory.pipelineFactory().
+				createPipelineValidator();
+			
+		pipeline.addAttribute(TreePipelineAttributes.SOURCE_ELEMENT,
+				element);
+
+		validator.validateIfSourceElementExistsById(pipeline);
 	}
 }

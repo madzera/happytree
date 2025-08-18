@@ -103,6 +103,34 @@ abstract class TreeElementValidator extends TreeValidator {
 		}
 	}
 	
+	void validateMismatchObjectIdType(TreePipeline pipeline)
+			throws TreeException {
+		Object sourceObjectId = pipeline.getAttribute(TreePipelineAttributes.
+				SOURCE_OBJECT_ID);
+		Object targetObjectId = pipeline.getAttribute(TreePipelineAttributes.
+				TARGET_OBJECT_ID);
+		
+		Class<?> sourceClass = sourceObjectId.getClass();
+		Class<?> targetClass = targetObjectId != null?
+				targetObjectId.getClass() : null;
+
+		if (targetClass != null && !sourceClass.equals(targetClass)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+							MISMATCH_TYPE_ELEMENT);
+		}
+	}
+
+	void validateIfSourceElementExistsById(TreePipeline pipeline)
+			throws TreeException {
+		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
+				TreePipelineAttributes.SOURCE_ELEMENT);
+		
+		if (source == null) {
+			throw this.throwTreeException(TreeRepositoryMessage.NOTFOUND_ELEMENT);
+		}
+	}
+
 	abstract void validateDuplicateIdElement(TreePipeline pipeline)
 			throws TreeException;
+
 }

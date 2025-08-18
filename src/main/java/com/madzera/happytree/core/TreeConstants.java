@@ -23,6 +23,7 @@ public class TreeConstants {
 		static final String INCORRECT_SESSION = "com.madzera.happytree.error.checked.tree.not.belong.to.session";
 		static final String DIFFERENT_TYPES_ERROR = "com.madzera.happytree.error.checked.tree.mismatch.element";
 		static final String CUT_COPY_DETACHED_ELEMENT = "com.madzera.happytree.error.checked.tree.copy.cut.remote.detached";
+		static final String CUT_COPY_NOTFOUND_ELEMENT = "com.madzera.happytree.error.checked.tree.copy.cut.remote.notfound";
 		static final String PERSIST_ATTACHED_ELEMENT = "com.madzera.happytree.error.checked.tree.persist.attached";
 		static final String UPDATE_NOT_EXISTED_ELEMENT = "com.madzera.happytree.error.checked.tree.update.not.existed";
 		static final String HANDLE_ROOT = "com.madzera.happytree.error.checked.tree.root";

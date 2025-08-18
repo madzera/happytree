@@ -86,18 +86,13 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> Element<T> cut(Object from, Object to) throws TreeException {
 		/*
-		 * Validation for Mismatch parameterized type error. invoking with the
-		 * parameters Element<X> and Element<Y> this method is called instead
-		 * cut(Element, Element).
+		 * Input validation.
 		 */
-		if (from instanceof Element<?> && to instanceof Element<?>) {
-			validatorFacade.validateCutOperation((Element<?>) from,
-					(Element<?>) to);
-		}
+		validatorFacade.validateCutOperation(from, to);
 
 		Element<T> source = this.searchElement(from);
 		Element<T> target = this.searchElement(to);
-		
+
 		return this.cut(source, target);
 	}
 
