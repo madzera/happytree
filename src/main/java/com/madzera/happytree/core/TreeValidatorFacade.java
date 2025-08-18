@@ -86,8 +86,7 @@ class TreeValidatorFacade {
 		TreeElementValidator validator = TreeFactory.validatorFactory().
 				createCutValidator(manager);
 
-		if (sourceElement instanceof Element<?>
-			&& targetElement instanceof Element<?>) {
+		if (sourceElement instanceof Element<?>) {
 			validateCutCopyOperation(sourceElement, targetElement, manager.
 					getTransaction().currentSession(), operation, validator);
 		} else {
