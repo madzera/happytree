@@ -29,10 +29,11 @@ import com.madzera.happytree.exception.TreeException;
 public class TreeManagerErrorTest {
 
 	/**
-	 * Test for almost all operations for {@link TreeManager} interface.
+	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}
+	 * operation.
 	 * 
-	 * <p>Error scenario for the operations when the transaction has no defined
-	 * session to run the operations.</p>
+	 * <p>Error scenario for the create an element operation when the
+	 * transaction has no defined session to run the operation.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to create an element without check out a session.
@@ -49,17 +50,17 @@ public class TreeManagerErrorTest {
 	 * </ol>
 	 */
 	@Test
-	public void noDefinedSession() {
+	public void createElement_noDefinedSession() {
 		final String messageError = "No defined session.";
-		
+
 		final String elementId = "foo";
 		final String parentElementId = "bar";
-		
+
 		String error = null;
 
 		try {
 			TreeManager manager = HappyTree.createTreeManager();
-			
+
 			/*
 			 * All TreeManager operations must work under a defined session.
 			 */
