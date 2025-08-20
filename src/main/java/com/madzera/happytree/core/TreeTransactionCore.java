@@ -95,6 +95,7 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public void destroyAllSessions() {
 		this.sessions.clear();
+		this.currentSession = null;
 	}
 
 	@Override

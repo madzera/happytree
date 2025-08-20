@@ -75,6 +75,170 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for the copy operation when the transaction has no
+	 * defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to copy an element after destroying all previous sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize two sessions, one for the source element to be copied and
+	 * 	the other one for the target element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to copy the source element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void copy_noDefinedSession() {
+		final String sessionSourceId = "copy_noDefinedSession_source";
+		final String sessionTargetId = "copy_noDefinedSession_target";
+
+		final String messageError = "No defined session.";
+
+		final long fooId = 48224;
+		final long systemId = 100;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> sourceDirectoryTree = TreeAssembler.getDirectoryTree();
+
+			Collection<Directory> targetDirectoryTree = TreeAssembler.getSimpleDirectoryTree();
+
+			transaction.initializeSession(sessionSourceId, sourceDirectoryTree);
+			Element<Directory> foo = manager.getElementById(fooId);
+			transaction.initializeSession(sessionTargetId, targetDirectoryTree);
+			Element<Directory> system = manager.getElementById(systemId);
+
+			transaction.destroyAllSessions();
+
+			manager.copy(foo, system);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for the cut operation when the transaction has no
+	 * defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element after destroying all previous sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to cut the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_noDefinedSession() {
+		final String sessionId = "cut_noDefinedSession";
+
+		final String messageError = "No defined session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> foo = manager.getElementById(fooId);
+			Element<Directory> happytree = manager.getElementById(happytreeId);
+
+			transaction.destroyAllSessions();
+
+			manager.cut(foo, happytree);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)} operation.
+	 * 
+	 * <p>Error scenario for the cut operation when the transaction has no
+	 * defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element by its ID after destroying all previous sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to cut the element by its ID;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_objectIdNoDefinedSession() {
+		final String sessionId = "cut_objectIdNoDefinedSession";
+
+		final String messageError = "No defined session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.destroyAllSessions();
+
+			manager.cut(fooId, happytreeId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
 	 * Test for almost all operations for {@link TreeManager} interface.
 	 * 
 	 * <p>Error scenario for the operations when the transaction has no active
