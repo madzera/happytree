@@ -558,7 +558,7 @@ public class TreeManagerErrorTest {
 	}
 
 	/**
-	 * Test for the {@link TreeManager#containsElement(Element)} operation.
+	 * Test for the {@link TreeManager#containsElement(Object)} operation.
 	 * 
 	 * <p>Error scenario for the operation of verifying whether an element
 	 * exists in the tree when the transaction has no defined session to run.
@@ -609,6 +609,126 @@ public class TreeManagerErrorTest {
 		}
 	}
 
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the persist element operation when the transaction
+	 * has no defined session.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element in the tree after destroying all previous
+	 * sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an empty element in a new empty tree;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to persist the new element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_noDefinedSession() throws TreeException {
+		final String sessionId = "persistElement_noDefinedSession";
+
+		final String messageError = "No defined session.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			Directory develDirectory = new Directory(1, 0, "Devel");
+
+			transaction.initializeSession(sessionId, Directory.class);
+
+			Element<Directory> newElement = manager.createElement(
+					develDirectory.getIdentifier(),
+					develDirectory.getParentIdentifier(),
+					develDirectory);
+			
+			transaction.destroyAllSessions();
+			manager.persistElement(newElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the update element operation when the transaction
+	 * has no defined session.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element in the tree after destroying all previous
+	 * sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an empty element in a new empty tree;</li>
+	 * 	<li>Persist the new element;</li>
+	 * 	<li>Do any change in the element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to update the new element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_noDefinedSession() throws TreeException {
+		final String sessionId = "updateElement_noDefinedSession";
+
+		final String messageError = "No defined session.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			Directory develDirectory = new Directory(1, 0, "Devel");
+			Directory programFilesDirectory = new Directory(2, 0,
+					"Program Files");
+
+			transaction.initializeSession(sessionId, Directory.class);
+
+			Element<Directory> newElement = manager.createElement(
+					develDirectory.getIdentifier(),
+					develDirectory.getParentIdentifier(),
+					develDirectory);
+			newElement = manager.persistElement(newElement);
+			
+			newElement.setId(programFilesDirectory.getIdentifier());
+			newElement.setParent(programFilesDirectory.getParentIdentifier());
+			newElement.wrap(programFilesDirectory);
+
+			transaction.destroyAllSessions();
+
+			manager.updateElement(newElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
+		}
+	}
+	
 	/**
 	 * Test for almost all operations for {@link TreeManager} interface.
 	 * 
