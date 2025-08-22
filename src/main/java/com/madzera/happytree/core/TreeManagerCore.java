@@ -190,6 +190,8 @@ class TreeManagerCore implements TreeManager {
 
 	@Override
 	public <T> Element<T> removeElement(Object id) throws TreeException {
+		validatorFacade.validateSessionTransaction();
+		
 		Element<T> element = this.searchElement(id);
 		return this.removeElement(element);
 	}
