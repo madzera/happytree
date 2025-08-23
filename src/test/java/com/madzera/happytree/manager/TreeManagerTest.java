@@ -359,12 +359,11 @@ public class TreeManagerTest {
 		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
 		
 		transaction.initializeSession(sourceSessionId, sourceDir);
-		Element<Directory> source = manager.getElementById(sourceId);
 		
 		transaction.initializeSession(targetSessionId, targetDir);
 		Element<Directory> target = manager.getElementById(targetId);
 
-		source = manager.getElementById(sourceId);
+		Element<Directory> source = manager.getElementById(sourceId);
 		assertNull(source);
 		
 		transaction.sessionCheckout(sourceSessionId);
@@ -792,7 +791,7 @@ public class TreeManagerTest {
 		
 		assertFalse(manager.containsElement(programFilesId, gamesId));
 		assertNotNull(manager.persistElement(games));
-		assertTrue(manager.containsElement(programFilesId, gamesId));;
+		assertTrue(manager.containsElement(programFilesId, gamesId));
 		assertTrue(manager.containsElement(programFilesId, ageOfEmpiresId));
 	}
 	

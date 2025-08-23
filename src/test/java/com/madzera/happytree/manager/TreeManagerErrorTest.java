@@ -29,52 +29,6 @@ import com.madzera.happytree.exception.TreeException;
 public class TreeManagerErrorTest {
 
 	/**
-	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}
-	 * operation.
-	 * 
-	 * <p>Error scenario for the create an element operation when the
-	 * transaction has no defined session to run the operation.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to create an element without check out a session.
-	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;No defined session.&quot;</i>
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the manager;</li>
-	 * 	<li>Try to create an element;</li>
-	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error;</li>
-	 * 	<li>Throw a new instance of <code>TreeException</code>.</li>
-	 * </ol>
-	 */
-	@Test
-	public void createElement_noDefinedSession() {
-		final String messageError = "No defined session.";
-
-		final String elementId = "foo";
-		final String parentElementId = "bar";
-
-		String error = null;
-
-		try {
-			TreeManager manager = HappyTree.createTreeManager();
-
-			/*
-			 * All TreeManager operations must work under a defined session.
-			 */
-			manager.createElement(elementId, parentElementId, null);
-		} catch (TreeException e) {
-			error = e.getMessage();
-			assertEquals(messageError, error);
-			assertThrows(TreeException.class, () -> {
-				throw new TreeException();
-			});
-		}
-	}
-	
-	/**
 	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
 	 * 
 	 * <p>Error scenario for the copy operation when the transaction has no
@@ -112,9 +66,11 @@ public class TreeManagerErrorTest {
 			TreeManager manager = HappyTree.createTreeManager();
 			TreeTransaction transaction = manager.getTransaction();
 
-			Collection<Directory> sourceDirectoryTree = TreeAssembler.getDirectoryTree();
+			Collection<Directory> sourceDirectoryTree = TreeAssembler.
+					getDirectoryTree();
 
-			Collection<Directory> targetDirectoryTree = TreeAssembler.getSimpleDirectoryTree();
+			Collection<Directory> targetDirectoryTree = TreeAssembler.
+					getSimpleDirectoryTree();
 
 			transaction.initializeSession(sessionSourceId, sourceDirectoryTree);
 			Element<Directory> foo = manager.getElementById(fooId);
@@ -610,6 +566,48 @@ public class TreeManagerErrorTest {
 	}
 
 	/**
+	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for the element creation operation when the transaction
+	 * has no defined session to run.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to create an element without check out a session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Try to create an element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * </ol>
+	 */
+	@Test
+	public void createElement_noDefinedSession() {
+		final String messageError = "No defined session.";
+
+		final String elementId = "foo";
+		final String parentElementId = "bar";
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+
+			manager.createElement(elementId, parentElementId, null);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
 	 * Test for the {@link TreeManager#persistElement(Element)} operation.
 	 * 
 	 * <p>Error scenario for the persist element operation when the transaction
@@ -730,54 +728,726 @@ public class TreeManagerErrorTest {
 	}
 	
 	/**
-	 * Test for almost all operations for {@link TreeManager} interface.
+	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
 	 * 
-	 * <p>Error scenario for the operations when the transaction has no active
-	 * selected session to run the operations.</p>
+	 * <p>Error scenario for the copy operation when the transaction has no
+	 * active session to run this operation.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to create an element with a deactivated session.
+	 * Try to copy an element after deactivating the session of the source
+	 * element to be copied.
 	 * <p><b>Expected:</b></p>
 	 * An error is threw and caught by <code>TreeException</code> with the
 	 * message: <i>&quot;No active session.&quot;</i>
 	 * <p><b>Steps:</b></p>
 	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a session;</li>
-	 * 	<li>Deactivate the same session;</li>
-	 * 	<li>Try to create an element;</li>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize two sessions, one for the source element to be copied and
+	 * 	the other one for the target element;</li>
+	 * 	<li>Ensure that the current session is the session of the source element
+	 * 	to be copied belongs;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the source element session;</li>
+	 * 	<li>Try to copy the source element;</li>
 	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error;</li>
-	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
-	 * 	type.</li>
+	 * 	<li>Verify the message error.</li>
 	 * </ol>
 	 */
 	@Test
-	public void noActiveSession() {
-		final String sessionId = "noActiveSession";
+	public void copy_noActiveSession() {
+		final String sessionSourceId = "copy_noActiveSession_source";
+		final String sessionTargetId = "copy_noActiveSession_target";
+
 		final String messageError = "No active session.";
-		
-		final String elementId = "foo";
-		final String parentElementId = "bar";
-		
+
+		final long fooId = 48224;
+		final long systemId = 100;
+
 		String error = null;
 
 		try {
 			TreeManager manager = HappyTree.createTreeManager();
 			TreeTransaction transaction = manager.getTransaction();
-			
+
+			Collection<Directory> sourceDirectoryTree = TreeAssembler.
+					getDirectoryTree();
+
+			Collection<Directory> targetDirectoryTree = TreeAssembler.
+					getSimpleDirectoryTree();
+
+			transaction.initializeSession(sessionTargetId, targetDirectoryTree);
+			Element<Directory> system = manager.getElementById(systemId);
+			transaction.initializeSession(sessionSourceId, sourceDirectoryTree);
+			Element<Directory> foo = manager.getElementById(fooId);
+
+			transaction.deactivateSession(sessionSourceId);
+
+			manager.copy(foo, system);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#cut(Element, Element)} operation.
+	 * 
+	 * <p>Error scenario for the cut operation when the transaction has no
+	 * active session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element to be cut and the target element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to cut the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_noActiveSession() {
+		final String sessionId = "cut_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> foo = manager.getElementById(fooId);
+			Element<Directory> happytree = manager.getElementById(happytreeId);
+
+			transaction.deactivateSession();
+
+			manager.cut(foo, happytree);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#cut(Object, Object)} operation.
+	 * 
+	 * <p>Error scenario for the cut operation when the transaction has no
+	 * active session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to cut an element by its ID after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to cut the element by its ID;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cut_objectIdNoActiveSession() {
+		final String sessionId = "cut_objectIdNoActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.cut(fooId, happytreeId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#removeElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the remove element operation when the transaction
+	 * has no active session to run.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get an element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to remove the element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void removeElement_noActiveSession() {
+		final String sessionId = "removeElement_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> foo = manager.getElementById(fooId);
+
+			transaction.deactivateSession();
+
+			manager.removeElement(foo);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#removeElement(Object)} operation.
+	 * 
+	 * <p>Error scenario for the remove element operation when the transaction
+	 * has no active session to run.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element by its ID after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to remove the element by its ID;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void removeElement_objectIdNoActiveSession() {
+		final String sessionId = "removeElement_objectIdNoActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.removeElement(fooId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#getElementById(Object)} operation.
+	 * 
+	 * <p>Error scenario for the getting an element by ID operation when the
+	 * transaction has no active session to run.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to get an element by its ID after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to get the element by its ID;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void getElementById_noActiveSession() {
+		final String sessionId = "getElementById_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.getElementById(fooId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element, Element)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for the operation of verifying whether an element is
+	 * contained inside of another one when the transaction has no active
+	 * session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to check whether an element is contained inside of another one after
+	 * deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the source and target elements;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to invoke the
+	 * 	{@link TreeManager#containsElement(Element, Element)};</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void containsElement_noActiveSession() {
+		final String sessionId = "containsElement_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> foo = manager.getElementById(fooId);
+			Element<Directory> happytree = manager.getElementById(happytreeId);
+
+			transaction.deactivateSession();
+
+			manager.containsElement(foo, happytree);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object, Object)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for the operation of verifying whether an element is
+	 * contained inside of another one when the transaction has no active
+	 * session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to check whether an element is contained inside of another one after
+	 * deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to invoke the
+	 * 	{@link TreeManager#containsElement(Object, Object)};</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void containsElement_objectIdNoActiveSession() {
+		final String sessionId = "containsElement_objectIdNoActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+		final long happytreeId = 859452;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.containsElement(fooId, happytreeId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#containsElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the operation of verifying whether an element
+	 * exists in the tree when the transaction has no active session to run.
+	 * </p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to check whether an element exists in the tree after deactivating the
+	 * current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get an element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to invoke the {@link TreeManager#containsElement(Element)};</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void containsElement_treeNoActiveSession() {
+		final String sessionId = "containsElement_treeNoActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			Element<Directory> foo = manager.getElementById(fooId);
+
+			transaction.deactivateSession();
+
+			manager.containsElement(foo);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#containsElement(Object)} operation.
+	 * 
+	 * <p>Error scenario for the operation of verifying whether an element
+	 * exists in the tree when the transaction has no active session to run.
+	 * </p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to check whether an element exists in the tree after deactivating the
+	 * current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to invoke the {@link TreeManager#containsElement(Object)};</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void containsElement_treeObjectIdNoActiveSession() {
+		final String sessionId = "containsElement_treeObjectIdNoActiveSession";
+
+		final String messageError = "No active session.";
+
+		final long fooId = 48224;
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.containsElement(fooId);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for the element creation operation when the transaction
+	 * has no active session to run.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to create an element without an active session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Deactivate the current session initialized in the previous step;
+	 * 	</li>
+	 * 	<li>Try to create an element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error;</li>
+	 * </ol>
+	 */
+	@Test
+	public void createElement_noActiveSession() {
+		final String sessionId = "createElement_noActiveSession";
+		final String messageError = "No active session.";
+
+		final String elementId = "foo";
+		final String parentElementId = "bar";
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
 			transaction.initializeSession(sessionId, Directory.class);
 			transaction.deactivateSession();
-			
-			/*
-			 * All TreeManager operations must work under a defined session.
-			 */
+
 			manager.createElement(elementId, parentElementId, null);
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);
 			assertThrows(TreeException.class, () -> {
 				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the persist element operation when the transaction
+	 * has no active session.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element in the tree after deactivating the current
+	 * session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an empty element in a new empty tree;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to persist the new element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void persistElement_noActiveSession() throws TreeException {
+		final String sessionId = "persistElement_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			Directory develDirectory = new Directory(1, 0, "Devel");
+
+			transaction.initializeSession(sessionId, Directory.class);
+
+			Element<Directory> newElement = manager.createElement(
+					develDirectory.getIdentifier(),
+					develDirectory.getParentIdentifier(),
+					develDirectory);
+
+			transaction.deactivateSession();
+			manager.persistElement(newElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Error scenario for the update element operation when the transaction
+	 * has no active session.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update an element in the tree after deactivating the current
+	 * session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Create an empty element in a new empty tree;</li>
+	 * 	<li>Persist the new element;</li>
+	 * 	<li>Do any change in the element;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method to
+	 * 	deactivate the current session;</li>
+	 * 	<li>Try to update the new element;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void updateElement_noActiveSession() throws TreeException {
+		final String sessionId = "updateElement_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			Directory develDirectory = new Directory(1, 0, "Devel");
+			Directory programFilesDirectory = new Directory(2, 0,
+					"Program Files");
+
+			transaction.initializeSession(sessionId, Directory.class);
+
+			Element<Directory> newElement = manager.createElement(
+					develDirectory.getIdentifier(),
+					develDirectory.getParentIdentifier(),
+					develDirectory);
+			newElement = manager.persistElement(newElement);
+
+			newElement.setId(programFilesDirectory.getIdentifier());
+			newElement.setParent(programFilesDirectory.getParentIdentifier());
+			newElement.wrap(programFilesDirectory);
+
+			transaction.deactivateSession();
+
+			manager.updateElement(newElement);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(messageError, e);
 			});
 		}
 	}

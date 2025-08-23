@@ -218,8 +218,13 @@ public interface TreeManager {
 	 * and its all children cannot have the same identifier than any element in
 	 * the <code>to</code> element tree.
 	 * 
-	 * <p><b>This method only should be used when the client desires copy the
-	 * element between different trees. This is no possible to copy elements
+	 * <p><b>Ensure that the current session is referencing the session to which
+	 * the <code>from</code> element belongs, otherwise an exception with the
+	 * description &quot;<i>Element not defined in this session</i>&quot; will
+	 * be thrown.</b></p>
+	 * 
+	 * <p><b>Also, This method only should be used when the client desires copy
+	 * the element between different trees. This is no possible to copy elements
 	 * inside of the same own tree, because it will throw duplicate <i>Id</i> 
 	 * exception.</b></p>
 	 * 
@@ -256,12 +261,14 @@ public interface TreeManager {
 	 * 		The transaction has no selected session to work;
 	 * 	</li>
 	 * 	<li>
-	 * 		The current session or the session which the <code>to</code> element
-	 * 		belongs is not active;
+	 * 		The current session (to which the <code>from</code> element belongs)
+	 * 		or the session which the <code>to</code> element belongs is not
+	 * 		active;
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>from</code> element does not belong in the correct current
-	 * 		session;
+	 * 		session (it occurs when the current session is not the same to which
+	 * 		<code>from</code> element belongs);
 	 * 	</li>
 	 * 
 	 * 	<li>
