@@ -83,7 +83,7 @@ public class TreeManagerTest {
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
 		
-		Directory directory = new Directory(elementId, 0, "Paint");
+		Directory directory = new Directory(elementId, 0L, "Paint");
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		Element<Directory> element = manager.createElement(elementId, null,
@@ -798,7 +798,7 @@ public class TreeManagerTest {
 	/**
 	 * Test for the {@link TreeManager#updateElement(Element)}.
 	 * 
-	 * <p>Happy scenario for this operation</p>
+	 * <p>Happy scenario for this operation.</p>
 	 * 
 	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
 	 * classes to assemble a collection of linear objects that have tree

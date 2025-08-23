@@ -126,63 +126,63 @@ public final class TreeAssembler {
 		/*
 		 * Fist level.
 		 */
-		Directory programFiles = new Directory(42345, 0, "Program Files");
-		Directory devel = new Directory(93832, 0, "Devel");
-		Directory users = new Directory(38923, 0, "Users");
+	Directory programFiles = new Directory(42345L, 0L, "Program Files");
+	Directory devel = new Directory(93832L, 0L, "Devel");
+	Directory users = new Directory(38923L, 0L, "Users");
 		
 		/*
 		 * Program Files.
 		 */
-		Directory adobe = new Directory(24935, 42345, "Adobe");
-			Directory reader = new Directory(403940, 24935, "Reader");
-				Directory readerExe = new Directory(8493845, 403940, "reader.exe");
-			Directory photoshop = new Directory(909443, 24935, "Photoshop");
-				Directory psExe = new Directory(4950243, 909443, "photoshop.exe");
-			Directory dreamweaver = new Directory(502010, 24935, "Dremweaver");
-				Directory dwExe = new Directory(8935844, 502010, "dreamweaver.exe");
-		Directory realtek = new Directory(94034, 42345, "Realtek");
-			Directory drivers = new Directory(220332, 94034, "drivers");
-				Directory bin = new Directory(7753032, 220332, "bin");
+	Directory adobe = new Directory(24935L, 42345L, "Adobe");
+			Directory reader = new Directory(403940L, 24935L, "Reader");
+				Directory readerExe = new Directory(8493845L, 403940L, "reader.exe");
+			Directory photoshop = new Directory(909443L, 24935L, "Photoshop");
+				Directory psExe = new Directory(4950243L, 909443L, "photoshop.exe");
+			Directory dreamweaver = new Directory(502010L, 24935L, "Dremweaver");
+				Directory dwExe = new Directory(8935844L, 502010L, "dreamweaver.exe");
+	Directory realtek = new Directory(94034L, 42345L, "Realtek");
+			Directory drivers = new Directory(220332L, 94034L, "drivers");
+				Directory bin = new Directory(7753032L, 220332L, "bin");
 					/*
 					 * This element has the same id than the another element in
 					 * another tree (Simple Tree).
 					 */
-					Directory entry = new Directory(77530344, 7753032, "entry");
-			Directory sdk = new Directory(113009, 94034, "sdk");
-				Directory files = new Directory(8484934, 113009, "files");
-			Directory readme = new Directory(495833, 94034, "readme.txt");
-		Directory winamp = new Directory(32099, 42345, "Winamp");
-			Directory winampExe = new Directory(395524, 32099, "winamp.exe");
-		Directory vlc = new Directory(10239, 42345, "VLC");
-			Directory recorded = new Directory(848305, 10239, "recorded");
-				Directory rec1 = new Directory(3840200, 848305, "4959344545.mp4");
-				Directory rec2 = new Directory(1038299, 848305, "5093049239.mp4");
-		Directory office = new Directory(53024, 42345, "Office");
-			Directory excel = new Directory(843566, 53024, "Excel");
-				Directory excelExe = new Directory(3964602, 843566, "excel.exe");
-			Directory word = new Directory(674098, 53024, "Word");
-				Directory wordExe = new Directory(4611329, 674098, "word.exe");
+					Directory entry = new Directory(77530344L, 7753032L, "entry");
+			Directory sdk = new Directory(113009L, 94034L, "sdk");
+				Directory files = new Directory(8484934L, 113009L, "files");
+			Directory readme = new Directory(495833L, 94034L, "readme.txt");
+	Directory winamp = new Directory(32099L, 42345L, "Winamp");
+			Directory winampExe = new Directory(395524L, 32099L, "winamp.exe");
+	Directory vlc = new Directory(10239L, 42345L, "VLC");
+			Directory recorded = new Directory(848305L, 10239L, "recorded");
+				Directory rec1 = new Directory(3840200L, 848305L, "4959344545.mp4");
+				Directory rec2 = new Directory(1038299L, 848305L, "5093049239.mp4");
+		Directory office = new Directory(53024L, 42345L, "Office");
+			Directory excel = new Directory(843566L, 53024L, "Excel");
+				Directory excelExe = new Directory(3964602L, 843566L, "excel.exe");
+			Directory word = new Directory(674098L, 53024L, "Word");
+				Directory wordExe = new Directory(4611329L, 674098L, "word.exe");
 				
 		/**
 		 * Devel.
 		 */
-		Directory sdkDev = new Directory(84709, 93832, "sdk_dev");
-			Directory jdk = new Directory(983533, 84709, "jdk1.6");
-		Directory ide = new Directory(13823, 93832, "ide");
-			Directory eclipse = new Directory(583852, 13823, "eclipse");
-				Directory eclipseExe = new Directory(8483742, 583852, "eclipse.exe");
-			Directory netbeans = new Directory(482043, 13823, "netbeans");
-				Directory netbeansExe = new Directory(4859304, 482043, "netbeans.exe");
-		Directory projects = new Directory(93209, 93832, "projects");
-			Directory happytree = new Directory(859452, 93209, "happytree");
-		Directory database = new Directory(45930, 93832, "database");
+		Directory sdkDev = new Directory(84709L, 93832L, "sdk_dev");
+			Directory jdk = new Directory(983533L, 84709L, "jdk1.6");
+		Directory ide = new Directory(13823L, 93832L, "ide");
+			Directory eclipse = new Directory(583852L, 13823L, "eclipse");
+				Directory eclipseExe = new Directory(8483742L, 583852L, "eclipse.exe");
+			Directory netbeans = new Directory(482043L, 13823L, "netbeans");
+				Directory netbeansExe = new Directory(4859304L, 482043L, "netbeans.exe");
+		Directory projects = new Directory(93209L, 93832L, "projects");
+			Directory happytree = new Directory(859452L, 93209L, "happytree");
+		Directory database = new Directory(45930L, 93832L, "database");
 		
 		/*
 		 * Users.
 		 */
-		Directory foo = new Directory(48224, 38923, "foo");
-			Directory tmp = new Directory(583950, 48224, "tmp");
-		Directory administrator = new Directory(47592, 38923, "administrator");
+		Directory foo = new Directory(48224L, 38923L, "foo");
+			Directory tmp = new Directory(583950L, 48224L, "tmp");
+		Directory administrator = new Directory(47592L, 38923L, "administrator");
 		
 		folders.add(eclipseExe);folders.add(winampExe);
 		folders.add(rec2);folders.add(wordExe);
@@ -215,12 +215,12 @@ public final class TreeAssembler {
 		/*
 		 * First level.
 		 */
-		Directory windows = new Directory(1, 0, "Windows");
-		Directory system = new Directory(100, 1, "System");
-		Directory system32 = new Directory(1000, 1, "System32");
-		Directory drivers = new Directory(1076, 1000, "drivers");
+		Directory windows = new Directory(1L, 0L, "Windows");
+		Directory system = new Directory(100L, 1L, "System");
+		Directory system32 = new Directory(1000L, 1L, "System32");
+		Directory drivers = new Directory(1076L, 1000L, "drivers");
 		//To simulate duplicate entries error (exists in both trees).
-		Directory entry = new Directory(77530344, 1076, "Entry");
+		Directory entry = new Directory(77530344L, 1076L, "Entry");
 		
 		folders.add(system32);
 		folders.add(windows);

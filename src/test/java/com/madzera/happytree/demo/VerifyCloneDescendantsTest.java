@@ -64,7 +64,7 @@ public class VerifyCloneDescendantsTest {
 		for (Element<Directory> iterator : sdkDev.getChildren()) {
 			jdk = iterator;
 		}
-		Directory dir = new Directory(48394355, 0, "TEST");
+	Directory dir = new Directory(48394355L, 0L, "TEST");
 		
 		jdk.wrap(dir);
 		jdk.setParent(11111111111111111l);

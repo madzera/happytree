@@ -610,7 +610,7 @@ public class ElementTest {
 		
 		transaction.initializeSession(sessionId, Directory.class);
 		
-		Directory directory = new Directory(elementId, 0, directoryName);
+	Directory directory = new Directory(elementId, 0L, directoryName);
 		Element<Directory> element = manager.createElement(elementId, null,
 				null);
 		
@@ -816,7 +816,7 @@ public class ElementTest {
 	public void elementToString() throws TreeException {
 		final String sessionId = "elementToString";
 
-		Directory directory = new Directory(1, 0, "Photos");
+	Directory directory = new Directory(1L, 0L, "Photos");
 		String toStringDirectory = directory.toString();
 
 		TreeManager manager = HappyTree.createTreeManager();

@@ -642,7 +642,7 @@ public class TreeManagerErrorTest {
 		TreeTransaction transaction = manager.getTransaction();
 
 		try {
-			Directory develDirectory = new Directory(1, 0, "Devel");
+			Directory develDirectory = new Directory(1L, 0L, "Devel");
 
 			transaction.initializeSession(sessionId, Directory.class);
 
@@ -699,8 +699,8 @@ public class TreeManagerErrorTest {
 		TreeTransaction transaction = manager.getTransaction();
 
 		try {
-			Directory develDirectory = new Directory(1, 0, "Devel");
-			Directory programFilesDirectory = new Directory(2, 0,
+			Directory develDirectory = new Directory(1L, 0L, "Devel");
+			Directory programFilesDirectory = new Directory(2L, 0L,
 					"Program Files");
 
 			transaction.initializeSession(sessionId, Directory.class);
@@ -1366,7 +1366,7 @@ public class TreeManagerErrorTest {
 		TreeTransaction transaction = manager.getTransaction();
 
 		try {
-			Directory develDirectory = new Directory(1, 0, "Devel");
+			Directory develDirectory = new Directory(1L, 0L, "Devel");
 
 			transaction.initializeSession(sessionId, Directory.class);
 
@@ -1424,8 +1424,8 @@ public class TreeManagerErrorTest {
 		TreeTransaction transaction = manager.getTransaction();
 
 		try {
-			Directory develDirectory = new Directory(1, 0, "Devel");
-			Directory programFilesDirectory = new Directory(2, 0,
+			Directory develDirectory = new Directory(1L, 0L, "Devel");
+			Directory programFilesDirectory = new Directory(2L, 0L,
 					"Program Files");
 
 			transaction.initializeSession(sessionId, Directory.class);
@@ -4609,9 +4609,11 @@ public class TreeManagerErrorTest {
 		final String messageError = "No possible to update the element. "
 			+ "Invalid lifecycle state.";
 
-		final long develId = 93832;
-		final long projectsId = 93209;
-		final long happytreeId = 859452;
+		final Long develId = 93832L;
+		final Long projectsId = 93209L;
+		final Long happytreeId = 859452L;
+
+		final Long detachedElementId = (long) Integer.MAX_VALUE;
 
 		String error = null;
 		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
@@ -4631,7 +4633,7 @@ public class TreeManagerErrorTest {
 				Integer.MAX_VALUE,
 				happytreeId,
 				new Directory(
-					Integer.MAX_VALUE,
+					detachedElementId,
 					happytreeId,
 					"Detached Element"));
 			happytreeElement.addChild(detachedElement);

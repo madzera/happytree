@@ -35,13 +35,13 @@ public class Directory {
 	 * The id of this folder.
 	 */
 	@Id
-	private long identifier;
+	private Long identifier;
 	
 	/*
 	 * The id of the folder with this one will be inside of.
 	 */
 	@Parent
-	private long parentIdentifier;
+	private Long parentIdentifier;
 	
 	/*
 	 * The name of the folder to be easy to identify.
@@ -49,7 +49,7 @@ public class Directory {
 	private String name;
 	
 	
-	public Directory(long identifier, long parentIdentifier, String name) {
+	public Directory(Long identifier, Long parentIdentifier, String name) {
 		super();
 		this.identifier = identifier;
 		this.parentIdentifier = parentIdentifier;
@@ -57,19 +57,19 @@ public class Directory {
 	}
 
 	
-	public long getIdentifier() {
+	public Long getIdentifier() {
 		return identifier;
 	}
 	
-	public void setIdentifier(long identifier) {
+	public void setIdentifier(Long identifier) {
 		this.identifier = identifier;
 	}
 	
-	public long getParentIdentifier() {
+	public Long getParentIdentifier() {
 		return parentIdentifier;
 	}
 	
-	public void setParentIdentifier(long parentIdentifier) {
+	public void setParentIdentifier(Long parentIdentifier) {
 		this.parentIdentifier = parentIdentifier;
 	}
 	

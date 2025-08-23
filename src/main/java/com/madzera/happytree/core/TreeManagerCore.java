@@ -417,20 +417,15 @@ class TreeManagerCore implements TreeManager {
 		for (Element<T> iterator : updatedElement.getChildren()) {
 			TreeElementCore<T> child = (TreeElementCore<T>) iterator;
 			Object oldParentChild = child.getOldParentId();
-			Object parentChild = child.getParent();
 			
-			if (parentChild != null && !parentChild.equals(oldParentChild)) {
-				Element<T> oldParent = this.searchElement(oldParentChild);
+			Element<T> oldParent = this.searchElement(oldParentChild);
 				
-				if (oldParent != null) {
-					HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
-							oldParent.getChildren();
-					Element<T> childParent = this.searchElement(child.getId());
-					childrenParent.remove(childParent);
-				}
+			HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
+					oldParent.getChildren();
+			Element<T> childParent = this.searchElement(child.getId());
+			childrenParent.remove(childParent);
 				
-				child.syncParentId();
-			}
+			child.syncParentId();
 		}
 		
 		Collection<Element<T>> updatedChildren = updatedElement.getChildren();

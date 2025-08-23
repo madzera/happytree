@@ -35,7 +35,6 @@ import com.madzera.happytree.exception.TreeException;
  */
 public class TreeManagerAlternativeTest {
 
-	
 	/**
 	 * Test for the {@link TreeManager#getElementById(Object)}.
 	 * 
@@ -72,23 +71,22 @@ public class TreeManagerAlternativeTest {
 		final String sessionId = "createElement";
 		final Object nullableElementId = null;
 		final long notExistingId = Long.MAX_VALUE;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> nullElement = manager.getElementById(
 				nullableElementId);
 		assertNull(nullElement);
-		
+
 		Element<Directory> noExistingElement = manager.getElementById(
 				notExistingId);
 		assertNull(noExistingElement);
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
@@ -126,27 +124,26 @@ public class TreeManagerAlternativeTest {
 		final String sessionId = "cut_elementToRoot";
 		final long adobeId = 24935;
 		final long photoshopId = 909443;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		Element<Directory> photoshop = manager.getElementById(photoshopId);
 		Element<Directory> root = manager.root();
-		
+
 		assertTrue(manager.containsElement(adobe, photoshop));
-		
+
 		Element<Directory> photoshopCut = manager.cut(photoshop, root);
-		
+
 		assertFalse(manager.containsElement(adobe, photoshop));
 		assertEquals(sessionId, photoshopCut.getParent());
 		assertTrue(manager.containsElement(root, photoshop));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
@@ -182,39 +179,38 @@ public class TreeManagerAlternativeTest {
 	public void cut_notExistingToElement() throws TreeException {
 		final String sessionId = "cut_notExistingToElement";
 		final long notExistingToId = Long.MAX_VALUE;
-		
+
 		final long sdkDevId = 84709;
 		final long sdkDevChildId = 983533;
 		final String sdkDevParentName = "Devel";
 		final String sdkDevName = "sdk_dev";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
 		Element<Directory> sdkDevParentElement = manager.getElementById(
 				sdkDevElement.getParent());
 		Element<Directory> nullableElement = manager.getElementById(
 				notExistingToId);
-		
+
 		Directory devel = sdkDevParentElement.unwrap();
 		assertEquals(sdkDevParentName, devel.getName());
-		
+
 		Element<Directory> cutElement = manager.cut(sdkDevElement,
 				nullableElement);
-		
+
 		Element<Directory> root = manager.root();
-		
+
 		assertEquals(sessionId, cutElement.getParent());
 		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#cut(Object, Object)}.
 	 * 
@@ -251,39 +247,38 @@ public class TreeManagerAlternativeTest {
 	public void cut_notExistingToObjectId() throws TreeException {
 		final String sessionId = "cut_notExistingToObjectId";
 		final long notExistingToId = Long.MAX_VALUE;
-		
+
 		final long sdkDevId = 84709;
 		final long sdkDevChildId = 983533;
 		final String sdkDevParentName = "Devel";
 		final String sdkDevName = "sdk_dev";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.
-				getDirectoryTree();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> sdkDevElement = manager.getElementById(sdkDevId);
 		Element<Directory> sdkDevParentElement = manager.getElementById(
 				sdkDevElement.getParent());
-		
+
 		Directory devel = sdkDevParentElement.unwrap();
 		assertEquals(sdkDevParentName, devel.getName());
-		
+
 		/*
 		 * Verify that the element was cut to the root level.
 		 */
 		Element<Directory> cutElement = manager.cut(sdkDevId, notExistingToId);
-		
+
 		Element<Directory> root = manager.root();
-		
+
 		assertEquals(sessionId, cutElement.getParent());
 		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#cut(Object, Object)}.
 	 * 
@@ -395,34 +390,32 @@ public class TreeManagerAlternativeTest {
 	public void cut_toAnotherTree() throws TreeException {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
-		
+
 		final Long winampId = 32099l;
 		final String winampName = "Winamp";
 		final Long systemId = 100l;
 		final String systemName = "System";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> targetDir = TreeAssembler.
-				getSimpleDirectoryTree();
-		Collection<Directory> sourceDir = TreeAssembler.
-				getDirectoryTree();
-		
+
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+
 		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> winamp = manager.getElementById(winampId);
 		assertNotNull(winamp);
-		
+
 		transaction.initializeSession(targetSessionId, targetDir);
 		Element<Directory> system = manager.getElementById(systemId);
 		assertNotNull(system);
-		
+
 		transaction.sessionCheckout(sourceSessionId);
 		manager.cut(winamp, system);
-		
+
 		winamp = manager.getElementById(winampId);
 		assertNull(winamp);
-		
+
 		transaction.sessionCheckout(targetSessionId);
 		winamp = manager.getElementById(winampId);
 		assertNotNull(winamp);
@@ -430,7 +423,7 @@ public class TreeManagerAlternativeTest {
 		assertEquals(systemName, system.unwrap().getName());
 		assertTrue(manager.containsElement(system, winamp));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
@@ -469,34 +462,32 @@ public class TreeManagerAlternativeTest {
 	public void cut_toRootOfAnotherTree() throws TreeException {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
-		
+
 		final Long develId = 93832l;
 		final String develName = "Devel";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> targetDir = TreeAssembler.
-				getSimpleDirectoryTree();
-		Collection<Directory> sourceDir = TreeAssembler.
-				getDirectoryTree();
-		
+
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+
 		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> devel = manager.getElementById(develId);
-		
+
 		transaction.initializeSession(targetSessionId, targetDir);
 		Element<Directory> targetRootTree = manager.root();
-		
+
 		transaction.sessionCheckout(sourceSessionId);
-		
+
 		manager.cut(devel, targetRootTree);
-		
+
 		/*
 		 * Devel does not exists in the source tree anymore.
 		 */
 		devel = manager.getElementById(develId);
 		assertNull(devel);
-		
+
 		/*
 		 * Devel now is in target tree.
 		 */
@@ -508,7 +499,7 @@ public class TreeManagerAlternativeTest {
 		assertTrue(manager.containsElement(targetRootTree, devel));
 		assertTrue(devel.getChildren().size() > 0);
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#copy(Element, Element)}.
 	 * 
@@ -547,39 +538,37 @@ public class TreeManagerAlternativeTest {
 	public void copy_toRootOfAnotherTree() throws TreeException {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
-		
+
 		final Long develId = 93832l;
 		final String develName = "Devel";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> targetDir = TreeAssembler.
-				getSimpleDirectoryTree();
-		Collection<Directory> sourceDir = TreeAssembler.
-				getDirectoryTree();
-		
+
+		Collection<Directory> targetDir = TreeAssembler.getSimpleDirectoryTree();
+		Collection<Directory> sourceDir = TreeAssembler.getDirectoryTree();
+
 		transaction.initializeSession(sourceSessionId, sourceDir);
 		Element<Directory> devel = manager.getElementById(develId);
-		
+
 		transaction.initializeSession(targetSessionId, targetDir);
 		Element<Directory> targetRootTree = manager.root();
-		
+
 		transaction.sessionCheckout(sourceSessionId);
 		manager.copy(devel, targetRootTree);
-		
+
 		transaction.sessionCheckout(targetSessionId);
 		Element<Directory> copiedDevel = manager.getElementById(develId);
 		assertEquals(targetSessionId, copiedDevel.getParent());
 		assertEquals(develName, copiedDevel.unwrap().getName());
 		assertTrue(manager.containsElement(targetRootTree, copiedDevel));
 		assertTrue(copiedDevel.getChildren().size() > 0);
-		
+
 		transaction.sessionCheckout(sourceSessionId);
 		devel = manager.getElementById(develId);
 		assertNotNull(devel);
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#removeElement(Element)}.
 	 * 
@@ -609,16 +598,16 @@ public class TreeManagerAlternativeTest {
 	public void removeElement_nullElement() throws TreeException {
 		final String sessionId = "removeElement_nullElement";
 		final Element<Directory> nullableElement = null;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
 		assertNull(manager.removeElement(nullableElement));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#removeElement(Object)}.
 	 * 
@@ -649,16 +638,16 @@ public class TreeManagerAlternativeTest {
 	public void removeElement_nullObjectId() throws TreeException {
 		final String sessionId = "removeElement_nullElement";
 		final Object nullableId = null;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
 		assertNull(manager.removeElement(nullableId));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#removeElement(Element)}.
 	 * 
@@ -690,18 +679,18 @@ public class TreeManagerAlternativeTest {
 	public void remove_notExistingElement() throws TreeException {
 		final String sessionId = "remove_notExistingElement";
 		final long notExistingId = Long.MAX_VALUE;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
 		Element<Directory> nullableElement = manager.getElementById(
 				notExistingId);
 		assertNull(manager.removeElement(nullableElement));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#removeElement(Object)}.
 	 * 
@@ -731,16 +720,16 @@ public class TreeManagerAlternativeTest {
 	public void remove_notExistingObjectId() throws TreeException {
 		final String sessionId = "remove_notExistingObjectId";
 		final long notExistingId = Long.MAX_VALUE;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
 		assertNull(manager.removeElement(notExistingId));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#containsElement(Element, Element)} and
 	 * {@link TreeManager#containsElement(Element)}.
@@ -773,24 +762,24 @@ public class TreeManagerAlternativeTest {
 	@Test
 	public void containsElement_nullElement() throws TreeException {
 		final String sessionId = "containsElement_nullElement";
-		
+
 		final long officeId = 53024;
 		final Element<Directory> nullableElement = null;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> office = manager.getElementById(officeId);
-		
+
 		assertFalse(manager.containsElement(office, nullableElement));
 		assertFalse(manager.containsElement(nullableElement, office));
 		assertFalse(manager.containsElement(nullableElement));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#containsElement(Element, Element)}.
 	 * 
@@ -830,11 +819,11 @@ public class TreeManagerAlternativeTest {
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> realtek = manager.getElementById(realtekId);
 		Element<Directory> bin = manager.getElementById(binId);
 
@@ -886,27 +875,26 @@ public class TreeManagerAlternativeTest {
 	public void containsElement_mismatchElement() throws TreeException {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
-		
+
 		final long happytreeId = 859452;
 		final String ownerId = "owner";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		Collection<Metadata> metadatas = TreeAssembler.
-				getMetadataTree();
-		
+		Collection<Metadata> metadatas = TreeAssembler.getMetadataTree();
+
 		transaction.initializeSession(sourceSessionId, directories);
 		Element<Directory> happytree = manager.getElementById(happytreeId);
-		
+
 		transaction.initializeSession(targetSessionId, metadatas);
 		Element<Metadata> owner = manager.getElementById(ownerId);
-		
+
 		assertFalse(manager.containsElement(happytree, owner));
 		assertFalse(manager.containsElement(happytree));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#containsElement(Element, Element)} and
 	 * {@link TreeManager#containsElement(Element)}.
@@ -941,34 +929,34 @@ public class TreeManagerAlternativeTest {
 	@Test
 	public void containsElement_detachedElement() throws TreeException {
 		final String sessionId = "containsElement_detachedElement";
-		
+
 		final long vlcId = 10239;
 		final long rec2Id = 1038299;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
+
 		transaction.initializeSession(sessionId, directories);
 		Element<Directory> vlc = manager.getElementById(vlcId);
 		Element<Directory> rec2 = manager.getElementById(rec2Id);
-		
+
 		assertTrue(manager.containsElement(vlc, rec2));
 		assertTrue(manager.containsElement(vlc));
-		
+
 		Directory proj = new Directory((long) vlc.getId(),
 				(long) vlc.getParent(), "Media Player");
-		
+
 		/*
 		 * Becomes detached here.
 		 */
 		vlc.wrap(proj);
-		
+
 		assertFalse(manager.containsElement(vlc, rec2));
 		assertFalse(manager.containsElement(vlc));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#containsElement(Object, Object)}.
 	 * 
@@ -1026,7 +1014,7 @@ public class TreeManagerAlternativeTest {
 
 		assertFalse(manager.containsElement(recordedId, rec2Id));
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#containsElement(Object)}.
 	 * 
@@ -1103,27 +1091,27 @@ public class TreeManagerAlternativeTest {
 	@Test
 	public void updateElement_nullIdElement() throws TreeException {
 		final String sessionId = "updateElement_nullIdElement";
-		
+
 		final Object wordId = 674098L;
 		Object nullableId = null;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> word = manager.getElementById(wordId);
 		word.setId(nullableId);
 
 		manager.updateElement(word);
-		
+
 		word = manager.getElementById(wordId);
-		
+
 		assertNotNull(word);
 		assertEquals(wordId, word.getId());
 	}
-	
+
 	/**
 	 * Test for the {@link TreeManager#updateElement(Element)} operation.
 	 * 
@@ -1156,31 +1144,96 @@ public class TreeManagerAlternativeTest {
 	@Test
 	public void updateElement_setId() throws TreeException {
 		final String sessionId = "updateElement_setId";
-		
+
 		final long fooId = 48224;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> foo = manager.getElementById(fooId);
 		foo.setId(Long.MAX_VALUE);
-		
+
 		assertEquals(fooId, foo.getId());
-		
+
 		foo = manager.updateElement(foo);
-		
+
 		assertNotEquals(fooId, foo.getId());
 		assertEquals(Long.MAX_VALUE, foo.getId());
-		
+
 		Element<Directory> tmp = null;
-		
+
 		for (Element<Directory> child : foo.getChildren()) {
 			tmp = child;
 		}
-		
+
 		assertEquals(Long.MAX_VALUE, tmp.getParent());
+	}
+
+	@Test
+	public void updateElement_setChildParentId() throws TreeException {
+		final String sessionId = "updateElement_setChildParentId";
+
+		final Long recordedId = 848305L;
+		final Long rec1Id = 3840200L;
+		final Long winampId = 32099L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		transaction.initializeSession(sessionId, directories);
+
+		Element<Directory> recorded = manager.getElementById(recordedId);
+		assertNotNull(recorded);
+
+		for (Element<Directory> child : recorded.getChildren()) {
+			if (rec1Id.equals(child.getId())) {
+				Element<Directory> rec1 = child;
+				rec1.setParent(winampId);
+			}
+		}
+
+		manager.updateElement(recorded);
+
+		Element<Directory> rec1 = manager.getElementById(rec1Id);
+
+		assertEquals(winampId, rec1.getParent());
+	}
+	
+	@Test
+	public void updateElement_withNoChildren() throws TreeException {
+		final String sessionId = "updateElement_withNoChildren";
+
+		final Long wordId = 4611329L;
+
+		Directory officeDirectory = new Directory(9999L, null, "Office");
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directories);
+
+		Element<Directory> office = manager.createElement(officeDirectory
+				.getIdentifier(), officeDirectory.getParentIdentifier(),
+				officeDirectory);
+
+		assertEquals("NOT_EXISTED", office.lifecycle());
+
+		office = manager.persistElement(office);
+
+		assertEquals("ATTACHED", office.lifecycle());
+
+		Element<Directory> word = manager.getElementById(wordId);
+
+		word.addChild(office);
+		manager.updateElement(word);
+
+		assertEquals(1, word.getChildren().size());
+		assertEquals(wordId, office.getParent());
 	}
 }
