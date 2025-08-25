@@ -1203,9 +1203,39 @@ public class TreeManagerAlternativeTest {
 		assertEquals(winampId, rec1.getParent());
 	}
 	
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to update the
+	 * element by adding a new element as child of an existing one.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to add a new element as child of an existing one and then update the
+	 * element.
+	 * <p><b>Expected:</b></p>
+	 * After updating the parent element, the new child already becomes
+	 * available.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create a new element which will be added as child of an existing
+	 * 	element;</li>
+	 * 	<li>Persist this new element;</li>
+	 * 	<li>Add this new element as child of an existing one;</li>
+	 * 	<li>Try to update the parent element;</li>
+	 * 	<li>Verify now that the parent element has the new child.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
-	public void updateElement_withNoChildren() throws TreeException {
-		final String sessionId = "updateElement_withNoChildren";
+	public void updateElement_addNewChild() throws TreeException {
+		final String sessionId = "updateElement_addNewChild";
 
 		final Long wordId = 4611329L;
 

@@ -6,7 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -136,6 +138,55 @@ public class ElementAlternativeTest {
 	}
 	
 	/**
+	 * Test for the {@link Element#addChildren(Collection)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to add children
+	 * with a <code>null</code> or empty collection.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to add children with a <code>null</code> or empty collection.
+	 * <p><b>Expected:</b></p>
+	 * The children list remains empty after trying to add children with a
+	 * <code>null</code> or empty collection.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element;</li>
+	 * 	<li>Persist the new element created in the previous step;</li>
+	 * 	<li>Try to add children with a <code>null</code> collection;</li>
+	 * 	<li>Confirm that the children list is empty;</li>
+	 * 	<li>Try to add children with an empty collection;</li>
+	 * 	<li>Confirm that the children list of the new element is empty again.
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void addChildren_nullEmptyArg() throws TreeException {
+		final String sessionId = "addChildren_nullEmptyArg";
+		final Byte elementId = 1;
+		final Byte parentId = 2;
+
+		final int expectedChildrenSize = 0;
+		final Collection<Element<Directory>> nullChild = null;
+		final Collection<Element<Directory>> emptyChild = List.of();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(elementId, parentId,
+				null);
+		element = manager.persistElement(element);
+
+		element.addChildren(nullChild);
+		assertEquals(expectedChildrenSize, element.getChildren().size());
+		element.addChildren(emptyChild);
+		assertEquals(expectedChildrenSize, element.getChildren().size());
+	}
+
+	/**
 	 * Test for the {@link Element#removeChild(Element)} and
 	 * {@link Element#addChild(Element)}.
 	 * 
@@ -240,6 +291,59 @@ public class ElementAlternativeTest {
 		element.addChild(nullChild);
 		assertEquals(beforeRemove, element.getChildren().size());
 		element.removeChild(nullableChildId);
+		assertEquals(afterRemove, element.getChildren().size());
+	}
+	
+	/**
+	 * Test for the {@link Element#removeChild(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to remove an
+	 * element that does not exist into the children list.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to remove an element that does not exist into the children list.
+	 * <p><b>Expected:</b></p>
+	 * One element inside the children list after adding two elements, one valid
+	 * and the other that does not exist into the children list, even after
+	 * trying to remove the not existing element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create three elements, one parent and two children, with one of them
+	 * 	that does not exist into the children list;</li>
+	 * 	<li>Verify if the children list has only one element;</li>
+	 * 	<li>Try to remove the not existing element;</li>
+	 * 	<li>Verify if the children list has only one element again.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void removeChild_notExistingChild() throws TreeException {
+		final String sessionId = "removeChild_notExistingChild";
+
+		final Integer elementId = Integer.MAX_VALUE;
+		final Integer childId = Integer.MIN_VALUE;
+		final Integer notExistingChildId = 0;
+
+		final int beforeRemove = 1;
+		final int afterRemove = 1;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId, Directory.class);
+
+		Element<Directory> element = manager.createElement(elementId, null,
+				null);
+		Element<Directory> child = manager.createElement(childId, null, null);
+		Element<Directory> notExistingChild = manager.createElement(
+				notExistingChildId, null, null);
+
+		element.addChild(child);
+		assertEquals(beforeRemove, element.getChildren().size());
+		element.removeChild(notExistingChild);
 		assertEquals(afterRemove, element.getChildren().size());
 	}
 	

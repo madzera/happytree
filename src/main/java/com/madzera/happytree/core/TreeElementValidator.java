@@ -38,7 +38,7 @@ abstract class TreeElementValidator extends TreeValidator {
 		TreeElementCore<?> source = (TreeElementCore<?>) pipeline.getAttribute(
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		
-		if (source != null && source.isRoot()) {
+		if (source.isRoot()) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					IMPOSSIBLE_HANDLE_ROOT);
 		}
@@ -80,25 +80,17 @@ abstract class TreeElementValidator extends TreeValidator {
 		Class<?> sourceType = source.getType();
 		Class<?> sessionType = session.getTypeTree();
 		
-		if (sourceType != null
-				&& !sourceType.equals(sessionType)) {
+		if (sourceType != null && !sourceType.equals(sessionType)) {
 			throw this.throwTreeException(TreeRepositoryMessage.
 					MISMATCH_TYPE_ELEMENT);
 		}
 		
 		if (target != null) {
-			TreeSessionCore targetSession = (TreeSessionCore) target.
-					attachedTo();
-			
-			if (targetSession != null) {
-				Class<?> targetType = target.getType();
+			Class<?> targetType = target.getType();
 				
-				if (targetType != null
-						&& !targetType.equals(sessionType)) {
-					
-					throw this.throwTreeException(TreeRepositoryMessage.
-							MISMATCH_TYPE_ELEMENT);
-				}
+			if (targetType != null && !targetType.equals(sessionType)) {
+				throw this.throwTreeException(TreeRepositoryMessage.
+						MISMATCH_TYPE_ELEMENT);
 			}
 		}
 	}

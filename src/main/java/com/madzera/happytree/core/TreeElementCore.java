@@ -283,10 +283,8 @@ class TreeElementCore<T> implements Element<T> {
 	 * then this root element cannot be detached.
 	 */
 	void initRoot(Collection<TreeElementCore<T>> children) {
-		if (children != null && !children.isEmpty()) {
-			this.children.addAll(children);
-			this.setRoot(Boolean.TRUE);
-		}
+		this.children.addAll(children);
+		this.setRoot(Boolean.TRUE);
 	}
 
 	/*
