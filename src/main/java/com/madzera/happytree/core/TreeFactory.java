@@ -8,7 +8,6 @@ import java.util.List;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.core.atp.ATPFactory;
-import com.madzera.happytree.core.atp.ATPFactory.ATPPhaseInstance;
 import com.madzera.happytree.exception.TreeException;
 
 /*
@@ -94,7 +93,7 @@ class TreeFactory {
 		return utilFactory;
 	}
 	
-	class ATPLifecycleFactory extends TreeFactory {
+	class ATPLifecycleFactory extends ATPFactory {
 		ATPLifecycleFactory() {}
 		
 		<T> ATPLifecycle<T> createLifecycle(TreePipeline pipeline) {
@@ -102,19 +101,19 @@ class TreeFactory {
 		}
 		
 		<T> ATPPhase<T> initPreValidation() {
-			return ATPFactory.getPhaseInstance(ATPPhaseInstance.PRE_VALIDATION);
+			return getPhaseInstance(ATPPhaseInstance.PRE_VALIDATION);
 		}
 		
 		<T> ATPPhase<T> initExtraction() {
-			return ATPFactory.getPhaseInstance(ATPPhaseInstance.EXTRACTION);
+			return getPhaseInstance(ATPPhaseInstance.EXTRACTION);
 		}
 		
 		<T> ATPPhase<T> initInitialization() {
-			return ATPFactory.getPhaseInstance(ATPPhaseInstance.INITIALIZATION);
+			return getPhaseInstance(ATPPhaseInstance.INITIALIZATION);
 		}
 		
 		<T> ATPPhase<T> initBinding() {
-			return ATPFactory.getPhaseInstance(ATPPhaseInstance.BINDING);
+			return getPhaseInstance(ATPPhaseInstance.BINDING);
 		}
 	}
 	

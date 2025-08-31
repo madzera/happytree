@@ -18,7 +18,7 @@ public class ATPFactory {
 	private static CollectionFactory collectionFactory;
 	
 	
-	private ATPFactory() {}
+	protected ATPFactory() {}
 	
 	
 	/*
@@ -26,7 +26,7 @@ public class ATPFactory {
 	 * This method must be public to be accessible inside of TreeFactory from
 	 * the super package (core)
 	 */
-	public static <T> ATPPhase<T> getPhaseInstance(ATPPhaseInstance phase) {
+	protected <T> ATPPhase<T> getPhaseInstance(ATPPhaseInstance phase) {
 		ATPPhase<T> instance = null;
 		if (ATPPhaseInstance.PRE_VALIDATION.equals(phase)) {
 			instance = new PreValidation<>();
@@ -42,11 +42,10 @@ public class ATPFactory {
 		}
 		return instance;
 	}
-	
+
 	static ExceptionFactory exceptionFactory() {
 		if (exceptionFactory == null) {
-			exceptionFactory = new ATPFactory().new 
-					ExceptionFactory();
+			exceptionFactory = new ATPFactory().new ExceptionFactory();
 		}
 		return exceptionFactory;
 	}
@@ -93,7 +92,7 @@ public class ATPFactory {
 		}
 	}
 	
-	public enum ATPPhaseInstance {
+	protected enum ATPPhaseInstance {
 		PRE_VALIDATION,
 		EXTRACTION,
 		INITIALIZATION,

@@ -1,6 +1,7 @@
 package com.madzera.happytree.transaction;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +12,9 @@ import org.junit.Test;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
+import com.madzera.happytree.core.atp.ATPUnitTestHelper;
 import com.madzera.happytree.demo.model.Directory;
+import com.madzera.happytree.demo.model.ObjectNoGetterError;
 import com.madzera.happytree.demo.model.node.Node;
 import com.madzera.happytree.demo.model.node.Node_MismatchId;
 import com.madzera.happytree.demo.model.node.Node_NoId;
@@ -34,7 +37,8 @@ import com.madzera.happytree.exception.TreeException;
 public class TreeTransactionErrorTest {
 
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when the session identifier is
 	 * <code>null</code>.</p>
@@ -74,7 +78,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when the type of session is
 	 * <code>null</code>.</p>
@@ -118,7 +123,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when the session identifier is
 	 * already initialized.</p>
@@ -167,7 +173,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
@@ -216,7 +223,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
@@ -265,7 +273,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a model class which there is no
@@ -314,7 +323,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a source object/model input which
@@ -365,7 +375,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using an object which would will
@@ -416,7 +427,8 @@ public class TreeTransactionErrorTest {
 	}
 	
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a collection of objects having the
@@ -471,7 +483,8 @@ public class TreeTransactionErrorTest {
 	}
 
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a <code>null</code> collection of
@@ -514,7 +527,8 @@ public class TreeTransactionErrorTest {
 	}
 
 	/**
-	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}.
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
 	 * 
 	 * <p>Error scenario for this operation when trying to initialize a session
 	 * by API Transformation Process using a empty collection of objects.</p>
@@ -541,7 +555,7 @@ public class TreeTransactionErrorTest {
 	public void initializeSession_atpEmptyCollection() throws TreeException {
 		final String sessionId = "emptyCollection";
 		final String messageError = "Invalid null/empty argument(s).";
-		
+
 		Collection<Node> nodes = new ArrayList<Node>();
 
 		TreeManager manager = HappyTree.createTreeManager();
@@ -551,6 +565,80 @@ public class TreeTransactionErrorTest {
 			transaction.initializeSession(sessionId, nodes);
 		} catch (IllegalArgumentException e) {
 			assertEquals(messageError, e.getMessage());
-		}	
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to initialize a session
+	 * by API Transformation Process using a object which there is no getters
+	 * methods.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session by API Transformation Process using a model
+	 * class without getters methods of its attributes.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message:
+	 * <i>&quot;Impossible to transform input object. Ensure the existence of
+	 * getters and setters.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a {@link ObjectNoGetterError} object with no getters
+	 * 	methods;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void initializeSession_atpPreValidationException() {
+		final String sessionId = "initializeSession_atpPreValidationException";
+		final String messageError = "Impossible to transform input object. "
+				+ "Ensure the existence of getters and setters.";
+		
+		ObjectNoGetterError obj = new ObjectNoGetterError();
+		Collection<ObjectNoGetterError> objects =
+				new ArrayList<ObjectNoGetterError>();
+		objects.add(obj);
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		try {
+			transaction.initializeSession(sessionId, objects);
+		} catch (TreeException e) {
+			assertEquals(messageError, e.getMessage());
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
+	 * 
+	 * <p>Test for the {@code Extraction} phase of the API Transformation
+	 * Process.</p>
+	 * 
+	 * <p>This test is a mock test to cover unreachable code. It uses the
+	 * {@link ATPUnitTestHelper} class to access an internal method of one
+	 * phase of the API Transformation Process, specifically the
+	 * {@code Extraction} phase.</p>
+	 */
+	@Test
+	public void initializeSession_atpExtractionException() {
+		final String fqn = "com.madzera.happytree.core.atp.Extraction";
+
+		try {
+			boolean result = ATPUnitTestHelper.executeInternalMethodEnums(fqn,
+					"runMock");
+			assertEquals(Boolean.TRUE, result);
+		} catch (ReflectiveOperationException e) {
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
 	}
 }
