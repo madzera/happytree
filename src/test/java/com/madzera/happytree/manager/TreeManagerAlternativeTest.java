@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -1265,5 +1266,76 @@ public class TreeManagerAlternativeTest {
 
 		assertEquals(1, word.getChildren().size());
 		assertEquals(wordId, office.getParent());
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#persistElement(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to persist an
+	 * element and checking whether it changes the own object reference.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>,
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to persist an element which its reference was changed outside of the
+	 * tree.
+	 * <p><b>Expected:</b></p>
+	 * After persisting the element, the reference is refreshed only when the
+	 * element is retrieved from the manager by invoking
+	 * {@link TreeManager#getElementById(Long)}.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create a new element which its reference is not part of the current
+	 * 	tree session;</li>
+	 * 	<li>Persist this new element;</li>
+	 * 	<li>Verify that the lifecycle state of this element is still as
+	 * 	<code>NOT_EXISTED</code>;</li>
+	 * 	<li>Try to get this element by its id;</li>
+	 * 	<li>Verify now that the lifecycle state of this element is
+	 * 	<code>ATTACHED</code>, meaning that it refreshed its reference and
+	 * 	now is part of the current tree session.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void updateElement_testingElementReference() throws TreeException{
+		final String sessionId = "updateElement_testingParamReference";
+	
+		final Long programFilesId = 42345L;
+		final Long intelliJId = 4887582L;
+	
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+	
+		Directory intelliJDirectory = new Directory(4887582L, programFilesId,
+				sessionId);
+	
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+	
+		transaction.initializeSession(sessionId, directories);
+	
+		Element<Directory> intelliJ = manager.createElement(intelliJId,
+				programFilesId, intelliJDirectory);
+	
+		assertEquals("NOT_EXISTED", intelliJ.lifecycle());
+		
+		/*
+		 * Persist the element and verify its lifecycle state. The lifecycle
+		 * state should keep as NOT_EXISTED, as the element doesn't refresh its
+		 * reference.
+		 */
+		manager.persistElement(intelliJ);
+		assertEquals("NOT_EXISTED", intelliJ.lifecycle());
+
+		/*
+		 * Now the element has updated its reference.
+		 */
+		intelliJ = manager.getElementById(intelliJId);
+		assertEquals("ATTACHED", intelliJ.lifecycle());
 	}
 }

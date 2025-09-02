@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -171,7 +171,7 @@ public class ElementAlternativeTest {
 
 		final int expectedChildrenSize = 0;
 		final Collection<Element<Directory>> nullChild = null;
-		final Collection<Element<Directory>> emptyChild = List.of();
+		final Collection<Element<Directory>> emptyChild = Arrays.asList();
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
