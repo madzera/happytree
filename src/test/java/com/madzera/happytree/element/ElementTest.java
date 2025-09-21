@@ -16,6 +16,7 @@ import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
+import com.madzera.happytree.demo.util.TreeAssembler;
 import com.madzera.happytree.exception.TreeException;
 
 /**
@@ -602,24 +603,42 @@ public class ElementTest {
 	public void wrap_unwrap() throws TreeException {
 		final String sessionId = "wrap_unwrap";
 		final long elementId = Integer.MAX_VALUE;
-		
+
 		final String directoryName = "Photos";
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		transaction.initializeSession(sessionId, Directory.class);
-		
-	Directory directory = new Directory(elementId, 0L, directoryName);
+
+		Directory directory = new Directory(elementId, 0L, directoryName);
 		Element<Directory> element = manager.createElement(elementId, null,
 				null);
-		
+
 		element.wrap(directory);
-		
+
 		Directory wrappedDirectory = element.unwrap();
-		
+
 		assertNotNull(wrappedDirectory);
 		assertEquals(directoryName, wrappedDirectory.getName());
+	}
+
+	@Test
+	public void elementToJson() throws TreeException {
+		final String sessionId = "elementToJson";
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> element = manager.getElementById(adobeId);
+		String json = element.toJSON();
+
+		assertNotNull(json);
 	}
 
 	/**

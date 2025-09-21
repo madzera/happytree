@@ -338,4 +338,13 @@ public interface Element<T> {
 	 * @return <code>String</code> corresponding the life cycle state name
 	 */
 	public String lifecycle();
+
+	/**
+	 * Converts the entire element structure into a JSON format.
+	 * 
+	 * <p>This includes all children recursively.</p>
+	 * 
+	 * @return the JSON format of this element
+	 */
+	public String toJSON();
 }

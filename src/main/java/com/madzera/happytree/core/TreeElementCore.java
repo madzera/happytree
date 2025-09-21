@@ -3,6 +3,8 @@ package com.madzera.happytree.core;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeSession;
 
@@ -164,6 +166,24 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public String lifecycle() {
 		return getState().name();
+	}
+
+	@Override
+	public String toJSON() {
+		final String defaultOutput = "{}";
+		
+		if (this.wrappedNode == null) {
+			return defaultOutput;
+		}
+
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			return objectMapper.writeValueAsString(wrappedNode);
+		} catch (JsonProcessingException e) {
+			return defaultOutput;
+		}
 	}
 	
 	@Override
