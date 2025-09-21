@@ -3,20 +3,25 @@ package com.madzera.happytree.core;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeSession;
 
+@JsonPropertyOrder({"element", "children"})
 class TreeElementCore<T> implements Element<T> {
 
 	/*
 	 * To be exposed to the interface.
 	 */
+	@JsonIgnore
 	private Object id;
 	private Object parentId;
-	private Collection<Element<T>> children;
+	@JsonProperty("element")
 	private T wrappedNode;
+	private Collection<Element<T>> children;
 	private TreeSession session;
 	
 	/*
@@ -67,6 +72,7 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	@Override
+	@JsonIgnore
 	public Object getParent() {
 		return this.parentId;
 	}
@@ -154,6 +160,7 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	@Override
+	@JsonProperty("element")
 	public T unwrap() {
 		return this.wrappedNode;
 	}
@@ -172,16 +179,15 @@ class TreeElementCore<T> implements Element<T> {
 	public String toJSON() {
 		final String defaultOutput = "{}";
 		
-		if (this.wrappedNode == null) {
-			return defaultOutput;
-		}
-
-		StringBuilder stringBuilder = new StringBuilder();
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.writeValueAsString(wrappedNode);
-		} catch (JsonProcessingException e) {
+			if (this.wrappedNode == null
+					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
+				throw TreeFactory.exceptionFactory().createException();
+			}
+			ObjectMapper objectMapper = TreeFactory.jsonFactory().
+					createObjectMapper();
+			return objectMapper.writeValueAsString(this);
+		} catch (Exception e) {
 			return defaultOutput;
 		}
 	}

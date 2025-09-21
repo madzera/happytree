@@ -8,7 +8,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -1326,7 +1325,7 @@ public class TreeManagerAlternativeTest {
 		
 		/*
 		 * Persist the element and verify its lifecycle state. The lifecycle
-		 * state should keep as NOT_EXISTED, as the element doesn't refresh its
+		 * state should keep as NOT_EXISTED, as the element does not refresh its
 		 * reference.
 		 */
 		manager.persistElement(intelliJ);

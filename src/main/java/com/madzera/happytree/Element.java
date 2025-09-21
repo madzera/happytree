@@ -340,9 +340,60 @@ public interface Element<T> {
 	public String lifecycle();
 
 	/**
-	 * Converts the entire element structure into a JSON format.
+	 * Converts the entire element structure into a JSON format. This includes 
+	 * all children recursively.
 	 * 
-	 * <p>This includes all children recursively.</p>
+	 * <p>It is mandatory that the element as well as all its children have not
+	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
+	 * object node that is <code>null</code>, then an empty JSON object is
+	 * returned &quot;{}&quot;.</p>
+	 * 
+	 * <p>The JSON representation consists of two main attributes:</p>
+	 * <ul>
+	 * 	<li><b>element</b>: the original object wrapped in this element;</li>
+	 * 	<li><b>children</b>: an array of child elements in JSON format.</li>
+	 * </ul>
+	 * 
+	 * <p>For example, considering an element that wraps an object of type
+	 * <code>Directory</code>, the JSON representation would look like 
+	 * <b>(minified)</b>:</p>
+	 * 
+	 * <pre>
+	 * {
+	 *	"element": {
+	 *		"identifier": 1,
+	 *		"parentIdentifier": null,
+	 *		"name": "Music"
+	 *	},
+	 *	"children": [
+	 *		{
+	 *			"element": {
+	 *				"identifier": 2,
+	 *				"parentIdentifier": 1,
+	 *				"name": "Country"
+	 *			},
+	 *			"children": [
+	 *				{
+	 *					"element": {
+	 *						"identifier": 3,
+	 *						"parentIdentifier": 2,
+	 *						"name": "Bruce Springsteen"
+	 *					},
+	 *					"children": []
+	 *				}
+	 *			]
+	 *		}]
+	 * }
+	 * </pre>
+	 * 
+	 * <p>To convert the wrapped object into JSON format, this is not necessary
+	 * that the element be attached to any session. However, the element as well
+	 * as all its children need to have their original objects nodes not
+	 * <code>null</code>.</p>
+	 * 
+	 * <p>For conversion, the Jackson library is used internally, so the wrapped
+	 * object can be annotated with Jackson annotations to customize the
+	 * conversion if necessary.</p>
 	 * 
 	 * @return the JSON format of this element
 	 */

@@ -84,26 +84,50 @@ class Recursion {
 			Element<T> target) {
 		Set<Object> sourceIds = TreeFactory.collectionFactory().createHashSet();
 		Set<Object> targetIds = TreeFactory.collectionFactory().createHashSet();
-		
+
 		Collection<Element<T>> targetPlainTree = toPlainList(target);
-		
+
 		for (Element<T> targetElement : targetPlainTree) {
 			targetIds.add(targetElement.getId());
 		}
-		
+
 		Collection<Element<T>> sourcePlainTree = toPlainList(source);
 		for (Element<T> sourceElement : sourcePlainTree) {
 			Object iteratorId = sourceElement.getId();
-			
+
 			if (targetIds.contains(iteratorId)
 					|| sourceIds.contains(iteratorId)) {
 				return Boolean.TRUE;
 			}
-			
+
 			sourceIds.add(iteratorId);
 		}
-		
+
 		return Boolean.FALSE;
+	}
+	
+	/*
+	 * Verifies in the tree the existence of nullable wrapped object node.
+	 */
+	static <T> boolean iterateForNullWrappedNode(
+			Collection<Element<T>> elements) {
+		boolean treeHasNullWrappedNode = Boolean.FALSE;
+
+		if (elements.isEmpty()) {
+			return treeHasNullWrappedNode;
+		}
+
+		for (Element<T> element : elements) {
+			if (element.unwrap() == null) {
+				treeHasNullWrappedNode = Boolean.TRUE;
+				return treeHasNullWrappedNode;
+			}
+			if (!treeHasNullWrappedNode) {
+				treeHasNullWrappedNode = iterateForNullWrappedNode(
+						element.getChildren());
+			}
+		}
+		return treeHasNullWrappedNode;
 	}
 	
 	private static <T> Element<T> treePlain(Collection<Element<T>> elements,

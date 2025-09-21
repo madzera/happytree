@@ -623,9 +623,48 @@ public class ElementTest {
 		assertEquals(directoryName, wrappedDirectory.getName());
 	}
 
+	/**
+	 * Test for the {@link Element#toJSON()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Convert an element tree into JSON format.
+	 * <p><b>Expected:</b></p>
+	 * A JSON string representing the element tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected JSON from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) directory;</li>
+	 * 	<li>Convert this element into JSON format by invoking
+	 * 	{@link Element#toJSON()};</li>
+	 * 	<li>Compare the resulting JSON string with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
-	public void elementToJson() throws TreeException {
-		final String sessionId = "elementToJson";
+	public void toJson() throws TreeException {
+		final String json = "{\"element\":{\"identifier\":24935," +
+				"\"parentIdentifier\":42345,\"name\":\"Adobe\"}," +
+				"\"children\":[{\"element\":{\"identifier\":502010," +
+				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"}," +
+				"\"children\":[{\"element\":{\"identifier\":8935844," +
+				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"}," +
+				"\"children\":[]}]},{\"element\":{\"identifier\":909443," +
+				"\"parentIdentifier\":24935,\"name\":\"Photoshop\"}," +
+				"\"children\":[{\"element\":{\"identifier\":4950243," +
+				"\"parentIdentifier\":909443,\"name\":\"photoshop.exe\"}," +
+				"\"children\":[]}]},{\"element\":{\"identifier\":403940," +
+				"\"parentIdentifier\":24935,\"name\":\"Reader\"}," +
+				"\"children\":[{\"element\":{\"identifier\":8493845," +
+				"\"parentIdentifier\":403940,\"name\":\"reader.exe\"}," +
+				"\"children\":[]}]}]}";
+
+		final String sessionId = "toJson";
 		final long adobeId = 24935L;
 
 		TreeManager manager = HappyTree.createTreeManager();
@@ -635,10 +674,10 @@ public class ElementTest {
 
 		transaction.initializeSession(sessionId, directoryTree);
 
-		Element<Directory> element = manager.getElementById(adobeId);
-		String json = element.toJSON();
-
-		assertNotNull(json);
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String jsonOutput = adobe.toJSON();
+		
+		assertEquals(json, jsonOutput);
 	}
 
 	/**

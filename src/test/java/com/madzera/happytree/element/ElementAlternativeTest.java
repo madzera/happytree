@@ -17,6 +17,7 @@ import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
+import com.madzera.happytree.demo.util.TreeAssembler;
 import com.madzera.happytree.exception.TreeException;
 
 /**
@@ -375,20 +376,237 @@ public class ElementAlternativeTest {
 		final String sessionId = "unwrap_nullWrappedNode";
 		final long elementId = Integer.MAX_VALUE;
 		Directory nullableDirectory = null;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		transaction.initializeSession(sessionId, Directory.class);
 		Element<Directory> element = manager.createElement(elementId, null,
 				null);
-		
+
 		element.wrap(nullableDirectory);
-		
+
 		Directory wrappedDirectory = element.unwrap();
 		assertNull(wrappedDirectory);
 	}
 
+	/**
+	 * Test for the {@link Element#toJSON()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print a JSON
+	 * when the element has a <code>null</code> wrapped node.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print a JSON element when the wrapped original object is
+	 * <code>null</code>.
+	 * <p><b>Expected:</b></p>
+	 * The JSON representation should be an empty object &quot;{}&quot;.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element without a wrapped object;</li>
+	 * 	<li>Convert the element to JSON;</li>
+	 * 	<li>Confirm that the JSON representation is an empty object
+	 * 	&quot;{}&quot;.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toJson_nullWrappedNode() throws TreeException {
+		final String json = "{}";
+
+		final String sessionId = "toJson_nullWrappedNode";
+		final long elementId = Integer.MAX_VALUE;
+		Directory nullableDirectory = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(elementId, null,
+				nullableDirectory);
+
+		String jsonOutput = element.toJSON();
+		assertEquals(json, jsonOutput);
+	}
+	
+	/**
+	 * Test for the {@link Element#toJSON()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print a JSON
+	 * when there is a child in the hierarchy that have a <code>null</code>
+	 * wrapped object node.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print a JSON element which exists a child in the hierarchy that
+	 * have a <code>null</code> wrapped object node.
+	 * <p><b>Expected:</b></p>
+	 * The JSON representation should be an empty object &quot;{}&quot;.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element (Illustrator) and its child (Illustrator.exe) -
+	 * 	with a <code>null</code> object node - to be added inside of (Adobe)
+	 * 	element;</li>
+	 * 	<li>Persist the new element (Illustrator) with its child
+	 * 	(Illustrator.exe) which does not have an object node;</li>
+	 * 	<li>Add the new element (Illustrator) with its child (Illustrator.exe)
+	 * 	to (Adobe) element;</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the JSON representation is an empty object
+	 * 	&quot;{}&quot;.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toJson_nullWrappedChildNode() throws TreeException {
+		final String json = "{}";
+
+		final String sessionId = "toJson_nullWrappedChildNode";
+		final long adobeId = 24935L;
+		final long illustratorId = 2378472L;
+		final long illustratorExeId = 2378473L;
+		final long programFilesId = 42345L;
+	
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+	
+		Directory illustratorDir = new Directory(illustratorId, programFilesId,
+				"Illustrator");
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+	
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> illustrator = manager.createElement(illustratorId,
+				adobeId, illustratorDir);
+		Element<Directory> illustratorExe = manager.createElement(
+				illustratorExeId, illustratorId, null);
+		
+		illustrator.addChild(illustratorExe);
+
+		illustrator = manager.persistElement(illustrator);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		adobe.addChild(illustrator);
+
+		adobe = manager.updateElement(adobe);
+
+		String jsonOutput = adobe.toJSON();
+		assertEquals(json, jsonOutput);
+	}
+	
+	/**
+	 * Test for the {@link Element#toJSON()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print a JSON
+	 * element after adding and removing a child element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print a JSON element after adding and removing a child element.
+	 * <p><b>Expected:</b></p>
+	 * The JSON representation should reflect the current state of the element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected JSON from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()} representing the current state
+	 * 	of this element;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element (Illustrator) and its child (Illustrator.exe)
+	 * 	to be added inside of (Adobe) element;</li>
+	 * 	<li>Persist the new element (Illustrator) with its child
+	 * 	(Illustrator.exe);</li>
+	 * 	<li>Before adding the new element (Illustrator) to (Adobe) element,
+	 * 	prove that the JSON representation reflects the current state of (Adobe)
+	 * 	element;</li>
+	 * 	<li>Add the new element (Illustrator) to (Adobe) element;</li>
+	 * 	<li>Before updating the (Adobe) element, confirm that the JSON
+	 * 	representation doesn’t reflect the current state of the element, proving
+	 * 	that the {@link Element#toJSON()} method does not depend on the
+	 * 	element's state.</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the JSON representation still doesn’t reflect the
+	 * 	current state of the (Adobe) element;</li>
+	 * 	<li>Remove the new element (Illustrator) from (Adobe) element;</li>
+	 * 	<li>Before updating the (Adobe) element, confirm that the JSON
+	 * 	representation reflects the current state of the element, proving
+	 * 	that the {@link Element#toJSON()} method does not depend on the
+	 * 	element's state.</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the JSON representation reflects the current state of
+	 * 	the (Adobe) element;</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toJson_addRemoveElement() throws TreeException {
+		final String json = "{\"element\":{\"identifier\":24935," +
+				"\"parentIdentifier\":42345,\"name\":\"Adobe\"}," +
+				"\"children\":[{\"element\":{\"identifier\":502010," +
+				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"}," +
+				"\"children\":[{\"element\":{\"identifier\":8935844," +
+				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"}," +
+				"\"children\":[]}]},{\"element\":{\"identifier\":909443," +
+				"\"parentIdentifier\":24935,\"name\":\"Photoshop\"}," +
+				"\"children\":[{\"element\":{\"identifier\":4950243," +
+				"\"parentIdentifier\":909443,\"name\":\"photoshop.exe\"}," +
+				"\"children\":[]}]},{\"element\":{\"identifier\":403940," +
+				"\"parentIdentifier\":24935,\"name\":\"Reader\"}," +
+				"\"children\":[{\"element\":{\"identifier\":8493845," +
+				"\"parentIdentifier\":403940,\"name\":\"reader.exe\"}," +
+				"\"children\":[]}]}]}";
+	
+		final String sessionId = "toJson_addRemoveElement";
+		final long adobeId = 24935L;
+		final long illustratorId = 2378472L;
+		final long illustratorExeId = 2378473L;
+		final long programFilesId = 42345L;
+	
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+	
+		Directory illustratorDir = new Directory(illustratorId, programFilesId,
+				"Illustrator");
+		Directory illustratorExeDir = new Directory(illustratorExeId,
+				illustratorId, "Illustrator.exe");
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+	
+		transaction.initializeSession(sessionId, directoryTree);
+	
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String jsonOutput = adobe.toJSON();
+		assertEquals(json, jsonOutput);
+		
+		Element<Directory> illustrator = manager.createElement(
+				illustratorId, programFilesId, illustratorDir);
+		Element<Directory> illustratorExe = manager.createElement(
+				illustratorExeId, illustratorId, illustratorExeDir);
+		illustrator.addChild(illustratorExe);
+	
+		illustrator = manager.persistElement(illustrator);
+	
+		adobe.addChild(illustrator);
+		jsonOutput = adobe.toJSON();
+		assertNotEquals(json, jsonOutput);
+	
+		adobe = manager.updateElement(adobe);
+		jsonOutput = adobe.toJSON();
+		assertNotEquals(json, jsonOutput);
+	
+		adobe.removeChild(illustrator);
+		jsonOutput = adobe.toJSON();
+		assertEquals(json, jsonOutput);
+	
+		adobe = manager.updateElement(adobe);
+		jsonOutput = adobe.toJSON();
+		assertEquals(json, jsonOutput);
+	}
+	
 	/**
 	 * Test for the {@link Object#equals(Object)} local implementation.
 	 * 
