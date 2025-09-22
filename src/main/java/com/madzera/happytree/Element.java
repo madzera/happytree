@@ -340,7 +340,7 @@ public interface Element<T> {
 	public String lifecycle();
 
 	/**
-	 * Converts the entire element structure into a JSON format. This includes 
+	 * Converts the whole element structure into a JSON format. This includes 
 	 * all children recursively.
 	 * 
 	 * <p>It is mandatory that the element as well as all its children have not
@@ -398,4 +398,18 @@ public interface Element<T> {
 	 * @return the JSON format of this element
 	 */
 	public String toJSON();
+
+	/**
+	 * Converts the whole element structure into a well formatted JSON
+	 * <code>String</code>. This includes all children recursively.
+	 * 
+	 * <p>It is mandatory that the element as well as all its children have not
+	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
+	 * object node that is <code>null</code>, then an empty JSON object is
+	 * returned &quot;{}&quot;.</p>
+	 * 
+	 * @return a well formatted JSON of this element
+	 * @see {@link Element#toJSON()}
+	 */
+	public String toPrettyJSON();
 }

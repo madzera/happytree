@@ -676,10 +676,102 @@ public class ElementTest {
 
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		String jsonOutput = adobe.toJSON();
-		
+
 		assertEquals(json, jsonOutput);
 	}
 
+	/**
+	 * Test for the {@link Element#toPrettyJSON()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Convert an element tree into a well formatted JSON.
+	 * <p><b>Expected:</b></p>
+	 * A well formatted JSON string representing the element tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected JSON from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) directory;</li>
+	 * 	<li>Convert this element into JSON format by invoking
+	 * 	{@link Element#toJSON()};</li>
+	 * 	<li>Compare the resulting JSON string with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toPrettyJSON() throws TreeException {
+		final String json = "{\r\n" + //
+						"  \"element\" : {\r\n" + //
+						"    \"identifier\" : 24935,\r\n" + //
+						"    \"parentIdentifier\" : 42345,\r\n" + //
+						"    \"name\" : \"Adobe\"\r\n" + //
+						"  },\r\n" + //
+						"  \"children\" : [ {\r\n" + //
+						"    \"element\" : {\r\n" + //
+						"      \"identifier\" : 502010,\r\n" + //
+						"      \"parentIdentifier\" : 24935,\r\n" + //
+						"      \"name\" : \"Dremweaver\"\r\n" + //
+						"    },\r\n" + //
+						"    \"children\" : [ {\r\n" + //
+						"      \"element\" : {\r\n" + //
+						"        \"identifier\" : 8935844,\r\n" + //
+						"        \"parentIdentifier\" : 502010,\r\n" + //
+						"        \"name\" : \"dreamweaver.exe\"\r\n" + //
+						"      },\r\n" + //
+						"      \"children\" : [ ]\r\n" + //
+						"    } ]\r\n" + //
+						"  }, {\r\n" + //
+						"    \"element\" : {\r\n" + //
+						"      \"identifier\" : 909443,\r\n" + //
+						"      \"parentIdentifier\" : 24935,\r\n" + //
+						"      \"name\" : \"Photoshop\"\r\n" + //
+						"    },\r\n" + //
+						"    \"children\" : [ {\r\n" + //
+						"      \"element\" : {\r\n" + //
+						"        \"identifier\" : 4950243,\r\n" + //
+						"        \"parentIdentifier\" : 909443,\r\n" + //
+						"        \"name\" : \"photoshop.exe\"\r\n" + //
+						"      },\r\n" + //
+						"      \"children\" : [ ]\r\n" + //
+						"    } ]\r\n" + //
+						"  }, {\r\n" + //
+						"    \"element\" : {\r\n" + //
+						"      \"identifier\" : 403940,\r\n" + //
+						"      \"parentIdentifier\" : 24935,\r\n" + //
+						"      \"name\" : \"Reader\"\r\n" + //
+						"    },\r\n" + //
+						"    \"children\" : [ {\r\n" + //
+						"      \"element\" : {\r\n" + //
+						"        \"identifier\" : 8493845,\r\n" + //
+						"        \"parentIdentifier\" : 403940,\r\n" + //
+						"        \"name\" : \"reader.exe\"\r\n" + //
+						"      },\r\n" + //
+						"      \"children\" : [ ]\r\n" + //
+						"    } ]\r\n" + //
+						"  } ]\r\n" + //
+						"}";
+
+		final String sessionId = "toPrettyJSON";
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String jsonOutput = adobe.toPrettyJSON();
+
+		assertEquals(json, jsonOutput);
+	}
+	
 	/**
 	 * Test for the {@link Object#hashCode()} local implementation.
 	 * 

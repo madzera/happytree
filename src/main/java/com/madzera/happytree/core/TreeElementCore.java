@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeSession;
 
@@ -177,21 +178,14 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public String toJSON() {
-		final String defaultOutput = "{}";
-		
-		try {
-			if (this.wrappedNode == null
-					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
-				throw TreeFactory.exceptionFactory().createException();
-			}
-			ObjectMapper objectMapper = TreeFactory.jsonFactory().
-					createObjectMapper();
-			return objectMapper.writeValueAsString(this);
-		} catch (Exception e) {
-			return defaultOutput;
-		}
+		return this.toJSON(Boolean.FALSE);
 	}
 	
+	@Override
+	public String toPrettyJSON() {
+		return this.toJSON(Boolean.TRUE);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -381,4 +375,28 @@ class TreeElementCore<T> implements Element<T> {
 	private void setNewId(Object newId) {
 		this.newId = newId;
 	}
+	
+	private String toJSON(final boolean isPrettyJson) {
+		final String defaultOutput = "{}";
+
+		try {
+			if (this.wrappedNode == null
+					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
+				throw TreeFactory.exceptionFactory().createException();
+			}
+			ObjectMapper objectMapper = TreeFactory.jsonFactory().
+					createObjectMapper();
+			
+			if (isPrettyJson) {
+				ObjectWriter writer = objectMapper.
+						writerWithDefaultPrettyPrinter();
+				return writer.writeValueAsString(this);
+			} else {
+				return objectMapper.writeValueAsString(this);
+			}
+		} catch (Exception e) {
+			return defaultOutput;
+		}
+	}
+
 }
