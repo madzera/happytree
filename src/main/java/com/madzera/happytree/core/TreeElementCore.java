@@ -8,10 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeSession;
 
-@JsonPropertyOrder({"element", "children"})
+@JsonPropertyOrder({ "element", "children" })
+@JacksonXmlRootElement(localName = "element")
 class TreeElementCore<T> implements Element<T> {
 
 	/*
@@ -184,6 +187,17 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public String toPrettyJSON() {
 		return this.toJSON(Boolean.TRUE);
+	}
+
+	@Override
+	public String toXML() {
+		return this.toXML(Boolean.FALSE);
+	}
+
+
+	@Override
+	public String toPrettyXML() {
+		return this.toXML(Boolean.TRUE);
 	}
 
 	@Override
@@ -386,7 +400,7 @@ class TreeElementCore<T> implements Element<T> {
 			}
 			ObjectMapper objectMapper = TreeFactory.jsonFactory().
 					createObjectMapper();
-			
+
 			if (isPrettyJson) {
 				ObjectWriter writer = objectMapper.
 						writerWithDefaultPrettyPrinter();
@@ -399,4 +413,25 @@ class TreeElementCore<T> implements Element<T> {
 		}
 	}
 
+	private String toXML(final boolean isPrettyXml) {
+		final String defaultOutput = "{}";
+
+		try {
+			if (this.wrappedNode == null
+					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
+				throw TreeFactory.exceptionFactory().createException();
+			}
+			XmlMapper xmlMapper = TreeFactory.xmlFactory().createXmlMapper();
+
+			if (isPrettyXml) {
+				ObjectWriter writer = xmlMapper.writerWithDefaultPrettyPrinter();
+				return writer.writeValueAsString(this);
+			} else {
+				return xmlMapper.writeValueAsString(this);
+			}
+		} catch (Exception e) {
+			return defaultOutput;
+		}
+	}
+	
 }

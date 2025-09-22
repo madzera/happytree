@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.core.atp.ATPFactory;
@@ -27,6 +28,7 @@ class TreeFactory {
 	private static ExceptionFactory exceptionFactory;
 	private static UtilFactory utilFactory;
 	private static JsonFactory jsonFactory;
+	private static XmlFactory xmlFactory;
 	
 	
 	protected TreeFactory() {}
@@ -100,6 +102,13 @@ class TreeFactory {
 			jsonFactory = getInstance().new JsonFactory();
 		}
 		return jsonFactory;
+	}
+
+	static XmlFactory xmlFactory() {
+		if (xmlFactory == null) {
+			xmlFactory = getInstance().new XmlFactory();
+		}
+		return xmlFactory;
 	}
 	
 	class ATPLifecycleFactory extends ATPFactory {
@@ -241,10 +250,20 @@ class TreeFactory {
 	}
 	
 	class JsonFactory extends TreeFactory {
-		JsonFactory() {}
-		
+		JsonFactory() {
+		}
+
 		ObjectMapper createObjectMapper() {
 			return new ObjectMapper();
+		}
+	}
+	
+	class XmlFactory extends TreeFactory {
+		XmlFactory() {
+		}
+		
+		XmlMapper createXmlMapper() {
+			return new XmlMapper();
 		}
 	}
 	

@@ -772,6 +772,26 @@ public class ElementTest {
 		assertEquals(json, jsonOutput);
 	}
 	
+	@Test
+	public void toXml() throws TreeException {
+		final String xml = "";
+
+		final String sessionId = "toXml";
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String xmlOutput = adobe.toXML();
+
+		assertEquals(xml, xmlOutput);
+	}
+
 	/**
 	 * Test for the {@link Object#hashCode()} local implementation.
 	 * 

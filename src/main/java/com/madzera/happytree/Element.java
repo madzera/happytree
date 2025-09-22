@@ -412,4 +412,8 @@ public interface Element<T> {
 	 * @see {@link Element#toJSON()}
 	 */
 	public String toPrettyJSON();
+
+	public String toXML();
+
+	public String toPrettyXML();
 }
