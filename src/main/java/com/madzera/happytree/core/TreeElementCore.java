@@ -6,9 +6,11 @@ import java.util.Iterator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeSession;
@@ -24,7 +26,9 @@ class TreeElementCore<T> implements Element<T> {
 	private Object id;
 	private Object parentId;
 	@JsonProperty("element")
+	@JsonUnwrapped
 	private T wrappedNode;
+	@JacksonXmlElementWrapper(useWrapping = false)
 	private Collection<Element<T>> children;
 	private TreeSession session;
 	
@@ -165,6 +169,7 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	@JsonProperty("element")
+	@JsonUnwrapped
 	public T unwrap() {
 		return this.wrappedNode;
 	}
