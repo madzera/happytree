@@ -348,41 +348,41 @@ public interface Element<T> {
 	 * object node that is <code>null</code>, then an empty JSON object is
 	 * returned &quot;{}&quot;.</p>
 	 * 
-	 * <p>The JSON representation consists of two main attributes:</p>
+	 * <p>the JSON representation consists of the attributes of the wrapped
+	 * object node plus an attribute called <b>children</b>, which holds all the
+	 * children of the node and so on recursively:</p>
+	 * 
 	 * <ul>
-	 * 	<li><b>element</b>: the original object wrapped in this element;</li>
-	 * 	<li><b>children</b>: an array of child elements in JSON format.</li>
+	 * 	<li><b>Object Node Attributes</b>: all getters attributes from the class
+	 * 	annotated with <code>@Tree</code> annotation;</li>
+	 * 	<li><b>Children Attribute</b>: the same structure but placed as child in
+	 * 	a recursive way.</li>
 	 * </ul>
 	 * 
 	 * <p>For example, considering an element that wraps an object of type
 	 * <code>Directory</code>, the JSON representation would look like 
-	 * <b>(minified)</b>:</p>
+	 * <b>(pretty print)</b>:</p>
 	 * 
 	 * <pre>
 	 * {
-	 *	"element": {
-	 *		"identifier": 1,
-	 *		"parentIdentifier": null,
-	 *		"name": "Music"
-	 *	},
+	 *	"identifier": 1,
+	 *	"parentIdentifier": null,
+	 *	"name": "Music"
 	 *	"children": [
 	 *		{
-	 *			"element": {
-	 *				"identifier": 2,
-	 *				"parentIdentifier": 1,
-	 *				"name": "Country"
-	 *			},
+	 *			"identifier": 2,
+	 *			"parentIdentifier": 1,
+	 *			"name": "Country"
 	 *			"children": [
 	 *				{
-	 *					"element": {
-	 *						"identifier": 3,
-	 *						"parentIdentifier": 2,
-	 *						"name": "Bruce Springsteen"
-	 *					},
+	 *					"identifier": 3,
+	 *					"parentIdentifier": 2,
+	 *					"name": "Bruce Springsteen"
 	 *					"children": []
 	 *				}
 	 *			]
-	 *		}]
+	 *		}
+	 *	]
 	 * }
 	 * </pre>
 	 * 
@@ -395,7 +395,7 @@ public interface Element<T> {
 	 * object can be annotated with Jackson annotations to customize the
 	 * conversion if necessary.</p>
 	 * 
-	 * @return the JSON format of this element
+	 * @return the JSON format of this element (minified)
 	 */
 	public String toJSON();
 
@@ -408,7 +408,7 @@ public interface Element<T> {
 	 * object node that is <code>null</code>, then an empty JSON object is
 	 * returned &quot;{}&quot;.</p>
 	 * 
-	 * @return a well formatted JSON of this element
+	 * @return a well formatted JSON of this element (pretty print)
 	 * @see {@link Element#toJSON()}
 	 */
 	public String toPrettyJSON();

@@ -545,21 +545,20 @@ public class ElementAlternativeTest {
 	 */
 	@Test
 	public void toJson_addRemoveElement() throws TreeException {
-		final String json = "{\"element\":{\"identifier\":24935," +
-				"\"parentIdentifier\":42345,\"name\":\"Adobe\"}," +
-				"\"children\":[{\"element\":{\"identifier\":502010," +
-				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"}," +
-				"\"children\":[{\"element\":{\"identifier\":8935844," +
-				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"}," +
-				"\"children\":[]}]},{\"element\":{\"identifier\":909443," +
-				"\"parentIdentifier\":24935,\"name\":\"Photoshop\"}," +
-				"\"children\":[{\"element\":{\"identifier\":4950243," +
-				"\"parentIdentifier\":909443,\"name\":\"photoshop.exe\"}," +
-				"\"children\":[]}]},{\"element\":{\"identifier\":403940," +
-				"\"parentIdentifier\":24935,\"name\":\"Reader\"}," +
-				"\"children\":[{\"element\":{\"identifier\":8493845," +
-				"\"parentIdentifier\":403940,\"name\":\"reader.exe\"}," +
-				"\"children\":[]}]}]}";
+		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
+				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
+				+ "\"children\":[{\"identifier\":8935844,"
+				+ "\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\","
+				+ "\"children\":[]}]},{\"identifier\":909443,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Photoshop\","
+				+ "\"children\":[{\"identifier\":4950243,"
+				+ "\"parentIdentifier\":909443,\"name\":\"photoshop.exe\","
+				+ "\"children\":[]}]},{\"identifier\":403940,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Reader\","
+				+ "\"children\":[{\"identifier\":8493845,"
+				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
+				+ "\"children\":[]}]}]}";
 	
 		final String sessionId = "toJson_addRemoveElement";
 		final long adobeId = 24935L;

@@ -648,21 +648,20 @@ public class ElementTest {
 	 */
 	@Test
 	public void toJson() throws TreeException {
-		final String json = "{\"element\":{\"identifier\":24935," +
-				"\"parentIdentifier\":42345,\"name\":\"Adobe\"}," +
-				"\"children\":[{\"element\":{\"identifier\":502010," +
-				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"}," +
-				"\"children\":[{\"element\":{\"identifier\":8935844," +
-				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"}," +
-				"\"children\":[]}]},{\"element\":{\"identifier\":909443," +
-				"\"parentIdentifier\":24935,\"name\":\"Photoshop\"}," +
-				"\"children\":[{\"element\":{\"identifier\":4950243," +
-				"\"parentIdentifier\":909443,\"name\":\"photoshop.exe\"}," +
-				"\"children\":[]}]},{\"element\":{\"identifier\":403940," +
-				"\"parentIdentifier\":24935,\"name\":\"Reader\"}," +
-				"\"children\":[{\"element\":{\"identifier\":8493845," +
-				"\"parentIdentifier\":403940,\"name\":\"reader.exe\"}," +
-				"\"children\":[]}]}]}";
+		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
+				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
+				+ "\"children\":[{\"identifier\":8935844,"
+				+ "\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\","
+				+ "\"children\":[]}]},{\"identifier\":909443,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Photoshop\","
+				+ "\"children\":[{\"identifier\":4950243,"
+				+ "\"parentIdentifier\":909443,\"name\":\"photoshop.exe\","
+				+ "\"children\":[]}]},{\"identifier\":403940,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Reader\","
+				+ "\"children\":[{\"identifier\":8493845,"
+				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
+				+ "\"children\":[]}]}]}";
 
 		final String sessionId = "toJson";
 		final long adobeId = 24935L;
@@ -706,55 +705,41 @@ public class ElementTest {
 	@Test
 	public void toPrettyJSON() throws TreeException {
 		final String json = "{\r\n" + //
-						"  \"element\" : {\r\n" + //
-						"    \"identifier\" : 24935,\r\n" + //
-						"    \"parentIdentifier\" : 42345,\r\n" + //
-						"    \"name\" : \"Adobe\"\r\n" + //
-						"  },\r\n" + //
+						"  \"identifier\" : 24935,\r\n" + //
+						"  \"parentIdentifier\" : 42345,\r\n" + //
+						"  \"name\" : \"Adobe\",\r\n" + //
 						"  \"children\" : [ {\r\n" + //
-						"    \"element\" : {\r\n" + //
-						"      \"identifier\" : 502010,\r\n" + //
-						"      \"parentIdentifier\" : 24935,\r\n" + //
-						"      \"name\" : \"Dremweaver\"\r\n" + //
-						"    },\r\n" + //
+						"    \"identifier\" : 502010,\r\n" + //
+						"    \"parentIdentifier\" : 24935,\r\n" + //
+						"    \"name\" : \"Dremweaver\",\r\n" + //
 						"    \"children\" : [ {\r\n" + //
-						"      \"element\" : {\r\n" + //
-						"        \"identifier\" : 8935844,\r\n" + //
-						"        \"parentIdentifier\" : 502010,\r\n" + //
-						"        \"name\" : \"dreamweaver.exe\"\r\n" + //
-						"      },\r\n" + //
+						"      \"identifier\" : 8935844,\r\n" + //
+						"      \"parentIdentifier\" : 502010,\r\n" + //
+						"      \"name\" : \"dreamweaver.exe\",\r\n" + //
 						"      \"children\" : [ ]\r\n" + //
 						"    } ]\r\n" + //
 						"  }, {\r\n" + //
-						"    \"element\" : {\r\n" + //
-						"      \"identifier\" : 909443,\r\n" + //
-						"      \"parentIdentifier\" : 24935,\r\n" + //
-						"      \"name\" : \"Photoshop\"\r\n" + //
-						"    },\r\n" + //
+						"    \"identifier\" : 909443,\r\n" + //
+						"    \"parentIdentifier\" : 24935,\r\n" + //
+						"    \"name\" : \"Photoshop\",\r\n" + //
 						"    \"children\" : [ {\r\n" + //
-						"      \"element\" : {\r\n" + //
-						"        \"identifier\" : 4950243,\r\n" + //
-						"        \"parentIdentifier\" : 909443,\r\n" + //
-						"        \"name\" : \"photoshop.exe\"\r\n" + //
-						"      },\r\n" + //
+						"      \"identifier\" : 4950243,\r\n" + //
+						"      \"parentIdentifier\" : 909443,\r\n" + //
+						"      \"name\" : \"photoshop.exe\",\r\n" + //
 						"      \"children\" : [ ]\r\n" + //
 						"    } ]\r\n" + //
 						"  }, {\r\n" + //
-						"    \"element\" : {\r\n" + //
-						"      \"identifier\" : 403940,\r\n" + //
-						"      \"parentIdentifier\" : 24935,\r\n" + //
-						"      \"name\" : \"Reader\"\r\n" + //
-						"    },\r\n" + //
+						"    \"identifier\" : 403940,\r\n" + //
+						"    \"parentIdentifier\" : 24935,\r\n" + //
+						"    \"name\" : \"Reader\",\r\n" + //
 						"    \"children\" : [ {\r\n" + //
-						"      \"element\" : {\r\n" + //
-						"        \"identifier\" : 8493845,\r\n" + //
-						"        \"parentIdentifier\" : 403940,\r\n" + //
-						"        \"name\" : \"reader.exe\"\r\n" + //
-						"      },\r\n" + //
+						"      \"identifier\" : 8493845,\r\n" + //
+						"      \"parentIdentifier\" : 403940,\r\n" + //
+						"      \"name\" : \"reader.exe\",\r\n" + //
 						"      \"children\" : [ ]\r\n" + //
 						"    } ]\r\n" + //
 						"  } ]\r\n" + //
-						"}";
+				"}";
 
 		final String sessionId = "toPrettyJSON";
 		final long adobeId = 24935L;
