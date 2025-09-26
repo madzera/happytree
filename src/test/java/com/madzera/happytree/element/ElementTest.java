@@ -647,7 +647,7 @@ public class ElementTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void toJson() throws TreeException {
+	public void toJSON() throws TreeException {
 		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
 				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
 				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
@@ -663,7 +663,7 @@ public class ElementTest {
 				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
 				+ "\"children\":[]}]}]}";
 
-		final String sessionId = "toJson";
+		final String sessionId = "toJSON";
 		final long adobeId = 24935L;
 
 		TreeManager manager = HappyTree.createTreeManager();
@@ -705,40 +705,40 @@ public class ElementTest {
 	@Test
 	public void toPrettyJSON() throws TreeException {
 		final String json = "{\r\n" + //
-						"  \"identifier\" : 24935,\r\n" + //
-						"  \"parentIdentifier\" : 42345,\r\n" + //
-						"  \"name\" : \"Adobe\",\r\n" + //
-						"  \"children\" : [ {\r\n" + //
-						"    \"identifier\" : 502010,\r\n" + //
-						"    \"parentIdentifier\" : 24935,\r\n" + //
-						"    \"name\" : \"Dremweaver\",\r\n" + //
-						"    \"children\" : [ {\r\n" + //
-						"      \"identifier\" : 8935844,\r\n" + //
-						"      \"parentIdentifier\" : 502010,\r\n" + //
-						"      \"name\" : \"dreamweaver.exe\",\r\n" + //
-						"      \"children\" : [ ]\r\n" + //
-						"    } ]\r\n" + //
-						"  }, {\r\n" + //
-						"    \"identifier\" : 909443,\r\n" + //
-						"    \"parentIdentifier\" : 24935,\r\n" + //
-						"    \"name\" : \"Photoshop\",\r\n" + //
-						"    \"children\" : [ {\r\n" + //
-						"      \"identifier\" : 4950243,\r\n" + //
-						"      \"parentIdentifier\" : 909443,\r\n" + //
-						"      \"name\" : \"photoshop.exe\",\r\n" + //
-						"      \"children\" : [ ]\r\n" + //
-						"    } ]\r\n" + //
-						"  }, {\r\n" + //
-						"    \"identifier\" : 403940,\r\n" + //
-						"    \"parentIdentifier\" : 24935,\r\n" + //
-						"    \"name\" : \"Reader\",\r\n" + //
-						"    \"children\" : [ {\r\n" + //
-						"      \"identifier\" : 8493845,\r\n" + //
-						"      \"parentIdentifier\" : 403940,\r\n" + //
-						"      \"name\" : \"reader.exe\",\r\n" + //
-						"      \"children\" : [ ]\r\n" + //
-						"    } ]\r\n" + //
-						"  } ]\r\n" + //
+				"  \"identifier\" : 24935,\r\n" + //
+				"  \"parentIdentifier\" : 42345,\r\n" + //
+				"  \"name\" : \"Adobe\",\r\n" + //
+				"  \"children\" : [ {\r\n" + //
+				"    \"identifier\" : 502010,\r\n" + //
+				"    \"parentIdentifier\" : 24935,\r\n" + //
+				"    \"name\" : \"Dremweaver\",\r\n" + //
+				"    \"children\" : [ {\r\n" + //
+				"      \"identifier\" : 8935844,\r\n" + //
+				"      \"parentIdentifier\" : 502010,\r\n" + //
+				"      \"name\" : \"dreamweaver.exe\",\r\n" + //
+				"      \"children\" : [ ]\r\n" + //
+				"    } ]\r\n" + //
+				"  }, {\r\n" + //
+				"    \"identifier\" : 909443,\r\n" + //
+				"    \"parentIdentifier\" : 24935,\r\n" + //
+				"    \"name\" : \"Photoshop\",\r\n" + //
+				"    \"children\" : [ {\r\n" + //
+				"      \"identifier\" : 4950243,\r\n" + //
+				"      \"parentIdentifier\" : 909443,\r\n" + //
+				"      \"name\" : \"photoshop.exe\",\r\n" + //
+				"      \"children\" : [ ]\r\n" + //
+				"    } ]\r\n" + //
+				"  }, {\r\n" + //
+				"    \"identifier\" : 403940,\r\n" + //
+				"    \"parentIdentifier\" : 24935,\r\n" + //
+				"    \"name\" : \"Reader\",\r\n" + //
+				"    \"children\" : [ {\r\n" + //
+				"      \"identifier\" : 8493845,\r\n" + //
+				"      \"parentIdentifier\" : 403940,\r\n" + //
+				"      \"name\" : \"reader.exe\",\r\n" + //
+				"      \"children\" : [ ]\r\n" + //
+				"    } ]\r\n" + //
+				"  } ]\r\n" + //
 				"}";
 
 		final String sessionId = "toPrettyJSON";
@@ -756,12 +756,50 @@ public class ElementTest {
 
 		assertEquals(json, jsonOutput);
 	}
-	
-	@Test
-	public void toXml() throws TreeException {
-		final String xml = "";
 
-		final String sessionId = "toXml";
+	/**
+	 * Test for the {@link Element#toXML()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Convert an element tree into XML format.
+	 * <p><b>Expected:</b></p>
+	 * A XML string representing the element tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected JSON from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) directory;</li>
+	 * 	<li>Convert this element into XMK format by invoking
+	 * 	{@link Element#toXML()};</li>
+	 * 	<li>Compare the resulting XML string with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toXML() throws TreeException {
+		final String xml = "<element><identifier>24935</identifier>"
+				+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
+				+ "<children><identifier>502010</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
+				+ "<children><identifier>8935844</identifier>"
+				+ "<parentIdentifier>502010</parentIdentifier>"
+				+ "<name>dreamweaver.exe</name></children></children><children>"
+				+ "<identifier>909443</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
+				+ "<children><identifier>4950243</identifier>"
+				+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
+				+ "</children></children><children><identifier>403940</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
+				+ "<children><identifier>8493845</identifier>"
+				+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
+				+ "</children></children></element>";
+
+		final String sessionId = "toXML";
 		final long adobeId = 24935L;
 
 		TreeManager manager = HappyTree.createTreeManager();
@@ -773,6 +811,83 @@ public class ElementTest {
 
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		String xmlOutput = adobe.toXML();
+
+		assertEquals(xml, xmlOutput);
+	}
+
+	/**
+	 * Test for the {@link Element#toPrettyXML()}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Convert an element tree into a well formatted XML.
+	 * <p><b>Expected:</b></p>
+	 * A well formatted XML content of the element tree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected XML from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) directory;</li>
+	 * 	<li>Convert this element into XML format by invoking
+	 * 	{@link Element#toXML()};</li>
+	 * 	<li>Compare the resulting XML content with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toPrettyXML() throws TreeException {
+		final String xml = "<element>\r\n" +
+			"  <identifier>24935</identifier>\r\n" +
+			"  <parentIdentifier>42345</parentIdentifier>\r\n" +
+			"  <name>Adobe</name>\r\n" +
+			"  <children>\r\n" +
+			"    <identifier>502010</identifier>\r\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
+			"    <name>Dremweaver</name>\r\n" +
+			"    <children>\r\n" +
+			"      <identifier>8935844</identifier>\r\n" +
+			"      <parentIdentifier>502010</parentIdentifier>\r\n" +
+			"      <name>dreamweaver.exe</name>\r\n" +
+			"    </children>\r\n" +
+			"  </children>\r\n" +
+			"  <children>\r\n" +
+			"    <identifier>909443</identifier>\r\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
+			"    <name>Photoshop</name>\r\n" +
+			"    <children>\r\n" +
+			"      <identifier>4950243</identifier>\r\n" +
+			"      <parentIdentifier>909443</parentIdentifier>\r\n" +
+			"      <name>photoshop.exe</name>\r\n" +
+			"    </children>\r\n" +
+			"  </children>\r\n" +
+			"  <children>\r\n" +
+			"    <identifier>403940</identifier>\r\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
+			"    <name>Reader</name>\r\n" +
+			"    <children>\r\n" +
+			"      <identifier>8493845</identifier>\r\n" +
+			"      <parentIdentifier>403940</parentIdentifier>\r\n" +
+			"      <name>reader.exe</name>\r\n" +
+			"    </children>\r\n" +
+			"  </children>\r\n" +
+			"</element>\r\n";
+
+		final String sessionId = "toPrettyXML";
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String xmlOutput = adobe.toPrettyXML();
 
 		assertEquals(xml, xmlOutput);
 	}

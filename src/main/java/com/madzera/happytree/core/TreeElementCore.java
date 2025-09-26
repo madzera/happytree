@@ -199,7 +199,6 @@ class TreeElementCore<T> implements Element<T> {
 		return this.toXML(Boolean.FALSE);
 	}
 
-
 	@Override
 	public String toPrettyXML() {
 		return this.toXML(Boolean.TRUE);
@@ -419,7 +418,7 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	private String toXML(final boolean isPrettyXml) {
-		final String defaultOutput = "{}";
+		final String defaultOutput = "<element/>";
 
 		try {
 			if (this.wrappedNode == null

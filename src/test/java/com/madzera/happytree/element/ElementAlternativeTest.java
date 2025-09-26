@@ -393,11 +393,11 @@ public class ElementAlternativeTest {
 	/**
 	 * Test for the {@link Element#toJSON()} operation.
 	 * 
-	 * <p>Alternative scenario for this operation when trying to print a JSON
-	 * when the element has a <code>null</code> wrapped node.</p>
+	 * <p>Alternative scenario for this operation when trying to print the JSON
+	 * element when the element has a <code>null</code> wrapped node.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to print a JSON element when the wrapped original object is
+	 * Try to print the JSON element when the wrapped original object is
 	 * <code>null</code>.
 	 * <p><b>Expected:</b></p>
 	 * The JSON representation should be an empty object &quot;{}&quot;.
@@ -414,7 +414,7 @@ public class ElementAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void toJson_nullWrappedNode() throws TreeException {
+	public void toJSON_nullWrappedNode() throws TreeException {
 		final String json = "{}";
 
 		final String sessionId = "toJson_nullWrappedNode";
@@ -435,12 +435,12 @@ public class ElementAlternativeTest {
 	/**
 	 * Test for the {@link Element#toJSON()} operation.
 	 * 
-	 * <p>Alternative scenario for this operation when trying to print a JSON
-	 * when there is a child in the hierarchy that have a <code>null</code>
-	 * wrapped object node.</p>
+	 * <p>Alternative scenario for this operation when trying to print the JSON
+	 * element when there is a child in the hierarchy that have a
+	 * <code>null</code> wrapped object node.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to print a JSON element which exists a child in the hierarchy that
+	 * Try to print the JSON element which exists a child in the hierarchy that
 	 * have a <code>null</code> wrapped object node.
 	 * <p><b>Expected:</b></p>
 	 * The JSON representation should be an empty object &quot;{}&quot;.
@@ -463,7 +463,7 @@ public class ElementAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void toJson_nullWrappedChildNode() throws TreeException {
+	public void toJSON_nullWrappedChildNode() throws TreeException {
 		final String json = "{}";
 
 		final String sessionId = "toJson_nullWrappedChildNode";
@@ -502,11 +502,11 @@ public class ElementAlternativeTest {
 	/**
 	 * Test for the {@link Element#toJSON()} operation.
 	 * 
-	 * <p>Alternative scenario for this operation when trying to print a JSON
+	 * <p>Alternative scenario for this operation when trying to print the JSON
 	 * element after adding and removing a child element.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to print a JSON element after adding and removing a child element.
+	 * Try to print the JSON element after adding and removing a child element.
 	 * <p><b>Expected:</b></p>
 	 * The JSON representation should reflect the current state of the element.
 	 * <p><b>Steps:</b></p>
@@ -544,7 +544,7 @@ public class ElementAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void toJson_addRemoveElement() throws TreeException {
+	public void toJSON_addRemoveElement() throws TreeException {
 		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
 				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
 				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
@@ -559,53 +559,269 @@ public class ElementAlternativeTest {
 				+ "\"children\":[{\"identifier\":8493845,"
 				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
 				+ "\"children\":[]}]}]}";
-	
+
 		final String sessionId = "toJson_addRemoveElement";
 		final long adobeId = 24935L;
 		final long illustratorId = 2378472L;
 		final long illustratorExeId = 2378473L;
 		final long programFilesId = 42345L;
-	
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-	
+
 		Directory illustratorDir = new Directory(illustratorId, programFilesId,
 				"Illustrator");
 		Directory illustratorExeDir = new Directory(illustratorExeId,
 				illustratorId, "Illustrator.exe");
 		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
-	
+
 		transaction.initializeSession(sessionId, directoryTree);
-	
+
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		String jsonOutput = adobe.toJSON();
 		assertEquals(json, jsonOutput);
-		
+
 		Element<Directory> illustrator = manager.createElement(
 				illustratorId, programFilesId, illustratorDir);
 		Element<Directory> illustratorExe = manager.createElement(
 				illustratorExeId, illustratorId, illustratorExeDir);
 		illustrator.addChild(illustratorExe);
-	
+
 		illustrator = manager.persistElement(illustrator);
-	
+
 		adobe.addChild(illustrator);
 		jsonOutput = adobe.toJSON();
 		assertNotEquals(json, jsonOutput);
-	
+
 		adobe = manager.updateElement(adobe);
 		jsonOutput = adobe.toJSON();
 		assertNotEquals(json, jsonOutput);
-	
+
 		adobe.removeChild(illustrator);
 		jsonOutput = adobe.toJSON();
 		assertEquals(json, jsonOutput);
-	
+
 		adobe = manager.updateElement(adobe);
 		jsonOutput = adobe.toJSON();
 		assertEquals(json, jsonOutput);
 	}
 	
+	/**
+	 * Test for the {@link Element#toXML()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print the XML
+	 * when the element has a <code>null</code> wrapped node.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print the XML element when the wrapped original object is
+	 * <code>null</code>.
+	 * <p><b>Expected:</b></p>
+	 * The XML content should be an empty tag <pre>&lt;element/&gt;</pre>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element without a wrapped object;</li>
+	 * 	<li>Convert the element to XML;</li>
+	 * 	<li>Confirm that the XML content is an empty tag.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toXML_nullWrappedNode() throws TreeException {
+		final String xml = "<element/>";
+
+		final String sessionId = "toXML_nullWrappedNode";
+		final long elementId = Integer.MAX_VALUE;
+		Directory nullableDirectory = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		transaction.initializeSession(sessionId, Directory.class);
+		Element<Directory> element = manager.createElement(elementId, null,
+				nullableDirectory);
+
+		String xmlOutput = element.toXML();
+		assertEquals(xml, xmlOutput);
+	}
+
+	/**
+	 * Test for the {@link Element#toXML()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print the XML
+	 * element when there is a child in the hierarchy that have a
+	 * <code>null</code> wrapped object node.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print the XML element which exists a child in the hierarchy that
+	 * have a <code>null</code> wrapped object node.
+	 * <p><b>Expected:</b></p>
+	 * The XML content should be an empty tag <pre>&lt;element/&gt;</pre>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element (Illustrator) and its child (Illustrator.exe) -
+	 * 	with a <code>null</code> object node - to be added inside of (Adobe)
+	 * 	element;</li>
+	 * 	<li>Persist the new element (Illustrator) with its child
+	 * 	(Illustrator.exe) which does not have an object node;</li>
+	 * 	<li>Add the new element (Illustrator) with its child (Illustrator.exe)
+	 * 	to (Adobe) element;</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the XML content is an empty tag.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toXML_nullWrappedChildNode() throws TreeException {
+		final String xml = "<element/>";
+
+		final String sessionId = "toXML_nullWrappedChildNode";
+		final long adobeId = 24935L;
+		final long illustratorId = 2378472L;
+		final long illustratorExeId = 2378473L;
+		final long programFilesId = 42345L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Directory illustratorDir = new Directory(illustratorId, programFilesId,
+				"Illustrator");
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> illustrator = manager.createElement(illustratorId,
+				adobeId, illustratorDir);
+		Element<Directory> illustratorExe = manager.createElement(
+				illustratorExeId, illustratorId, null);
+
+		illustrator.addChild(illustratorExe);
+
+		illustrator = manager.persistElement(illustrator);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		adobe.addChild(illustrator);
+
+		adobe = manager.updateElement(adobe);
+
+		String xmlOutput = adobe.toXML();
+		assertEquals(xml, xmlOutput);
+	}
+	
+	/**
+	 * Test for the {@link Element#toXML()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print the XML
+	 * element after adding and removing a child element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to print the XML element after adding and removing a child element.
+	 * <p><b>Expected:</b></p>
+	 * The XML content should reflect the current state of the element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected XML from the (Adobe) element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()} representing the current state
+	 * 	of this element;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session;</li>
+	 * 	<li>Create a new element (Illustrator) and its child (Illustrator.exe)
+	 * 	to be added inside of (Adobe) element;</li>
+	 * 	<li>Persist the new element (Illustrator) with its child
+	 * 	(Illustrator.exe);</li>
+	 * 	<li>Before adding the new element (Illustrator) to (Adobe) element,
+	 * 	prove that the XML content reflects the current state of (Adobe)
+	 * 	element;</li>
+	 * 	<li>Add the new element (Illustrator) to (Adobe) element;</li>
+	 * 	<li>Before updating the (Adobe) element, confirm that the XML content
+	 * 	doesn’t reflect the current state of the element, proving
+	 * 	that the {@link Element#toXML()} method does not depend on the
+	 * 	element's state.</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the XML content still doesn’t reflect the current state
+	 * 	of the (Adobe) element;</li>
+	 * 	<li>Remove the new element (Illustrator) from (Adobe) element;</li>
+	 * 	<li>Before updating the (Adobe) element, confirm that the XML content
+	 * 	reflects the current state of the element, proving
+	 * 	that the {@link Element#toXML()} method does not depend on the
+	 * 	element's state.</li>
+	 * 	<li>Update the (Adobe) element;</li>
+	 * 	<li>Confirm that the XML content reflects the current state of
+	 * 	the (Adobe) element;</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toXML_addRemoveElement() throws TreeException {
+		final String xml = "<element><identifier>24935</identifier>"
+				+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
+				+ "<children><identifier>502010</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
+				+ "<children><identifier>8935844</identifier>"
+				+ "<parentIdentifier>502010</parentIdentifier>"
+				+ "<name>dreamweaver.exe</name></children></children><children>"
+				+ "<identifier>909443</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
+				+ "<children><identifier>4950243</identifier>"
+				+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
+				+ "</children></children><children><identifier>403940</identifier>"
+				+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
+				+ "<children><identifier>8493845</identifier>"
+				+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
+				+ "</children></children></element>";
+
+		final String sessionId = "toXML_addRemoveElement";
+		final long adobeId = 24935L;
+		final long illustratorId = 2378472L;
+		final long illustratorExeId = 2378473L;
+		final long programFilesId = 42345L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Directory illustratorDir = new Directory(illustratorId, programFilesId,
+				"Illustrator");
+		Directory illustratorExeDir = new Directory(illustratorExeId,
+				illustratorId, "Illustrator.exe");
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		String xmlOutput = adobe.toXML();
+		assertEquals(xml, xmlOutput);
+
+		Element<Directory> illustrator = manager.createElement(
+				illustratorId, programFilesId, illustratorDir);
+		Element<Directory> illustratorExe = manager.createElement(
+				illustratorExeId, illustratorId, illustratorExeDir);
+		illustrator.addChild(illustratorExe);
+
+		illustrator = manager.persistElement(illustrator);
+
+		adobe.addChild(illustrator);
+		xmlOutput = adobe.toXML();
+		assertNotEquals(xml, xmlOutput);
+
+		adobe = manager.updateElement(adobe);
+		xmlOutput = adobe.toXML();
+		assertNotEquals(xml, xmlOutput);
+
+		adobe.removeChild(illustrator);
+		xmlOutput = adobe.toXML();
+		assertEquals(xml, xmlOutput);
+
+		adobe = manager.updateElement(adobe);
+		xmlOutput = adobe.toXML();
+		assertEquals(xml, xmlOutput);
+	}
+
 	/**
 	 * Test for the {@link Object#equals(Object)} local implementation.
 	 * 

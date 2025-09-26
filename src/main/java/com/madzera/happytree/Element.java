@@ -348,7 +348,7 @@ public interface Element<T> {
 	 * object node that is <code>null</code>, then an empty JSON object is
 	 * returned &quot;{}&quot;.</p>
 	 * 
-	 * <p>the JSON representation consists of the attributes of the wrapped
+	 * <p>The JSON representation consists of the attributes of the wrapped
 	 * object node plus an attribute called <b>children</b>, which holds all the
 	 * children of the node and so on recursively:</p>
 	 * 
@@ -413,7 +413,65 @@ public interface Element<T> {
 	 */
 	public String toPrettyJSON();
 
+	/**
+	 * Converts the whole element structure into a XML format. This includes all
+	 * children recursively.
+	 * 
+	 * <p>It is mandatory that the element as well as all its children have not
+	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
+	 * object node that is <code>null</code>, then an empty XML is returned.</p>
+	 * 
+	 * <p>The XML content consists of the attributes of the wrapped object node
+	 * plus a tag called <b>children</b>, which holds all the children of the
+	 * node and so on recursively. The root tag of this XML is always
+	 * <b>element</b>.</p>
+	 * 
+	 * <p>For example, considering an element that wraps an object of type
+	 * <code>Directory</code>, the XML content would look like 
+	 * <b>(pretty print)</b>:</p>
+	 * 
+	 * <pre>
+	 * 	&lt;element&gt;
+	 * 		&lt;identifier&gt;1&lt;/identifier&gt;
+	 * 		&lt;parentIdentifier&gt;&lt;/parentIdentifier&gt;
+	 * 		&lt;name&gt;Music&lt;/name&gt;
+	 * 		&lt;children&gt;
+	 * 			&lt;identifier&gt;2&lt;/identifier&gt;
+	 * 			&lt;parentIdentifier&gt;1&lt;/parentIdentifier&gt;
+	 * 			&lt;name&gt;Country&lt;/name&gt;
+	 * 			&lt;children&gt;
+	 * 				&lt;identifier&gt;3&lt;/identifier&gt;
+	 * 				&lt;parentIdentifier&gt;2&lt;/parentIdentifier&gt;
+	 * 				&lt;name&gt;Bruce Springsteen&lt;/name&gt;
+	 * 				&lt;children/&gt;
+	 * 			&lt;/children&gt;
+	 * 		&lt;/children&gt;
+	 * 	&lt;/element&gt;
+	 * </pre>
+	 * 
+	 * <p>To convert the wrapped object into XML format, this is not necessary
+	 * that the element be attached to any session. However, the element as well
+	 * as all its children need to have their original objects nodes not
+	 * <code>null</code>.</p>
+	 * 
+	 * <p>For conversion, the Jackson library is used internally, so the wrapped
+	 * object can be annotated with Jackson annotations to customize the
+	 * conversion if necessary.</p>
+	 * 
+	 * @return the XML content of this element (minified)
+	 */
 	public String toXML();
 
+	/**
+	 * Converts the whole element structure into a well formatted XML
+	 * <code>String</code>. This includes all children recursively.
+	 * 
+	 * <p>It is mandatory that the element as well as all its children have not
+	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
+	 * object node that is <code>null</code>, then an empty XML is returned.</p>
+	 * 
+	 * @return a well formatted XML of this element (pretty print)
+	 * @see {@link Element#toXML()}
+	 */
 	public String toPrettyXML();
 }
