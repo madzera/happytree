@@ -348,6 +348,12 @@ public interface Element<T> {
 	 * object node that is <code>null</code>, then an empty JSON object is
 	 * returned &quot;{}&quot;.</p>
 	 * 
+	 * <p><b>The above restriction is not applied to the root element</b>, as it
+	 * is a special element created by the HappyTree API itself with no wrapped
+	 * object node. Therefore, calling the {@link TreeManager#root()} or
+	 * {@link TreeSession#tree()} is allowed to print the tree structure into
+	 * JSON format.</p>
+	 * 
 	 * <p>The JSON representation consists of the attributes of the wrapped
 	 * object node plus an attribute called <b>children</b>, which holds all the
 	 * children of the node and so on recursively:</p>
@@ -386,10 +392,10 @@ public interface Element<T> {
 	 * }
 	 * </pre>
 	 * 
-	 * <p>To convert the wrapped object into JSON format, this is not necessary
+	 * <p>To convert the wrapped object into JSON format, it is not necessary
 	 * that the element be attached to any session. However, the element as well
 	 * as all its children need to have their original objects nodes not
-	 * <code>null</code>.</p>
+	 * <code>null</code> (except for the root element).</p>
 	 * 
 	 * <p>For conversion, the Jackson library is used internally, so the wrapped
 	 * object can be annotated with Jackson annotations to customize the
@@ -421,6 +427,12 @@ public interface Element<T> {
 	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
 	 * object node that is <code>null</code>, then an empty XML is returned.</p>
 	 * 
+	 * <p><b>The above restriction is not applied to the root element</b>, as it
+	 * is a special element created by the HappyTree API itself with no wrapped
+	 * object node. Therefore, calling the {@link TreeManager#root()} or
+	 * {@link TreeSession#tree()} is allowed to print the tree structure into
+	 * XML format.</p>
+	 * 
 	 * <p>The XML content consists of the attributes of the wrapped object node
 	 * plus a tag called <b>children</b>, which holds all the children of the
 	 * node and so on recursively. The root tag of this XML is always
@@ -449,10 +461,10 @@ public interface Element<T> {
 	 * 	&lt;/element&gt;
 	 * </pre>
 	 * 
-	 * <p>To convert the wrapped object into XML format, this is not necessary
+	 * <p>To convert the wrapped object into XML format, it is not necessary
 	 * that the element be attached to any session. However, the element as well
 	 * as all its children need to have their original objects nodes not
-	 * <code>null</code>.</p>
+	 * <code>null</code> (except for the root element).</p>
 	 * 
 	 * <p>For conversion, the Jackson library is used internally, so the wrapped
 	 * object can be annotated with Jackson annotations to customize the

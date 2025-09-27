@@ -822,6 +822,23 @@ public class ElementAlternativeTest {
 		assertEquals(xml, xmlOutput);
 	}
 
+	@Test
+	public void toJSON_rootElement() throws TreeException {
+		final String sessionId = "toJSON_rootElement";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+		
+		Element<Directory> root = manager.root();
+		String jsonOutput = root.toJSON();
+		
+		assertNotNull(jsonOutput);
+	}
+
 	/**
 	 * Test for the {@link Object#equals(Object)} local implementation.
 	 * 

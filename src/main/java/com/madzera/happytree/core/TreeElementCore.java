@@ -398,8 +398,8 @@ class TreeElementCore<T> implements Element<T> {
 		final String defaultOutput = "{}";
 
 		try {
-			if (this.wrappedNode == null
-					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
+			if (!this.isRoot() && (this.wrappedNode == null
+					|| Recursion.iterateForNullWrappedNode(this.getChildren()))) {
 				throw TreeFactory.exceptionFactory().createException();
 			}
 			ObjectMapper objectMapper = TreeFactory.jsonFactory().
@@ -421,8 +421,8 @@ class TreeElementCore<T> implements Element<T> {
 		final String defaultOutput = "<element/>";
 
 		try {
-			if (this.wrappedNode == null
-					|| Recursion.iterateForNullWrappedNode(this.getChildren())) {
+			if (!this.isRoot() && (this.wrappedNode == null
+					|| Recursion.iterateForNullWrappedNode(this.getChildren()))) {
 				throw TreeFactory.exceptionFactory().createException();
 			}
 			XmlMapper xmlMapper = TreeFactory.xmlFactory().createXmlMapper();

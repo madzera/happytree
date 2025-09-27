@@ -704,41 +704,41 @@ public class ElementTest {
 	 */
 	@Test
 	public void toPrettyJSON() throws TreeException {
-		final String json = "{\r\n" + //
-				"  \"identifier\" : 24935,\r\n" + //
-				"  \"parentIdentifier\" : 42345,\r\n" + //
-				"  \"name\" : \"Adobe\",\r\n" + //
-				"  \"children\" : [ {\r\n" + //
-				"    \"identifier\" : 502010,\r\n" + //
-				"    \"parentIdentifier\" : 24935,\r\n" + //
-				"    \"name\" : \"Dremweaver\",\r\n" + //
-				"    \"children\" : [ {\r\n" + //
-				"      \"identifier\" : 8935844,\r\n" + //
-				"      \"parentIdentifier\" : 502010,\r\n" + //
-				"      \"name\" : \"dreamweaver.exe\",\r\n" + //
-				"      \"children\" : [ ]\r\n" + //
-				"    } ]\r\n" + //
-				"  }, {\r\n" + //
-				"    \"identifier\" : 909443,\r\n" + //
-				"    \"parentIdentifier\" : 24935,\r\n" + //
-				"    \"name\" : \"Photoshop\",\r\n" + //
-				"    \"children\" : [ {\r\n" + //
-				"      \"identifier\" : 4950243,\r\n" + //
-				"      \"parentIdentifier\" : 909443,\r\n" + //
-				"      \"name\" : \"photoshop.exe\",\r\n" + //
-				"      \"children\" : [ ]\r\n" + //
-				"    } ]\r\n" + //
-				"  }, {\r\n" + //
-				"    \"identifier\" : 403940,\r\n" + //
-				"    \"parentIdentifier\" : 24935,\r\n" + //
-				"    \"name\" : \"Reader\",\r\n" + //
-				"    \"children\" : [ {\r\n" + //
-				"      \"identifier\" : 8493845,\r\n" + //
-				"      \"parentIdentifier\" : 403940,\r\n" + //
-				"      \"name\" : \"reader.exe\",\r\n" + //
-				"      \"children\" : [ ]\r\n" + //
-				"    } ]\r\n" + //
-				"  } ]\r\n" + //
+		final String json = "{\n" + //
+				"  \"identifier\" : 24935,\n" + //
+				"  \"parentIdentifier\" : 42345,\n" + //
+				"  \"name\" : \"Adobe\",\n" + //
+				"  \"children\" : [ {\n" + //
+				"    \"identifier\" : 502010,\n" + //
+				"    \"parentIdentifier\" : 24935,\n" + //
+				"    \"name\" : \"Dremweaver\",\n" + //
+				"    \"children\" : [ {\n" + //
+				"      \"identifier\" : 8935844,\n" + //
+				"      \"parentIdentifier\" : 502010,\n" + //
+				"      \"name\" : \"dreamweaver.exe\",\n" + //
+				"      \"children\" : [ ]\n" + //
+				"    } ]\n" + //
+				"  }, {\n" + //
+				"    \"identifier\" : 909443,\n" + //
+				"    \"parentIdentifier\" : 24935,\n" + //
+				"    \"name\" : \"Photoshop\",\n" + //
+				"    \"children\" : [ {\n" + //
+				"      \"identifier\" : 4950243,\n" + //
+				"      \"parentIdentifier\" : 909443,\n" + //
+				"      \"name\" : \"photoshop.exe\",\n" + //
+				"      \"children\" : [ ]\n" + //
+				"    } ]\n" + //
+				"  }, {\n" + //
+				"    \"identifier\" : 403940,\n" + //
+				"    \"parentIdentifier\" : 24935,\n" + //
+				"    \"name\" : \"Reader\",\n" + //
+				"    \"children\" : [ {\n" + //
+				"      \"identifier\" : 8493845,\n" + //
+				"      \"parentIdentifier\" : 403940,\n" + //
+				"      \"name\" : \"reader.exe\",\n" + //
+				"      \"children\" : [ ]\n" + //
+				"    } ]\n" + //
+				"  } ]\n" + //
 				"}";
 
 		final String sessionId = "toPrettyJSON";
@@ -783,21 +783,21 @@ public class ElementTest {
 	@Test
 	public void toXML() throws TreeException {
 		final String xml = "<element><identifier>24935</identifier>"
-				+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
-				+ "<children><identifier>502010</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
-				+ "<children><identifier>8935844</identifier>"
-				+ "<parentIdentifier>502010</parentIdentifier>"
-				+ "<name>dreamweaver.exe</name></children></children><children>"
-				+ "<identifier>909443</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
-				+ "<children><identifier>4950243</identifier>"
-				+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
-				+ "</children></children><children><identifier>403940</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
-				+ "<children><identifier>8493845</identifier>"
-				+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
-				+ "</children></children></element>";
+		+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
+		+ "<children><identifier>502010</identifier>"
+		+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
+		+ "<children><identifier>8935844</identifier>"
+		+ "<parentIdentifier>502010</parentIdentifier>"
+		+ "<name>dreamweaver.exe</name></children></children><children>"
+		+ "<identifier>909443</identifier>"
+		+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
+		+ "<children><identifier>4950243</identifier>"
+		+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
+		+ "</children></children><children><identifier>403940</identifier>"
+		+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
+		+ "<children><identifier>8493845</identifier>"
+		+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
+		+ "</children></children></element>";
 
 		final String sessionId = "toXML";
 		final long adobeId = 24935L;
@@ -840,41 +840,41 @@ public class ElementTest {
 	 */
 	@Test
 	public void toPrettyXML() throws TreeException {
-		final String xml = "<element>\r\n" +
-			"  <identifier>24935</identifier>\r\n" +
-			"  <parentIdentifier>42345</parentIdentifier>\r\n" +
-			"  <name>Adobe</name>\r\n" +
-			"  <children>\r\n" +
-			"    <identifier>502010</identifier>\r\n" +
-			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
-			"    <name>Dremweaver</name>\r\n" +
-			"    <children>\r\n" +
-			"      <identifier>8935844</identifier>\r\n" +
-			"      <parentIdentifier>502010</parentIdentifier>\r\n" +
-			"      <name>dreamweaver.exe</name>\r\n" +
-			"    </children>\r\n" +
-			"  </children>\r\n" +
-			"  <children>\r\n" +
-			"    <identifier>909443</identifier>\r\n" +
-			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
-			"    <name>Photoshop</name>\r\n" +
-			"    <children>\r\n" +
-			"      <identifier>4950243</identifier>\r\n" +
-			"      <parentIdentifier>909443</parentIdentifier>\r\n" +
-			"      <name>photoshop.exe</name>\r\n" +
-			"    </children>\r\n" +
-			"  </children>\r\n" +
-			"  <children>\r\n" +
-			"    <identifier>403940</identifier>\r\n" +
-			"    <parentIdentifier>24935</parentIdentifier>\r\n" +
-			"    <name>Reader</name>\r\n" +
-			"    <children>\r\n" +
-			"      <identifier>8493845</identifier>\r\n" +
-			"      <parentIdentifier>403940</parentIdentifier>\r\n" +
-			"      <name>reader.exe</name>\r\n" +
-			"    </children>\r\n" +
-			"  </children>\r\n" +
-			"</element>\r\n";
+		final String xml = "<element>\n" +
+			"  <identifier>24935</identifier>\n" +
+			"  <parentIdentifier>42345</parentIdentifier>\n" +
+			"  <name>Adobe</name>\n" +
+			"  <children>\n" +
+			"    <identifier>502010</identifier>\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\n" +
+			"    <name>Dremweaver</name>\n" +
+			"    <children>\n" +
+			"      <identifier>8935844</identifier>\n" +
+			"      <parentIdentifier>502010</parentIdentifier>\n" +
+			"      <name>dreamweaver.exe</name>\n" +
+			"    </children>\n" +
+			"  </children>\n" +
+			"  <children>\n" +
+			"    <identifier>909443</identifier>\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\n" +
+			"    <name>Photoshop</name>\n" +
+			"    <children>\n" +
+			"      <identifier>4950243</identifier>\n" +
+			"      <parentIdentifier>909443</parentIdentifier>\n" +
+			"      <name>photoshop.exe</name>\n" +
+			"    </children>\n" +
+			"  </children>\n" +
+			"  <children>\n" +
+			"    <identifier>403940</identifier>\n" +
+			"    <parentIdentifier>24935</parentIdentifier>\n" +
+			"    <name>Reader</name>\n" +
+			"    <children>\n" +
+			"      <identifier>8493845</identifier>\n" +
+			"      <parentIdentifier>403940</parentIdentifier>\n" +
+			"      <name>reader.exe</name>\n" +
+			"    </children>\n" +
+			"  </children>\n" +
+			"</element>\n";
 
 		final String sessionId = "toPrettyXML";
 		final long adobeId = 24935L;
