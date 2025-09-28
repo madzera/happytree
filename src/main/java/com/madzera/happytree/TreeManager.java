@@ -771,13 +771,16 @@ public interface TreeManager {
 	/**
 	 * Returns the root of the tree in this current session.
 	 * 
+	 * <p>The root structure also is an object of {@link Element} type which
+	 * represents the top of the tree and encompasses all other elements.</p>
+	 * 
 	 * <p>The root element contains a collection of children, which in turn
 	 * contains a collection of children, and so on. All this structure is
 	 * returned in this method.</p>
 	 * 
 	 * <p>The root element represents the top of the tree and its id is always
 	 * defined with the respective session identifier name. Because that, every
-	 * node object with <code>null {@literal @Parent}</code> or an unknown
+	 * node object with <code>null</code> <code>@Parent</code> or an unknown
 	 * {@literal @Parent} will be attached to the tree become immediately child
 	 * of root (in the <b>API Transformation Process</b>). After that, its
 	 * {@literal Parent} attribute will have the same id of the session
