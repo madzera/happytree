@@ -49,9 +49,8 @@ public class TreeManagerAlternativeTest {
 	 * Try to get an element with a <code>null</code> argument id and with a not
 	 * existing id.
 	 * <p><b>Expected:</b></p>
-	 * A <code>null</code> element passing through a <code>null</code> id and
-	 * other <code>null</code> element passing through a not existing id in the
-	 * previous assembled tree.
+	 * A <code>null</code> element for both situations, with a not existing id
+	 * and with a <code>null</code> id.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -59,7 +58,7 @@ public class TreeManagerAlternativeTest {
 	 * 	previous assembled tree;</li>
 	 * 	<li>Try to get an element with the <code>null</code> argument id;</li>
 	 * 	<li>Verify that this element is <code>null</code>;</li>
-	 * 	<li>Try to get an element with an ID that does not exist in the tree;
+	 * 	<li>Try to get an element with an id that does not exist in the tree;
 	 * 	</li>
 	 * 	<li>Now, verify that this element is <code>null</code> too.</li>
 	 * </ol>
@@ -91,30 +90,31 @@ public class TreeManagerAlternativeTest {
 	 * Test for the {@link TreeManager#cut(Element, Element)}.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to cut an element
-	 * inside of the root level of the tree.</p>
+	 * for inside of the root level of the tree.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Try to cut an element inside of the root element.
+	 * Try to cut an element for inside of the root element.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to be cut be moved to the root level of
-	 * the tree.
+	 * the own tree.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	<li>Initialize a new session by the API Transformation Process using a
 	 * 	previous assembled tree;</li>
 	 * 	<li>Get the source (&quot;photoshop&quot;) existed element, its parent
 	 * 	(&quot;adobe&quot;) and the root element;</li>
 	 * 	<li>Verify that the &quot;adobe&quot; element really contains the
 	 * 	&quot;photoshop&quot; element;</li>
-	 * 	<li>Try to cut the &quot;photoshop&quot; inside of the root;</li>
-	 * 	<li>Verify that the element now has as parent id value, the same id than
-	 * 	session id (representing the root level);</li>
-	 * 	<li>Verify now that the &quot;adobe&quot; element does not contains the
-	 * 	&quot;photoshop&quot; element anymore (because it is in the root).</li>
+	 * 	<li>Try to cut the &quot;photoshop&quot; for inside of the root level;
+	 * 	</li>
+	 * 	<li>Verify if the element now is in the root level;</li>
+	 * 	<li>Verify now that the &quot;adobe&quot; element does not contain the
+	 * 	&quot;photoshop&quot; element anymore (because it is in the root now).
+	 * 	</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -137,10 +137,17 @@ public class TreeManagerAlternativeTest {
 
 		assertTrue(manager.containsElement(adobe, photoshop));
 
-		Element<Directory> photoshopCut = manager.cut(photoshop, root);
+		manager.cut(photoshop, root);
 
+		root = manager.root();
+		boolean wasMoved = root.getChildren()
+				.stream()
+				.filter(e -> photoshopId == (long) e.getId())
+				.findFirst()
+				.isPresent();
+				
+		assertTrue(wasMoved);
 		assertFalse(manager.containsElement(adobe, photoshop));
-		assertEquals(sessionId, photoshopCut.getParent());
 		assertTrue(manager.containsElement(root, photoshop));
 	}
 
@@ -157,18 +164,17 @@ public class TreeManagerAlternativeTest {
 	 * Try to cut an element for inside of a not existing target element.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to be cut be moved to the root level of
-	 * the tree.
+	 * the own tree.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	<li>Initialize a new session by the API Transformation Process using a
 	 * 	previous assembled tree;</li>
-	 * 	<li>Get the source (<code>from</code>) existed element;</li>
-	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	<li>Get the source (sdk_dev) element;</li>
+	 * 	<li>Verify that the source parent element is named &quot;Devel&quot;;
 	 * 	</li>
 	 * 	<li>Try to cut this element for inside of a not existed element;</li>
-	 * 	<li>Verify that the source parent element id is now with the same id
-	 * 	value of the session id, representing the root id;</li>
+	 * 	<li>Verify if the element now is in the root level;</li>
 	 * 	<li>Verify if the source child element was moved too by invoking
 	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
 	 * </ol>
@@ -205,7 +211,16 @@ public class TreeManagerAlternativeTest {
 
 		Element<Directory> root = manager.root();
 
-		assertEquals(sessionId, cutElement.getParent());
+		/*
+		 * Verify that the element was cut to the root level.
+		 */
+		boolean wasMoved = root.getChildren()
+				.stream()
+				.filter(e -> sdkDevId == (long) e.getId())
+				.findFirst()
+				.isPresent();
+		
+		assertTrue(wasMoved);
 		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
@@ -225,18 +240,17 @@ public class TreeManagerAlternativeTest {
 	 * element.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to be cut be moved to the root level of
-	 * the tree.
+	 * the own tree.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process using a
 	 * 	previous assembled tree;</li>
-	 * 	<li>Get the source (<code>from</code>) existed element;</li>
-	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	<li>Get the source (sdk_dev) existed element;</li>
+	 * 	<li>Verify that the source parent element is named &quot;Devel&quot;;
 	 * 	</li>
 	 * 	<li>Try to cut this element for inside of a not existed element;</li>
-	 * 	<li>Verify that the source parent element id is now with the same id
-	 * 	value of the session id, representing the root id;</li>
+	 * 	<li>Verify if the element now is in the root level;</li>
 	 * 	<li>Verify if the source child element was moved too by invoking
 	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
 	 * </ol>
@@ -266,14 +280,20 @@ public class TreeManagerAlternativeTest {
 		Directory devel = sdkDevParentElement.unwrap();
 		assertEquals(sdkDevParentName, devel.getName());
 
-		/*
-		 * Verify that the element was cut to the root level.
-		 */
 		Element<Directory> cutElement = manager.cut(sdkDevId, notExistingToId);
 
 		Element<Directory> root = manager.root();
 
-		assertEquals(sessionId, cutElement.getParent());
+		/*
+		 * Verify that the element was cut to the root level.
+		 */
+		boolean wasMoved = root.getChildren()
+				.stream()
+				.filter(e -> sdkDevId == (long) e.getId())
+				.findFirst()
+				.isPresent();
+		
+		assertTrue(wasMoved);
 		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
@@ -293,19 +313,18 @@ public class TreeManagerAlternativeTest {
 	 * target element.
 	 * <p><b>Expected:</b></p>
 	 * It is expected that the element to be cut be moved to the root level of
-	 * the tree.
+	 * the own tree.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a new session by API Transformation Process using a
 	 * 	previous assembled tree;</li>
 	 * 	<li>Get the source (<code>from</code>) existed element;</li>
-	 * 	<li>Verify that the source parent element is named by &quot;Devel&quot;;
+	 * 	<li>Verify that the source parent element is named &quot;Devel&quot;;
 	 * 	</li>
 	 * 	<li>Try to cut this element for inside of a <code>null</code> element;
 	 * 	</li>
-	 * 	<li>Verify that the source parent element id is now with the same id
-	 * 	value of the session id, representing the root element id;</li>
+	 * 	<li>Verify if the element now is in the root level;</li>
 	 * 	<li>Verify if the source child element was moved too by invoking
 	 * 	{@link TreeManager#containsElement(Object, Object)}.</li>
 	 * </ol>
@@ -338,11 +357,18 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> cutElement = manager.cut(sdkDevId,
 				cut_nullToObjectId);
 
+		Element<Directory> root = manager.root();
+		
 		/*
 		 * Verify that the element was cut to the root level.
 		 */
-		Element<Directory> root = manager.root();
-		assertEquals(sessionId, cutElement.getParent());
+		boolean wasMoved = root.getChildren()
+				.stream()
+				.filter(e -> sdkDevId == (long) e.getId())
+				.findFirst()
+				.isPresent();
+		
+		assertTrue(wasMoved);
 		assertTrue(manager.containsElement(root, cutElement));
 		assertEquals(sdkDevName, cutElement.unwrap().getName());
 		assertTrue(manager.containsElement(sdkDevId, sdkDevChildId));
@@ -483,19 +509,19 @@ public class TreeManagerAlternativeTest {
 		manager.cut(devel, targetRootTree);
 
 		/*
-		 * Devel does not exists in the source tree anymore.
+		 * Devel does not exist in the source tree anymore.
 		 */
 		devel = manager.getElementById(develId);
 		assertNull(devel);
 
 		/*
-		 * Devel now is in target tree.
+		 * Devel now is in the target tree.
 		 */
 		transaction.sessionCheckout(targetSessionId);
 		devel = manager.getElementById(develId);
 		assertNotNull(devel);
 		assertEquals(develName, devel.unwrap().getName());
-		assertEquals(targetSessionId, devel.getParent());
+		assertEquals(targetSessionId, devel.attachedTo().getSessionId());
 		assertTrue(manager.containsElement(targetRootTree, devel));
 		assertTrue(devel.getChildren().size() > 0);
 	}
@@ -559,7 +585,7 @@ public class TreeManagerAlternativeTest {
 
 		transaction.sessionCheckout(targetSessionId);
 		Element<Directory> copiedDevel = manager.getElementById(develId);
-		assertEquals(targetSessionId, copiedDevel.getParent());
+		assertEquals(targetSessionId, copiedDevel.attachedTo().getSessionId());
 		assertEquals(develName, copiedDevel.unwrap().getName());
 		assertTrue(manager.containsElement(targetRootTree, copiedDevel));
 		assertTrue(copiedDevel.getChildren().size() > 0);
@@ -1020,14 +1046,14 @@ public class TreeManagerAlternativeTest {
 	 * 
 	 * <p>Alternative scenario for this operation when trying to check if the
 	 * tree session has two elements declared by id when they are non-existent
-	 * and <code>null</code>.</p>
+	 * and <code>null</code> respectively.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to verify whether the tree session has two declared elements by id
-	 * when they are non-existent and <code>null</code>.
+	 * when they are non-existent and <code>null</code> respectively.
 	 * <p><b>Expected:</b></p>
 	 * Receive the <code>false</code> value.
 	 * <p><b>Steps:</b></p>

@@ -10,7 +10,7 @@ import com.madzera.happytree.TreeManager;
 
 /**
  * Declarative annotation to indicate that the object of a class represents a
- * linear node object with a tree behavior that will be transformed by
+ * linear object node with a tree behavior that will be transformed by
  * HappyTree API (<b><i>API Transformation Process</i></b>).
  * 
  * <p>The HappyTree API is able to transform a data structure that represents,

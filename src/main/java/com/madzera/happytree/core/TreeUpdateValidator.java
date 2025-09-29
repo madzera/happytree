@@ -47,6 +47,12 @@ class TreeUpdateValidator extends TreeElementValidator {
 		
 		Collection<Element<Object>> targetPlainTree = Recursion.toPlainList(
 				root);
+		
+		/*
+		 * Disconsider root element.
+		 */
+		targetPlainTree.removeIf(e -> ((TreeElementCore<Object>) e).isRoot());
+
 		for (Element<Object> rootElement : targetPlainTree) {
 			TreeElementCore<Object> rootChild = (TreeElementCore<Object>)
 					rootElement;

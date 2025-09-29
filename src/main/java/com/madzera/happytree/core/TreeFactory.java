@@ -154,6 +154,10 @@ class TreeFactory {
 				T wrappedNode, TreeSession session) {
 			return new TreeElementCore<>(id, parent, wrappedNode, session);
 		}
+
+		<T> TreeElementCore<T> createElement(TreeSession session) {
+			return new TreeElementCore<>(null, null, null, session);
+		}
 	}
 
 	class CollectionFactory extends TreeFactory {

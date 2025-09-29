@@ -31,22 +31,33 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateCutOperation(from, to);
 
 		/*
-		 * Obtains both of sessions: source and target sessions.
+		 * Get both of sessions: source and target sessions.
 		 */
 		TreeSessionCore sourceSession = (TreeSessionCore) from.attachedTo();
 		TreeSessionCore targetSession = to != null ?
 				(TreeSessionCore) to.attachedTo() : null;
 		
 		/*
-		 * Obtains the source element.
+		 * Get the source element.
 		 */
 		TreeElementCore<T> source = this.searchElement(from.getId());
 		
 		/*
-		 * Retires the element from the source parent.
+		 * Remove the element from the source parent.
 		 */
 		TreeElementCore<T> sourceParent = this.searchElement(source.getParent());
-		sourceParent.removeChild(source);
+
+		/*
+		 * If the sourceParent is null, it means that the source element is
+		 * placed in the root level. In this case, remove it from the root
+		 * element. Otherwise, remove it from its parent element.
+		 */
+		if (sourceParent == null) {
+			Element<T> root = this.tree();
+			root.removeChild(source);
+		} else {
+			sourceParent.removeChild(source);
+		}
 		
 		/*
 		 * If the source and target are from different tree session, then swap
@@ -73,7 +84,7 @@ class TreeManagerCore implements TreeManager {
 					this.searchElement(to.getId()) : null;
 			
 			target = target == null ? (TreeElementCore<T>)
-					this.searchElement(sourceSession.getSessionId()) : target;
+					this.tree() : target;
 			
 			target.addChild(source);
 			
@@ -193,14 +204,22 @@ class TreeManagerCore implements TreeManager {
 		validatorFacade.validateSessionTransaction();
 		
 		Element<T> element = this.searchElement(id);
+		element = element != null && !((TreeElementCore<T>) element).isRoot() ? 
+				element : null;
 		return this.removeElement(element);
 	}
 
 	@Override
 	public <T> Element<T> getElementById(Object id) throws TreeException {
+		TreeElementCore<T> element = null;
+		
 		validatorFacade.validateSessionTransaction();
 		
-		TreeElementCore<T> element = this.searchElement(id);
+		if (id == null) {
+			return element;
+		}
+
+		element = this.searchElement(id);
 		return element != null ? element.cloneElement() : element;
 	}
 
@@ -308,6 +327,10 @@ class TreeManagerCore implements TreeManager {
 		 */
 		validatorFacade.validateSessionTransaction();
 		
+		if (id == null) {
+			return Boolean.FALSE;
+		}
+
 		return this.searchElement(id) != null;
 	}
 
@@ -383,8 +406,7 @@ class TreeManagerCore implements TreeManager {
 		/*
 		 * There is a possibility of the element to be moved to the root level
 		 */
-		TreeElementCore<T> root = this.searchElement(transaction.
-				currentSession().getSessionId());
+		TreeElementCore<T> root = (TreeElementCore<T>) this.tree();
 		
 		/*
 		 * If there is a change to the parent of this element, then remove this

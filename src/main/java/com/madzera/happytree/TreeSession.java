@@ -77,7 +77,7 @@ public interface TreeSession {
 	public String getSessionId();
 	
 	/**
-	 * Verifies that the session is active.
+	 * Verifies if the session is active.
 	 * 
 	 * <p>Here, the method consider just two of session states:</p>
 	 * <ul>
@@ -94,21 +94,21 @@ public interface TreeSession {
 	public boolean isActive();
 	
 	/**
-	 * Returns the full tree session, represented by the <b>root</b> element.
+	 * Returns the whole tree session structure, represented by the <b>root</b>
+	 * element.
 	 * 
-	 * <p>Whole the tree is returned since from the most high level on the
-	 * hierarchy, <i>a.k.a</i> root level. The root element is created
-	 * automatically by the core API, at the session initialization moment. The
-	 * root element identifier exactly matches the identifier of the initialized
-	 * session.</p>
+	 * <p>This method works similarly to the {@link TreeManager#root()} method,
+	 * returning the root element of the tree.</p>
 	 * 
-	 * <p>All new elements created will remain below the root element. So, this
-	 * method returns this root element, of which there will be children and
-	 * more children who will be able to contain other children within, and in a
-	 * hierarchical way.</p>
+	 * <p>The root element is a special element that cannot be handled and has
+	 * no <code>@Id</code>, <code>@Parent</code> and wrapped object node.
+	 * It is created by the core API when the session is initialized, that is,
+	 * when invoking the {@link TreeTransaction#initializeSession(String, Class)}
+	 * or {@link TreeTransaction#initializeSession(String, Collection)} methods.
+	 * </p>
 	 * 
-	 * @param <T> the class type of the wrapped node that will be encapsulated
-	 * into the {@link Element} object
+	 * @param <T> the class type of the wrapped object node that will be
+	 * encapsulated into the {@link Element} object
 	 * 
 	 * @return the root of the tree
 	 * 

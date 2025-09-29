@@ -365,7 +365,7 @@ public class ElementAlternativeTest {
 	 * 	<li>Initialize a new session;</li>
 	 * 	<li>Create an element;</li>
 	 * 	<li>Wrap the <code>null</code> object inside of the element;</li>
-	 * 	<li>Unwrap the node object from the element;</li>
+	 * 	<li>Unwrap the object node from the element;</li>
 	 * 	<li>Verify if the object is <code>null</code>.</li>
 	 * </ol>
 	 * 

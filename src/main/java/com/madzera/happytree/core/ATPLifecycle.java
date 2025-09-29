@@ -80,18 +80,18 @@ class ATPLifecycle<T> {
 		TreeSessionCore session = (TreeSessionCore) transaction.currentSession();
 		
 		/*
-		 * Each root element has the Id value corresponding the session Id. This
-		 * is useful to identify the root element.
+		 * The root element has no <code>@Id</code>, <code>@Parent</code> and
+		 * wrapped object node.
 		 */
-		TreeElementCore<T> root = (TreeElementCore<T>) manager.createElement(
-				session.getSessionId(), null, null);
+		TreeElementCore<T> root = (TreeElementCore<T>) TreeFactory.
+				serviceFactory().createElement(session);
 		
 		/*
 		 * Change the parent id of immediate root children (first level).
 		 */
-		for (TreeElementCore<T> child : tree) {
-			child.setParent(session.getSessionId());
-		}
+		// for (TreeElementCore<T> child : tree) {
+		// 	child.setParent(session.getSessionId());
+		// }
 		
 		/*
 		 * Root configuration.

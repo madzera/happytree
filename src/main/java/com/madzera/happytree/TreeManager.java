@@ -303,7 +303,7 @@ public interface TreeManager {
 	 * 
 	 * <p>The element to be removed must be attached (<i>ATTACHED</i> state) in
 	 * the tree and cannot get changes. All children will be removed too, if
-	 * they are with the <i>ATTACHED</i> state in life cycle. If there is at
+	 * they are with the <i>ATTACHED</i> state in lifecycle. If there is at
 	 * least a single child element that is not <i>ATTACHED</i>, then no one
 	 * will be removed and this method will return <code>null</code>.</p>
 	 * 
@@ -359,7 +359,7 @@ public interface TreeManager {
 	 * element are removed too and returns the own removed element. Realize that
 	 * removing an element means that this element will be permanently
 	 * eliminated from inside of the tree, having its state as
-	 * <i>NOT_EXISTED</i> in life cycle.
+	 * <i>NOT_EXISTED</i> in lifecycle.
 	 * 
 	 * <p>If the id is not to be able to be found or <code>null</code>, then
 	 * this method will return <code>null</code>.</p>
@@ -530,7 +530,7 @@ public interface TreeManager {
 	
 	/**
 	 * Creates an element with the <code>id</code>, <code>parent</code> and the
-	 * wrapped node object. Only the <code>id</code> is mandatory. When the
+	 * wrapped object node. Only the <code>id</code> is mandatory. When the
 	 * <code>parent</code> is null, then this element will be moved to the root
 	 * level of the tree, when persisted.
 	 * 
@@ -774,27 +774,37 @@ public interface TreeManager {
 	 * <p>The root structure also is an object of {@link Element} type which
 	 * represents the top of the tree and encompasses all other elements.</p>
 	 * 
-	 * <p>The root element contains a collection of children, which in turn
-	 * contains a collection of children, and so on. All this structure is
-	 * returned in this method.</p>
+	 * <p>It contains a collection of children, which in turn contains a
+	 * collection of children, and so on recursively. All this structure is
+	 * returned in this method as {@link Element} type.</p>
 	 * 
-	 * <p>The root element represents the top of the tree and its id is always
-	 * defined with the respective session identifier name. Because that, every
-	 * node object with <code>null</code> <code>@Parent</code> or an unknown
-	 * {@literal @Parent} will be attached to the tree become immediately child
-	 * of root (in the <b>API Transformation Process</b>). After that, its
-	 * {@literal Parent} attribute will have the same id of the session
-	 * identifier name.</p>
+	 * <p>The root element is like a &quot;special&quot; element created
+	 * exclusively by the core API. All elements that the API client handles are
+	 * under the root element. <b>Thus it is not possible to create a root
+	 * element</b>. Because of that, every object node with a <code>null</code>
+	 * <code>@Parent</code> or an unknown (not found) <code>@Parent</code> will
+	 * be attached directly as an immediate root child.</p>
 	 * 
-	 * <p>Operations to copy, cut, remove or update cannot be applied to roots
-	 * elements. An exception will be threw and the execution aborted.</p>
+	 * <p>Different from regular elements, the root element has no metadata
+	 * associated with it, such as <code>@Id</code>, <code>@Parent</code> and
+	 * wrapped object node. Therefore, calling the {@link Element#getId()},
+	 * {@link Element#getParent()} or {@link Element#unwrap()} methods on the
+	 * root element will always return <code>null</code>.</p>
 	 * 
+	 * <p>For being a special element, write operations like copy, cut, remove
+	 * or update cannot be applied to the root element, otherwise an exception
+	 * will be thrown and the execution aborted.</p>
+	 * 
+	 * <p>Below, an example of a tree structure with its root element and
+	 * children:</p>
 	 * 	<pre>
+	 * 
 	 *                          ELEMENT(ROOT)
 	 *                               /\
 	 *                     ELEMENT(A)  ELEMENT(B)
 	 *                         /\         /\
 	 *                    E(A1) E(A2) E(B1) E(B2)
+	 * 
 	 * 	</pre>
 	 * 
 	 * The creation of the root element is responsibility of the core API. It
@@ -802,8 +812,8 @@ public interface TreeManager {
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
 	 * or {@link TreeTransaction#initializeSession(String, Class)} is invoked.
 	 * 
-	 * @param <T> the class type of the wrapped node that will be encapsulated
-	 * into the {@link Element} object
+	 * @param <T> the class type of the wrapped object node that will be
+	 * encapsulated into the {@link Element} object
 	 * 
 	 * @return the root element
 	 * 
