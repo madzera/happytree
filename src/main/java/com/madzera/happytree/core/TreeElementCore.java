@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -29,6 +30,7 @@ class TreeElementCore<T> implements Element<T> {
 	@JsonUnwrapped
 	private T wrappedNode;
 	@JacksonXmlElementWrapper(useWrapping = false)
+	@JsonInclude(JsonInclude.Include.ALWAYS)
 	private Collection<Element<T>> children;
 	private TreeSession session;
 	

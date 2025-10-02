@@ -822,9 +822,115 @@ public class ElementAlternativeTest {
 		assertEquals(xml, xmlOutput);
 	}
 
+	/**
+	 * Test for the {@link Element#toJSON()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print the JSON
+	 * element from the root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Print the JSON element from the root element.
+	 * <p><b>Expected:</b></p>
+	 * A JSON string representing the root element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected JSON from the root element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the root element through the
+	 * 	{@link TreeManager#root()};</li>
+	 * 	<li>Convert this element into JSON format by invoking
+	 * 	{@link Element#toJSON()};</li>
+	 * 	<li>Compare the resulting JSON string with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
 	public void toJSON_rootElement() throws TreeException {
 		final String sessionId = "toJSON_rootElement";
+
+		final String json = "{\"children\":[{\"identifier\":38923," +
+				"\"parentIdentifier\":0,\"name\":\"Users\",\"children\":[" +
+				"{\"identifier\":47592,\"parentIdentifier\":38923," +
+				"\"name\":\"administrator\",\"children\":[]}," +
+				"{\"identifier\":48224,\"parentIdentifier\":38923," +
+				"\"name\":\"foo\",\"children\":[{\"identifier\":583950," +
+				"\"parentIdentifier\":48224,\"name\":\"tmp\"," +
+				"\"children\":[]}]}]},{\"identifier\":93832," +
+				"\"parentIdentifier\":0,\"name\":\"Devel\",\"children\":[" +
+				"{\"identifier\":45930,\"parentIdentifier\":93832," +
+				"\"name\":\"database\",\"children\":[]}," +
+				"{\"identifier\":84709,\"parentIdentifier\":93832," +
+				"\"name\":\"sdk_dev\",\"children\":[{\"identifier\":983533," +
+				"\"parentIdentifier\":84709,\"name\":\"jdk1.6\"," +
+				"\"children\":[]}]},{\"identifier\":13823," +
+				"\"parentIdentifier\":93832,\"name\":\"ide\",\"children\":[" +
+				"{\"identifier\":583852,\"parentIdentifier\":13823," +
+				"\"name\":\"eclipse\",\"children\":[{\"identifier\":8483742," +
+				"\"parentIdentifier\":583852,\"name\":\"eclipse.exe\"," +
+				"\"children\":[]}]},{\"identifier\":482043," +
+				"\"parentIdentifier\":13823,\"name\":\"netbeans\"," +
+				"\"children\":[{\"identifier\":4859304," +
+				"\"parentIdentifier\":482043,\"name\":\"netbeans.exe\"," +
+				"\"children\":[]}]}]},{\"identifier\":93209," +
+				"\"parentIdentifier\":93832,\"name\":\"projects\"," +
+				"\"children\":[{\"identifier\":859452," +
+				"\"parentIdentifier\":93209,\"name\":\"happytree\"," +
+				"\"children\":[]}]}]},{\"identifier\":42345," +
+				"\"parentIdentifier\":0,\"name\":\"Program Files\"," +
+				"\"children\":[{\"identifier\":53024," +
+				"\"parentIdentifier\":42345,\"name\":\"Office\"," +
+				"\"children\":[{\"identifier\":674098," +
+				"\"parentIdentifier\":53024,\"name\":\"Word\"," +
+				"\"children\":[{\"identifier\":4611329," +
+				"\"parentIdentifier\":674098,\"name\":\"word.exe\"," +
+				"\"children\":[]}]},{\"identifier\":843566," +
+				"\"parentIdentifier\":53024,\"name\":\"Excel\"," +
+				"\"children\":[{\"identifier\":3964602," +
+				"\"parentIdentifier\":843566,\"name\":\"excel.exe\"," +
+				"\"children\":[]}]}]},{\"identifier\":94034," +
+				"\"parentIdentifier\":42345,\"name\":\"Realtek\"," +
+				"\"children\":[{\"identifier\":495833," +
+				"\"parentIdentifier\":94034,\"name\":\"readme.txt\"," +
+				"\"children\":[]},{\"identifier\":113009," +
+				"\"parentIdentifier\":94034,\"name\":\"sdk\"," +
+				"\"children\":[{\"identifier\":8484934," +
+				"\"parentIdentifier\":113009,\"name\":\"files\"," +
+				"\"children\":[]}]},{\"identifier\":220332," +
+				"\"parentIdentifier\":94034,\"name\":\"drivers\"," +
+				"\"children\":[{\"identifier\":7753032," +
+				"\"parentIdentifier\":220332,\"name\":\"bin\"," +
+				"\"children\":[{\"identifier\":77530344," +
+				"\"parentIdentifier\":7753032,\"name\":\"entry\"," +
+				"\"children\":[]}]}]}]},{\"identifier\":32099," +
+				"\"parentIdentifier\":42345,\"name\":\"Winamp\"," +
+				"\"children\":[{\"identifier\":395524," +
+				"\"parentIdentifier\":32099,\"name\":\"winamp.exe\"," +
+				"\"children\":[]}]},{\"identifier\":10239," +
+				"\"parentIdentifier\":42345,\"name\":\"VLC\"," +
+				"\"children\":[{\"identifier\":848305," +
+				"\"parentIdentifier\":10239,\"name\":\"recorded\"," +
+				"\"children\":[{\"identifier\":1038299," +
+				"\"parentIdentifier\":848305,\"name\":\"5093049239.mp4\"," +
+				"\"children\":[]},{\"identifier\":3840200," +
+				"\"parentIdentifier\":848305,\"name\":\"4959344545.mp4\"," +
+				"\"children\":[]}]}]},{\"identifier\":24935," +
+				"\"parentIdentifier\":42345,\"name\":\"Adobe\"," +
+				"\"children\":[{\"identifier\":502010," +
+				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"," +
+				"\"children\":[{\"identifier\":8935844," +
+				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"," +
+				"\"children\":[]}]},{\"identifier\":909443," +
+				"\"parentIdentifier\":24935,\"name\":\"Photoshop\"," +
+				"\"children\":[{\"identifier\":4950243," +
+				"\"parentIdentifier\":909443,\"name\":\"photoshop.exe\"," +
+				"\"children\":[]}]},{\"identifier\":403940," +
+				"\"parentIdentifier\":24935,\"name\":\"Reader\"," +
+				"\"children\":[{\"identifier\":8493845," +
+				"\"parentIdentifier\":403940,\"name\":\"reader.exe\"," +
+				"\"children\":[]}]}]}]}]}";
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -832,13 +938,150 @@ public class ElementAlternativeTest {
 		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
 
 		transaction.initializeSession(sessionId, directoryTree);
-		
+
 		Element<Directory> root = manager.root();
 		String jsonOutput = root.toJSON();
-		
-		assertNotNull(jsonOutput);
+
+		assertEquals(json, jsonOutput);
 	}
 
+	/**
+	 * Test for the {@link Element#toXML()} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to print the XML
+	 * content from the root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Print the XML content from the root element.
+	 * <p><b>Expected:</b></p>
+	 * A XML content representing the root element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Declare the expected XML from the root element through the
+	 * 	{@link TreeAssembler#getDirectoryTree()};</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the root element through the
+	 * 	{@link TreeManager#root()};</li>
+	 * 	<li>Convert this element into XML format by invoking
+	 * 	{@link Element#toXML()};</li>
+	 * 	<li>Compare the resulting XML content with the expected.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void toXML_rootElement() throws TreeException {
+		final String sessionId = "toXML_rootElement";
+
+		final String xml = "<element><children><identifier>38923</identifier>" +
+				"<parentIdentifier>0</parentIdentifier><name>Users</name>" +
+				"<children><identifier>47592</identifier>" +
+				"<parentIdentifier>38923</parentIdentifier>" +
+				"<name>administrator</name></children><children>" +
+				"<identifier>48224</identifier><parentIdentifier>38923" +
+				"</parentIdentifier><name>foo</name><children>" +
+				"<identifier>583950</identifier><parentIdentifier>48224" +
+				"</parentIdentifier><name>tmp</name></children></children>" +
+				"</children><children><identifier>93832</identifier>" +
+				"<parentIdentifier>0</parentIdentifier><name>Devel</name>" +
+				"<children><identifier>45930</identifier>" +
+				"<parentIdentifier>93832</parentIdentifier>" +
+				"<name>database</name></children><children>" +
+				"<identifier>84709</identifier><parentIdentifier>93832" +
+				"</parentIdentifier><name>sdk_dev</name><children>" +
+				"<identifier>983533</identifier><parentIdentifier>84709" +
+				"</parentIdentifier><name>jdk1.6</name></children></children>" +
+				"<children><identifier>13823</identifier>" +
+				"<parentIdentifier>93832</parentIdentifier><name>ide</name>" +
+				"<children><identifier>583852</identifier>" +
+				"<parentIdentifier>13823</parentIdentifier>" +
+				"<name>eclipse</name><children><identifier>8483742" +
+				"</identifier><parentIdentifier>583852</parentIdentifier>" +
+				"<name>eclipse.exe</name></children></children><children>" +
+				"<identifier>482043</identifier><parentIdentifier>13823" +
+				"</parentIdentifier><name>netbeans</name><children>" +
+				"<identifier>4859304</identifier><parentIdentifier>482043" +
+				"</parentIdentifier><name>netbeans.exe</name></children>" +
+				"</children></children><children><identifier>93209" +
+				"</identifier><parentIdentifier>93832</parentIdentifier>" +
+				"<name>projects</name><children><identifier>859452" +
+				"</identifier><parentIdentifier>93209</parentIdentifier>" +
+				"<name>happytree</name></children></children></children>" +
+				"<children><identifier>42345</identifier>" +
+				"<parentIdentifier>0</parentIdentifier>" +
+				"<name>Program Files</name><children><identifier>53024" +
+				"</identifier><parentIdentifier>42345</parentIdentifier>" +
+				"<name>Office</name><children><identifier>674098" +
+				"</identifier><parentIdentifier>53024</parentIdentifier>" +
+				"<name>Word</name><children><identifier>4611329" +
+				"</identifier><parentIdentifier>674098</parentIdentifier>" +
+				"<name>word.exe</name></children></children><children>" +
+				"<identifier>843566</identifier><parentIdentifier>53024" +
+				"</parentIdentifier><name>Excel</name><children>" +
+				"<identifier>3964602</identifier><parentIdentifier>843566" +
+				"</parentIdentifier><name>excel.exe</name></children>" +
+				"</children></children><children><identifier>94034" +
+				"</identifier><parentIdentifier>42345</parentIdentifier>" +
+				"<name>Realtek</name><children><identifier>495833" +
+				"</identifier><parentIdentifier>94034</parentIdentifier>" +
+				"<name>readme.txt</name></children><children>" +
+				"<identifier>113009</identifier><parentIdentifier>94034" +
+				"</parentIdentifier><name>sdk</name><children>" +
+				"<identifier>8484934</identifier><parentIdentifier>113009" +
+				"</parentIdentifier><name>files</name></children></children>" +
+				"<children><identifier>220332</identifier>" +
+				"<parentIdentifier>94034</parentIdentifier>" +
+				"<name>drivers</name><children><identifier>7753032" +
+				"</identifier><parentIdentifier>220332</parentIdentifier>" +
+				"<name>bin</name><children><identifier>77530344" +
+				"</identifier><parentIdentifier>7753032</parentIdentifier>" +
+				"<name>entry</name></children></children></children>" +
+				"</children><children><identifier>32099</identifier>" +
+				"<parentIdentifier>42345</parentIdentifier>" +
+				"<name>Winamp</name><children><identifier>395524" +
+				"</identifier><parentIdentifier>32099</parentIdentifier>" +
+				"<name>winamp.exe</name></children></children><children>" +
+				"<identifier>10239</identifier><parentIdentifier>42345" +
+				"</parentIdentifier><name>VLC</name><children>" +
+				"<identifier>848305</identifier><parentIdentifier>10239" +
+				"</parentIdentifier><name>recorded</name><children>" +
+				"<identifier>1038299</identifier><parentIdentifier>848305" +
+				"</parentIdentifier><name>5093049239.mp4</name></children>" +
+				"<children><identifier>3840200</identifier>" +
+				"<parentIdentifier>848305</parentIdentifier>" +
+				"<name>4959344545.mp4</name></children></children></children>" +
+				"<children><identifier>24935</identifier>" +
+				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
+				"<children><identifier>502010</identifier>" +
+				"<parentIdentifier>24935</parentIdentifier>" +
+				"<name>Dremweaver</name><children><identifier>8935844" +
+				"</identifier><parentIdentifier>502010</parentIdentifier>" +
+				"<name>dreamweaver.exe</name></children></children>" +
+				"<children><identifier>909443</identifier>" +
+				"<parentIdentifier>24935</parentIdentifier>" +
+				"<name>Photoshop</name><children><identifier>4950243" +
+				"</identifier><parentIdentifier>909443</parentIdentifier>" +
+				"<name>photoshop.exe</name></children></children><children>" +
+				"<identifier>403940</identifier><parentIdentifier>24935" +
+				"</parentIdentifier><name>Reader</name><children>" +
+				"<identifier>8493845</identifier><parentIdentifier>403940" +
+				"</parentIdentifier><name>reader.exe</name></children>" +
+				"</children></children></children></element>";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+		String xmlOutput = root.toXML();
+
+		assertEquals(xml, xmlOutput);
+	}
+	
 	/**
 	 * Test for the {@link Object#equals(Object)} local implementation.
 	 * 
