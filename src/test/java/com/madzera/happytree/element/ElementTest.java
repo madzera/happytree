@@ -782,22 +782,24 @@ public class ElementTest {
 	 */
 	@Test
 	public void toXML() throws TreeException {
-		final String xml = "<element><identifier>24935</identifier>"
-		+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
-		+ "<children><identifier>502010</identifier>"
-		+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
-		+ "<children><identifier>8935844</identifier>"
-		+ "<parentIdentifier>502010</parentIdentifier>"
-		+ "<name>dreamweaver.exe</name></children></children><children>"
-		+ "<identifier>909443</identifier>"
-		+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
-		+ "<children><identifier>4950243</identifier>"
-		+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
-		+ "</children></children><children><identifier>403940</identifier>"
-		+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
-		+ "<children><identifier>8493845</identifier>"
-		+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
-		+ "</children></children></element>";
+		final String xml = "<element><identifier>24935</identifier>" +
+				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
+				"<children><element><identifier>502010</identifier>" +
+				"<parentIdentifier>24935</parentIdentifier><name>Dremweaver" +
+				"</name><children><element><identifier>8935844</identifier>" +
+				"<parentIdentifier>502010</parentIdentifier>" +
+				"<name>dreamweaver.exe</name><children/></element>" +
+				"</children></element><element><identifier>909443" +
+				"</identifier><parentIdentifier>24935</parentIdentifier>" +
+				"<name>Photoshop</name><children><element>" +
+				"<identifier>4950243</identifier><parentIdentifier>909443" +
+				"</parentIdentifier><name>photoshop.exe</name><children/>" +
+				"</element></children></element><element>" +
+				"<identifier>403940</identifier><parentIdentifier>24935" +
+				"</parentIdentifier><name>Reader</name><children><element>" +
+				"<identifier>8493845</identifier><parentIdentifier>403940" +
+				"</parentIdentifier><name>reader.exe</name><children/>" +
+				"</element></children></element></children></element>";
 
 		final String sessionId = "toXML";
 		final long adobeId = 24935L;
@@ -840,41 +842,52 @@ public class ElementTest {
 	 */
 	@Test
 	public void toPrettyXML() throws TreeException {
-		final String xml = "<element>" + breakLine() +
-			"  <identifier>24935</identifier>" + breakLine() +
-			"  <parentIdentifier>42345</parentIdentifier>" + breakLine() +
-			"  <name>Adobe</name>" + breakLine() +
-			"  <children>" + breakLine() +
-			"    <identifier>502010</identifier>" + breakLine() +
-			"    <parentIdentifier>24935</parentIdentifier>" + breakLine() +
-			"    <name>Dremweaver</name>" + breakLine() +
-			"    <children>" + breakLine() +
-			"      <identifier>8935844</identifier>" + breakLine() +
-			"      <parentIdentifier>502010</parentIdentifier>" + breakLine() +
-			"      <name>dreamweaver.exe</name>" + breakLine() +
-			"    </children>" + breakLine() +
-			"  </children>" + breakLine() +
-			"  <children>" + breakLine() +
-			"    <identifier>909443</identifier>" + breakLine() +
-			"    <parentIdentifier>24935</parentIdentifier>" + breakLine() +
-			"    <name>Photoshop</name>" + breakLine() +
-			"    <children>" + breakLine() +
-			"      <identifier>4950243</identifier>" + breakLine() +
-			"      <parentIdentifier>909443</parentIdentifier>" + breakLine() +
-			"      <name>photoshop.exe</name>" + breakLine() +
-			"    </children>" + breakLine() +
-			"  </children>" + breakLine() +
-			"  <children>" + breakLine() +
-			"    <identifier>403940</identifier>" + breakLine() +
-			"    <parentIdentifier>24935</parentIdentifier>" + breakLine() +
-			"    <name>Reader</name>" + breakLine() +
-			"    <children>" + breakLine() +
-			"      <identifier>8493845</identifier>" + breakLine() +
-			"      <parentIdentifier>403940</parentIdentifier>" + breakLine() +
-			"      <name>reader.exe</name>" + breakLine() +
-			"    </children>" + breakLine() +
-			"  </children>" + breakLine() +
-			"</element>" + breakLine() + "";
+		final String xml = "<element>" + breakLine() + //
+				"  <identifier>24935</identifier>" + breakLine() + //
+				"  <parentIdentifier>42345</parentIdentifier>" + breakLine() + //
+				"  <name>Adobe</name>" + breakLine() + //
+				"  <children>" + breakLine() + //
+				"    <element>" + breakLine() + //
+				"      <identifier>502010</identifier>" + breakLine() + //
+				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
+				"      <name>Dremweaver</name>" + breakLine() + //
+				"      <children>" + breakLine() + //
+				"        <element>" + breakLine() + //
+				"          <identifier>8935844</identifier>" + breakLine() + //
+				"          <parentIdentifier>502010</parentIdentifier>" + breakLine() + //
+				"          <name>dreamweaver.exe</name>" + breakLine() + //
+				"          <children/>" + breakLine() + //
+				"        </element>" + breakLine() + //
+				"      </children>" + breakLine() + //
+				"    </element>" + breakLine() + //
+				"    <element>" + breakLine() + //
+				"      <identifier>909443</identifier>" + breakLine() + //
+				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
+				"      <name>Photoshop</name>" + breakLine() + //
+				"      <children>" + breakLine() + //
+				"        <element>" + breakLine() + //
+				"          <identifier>4950243</identifier>" + breakLine() + //
+				"          <parentIdentifier>909443</parentIdentifier>" + breakLine() + //
+				"          <name>photoshop.exe</name>" + breakLine() + //
+				"          <children/>" + breakLine() + //
+				"        </element>" + breakLine() + //
+				"      </children>" + breakLine() + //
+				"    </element>" + breakLine() + //
+				"    <element>" + breakLine() + //
+				"      <identifier>403940</identifier>" + breakLine() + //
+				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
+				"      <name>Reader</name>" + breakLine() + //
+				"      <children>" + breakLine() + //
+				"        <element>" + breakLine() + //
+				"          <identifier>8493845</identifier>" + breakLine() + //
+				"          <parentIdentifier>403940</parentIdentifier>" + breakLine() + //
+				"          <name>reader.exe</name>" + breakLine() + //
+				"          <children/>" + breakLine() + //
+				"        </element>" + breakLine() + //
+				"      </children>" + breakLine() + //
+				"    </element>" + breakLine() + //
+				"  </children>" + breakLine() + //
+				"</element>" + breakLine();
 
 		final String sessionId = "toPrettyXML";
 		final long adobeId = 24935L;
@@ -1106,7 +1119,7 @@ public class ElementTest {
 		Element<Directory> element5,
 		Element<Directory> element6,
 		Element<Directory> element7,
-			Element<Directory> element8) {
+		Element<Directory> element8) {
 		assertEquals(element1.hashCode(), element2.hashCode());
 		assertEquals(element1.hashCode(), element3.hashCode());
 		assertEquals(element2.hashCode(), element3.hashCode());

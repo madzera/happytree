@@ -101,7 +101,7 @@ public interface TreeSession {
 	 * returning the root element of the tree.</p>
 	 * 
 	 * <p>The root element is a special element that cannot be handled and has
-	 * no <code>@Id</code>, <code>@Parent</code> and wrapped object node.
+	 * no <code>@Id</code>, <code>@Parent</code> neither the wrapped object node.
 	 * It is created by the core API when the session is initialized, that is,
 	 * when invoking the {@link TreeTransaction#initializeSession(String, Class)}
 	 * or {@link TreeTransaction#initializeSession(String, Collection)} methods.

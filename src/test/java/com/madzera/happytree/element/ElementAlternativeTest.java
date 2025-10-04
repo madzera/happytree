@@ -759,22 +759,24 @@ public class ElementAlternativeTest {
 	 */
 	@Test
 	public void toXML_addRemoveElement() throws TreeException {
-		final String xml = "<element><identifier>24935</identifier>"
-				+ "<parentIdentifier>42345</parentIdentifier><name>Adobe</name>"
-				+ "<children><identifier>502010</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Dremweaver</name>"
-				+ "<children><identifier>8935844</identifier>"
-				+ "<parentIdentifier>502010</parentIdentifier>"
-				+ "<name>dreamweaver.exe</name></children></children><children>"
-				+ "<identifier>909443</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Photoshop</name>"
-				+ "<children><identifier>4950243</identifier>"
-				+ "<parentIdentifier>909443</parentIdentifier><name>photoshop.exe</name>"
-				+ "</children></children><children><identifier>403940</identifier>"
-				+ "<parentIdentifier>24935</parentIdentifier><name>Reader</name>"
-				+ "<children><identifier>8493845</identifier>"
-				+ "<parentIdentifier>403940</parentIdentifier><name>reader.exe</name>"
-				+ "</children></children></element>";
+		final String xml = "<element><identifier>24935</identifier>" +
+				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
+				"<children><element><identifier>502010</identifier>" +
+				"<parentIdentifier>24935</parentIdentifier><name>Dremweaver" +
+				"</name><children><element><identifier>8935844</identifier>" +
+				"<parentIdentifier>502010</parentIdentifier>" +
+				"<name>dreamweaver.exe</name><children/></element>" +
+				"</children></element><element><identifier>909443" +
+				"</identifier><parentIdentifier>24935</parentIdentifier>" +
+				"<name>Photoshop</name><children><element>" +
+				"<identifier>4950243</identifier><parentIdentifier>909443" +
+				"</parentIdentifier><name>photoshop.exe</name><children/>" +
+				"</element></children></element><element>" +
+				"<identifier>403940</identifier><parentIdentifier>24935" +
+				"</parentIdentifier><name>Reader</name><children><element>" +
+				"<identifier>8493845</identifier><parentIdentifier>403940" +
+				"</parentIdentifier><name>reader.exe</name><children/>" +
+				"</element></children></element></children></element>";
 
 		final String sessionId = "toXML_addRemoveElement";
 		final long adobeId = 24935L;
@@ -974,100 +976,106 @@ public class ElementAlternativeTest {
 	public void toXML_rootElement() throws TreeException {
 		final String sessionId = "toXML_rootElement";
 
-		final String xml = "<element><children><identifier>38923</identifier>" +
-				"<parentIdentifier>0</parentIdentifier><name>Users</name>" +
-				"<children><identifier>47592</identifier>" +
-				"<parentIdentifier>38923</parentIdentifier>" +
-				"<name>administrator</name></children><children>" +
+		final String xml = "<element><children><element><identifier>38923" +
+				"</identifier><parentIdentifier>0</parentIdentifier>" +
+				"<name>Users</name><children><element><identifier>47592" +
+				"</identifier><parentIdentifier>38923</parentIdentifier>" +
+				"<name>administrator</name><children/></element><element>" +
 				"<identifier>48224</identifier><parentIdentifier>38923" +
-				"</parentIdentifier><name>foo</name><children>" +
+				"</parentIdentifier><name>foo</name><children><element>" +
 				"<identifier>583950</identifier><parentIdentifier>48224" +
-				"</parentIdentifier><name>tmp</name></children></children>" +
-				"</children><children><identifier>93832</identifier>" +
-				"<parentIdentifier>0</parentIdentifier><name>Devel</name>" +
-				"<children><identifier>45930</identifier>" +
-				"<parentIdentifier>93832</parentIdentifier>" +
-				"<name>database</name></children><children>" +
-				"<identifier>84709</identifier><parentIdentifier>93832" +
-				"</parentIdentifier><name>sdk_dev</name><children>" +
-				"<identifier>983533</identifier><parentIdentifier>84709" +
-				"</parentIdentifier><name>jdk1.6</name></children></children>" +
-				"<children><identifier>13823</identifier>" +
-				"<parentIdentifier>93832</parentIdentifier><name>ide</name>" +
-				"<children><identifier>583852</identifier>" +
-				"<parentIdentifier>13823</parentIdentifier>" +
-				"<name>eclipse</name><children><identifier>8483742" +
-				"</identifier><parentIdentifier>583852</parentIdentifier>" +
-				"<name>eclipse.exe</name></children></children><children>" +
-				"<identifier>482043</identifier><parentIdentifier>13823" +
-				"</parentIdentifier><name>netbeans</name><children>" +
-				"<identifier>4859304</identifier><parentIdentifier>482043" +
-				"</parentIdentifier><name>netbeans.exe</name></children>" +
-				"</children></children><children><identifier>93209" +
+				"</parentIdentifier><name>tmp</name><children/></element>" +
+				"</children></element></children></element><element>" +
+				"<identifier>93832</identifier><parentIdentifier>0" +
+				"</parentIdentifier><name>Devel</name><children><element>" +
+				"<identifier>45930</identifier><parentIdentifier>93832" +
+				"</parentIdentifier><name>database</name><children/>" +
+				"</element><element><identifier>84709</identifier>" +
+				"<parentIdentifier>93832</parentIdentifier><name>sdk_dev" +
+				"</name><children><element><identifier>983533</identifier>" +
+				"<parentIdentifier>84709</parentIdentifier><name>jdk1.6" +
+				"</name><children/></element></children></element><element>" +
+				"<identifier>13823</identifier><parentIdentifier>93832" +
+				"</parentIdentifier><name>ide</name><children><element>" +
+				"<identifier>583852</identifier><parentIdentifier>13823" +
+				"</parentIdentifier><name>eclipse</name><children><element>" +
+				"<identifier>8483742</identifier><parentIdentifier>583852" +
+				"</parentIdentifier><name>eclipse.exe</name><children/>" +
+				"</element></children></element><element><identifier>482043" +
+				"</identifier><parentIdentifier>13823</parentIdentifier>" +
+				"<name>netbeans</name><children><element><identifier>4859304" +
+				"</identifier><parentIdentifier>482043</parentIdentifier>" +
+				"<name>netbeans.exe</name><children/></element></children>" +
+				"</element></children></element><element><identifier>93209" +
 				"</identifier><parentIdentifier>93832</parentIdentifier>" +
-				"<name>projects</name><children><identifier>859452" +
+				"<name>projects</name><children><element><identifier>859452" +
 				"</identifier><parentIdentifier>93209</parentIdentifier>" +
-				"<name>happytree</name></children></children></children>" +
-				"<children><identifier>42345</identifier>" +
-				"<parentIdentifier>0</parentIdentifier>" +
-				"<name>Program Files</name><children><identifier>53024" +
-				"</identifier><parentIdentifier>42345</parentIdentifier>" +
-				"<name>Office</name><children><identifier>674098" +
+				"<name>happytree</name><children/></element></children>" +
+				"</element></children></element><element><identifier>42345" +
+				"</identifier><parentIdentifier>0</parentIdentifier>" +
+				"<name>Program Files</name><children><element>" +
+				"<identifier>53024</identifier><parentIdentifier>42345" +
+				"</parentIdentifier><name>Office</name><children><element>" +
+				"<identifier>674098</identifier><parentIdentifier>53024" +
+				"</parentIdentifier><name>Word</name><children><element>" +
+				"<identifier>4611329</identifier><parentIdentifier>674098" +
+				"</parentIdentifier><name>word.exe</name><children/>" +
+				"</element></children></element><element><identifier>843566" +
 				"</identifier><parentIdentifier>53024</parentIdentifier>" +
-				"<name>Word</name><children><identifier>4611329" +
-				"</identifier><parentIdentifier>674098</parentIdentifier>" +
-				"<name>word.exe</name></children></children><children>" +
-				"<identifier>843566</identifier><parentIdentifier>53024" +
-				"</parentIdentifier><name>Excel</name><children>" +
-				"<identifier>3964602</identifier><parentIdentifier>843566" +
-				"</parentIdentifier><name>excel.exe</name></children>" +
-				"</children></children><children><identifier>94034" +
+				"<name>Excel</name><children><element><identifier>3964602" +
+				"</identifier><parentIdentifier>843566</parentIdentifier>" +
+				"<name>excel.exe</name><children/></element></children>" +
+				"</element></children></element><element><identifier>94034" +
 				"</identifier><parentIdentifier>42345</parentIdentifier>" +
-				"<name>Realtek</name><children><identifier>495833" +
+				"<name>Realtek</name><children><element><identifier>495833" +
 				"</identifier><parentIdentifier>94034</parentIdentifier>" +
-				"<name>readme.txt</name></children><children>" +
+				"<name>readme.txt</name><children/></element><element>" +
 				"<identifier>113009</identifier><parentIdentifier>94034" +
-				"</parentIdentifier><name>sdk</name><children>" +
+				"</parentIdentifier><name>sdk</name><children><element>" +
 				"<identifier>8484934</identifier><parentIdentifier>113009" +
-				"</parentIdentifier><name>files</name></children></children>" +
-				"<children><identifier>220332</identifier>" +
-				"<parentIdentifier>94034</parentIdentifier>" +
-				"<name>drivers</name><children><identifier>7753032" +
+				"</parentIdentifier><name>files</name><children/></element>" +
+				"</children></element><element><identifier>220332" +
+				"</identifier><parentIdentifier>94034</parentIdentifier>" +
+				"<name>drivers</name><children><element><identifier>7753032" +
 				"</identifier><parentIdentifier>220332</parentIdentifier>" +
-				"<name>bin</name><children><identifier>77530344" +
+				"<name>bin</name><children><element><identifier>77530344" +
 				"</identifier><parentIdentifier>7753032</parentIdentifier>" +
-				"<name>entry</name></children></children></children>" +
-				"</children><children><identifier>32099</identifier>" +
-				"<parentIdentifier>42345</parentIdentifier>" +
-				"<name>Winamp</name><children><identifier>395524" +
-				"</identifier><parentIdentifier>32099</parentIdentifier>" +
-				"<name>winamp.exe</name></children></children><children>" +
-				"<identifier>10239</identifier><parentIdentifier>42345" +
-				"</parentIdentifier><name>VLC</name><children>" +
-				"<identifier>848305</identifier><parentIdentifier>10239" +
-				"</parentIdentifier><name>recorded</name><children>" +
-				"<identifier>1038299</identifier><parentIdentifier>848305" +
-				"</parentIdentifier><name>5093049239.mp4</name></children>" +
-				"<children><identifier>3840200</identifier>" +
-				"<parentIdentifier>848305</parentIdentifier>" +
-				"<name>4959344545.mp4</name></children></children></children>" +
-				"<children><identifier>24935</identifier>" +
-				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
-				"<children><identifier>502010</identifier>" +
+				"<name>entry</name><children/></element></children></element>" +
+				"</children></element></children></element><element>" +
+				"<identifier>32099</identifier><parentIdentifier>42345" +
+				"</parentIdentifier><name>Winamp</name><children><element>" +
+				"<identifier>395524</identifier><parentIdentifier>32099" +
+				"</parentIdentifier><name>winamp.exe</name><children/>" +
+				"</element></children></element><element><identifier>10239" +
+				"</identifier><parentIdentifier>42345</parentIdentifier>" +
+				"<name>VLC</name><children><element><identifier>848305" +
+				"</identifier><parentIdentifier>10239</parentIdentifier>" +
+				"<name>recorded</name><children><element><identifier>1038299" +
+				"</identifier><parentIdentifier>848305</parentIdentifier>" +
+				"<name>5093049239.mp4</name><children/></element><element>" +
+				"<identifier>3840200</identifier><parentIdentifier>848305" +
+				"</parentIdentifier><name>4959344545.mp4</name><children/>" +
+				"</element></children></element></children></element>" +
+				"<element><identifier>24935</identifier>" +
+				"<parentIdentifier>42345</parentIdentifier><name>Adobe" +
+				"</name><children><element><identifier>502010</identifier>" +
 				"<parentIdentifier>24935</parentIdentifier>" +
-				"<name>Dremweaver</name><children><identifier>8935844" +
-				"</identifier><parentIdentifier>502010</parentIdentifier>" +
-				"<name>dreamweaver.exe</name></children></children>" +
-				"<children><identifier>909443</identifier>" +
-				"<parentIdentifier>24935</parentIdentifier>" +
-				"<name>Photoshop</name><children><identifier>4950243" +
-				"</identifier><parentIdentifier>909443</parentIdentifier>" +
-				"<name>photoshop.exe</name></children></children><children>" +
-				"<identifier>403940</identifier><parentIdentifier>24935" +
-				"</parentIdentifier><name>Reader</name><children>" +
-				"<identifier>8493845</identifier><parentIdentifier>403940" +
-				"</parentIdentifier><name>reader.exe</name></children>" +
-				"</children></children></children></element>";
+				"<name>Dremweaver</name><children><element>" +
+				"<identifier>8935844</identifier><parentIdentifier>502010" +
+				"</parentIdentifier><name>dreamweaver.exe</name><children/>" +
+				"</element></children></element><element>" +
+				"<identifier>909443</identifier><parentIdentifier>24935" +
+				"</parentIdentifier><name>Photoshop</name><children>" +
+				"<element><identifier>4950243</identifier>" +
+				"<parentIdentifier>909443</parentIdentifier>" +
+				"<name>photoshop.exe</name><children/></element></children>" +
+				"</element><element><identifier>403940</identifier>" +
+				"<parentIdentifier>24935</parentIdentifier><name>Reader" +
+				"</name><children><element><identifier>8493845</identifier>" +
+				"<parentIdentifier>403940</parentIdentifier>" +
+				"<name>reader.exe</name><children/></element></children>" +
+				"</element></children></element></children></element>" +
+				"</children></element>";
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();

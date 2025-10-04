@@ -351,8 +351,9 @@ public interface Element<T> {
 	 * <p><b>The above restriction is not applied to the root element</b>, as it
 	 * is a special element created by the HappyTree API itself with no wrapped
 	 * object node. Therefore, calling the {@link TreeManager#root()} or
-	 * {@link TreeSession#tree()} is allowed to print the tree structure into
-	 * JSON format.</p>
+	 * {@link TreeSession#tree()} is allowed to print the tree structure into a
+	 * JSON format, but this structure will not contain the <code>@Id</code>,
+	 * <code>@Parent</code> neither the wrapped object node.</p>
 	 * 
 	 * <p>The JSON representation consists of the attributes of the wrapped
 	 * object node plus an attribute called <b>children</b>, which holds all the
@@ -383,7 +384,13 @@ public interface Element<T> {
 	 *				{
 	 *					"identifier": 3,
 	 *					"parentIdentifier": 2,
-	 *					"name": "Bruce Springsteen"
+	 *					"name": "Bruce Springsteen",
+	 *					"children": []
+	 *				},
+	 *				{
+	 *					"identifier": 4,
+	 *					"parentIdentifier": 2,
+	 *					"name": "George Strait",
 	 *					"children": []
 	 *				}
 	 *			]
@@ -392,7 +399,7 @@ public interface Element<T> {
 	 * }
 	 * </pre>
 	 * 
-	 * <p>To convert the wrapped object into JSON format, it is not necessary
+	 * <p>To convert the wrapped object into a JSON format, it is not necessary
 	 * that the element be attached to any session. However, the element as well
 	 * as all its children need to have their original objects nodes not
 	 * <code>null</code> (except for the root element).</p>
@@ -401,7 +408,7 @@ public interface Element<T> {
 	 * object can be annotated with Jackson annotations to customize the
 	 * conversion if necessary.</p>
 	 * 
-	 * @return the JSON format of this element (minified)
+	 * @return the JSON representation of this element (minified)
 	 */
 	public String toJSON();
 
@@ -414,29 +421,40 @@ public interface Element<T> {
 	 * object node that is <code>null</code>, then an empty JSON object is
 	 * returned &quot;{}&quot;.</p>
 	 * 
+	 * <p><b>The above restriction is not applied to the root element</b>, as it
+	 * is a special element created by the HappyTree API itself with no wrapped
+	 * object node. Therefore, calling the {@link TreeManager#root()} or
+	 * {@link TreeSession#tree()} is allowed to print the tree structure into a
+	 * JSON format, but this structure will not contain the <code>@Id</code>,
+	 * <code>@Parent</code> neither the wrapped object node.</p>
+	 * 
 	 * @return a well formatted JSON of this element (pretty print)
+	 * 
 	 * @see {@link Element#toJSON()}
 	 */
 	public String toPrettyJSON();
 
 	/**
-	 * Converts the whole element structure into a XML format. This includes all
-	 * children recursively.
+	 * Converts the whole element structure into a XML <code>String</code>. This
+	 * includes all children recursively.
 	 * 
-	 * <p>It is mandatory that the element as well as all its children have not
-	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
-	 * object node that is <code>null</code>, then an empty XML is returned.</p>
+	 * <p>It is mandatory that the element as well as all its children have a
+	 * not <code>null</code> wrapped objects nodes. If there is at least one
+	 * wrapped object node that is <code>null</code>, then an empty XML is
+	 * returned.</p>
 	 * 
 	 * <p><b>The above restriction is not applied to the root element</b>, as it
 	 * is a special element created by the HappyTree API itself with no wrapped
 	 * object node. Therefore, calling the {@link TreeManager#root()} or
 	 * {@link TreeSession#tree()} is allowed to print the tree structure into
-	 * XML format.</p>
+	 * a XML <code>String</code>, but this structure will not contain the
+	 * <code>@Id</code>, <code>@Parent</code> neither the wrapped object node.
+	 * </p>
 	 * 
 	 * <p>The XML content consists of the attributes of the wrapped object node
-	 * plus a tag called <b>children</b>, which holds all the children of the
-	 * node and so on recursively. The root tag of this XML is always
-	 * <b>element</b>.</p>
+	 * plus a tag called <b>children</b>, which holds all others elements that
+	 * contain all others children of the node and so on recursively. The root
+	 * tag of this XML is always <b>element</b>.</p>
 	 * 
 	 * <p>For example, considering an element that wraps an object of type
 	 * <code>Directory</code>, the XML content would look like 
@@ -445,23 +463,33 @@ public interface Element<T> {
 	 * <pre>
 	 * 	&lt;element&gt;
 	 * 		&lt;identifier&gt;1&lt;/identifier&gt;
-	 * 		&lt;parentIdentifier&gt;&lt;/parentIdentifier&gt;
+	 * 		&lt;parentIdentifier&gt;null&lt;/parentIdentifier&gt;
 	 * 		&lt;name&gt;Music&lt;/name&gt;
 	 * 		&lt;children&gt;
-	 * 			&lt;identifier&gt;2&lt;/identifier&gt;
-	 * 			&lt;parentIdentifier&gt;1&lt;/parentIdentifier&gt;
-	 * 			&lt;name&gt;Country&lt;/name&gt;
-	 * 			&lt;children&gt;
-	 * 				&lt;identifier&gt;3&lt;/identifier&gt;
-	 * 				&lt;parentIdentifier&gt;2&lt;/parentIdentifier&gt;
-	 * 				&lt;name&gt;Bruce Springsteen&lt;/name&gt;
-	 * 				&lt;children/&gt;
-	 * 			&lt;/children&gt;
+	 * 			&lt;element&gt;
+	 * 				&lt;identifier&gt;2&lt;/identifier&gt;
+	 * 				&lt;parentIdentifier&gt;1&lt;/parentIdentifier&gt;
+	 * 				&lt;name&gt;Country&lt;/name&gt;
+	 * 				&lt;children&gt;
+	 * 					&lt;element&gt;
+	 * 						&lt;identifier&gt;3&lt;/identifier&gt;
+	 * 						&lt;parentIdentifier&gt;2&lt;/parentIdentifier&gt;
+	 * 						&lt;name&gt;Bruce Springsteen&lt;/name&gt;
+	 * 						&lt;children/&gt;
+	 * 					&lt;/element&gt;
+	 * 					&lt;element&gt;
+	 * 						&lt;identifier&gt;4&lt;/identifier&gt;
+	 * 						&lt;parentIdentifier&gt;2&lt;/parentIdentifier&gt;
+	 * 						&lt;name&gt;George Strait&lt;/name&gt;
+	 * 						&lt;children/&gt;
+	 * 					&lt;/element&gt;
+	 * 				&lt;/children&gt;
+	 * 			&lt;/element&gt;
 	 * 		&lt;/children&gt;
 	 * 	&lt;/element&gt;
 	 * </pre>
 	 * 
-	 * <p>To convert the wrapped object into XML format, it is not necessary
+	 * <p>To convert the wrapped object into a XML format, it is not necessary
 	 * that the element be attached to any session. However, the element as well
 	 * as all its children need to have their original objects nodes not
 	 * <code>null</code> (except for the root element).</p>
@@ -482,7 +510,16 @@ public interface Element<T> {
 	 * <code>null</code> wrapped objects nodes. If there is at least one wrapped
 	 * object node that is <code>null</code>, then an empty XML is returned.</p>
 	 * 
+	 * <p><b>The above restriction is not applied to the root element</b>, as it
+	 * is a special element created by the HappyTree API itself with no wrapped
+	 * object node. Therefore, calling the {@link TreeManager#root()} or
+	 * {@link TreeSession#tree()} is allowed to print the tree structure into
+	 * a XML <code>String</code>, but this structure will not contain the
+	 * <code>@Id</code>, <code>@Parent</code> neither the wrapped object node.
+	 * </p>
+	 * 
 	 * @return a well formatted XML of this element (pretty print)
+	 * 
 	 * @see {@link Element#toXML()}
 	 */
 	public String toPrettyXML();

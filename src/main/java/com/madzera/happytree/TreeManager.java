@@ -750,19 +750,18 @@ public interface TreeManager {
 	 * Obtains the {@link TreeTransaction} instance associated to this manager.
 	 * 
 	 * <p>The manager is closely related to the transaction. Absolutely every
-	 * operations defined in this interface needs to check the transaction and
-	 * verify if there is a session to be managed.</p>
+	 * operations defined in this interface need to check the transaction and
+	 * verify whether there is a session to be managed.</p>
 	 * 
-	 * <p>If there is no session to be handled inside the transaction, an error
-	 * occurs. The API client of this method should know what session he wishes
-	 * to work. This transaction object has this objective, provide and handle
-	 * the sessions.</p>
+	 * <p>If there is no session to be handled inside of the transaction, an
+	 * error occurs. The API client of this method should know what session is
+	 * preferred to be worked. This transaction object has this objective,
+	 * provide and handle the sessions.</p>
 	 * 
 	 * <b>
 	 * TREEMANAGER (invokes) -&gt; TREETRANSACTION (to store) -&gt;
 	 * TREESESSION (that contains) -&gt; ELEMENT
 	 * </b>
-	 * 
 	 * 
 	 * @return the transaction associated to this manager
 	 */
@@ -799,7 +798,7 @@ public interface TreeManager {
 	 * children:</p>
 	 * 	<pre>
 	 * 
-	 *                          ELEMENT(ROOT)
+	 * 							ELEMENT(ROOT)
 	 *                               /\
 	 *                     ELEMENT(A)  ELEMENT(B)
 	 *                         /\         /\
