@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -905,6 +906,67 @@ public class ElementTest {
 		assertEquals(xml, xmlOutput);
 	}
 
+	@Test
+	public void apply() throws TreeException {
+		final String sessionId = "apply";
+		final Long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		
+		/*
+		 * Apply the name transformation for all elements within the (Adobe)
+		 * element, including itself.
+		 */
+		adobe.apply(element -> element.unwrap().transformNameToUpperCase());
+
+		assertEquals("ADOBE", adobe.unwrap().getName());
+
+		for (Element<Directory> child : adobe.getChildren()) {
+			assertEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+			for (Element<Directory> grandChild : child.getChildren()) {
+				assertEquals(
+						grandChild.unwrap().getName().toUpperCase(),
+						grandChild.unwrap().getName());
+			}
+		}
+	}
+
+	@Test
+	public void apply_withConditions() throws TreeException {
+		final String sessionId = "apply_withConditions";
+		final Long adobeId = 24935L;
+		final List<String> photoPrefix = Arrays.asList("Photo", "photo");
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+
+		/*
+		 * Apply the name transformation only for those elements whose name
+		 * starts with "Photo" or "photo".
+		 */
+		adobe.apply(
+				element -> element.unwrap().transformNameToUpperCase(),
+				element -> photoPrefix.contains(element.unwrap().getName()));
+
+		assertEquals("ADOBE", adobe.unwrap().getName());
+
+	}
+	
 	/**
 	 * Test for the {@link Object#hashCode()} local implementation.
 	 * 

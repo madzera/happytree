@@ -81,6 +81,10 @@ public class Directory {
 		this.name = name;
 	}
 
+	public void transformNameToUpperCase() {
+		this.name = this.name.toUpperCase();
+	}
+	
 	@Override
 	public String toString() {
 		return "Directory [name=" + name + "]";

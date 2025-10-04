@@ -2,6 +2,8 @@ package com.madzera.happytree.core;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -203,6 +205,32 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public String toPrettyXML() {
 		return this.toXML(Boolean.TRUE);
+	}
+
+	@Override
+	public void apply(Consumer<Element<T>> action) {
+		if (action == null) {
+			return;
+		}
+		action.accept(this);
+		for (Element<T> child : this.getChildren()) {
+			child.apply(action);
+		}
+	}
+
+	@Override
+	public void apply(
+			Consumer<Element<T>> action, Predicate<Element<T>> condition) {
+		if (action == null || condition == null) {
+			return;
+		}
+
+		if (condition.test(this)) {
+			action.accept(this);
+			for (Element<T> child : this.getChildren()) {
+				child.apply(action, condition);
+			}
+		}
 	}
 
 	@Override

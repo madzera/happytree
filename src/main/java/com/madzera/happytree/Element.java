@@ -1,6 +1,8 @@
 package com.madzera.happytree;
 
 import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.madzera.happytree.exception.TreeException;
 
@@ -523,4 +525,9 @@ public interface Element<T> {
 	 * @see {@link Element#toXML()}
 	 */
 	public String toPrettyXML();
+
+	public void apply(Consumer<Element<T>> action);
+
+	public void apply(
+		Consumer<Element<T>> action, Predicate<Element<T>> condition);
 }
