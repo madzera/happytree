@@ -865,27 +865,27 @@ public class TreeManagerTest {
 	}
 	
 	/**
-	 * Test for the {@link Element#apply(Consumer)}.
+	 * Test for the {@link TreeManager#apply(Consumer)}.
 	 * 
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Apply a transformation to all elements within a tree. This transformation
-	 * is a function that will be performed for each element within the tree. As
-	 * an example, we will transform the name of each {@link Directory} element
+	 * Apply a function to all elements within a tree from the root element.
+	 * This function will be performed for each element within the tree. As an
+	 * example, the name of each {@link Directory} element will be transformed
 	 * to upper case.
 	 * <p><b>Expected:</b></p>
-	 * All elements within the tree must have its name in upper case.
+	 * All elements within the tree must have their names in upper case.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
 	 * 	<li>Initialize a session;</li>
+	 * 	<li>Apply the function, by invoking the
+	 * 	{@link TreeManager#apply(Consumer)} then all elements within the
+	 * 	(Adobe) element, including itself will have the name transformed to
+	 * 	upper case;</li>
 	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
 	 * 	element;</li>
-	 * 	<li>Apply the transformation, by invoking the
-	 * 	{@link TreeManager#apply(Consumer)} then all elements within the
-	 * (Adobe) element, including itself will have the name transformed to upper
-	 * 	case;</li>
 	 * 	<li>Verify if all elements within the (Adobe) element, including itself
 	 * 	have its name in upper case.</li>
 	 * </ol>
@@ -904,9 +904,15 @@ public class TreeManagerTest {
 
 		transaction.initializeSession(sessionId, directoryTree);
 
-		Element<Directory> root = manager.apply(
-				element -> element.unwrap().transformNameToUpperCase());
+		manager.apply(element -> {
+			Object obj = element.unwrap();
+			if (obj != null) {
+				Directory directory = (Directory) obj;
+				directory.setName(directory.getName().toUpperCase());
+			}
+		});
 
+		Element<Directory> root = manager.root();
 		Element<Directory> adobe = root.getElementById(adobeId);
 
 		/*
@@ -924,5 +930,94 @@ public class TreeManagerTest {
 						grandChild.unwrap().getName());
 			}
 		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer, Predicate)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a function conditionally to specific elements within a tree from 
+	 * the root element. This function will be performed only for elements that
+	 * satisfy the given condition. As an example, the name of each 
+	 * {@link Directory} element that starts with "Photo" or "photo" will be 
+	 * transformed to upper case, while other elements remain unchanged.
+	 * <p><b>Expected:</b></p>
+	 * Only elements within the tree that satisfy the condition (names starting
+	 * with "Photo" or "photo") must have their names in upper case, while 
+	 * other elements remain unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Apply the function with condition, by invoking the
+	 * 	{@link TreeManager#apply(Consumer, Predicate)} then only elements 
+	 * 	within the tree that match the condition (names starting with "Photo" 
+	 * 	or "photo") will have the name transformed to upper case;</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Verify that only the (Photoshop) element and its child 
+	 * 	(photoshop.exe) have their names in upper case, while (Adobe), 
+	 * 	(Reader), and (Dreamweaver) elements remain unchanged.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_withCondition() throws TreeException {
+		final String sessionId = "apply_withCondition";
+		final Long adobeId = 24935L;
+		final long photoshopId = 909443L;
+		final long readerId = 403940L;
+		final long dreamweaverId = 502010L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		manager.apply(
+			element -> applyUpperCase(element),
+			element -> nameStartsWithPhoto(element)
+		);
+
+		Element<Directory> root = manager.root();
+		Element<Directory> adobe = root.getElementById(adobeId);
+
+		/*
+		 * Verify if the elements that contains "Photo" or "photo" within the
+		 * (Adobe) element were transformed to upper case, and the others
+		 * elements that don't match the condition remain unchanged.
+		 */
+		assertEquals("Adobe", adobe.unwrap().getName());
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		assertEquals("PHOTOSHOP", photoshop.unwrap().getName());
+		assertEquals("PHOTOSHOP.EXE", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+		Element<Directory> reader = manager.getElementById(readerId);
+		assertEquals("Reader", reader.unwrap().getName());
+		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
+		assertEquals("Dremweaver", dreamweaver.unwrap().getName());
+	}
+	
+	private void applyUpperCase(Element<Object> element) {
+		Object obj = element.unwrap();
+		if (obj != null) {
+			Directory directory = (Directory) obj;
+			directory.setName(directory.getName().toUpperCase());
+		}
+	}
+
+	private boolean nameStartsWithPhoto(Element<Object> element) {
+		Object obj = element.unwrap();
+		if (obj != null) {
+			Directory directory = (Directory) obj;
+			return directory.getName().startsWith("Photo")
+					|| directory.getName().startsWith("photo");
+		}
+		return false;
 	}
 }

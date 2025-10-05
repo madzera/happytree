@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.junit.Test;
 
@@ -912,10 +912,9 @@ public class ElementTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Apply a transformation to all elements within a tree. This transformation
-	 * is a function that will be performed for each element within the tree. As
-	 * an example, we will transform the name of each {@link Directory} element
-	 * to upper case.
+	 * Apply a function to all elements within a tree. This function will be
+	 * performed for each element within the tree. As an example, the name of
+	 * each {@link Directory} element will be transformed to upper case.
 	 * <p><b>Expected:</b></p>
 	 * All elements within the tree must have its name in upper case.
 	 * <p><b>Steps:</b></p>
@@ -924,7 +923,7 @@ public class ElementTest {
 	 * 	<li>Initialize a session;</li>
 	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
 	 * 	element;</li>
-	 * 	<li>Apply transformation, by invoking the {@link Element#apply(Consumer)}
+	 * 	<li>Apply the function, by invoking the {@link Element#apply(Consumer)}
 	 * 	then all elements within the (Adobe) element, including itself will have
 	 * 	the name transformed to upper case;
 	 * 	</li>
@@ -974,14 +973,13 @@ public class ElementTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Apply a transformation to elements within a tree that satisfy a specific
-	 * condition. This transformation is a function that will be performed only
-	 * for each element within the tree that matches the given predicate. As an
-	 * example, we will transform the name of each {@link Directory} element to
-	 * upper case, but only for those elements whose name contains "Photo" or
-	 * "photo". Note that unlike the {@link Element#apply(Consumer)} method,
-	 * the transformation is applied only for elements that satisfy the
-	 * condition passed as parameter.
+	 * Apply a function to elements within a tree that satisfy a specific
+	 * condition. This function will be performed only for each element within
+	 * the tree that matches the given predicate. As an example, the name of
+	 * each {@link Directory} element will be transformed to upper case, but
+	 * only for those elements whose name contains "Photo" or "photo". Note that
+	 * unlike the {@link Element#apply(Consumer)} method, the function is
+	 * applied only for elements that satisfy the condition passed as parameter.
 	 * <p><b>Expected:</b></p>
 	 * Only elements within the tree that contain "Photo" or "photo" in their
 	 * name must have their name transformed to upper case, while other elements
@@ -992,7 +990,7 @@ public class ElementTest {
 	 * 	<li>Initialize a session;</li>
 	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
 	 * 	element;</li>
-	 * 	<li>Apply conditional transformation, by invoking the
+	 * 	<li>Apply conditional function, by invoking the
 	 * 	{@link Element#apply(Consumer, Predicate)} with a condition that matches
 	 * 	elements containing "Photo" or "photo" in their name. Only those
 	 * 	elements will have their name transformed to upper case;</li>
@@ -1032,7 +1030,8 @@ public class ElementTest {
 
 		/*
 		 * Verify if the elements that contains "Photo" or "photo" within the
-		 * (Adobe) element were transformed to upper case, and the others not.
+		 * (Adobe) element were transformed to upper case, and the others
+		 * elements that don't match the condition remain unchanged.
 		 */
 		assertEquals("Adobe", adobe.unwrap().getName());
 		Element<Directory> photoshop = manager.getElementById(photoshopId);

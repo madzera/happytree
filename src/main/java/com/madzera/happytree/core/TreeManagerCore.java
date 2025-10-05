@@ -515,13 +515,13 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public <T> Element<T> apply(Consumer<Element<T>> action)
+	public <T> void apply(Consumer<Element<T>> action)
 			throws TreeException {
 		throw new UnsupportedOperationException("Unimplemented method 'apply'");
 	}
 
 	@Override
-	public <T> List<Element<T>> apply(Consumer<Element<T>> action,
+	public <T> void apply(Consumer<Element<T>> action,
 			Predicate<Element<T>> condition) throws TreeException {
 		throw new UnsupportedOperationException("Unimplemented method 'apply'");
 	}

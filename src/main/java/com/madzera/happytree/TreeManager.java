@@ -872,7 +872,7 @@ public interface TreeManager {
 	 * 
 	 * @see #apply(Consumer, Predicate)
 	 */
-	public <T> Element<T> apply(Consumer<Element<T>> action) throws TreeException;
+	public <T> void apply(Consumer<Element<T>> action) throws TreeException;
 
 	/**
 	 * Applies a function to be performed on elements that satisfy a specific
@@ -932,6 +932,6 @@ public interface TreeManager {
 	 * 
 	 * @see #apply(Consumer)
 	 */
-	public <T> List<Element<T>> apply(Consumer<Element<T>> action,
+	public <T> void apply(Consumer<Element<T>> action,
 			Predicate<Element<T>> condition) throws TreeException;
 }
