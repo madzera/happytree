@@ -906,6 +906,34 @@ public class ElementTest {
 		assertEquals(xml, xmlOutput);
 	}
 
+	/**
+	 * Test for the {@link Element#apply(Consumer)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a transformation to all elements within a tree. This transformation
+	 * is a function that will be performed for each element within the tree. As
+	 * an example, we will transform the name of each {@link Directory} element
+	 * to upper case.
+	 * <p><b>Expected:</b></p>
+	 * All elements within the tree must have its name in upper case.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Apply transformation, by invoking the {@link Element#apply(Consumer)}
+	 * 	then all elements within the (Adobe) element, including itself will have
+	 * 	the name transformed to upper case;
+	 * 	</li>
+	 * 	<li>Verify if all elements within the (Adobe) element, including itself
+	 * 	have its name in upper case.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
 	public void apply() throws TreeException {
 		final String sessionId = "apply";
@@ -940,11 +968,48 @@ public class ElementTest {
 		}
 	}
 
+	/**
+	 * Test for the {@link Element#apply(Consumer, Predicate)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a transformation to elements within a tree that satisfy a specific
+	 * condition. This transformation is a function that will be performed only
+	 * for each element within the tree that matches the given predicate. As an
+	 * example, we will transform the name of each {@link Directory} element to
+	 * upper case, but only for those elements whose name contains "Photo" or
+	 * "photo". Note that unlike the {@link Element#apply(Consumer)} method,
+	 * the transformation is applied only for elements that satisfy the
+	 * condition passed as parameter.
+	 * <p><b>Expected:</b></p>
+	 * Only elements within the tree that contain "Photo" or "photo" in their
+	 * name must have their name transformed to upper case, while other elements
+	 * remain unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Apply conditional transformation, by invoking the
+	 * 	{@link Element#apply(Consumer, Predicate)} with a condition that matches
+	 * 	elements containing "Photo" or "photo" in their name. Only those
+	 * 	elements will have their name transformed to upper case;</li>
+	 * 	<li>Verify that only elements containing "Photo" or "photo" within the
+	 * 	(Adobe) element have their name in upper case, while others remain
+	 * 	unchanged.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
 	public void apply_withConditions() throws TreeException {
 		final String sessionId = "apply_withConditions";
 		final Long adobeId = 24935L;
-		final List<String> photoPrefix = Arrays.asList("Photo", "photo");
+		final long photoshopId = 909443L;
+		final long readerId = 403940L;
+		final long dreamweaverId = 502010L;
 
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
@@ -961,10 +1026,23 @@ public class ElementTest {
 		 */
 		adobe.apply(
 				element -> element.unwrap().transformNameToUpperCase(),
-				element -> photoPrefix.contains(element.unwrap().getName()));
+				element -> 
+						element.unwrap().getName().contains("Photo") ||
+						element.unwrap().getName().contains("photo"));
 
-		assertEquals("ADOBE", adobe.unwrap().getName());
-
+		/*
+		 * Verify if the elements that contains "Photo" or "photo" within the
+		 * (Adobe) element were transformed to upper case, and the others not.
+		 */
+		assertEquals("Adobe", adobe.unwrap().getName());
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		assertEquals("PHOTOSHOP", photoshop.unwrap().getName());
+		assertEquals("PHOTOSHOP.EXE", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+		Element<Directory> reader = manager.getElementById(readerId);
+		assertEquals("Reader", reader.unwrap().getName());
+		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
+		assertEquals("Dremweaver", dreamweaver.unwrap().getName());
 	}
 	
 	/**

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.junit.Test;
 
@@ -833,33 +834,95 @@ public class TreeManagerTest {
 	@Test
 	public void updateElement() throws TreeException {
 		final String sessionId = "updateElement";
-		
+
 		final long recordedId = 848305;
 		final long parentRecordedIdVlc = 10239;
 		final long winampId = 32099;
-		
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-		
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
 		transaction.initializeSession(sessionId, directories);
-		
+
 		Element<Directory> winamp = manager.getElementById(winampId);
 		Element<Directory> recorded = manager.getElementById(recordedId);
 		Element<Directory> vlc = manager.getElementById(parentRecordedIdVlc);
-		
+
 		assertTrue(manager.containsElement(vlc, recorded));
 		assertFalse(manager.containsElement(winamp, recorded));
-		
+
 		/*
 		 * Setting the parent of recorded pointing to Winamp.
 		 * Here, the recorded element is detached, it needs to be updated.
 		 */
 		recorded.setParent(winamp.getId());
-		
+
 		manager.updateElement(recorded);
-		
+
 		assertFalse(manager.containsElement(parentRecordedIdVlc, recordedId));
 		assertTrue(manager.containsElement(winampId, recordedId));
+	}
+	
+	/**
+	 * Test for the {@link Element#apply(Consumer)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a transformation to all elements within a tree. This transformation
+	 * is a function that will be performed for each element within the tree. As
+	 * an example, we will transform the name of each {@link Directory} element
+	 * to upper case.
+	 * <p><b>Expected:</b></p>
+	 * All elements within the tree must have its name in upper case.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Apply the transformation, by invoking the
+	 * 	{@link TreeManager#apply(Consumer)} then all elements within the
+	 * (Adobe) element, including itself will have the name transformed to upper
+	 * 	case;</li>
+	 * 	<li>Verify if all elements within the (Adobe) element, including itself
+	 * 	have its name in upper case.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply() throws TreeException {
+		final String sessionId = "apply";
+		final Long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.apply(
+				element -> element.unwrap().transformNameToUpperCase());
+
+		Element<Directory> adobe = root.getElementById(adobeId);
+
+		/*
+		 * Verify if the (Adobe) element and its children have upper case
+		 * names.
+		 */
+		assertEquals("ADOBE", adobe.unwrap().getName());
+		for (Element<Directory> child : adobe.getChildren()) {
+			assertEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+			for (Element<Directory> grandChild : child.getChildren()) {
+				assertEquals(
+						grandChild.unwrap().getName().toUpperCase(),
+						grandChild.unwrap().getName());
+			}
+		}
 	}
 }

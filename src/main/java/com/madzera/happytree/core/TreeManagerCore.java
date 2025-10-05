@@ -2,6 +2,9 @@ package com.madzera.happytree.core;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
@@ -511,6 +514,18 @@ class TreeManagerCore implements TreeManager {
 		return root.cloneElement();
 	}
 
+	@Override
+	public <T> Element<T> apply(Consumer<Element<T>> action)
+			throws TreeException {
+		throw new UnsupportedOperationException("Unimplemented method 'apply'");
+	}
+
+	@Override
+	public <T> List<Element<T>> apply(Consumer<Element<T>> action,
+			Predicate<Element<T>> condition) throws TreeException {
+		throw new UnsupportedOperationException("Unimplemented method 'apply'");
+	}
+	
 	static TreeManager getTreeManagerInstance() {
 		return TreeFactory.serviceFactory().createTreeManagerCore();
 	}

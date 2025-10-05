@@ -1,5 +1,9 @@
 package com.madzera.happytree;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import com.madzera.happytree.exception.TreeException;
 
 /**
@@ -819,5 +823,115 @@ public interface TreeManager {
 	 * @throws TreeException when the transaction has no selected session to
 	 * work or if the current session is not active
 	 */
-	public <T> Element<T> root() throws TreeException; 
+	public <T> Element<T> root() throws TreeException;
+
+	/**
+	 * Applies a function to be performed on all elements within the entire tree
+	 * structure. The action applied to every element in the tree is
+	 * automatically reflected on the tree session (if there are any changes),
+	 * not being necessary to invoke the {@link #persistElement(Element)}
+	 * neither {@link #updateElement(Element)} to save the changes.
+	 * 
+	 * <p>This method traverses the complete tree starting from the root element
+	 * and applies the given action to all elements in the tree (<b>except for
+	 * the root element itself</b>). Unlike {@link #apply(Consumer, Predicate)},
+	 * this method operates on the entire tree structure rather than just a
+	 * subset of elements that match the condition.</p>
+	 * 
+	 * <p>The action function receives each {@link Element} as a parameter and
+	 * can perform any operation on it, such as modifying the wrapped object,
+	 * changing element properties, or performing calculations/verifications.
+	 * </p>
+	 * 
+	 * <p>The action is applied to all elements in the tree, <b>except for the
+	 * root element itself</b>, as it is a special element created by the
+	 * HappyTree API itself, not having the <code>@Id</code>,
+	 * <code>@Parent</code> neither a wrapped object node.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Transform all directory names to uppercase in the entire tree
+	 * manager.apply(e -&gt; e.unwrap().transformNameToUpperCase());
+	 * 
+	 * //Log all element IDs in the tree
+	 * manager.apply(e -&gt; System.out.println("Element ID: " + e.getId()));
+	 * </pre>
+	 * 
+	 * <p><b>Note:</b> The function is applied to <b>all</b> elements in the
+	 * entire tree (<b>except for the root element itself</b>). If you need
+	 * conditional execution based on specific criteria, consider using
+	 * {@link #apply(Consumer, Predicate)} instead.</p>
+	 * 
+	 * @param <T> the class type of the wrapped object node that will be
+	 * encapsulated into the {@link Element} object
+	 * 
+	 * @param action the function to apply to each element in the tree
+	 * 
+	 * @throws TreeException when the transaction has no selected session to
+	 * work or if the current session is not active
+	 * 
+	 * @see #apply(Consumer, Predicate)
+	 */
+	public <T> Element<T> apply(Consumer<Element<T>> action) throws TreeException;
+
+	/**
+	 * Applies a function to be performed on elements that satisfy a specific
+	 * condition within the entire tree structure. The action applied to every
+	 * matching element in the tree is automatically reflected on the tree
+	 * session (if there are any changes), not being necessary to invoke the
+	 * {@link #persistElement(Element)} neither
+	 * {@link #updateElement(Element)} to save the changes.
+	 * 
+	 * <p>This method traverses the complete tree starting from the root element
+	 * and applies the given action only to elements that satisfy the specified
+	 * condition (<b>not including the root element itself</b>). Unlike
+	 * {@link #apply(Consumer)}, this method allows for selective application of
+	 * the action based on custom criteria defined by the condition.</p>
+	 * 
+	 * <p>The action function receives each {@link Element} that meets the
+	 * condition as a parameter and can perform any operation on it, such as
+	 * modifying the wrapped object, changing element properties, or performing
+	 * calculations/verifications.</p>
+	 * 
+	 * <p>The condition is a predicate function that takes an {@link Element}
+	 * as input and returns a boolean value indicating whether the action should
+	 * be applied to that element. Only elements for which the condition
+	 * evaluates to <code>true</code> will have the action applied.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Transform names to uppercase for directories only
+	 * manager.apply(
+	 *     e -&gt; e.unwrap().transformNameToUpperCase(),
+	 *     e -&gt; e.unwrap().isDirectory()
+	 * );
+	 * 
+	 * //Log IDs of elements with names starting with "A"
+	 * manager.apply(
+	 *     e -&gt; System.out.println("Element ID: " + e.getId()),
+	 *     e -&gt; e.unwrap().getName().startsWith("A")
+	 * );
+	 * </pre>
+	 * 
+	 * <p><b>Note:</b> The function is applied only to elements that satisfy the
+	 * specified condition (<b>not including the root element</b>). If you want
+	 * to apply an action to all elements in the tree, consider using
+	 * {@link #apply(Consumer)} instead.</p>
+	 * 
+	 * @param <T> the class type of the wrapped object node that will be
+	 * encapsulated into the {@link Element} object
+	 * 
+	 * @param action the function to apply to each element that meets the
+	 * condition
+	 * 
+	 * @param condition the predicate function to determine which elements
+	 * should have the action applied
+	 * 
+	 * @throws TreeException when the transaction has no selected session to
+	 * work or if the current session is not active
+	 * 
+	 * @see #apply(Consumer)
+	 */
+	public <T> List<Element<T>> apply(Consumer<Element<T>> action,
+			Predicate<Element<T>> condition) throws TreeException;
 }

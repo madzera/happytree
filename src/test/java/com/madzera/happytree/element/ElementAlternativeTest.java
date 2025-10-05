@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 
@@ -1088,6 +1090,172 @@ public class ElementAlternativeTest {
 		String xmlOutput = root.toXML();
 
 		assertEquals(xml, xmlOutput);
+	}
+	
+	/**
+	 * Test for the {@link Element#apply(Consumer)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply a
+	 * function that transforms the name of each element to upper case from the
+	 * root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a function to all elements within a tree. This function will be
+	 * performed for each element within the tree from the root element. As an
+	 * example, the name of each {@link Directory} element will be transformed
+	 * to upper case.
+	 * <p><b>Expected:</b></p>
+	 * All elements within the tree must have their names in upper case (Adobe
+	 * and Foo to be verified), except the root element because it has no
+	 * wrapped object node.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the root element;</li>
+	 * 	<li>Apply the function on the root element to upper case all elements
+	 * 	within the tree (except the own root element);</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Get the element which represents the (Foo) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Verify if both elements which are placed in different positions in
+	 * 	the tree have upper case their names.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_rootElement() throws TreeException {
+		final String sessionId = "apply_rootElement";
+		final Long adobeId = 24935L;
+		final Long fooId = 48224L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+		
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> foo = manager.getElementById(fooId);
+
+		root.apply(element -> element.unwrap().transformNameToUpperCase());
+		
+		/*
+		 * Verify if the (Adobe) element and its children have upper case
+		 * names.
+		 */
+		assertEquals("ADOBE", adobe.unwrap().getName());
+		for (Element<Directory> child : adobe.getChildren()) {
+			assertEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+			for (Element<Directory> grandChild : child.getChildren()) {
+				assertEquals(
+						grandChild.unwrap().getName().toUpperCase(),
+						grandChild.unwrap().getName());
+			}
+		}
+
+		/*
+		 * Verify if the (Foo) element and its children have upper case
+		 * names.
+		 */
+		assertEquals("FOO", foo.unwrap().getName());
+		for (Element<Directory> child : foo.getChildren()) {
+			assertEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+		}
+	}
+
+	/**
+	 * Test for the {@link Element#apply(Consumer, Predicate)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply a
+	 * function that transforms the name of each element to upper case given a
+	 * certain condition. The search starts from the root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Apply a function to all elements within a tree given a certain condition.
+	 * This function will be performed for each element within the tree from the
+	 * root element, but only for those elements that match the condition. As an
+	 * example, the name of each {@link Directory} element that satisfies the
+	 * condition will be transformed to upper case.
+	 * <p><b>Expected:</b></p>
+	 * Only the (Adobe and foo) elements will have their names transformed into
+	 * upper case.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session;</li>
+	 * 	<li>Get the root element;</li>
+	 * 	<li>Apply the function on the root element to upper case all elements
+	 * 	within the tree that satisfy the condition (except the own root element);
+	 * 	</li>
+	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Get the element which represents the (foo) {@link Directory}
+	 * 	element;</li>
+	 * 	<li>Verify if both elements which are placed in different positions in
+	 * 	the tree have upper case their names and elements that don't match the
+	 * 	condition remain unchanged.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_withCondition_rootElement() throws TreeException {
+		final String sessionId = "apply_withCondition_rootElement";
+		final Long adobeId = 24935L;
+		final Long fooId = 48224L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		Element<Directory> foo = manager.getElementById(fooId);
+
+		root.apply( element ->  element.unwrap().transformNameToUpperCase(),
+					element ->  element.unwrap().getName().equals("Adobe") ||
+								element.unwrap().getName().equals("foo"));
+
+		/*
+		 * Verify if the (Adobe) children have NOT upper case names (only
+		 * Adobe element was affected by the function).
+		 */
+		assertEquals("ADOBE", adobe.unwrap().getName());
+		for (Element<Directory> child : adobe.getChildren()) {
+			assertNotEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+			for (Element<Directory> grandChild : child.getChildren()) {
+				assertNotEquals(
+						grandChild.unwrap().getName().toUpperCase(),
+						grandChild.unwrap().getName());
+			}
+		}
+
+		/*
+		 * Verify if the (foo) children have NOT upper case names (only
+		 * foo element was affected by the function).
+		 */
+		assertEquals("FOO", foo.unwrap().getName());
+		for (Element<Directory> child : foo.getChildren()) {
+			assertNotEquals(
+					child.unwrap().getName().toUpperCase(),
+					child.unwrap().getName());
+		}
 	}
 	
 	/**

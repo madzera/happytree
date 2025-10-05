@@ -212,7 +212,16 @@ class TreeElementCore<T> implements Element<T> {
 		if (action == null) {
 			return;
 		}
-		action.accept(this);
+
+		/*
+		 * The action is not applied to the root element, only to its
+		 * descendants.
+		 */
+		if (!this.isRoot()) {
+			action.accept(this);
+			transitionState(ElementState.DETACHED);
+		}
+
 		for (Element<T> child : this.getChildren()) {
 			child.apply(action);
 		}
@@ -225,11 +234,13 @@ class TreeElementCore<T> implements Element<T> {
 			return;
 		}
 
-		if (condition.test(this)) {
+		if (!this.isRoot() && condition.test(this)) {
 			action.accept(this);
-			for (Element<T> child : this.getChildren()) {
-				child.apply(action, condition);
-			}
+			transitionState(ElementState.DETACHED);
+		}
+
+		for (Element<T> child : this.getChildren()) {
+			child.apply(action, condition);
 		}
 	}
 

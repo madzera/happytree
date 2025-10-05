@@ -526,8 +526,99 @@ public interface Element<T> {
 	 */
 	public String toPrettyXML();
 
+	/**
+	 * Applies a function to be performed on this element and all its children
+	 * recursively within the tree structure. The action applied to the elements
+	 * is not automatically reflected on the tree session, thus requiring to
+	 * invoke the {@link TreeManager#persistElement(Element)} for new elements
+	 * or {@link TreeManager#updateElement(Element)} to save the changes for
+	 * already existing elements.
+	 * 
+	 * <p>This method traverses the entire subtree starting from this element
+	 * (including the element itself) and applies the given action to all
+	 * elements in the tree.</p>
+	 * 
+	 * <p>The action function receives each {@link Element} as a parameter and
+	 * can perform any operation on it, such as modifying the wrapped object,
+	 * changing element properties, or performing calculations/verifications.
+	 * </p>
+	 * 
+	 * <p>When this method is invoked by the root element, the action is applied
+	 * to all elements in the tree, <b>except for the root element itself</b>,
+	 * as it is a special element created by the HappyTree API itself, not
+	 * having the <code>@Id</code>, <code>@Parent</code> neither a wrapped
+	 * object node.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Transform all directory names to uppercase
+	 * element.apply(e -&gt; e.unwrap().transformNameToUpperCase());
+	 * 
+	 * //Log all element IDs in the subtree
+	 * element.apply(e -&gt; System.out.println("Element ID: " + e.getId()));
+	 * </pre>
+	 * 
+	 * <p><b>Note:</b> The function is applied to <b>all</b> elements in the
+	 * subtree (<b>except for the root element itself</b>). If you need
+	 * conditional execution based on specific criteria, consider using
+	 * {@link #apply(Consumer, Predicate)} instead.</p>
+	 * 
+	 * @param action the function to apply to each element in the
+	 * subtree
+	 * 
+	 * @see #apply(Consumer, Predicate)
+	 */
 	public void apply(Consumer<Element<T>> action);
 
+	/**
+	 * Applies a function to be performed within this element that satisfy the
+	 * specified condition. The action applied to the elements is not
+	 * automatically reflected on the tree session, thus requiring to invoke the
+	 * {@link TreeManager#persistElement(Element)} for new elements
+	 * or {@link TreeManager#updateElement(Element)} to save the changes for
+	 * already existing elements.
+	 * 
+	 * <p>This method traverses the entire subtree starting from this element
+	 * (including the element itself) and applies the given action only to those
+	 * elements that match the specified predicate condition.</p>
+	 * 
+	 * <p>The condition predicate is evaluated for each element in the subtree,
+	 * and the action is only performed on elements where the predicate returns
+	 * {@code true}. This allows for fine-grained control over which elements
+	 * are affected by the function.</p>
+	 * 
+	 * <p>When this method is invoked by the root element, the action is applied
+	 * to all elements that match the condition in the tree, <b>except for the
+	 * root element itself</b>, as it is a special element created by the
+	 * HappyTree API itself, not having the <code>@Id</code>,
+	 * <code>@Parent</code> neither a wrapped object node.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Transform only elements containing "photo" in their name
+	 * element.apply(
+	 *     e -&gt; e.unwrap().transformNameToUpperCase(),
+	 *     e -&gt; e.unwrap().getName().toLowerCase().contains("photo")
+	 * );
+	 * 
+	 * //Apply action only to leaf elements (elements with no children)
+	 * element.apply(
+	 *     e -&gt; processLeafElement(e),
+	 *     e -&gt; e.getChildren().isEmpty()
+	 * );
+	 * </pre>
+	 * 
+	 * <p><b>Note:</b> Unlike {@link #apply(Consumer)}, the function is applied
+	 * only for elements that satisfy the condition passed as parameter.
+	 * Elements that don't match the condition remain unchanged, providing
+	 * selective capabilities.</p>
+	 * 
+	 * @param action the function to apply to matching elements
+	 * @param condition the predicate that determines which elements should
+	 * receive the action
+	 * 
+	 * @see #apply(Consumer)
+	 */
 	public void apply(
 		Consumer<Element<T>> action, Predicate<Element<T>> condition);
 }
