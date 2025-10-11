@@ -69,11 +69,10 @@ class ATPLifecycle<T> {
 	 * be made available in this session.
 	 */
 	@SuppressWarnings("unchecked")
-	private void prepareInitializedSession() throws TreeException {
+	private void prepareInitializedSession() {
 		Set<TreeElementCore<T>> tree = (Set<TreeElementCore<T>>)
 				pipeline.getAttribute(ROOT_KEY);
 		TreeManager manager = (TreeManager) pipeline.getAttribute(MANAGER_KEY);
-		
 		
 		TreeTransactionCore transaction = (TreeTransactionCore)
 				manager.getTransaction();

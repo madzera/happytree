@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
+import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.util.TreeAssembler;
@@ -28,7 +29,7 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Nóbrega
  *
  */
-public class TreeManagerTest {
+public class TreeManagerTest extends TreeCommonTestHelper {
 
 	/**
 	 * Test for the {@link TreeManager#getTransaction()}.
@@ -980,8 +981,8 @@ public class TreeManagerTest {
 		transaction.initializeSession(sessionId, directoryTree);
 
 		manager.apply(
-			element -> applyUpperCase(element),
-			element -> nameStartsWithPhoto(element)
+			element -> applyUpperCaseDirectoryName(element),
+			element -> directoryNameStartsWithPhoto(element)
 		);
 
 		Element<Directory> root = manager.root();
@@ -1001,23 +1002,5 @@ public class TreeManagerTest {
 		assertEquals("Reader", reader.unwrap().getName());
 		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
 		assertEquals("Dremweaver", dreamweaver.unwrap().getName());
-	}
-	
-	private void applyUpperCase(Element<Object> element) {
-		Object obj = element.unwrap();
-		if (obj != null) {
-			Directory directory = (Directory) obj;
-			directory.setName(directory.getName().toUpperCase());
-		}
-	}
-
-	private boolean nameStartsWithPhoto(Element<Object> element) {
-		Object obj = element.unwrap();
-		if (obj != null) {
-			Directory directory = (Directory) obj;
-			return directory.getName().startsWith("Photo")
-					|| directory.getName().startsWith("photo");
-		}
-		return false;
 	}
 }

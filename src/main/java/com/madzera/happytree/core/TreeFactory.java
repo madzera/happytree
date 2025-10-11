@@ -1,5 +1,11 @@
 package com.madzera.happytree.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +35,7 @@ class TreeFactory {
 	private static UtilFactory utilFactory;
 	private static JsonFactory jsonFactory;
 	private static XmlFactory xmlFactory;
+	private static IoFactory ioFactory;
 	
 	
 	protected TreeFactory() {}
@@ -110,6 +117,14 @@ class TreeFactory {
 		}
 		return xmlFactory;
 	}
+
+	static IoFactory ioFactory() {
+		if (ioFactory == null) {
+			ioFactory = getInstance().new IoFactory();
+		}
+		return ioFactory;
+	}
+	
 	
 	class ATPLifecycleFactory extends ATPFactory {
 		ATPLifecycleFactory() {}
@@ -265,12 +280,36 @@ class TreeFactory {
 	class XmlFactory extends TreeFactory {
 		XmlFactory() {
 		}
-		
+
 		XmlMapper createXmlMapper() {
 			return new XmlMapper();
 		}
 	}
 	
+	class IoFactory extends TreeFactory {
+		IoFactory() {
+		}
+
+		ObjectOutputStream createObjectOutputStream(OutputStream outputStream)
+				throws IOException {
+			return new ObjectOutputStream(outputStream);
+		}
+
+		ByteArrayOutputStream createByteArrayOutputStream() {
+			return new ByteArrayOutputStream();
+		}
+
+		ObjectInputStream createObjectInputStream(
+				ByteArrayInputStream byteArrayInputStream) throws IOException {
+			return new ObjectInputStream(byteArrayInputStream);
+		}
+
+		ByteArrayInputStream createByteArrayInputStream(byte[] byteArray) {
+			return new ByteArrayInputStream(byteArray);
+		}
+	}
+	
+
 	protected static TreeFactory getInstance() {
 		if (instance == null) {
 			instance = new TreeFactory();

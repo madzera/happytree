@@ -45,6 +45,7 @@ class TreeElementCore<T> implements Element<T> {
 	private Class<?> type;
 	private Object newId;
 	private Object oldParentId;
+	private T newWrappedNode;
 	
 	
 	TreeElementCore(Object id, Object parentId, T wrappedNode,
@@ -55,6 +56,8 @@ class TreeElementCore<T> implements Element<T> {
 		this.children = TreeFactory.collectionFactory().createHashSet();
 		
 		this.wrappedNode = wrappedNode;
+		this.newWrappedNode = wrappedNode;
+		
 		if (wrappedNode != null) {
 			this.setType(wrappedNode.getClass());
 		}
@@ -73,6 +76,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
+		if (this.isRoot) {
+			return;
+		}
 		/*
 		 * Invoking this method should not update the id automatically, instead
 		 * that, store the id value in a newId attribute to be submitted when
@@ -92,6 +98,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setParent(Object parent) {
+		if (this.isRoot) {
+			return;
+		}
 		this.parentId = parent;
 		transitionState(ElementState.DETACHED);
 	}
@@ -103,7 +112,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public Element<T> getElementById(Object id) {
-		return Recursion.searchElementById(getChildren(), id);
+		boolean isThisElement = !this.isRoot && this.id.equals(id);
+		return isThisElement ? 
+				this : Recursion.searchElementById(getChildren(), id);
 	}
 	
 	@Override
@@ -117,6 +128,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void addChildren(Collection<Element<T>> children) {
+		if (this.isRoot) {
+			return;
+		}
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
 			for (Element<T> element : children) {
@@ -149,6 +163,9 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChild(Object id) {
+		if (this.isRoot) {
+			return;
+		}
 		Iterator<Element<T>> iterator = this.children.iterator();
 		
 		while (iterator.hasNext()) {
@@ -164,17 +181,31 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) {
-		this.wrappedNode = object;
+		if (this.isRoot) {
+			return;
+		}
+		setNewWrappedNode(object);
 		
-		if (this.wrappedNode != null) {
+		/*
+		 * If the element is in NOT_EXISTED means that it is ready to be
+		 * persisted, so there is a chance that the API client creates an
+		 * element without wrapped object node and tries to wrap it later.
+		 */
+		if (ElementState.NOT_EXISTED.equals(this.state)) {
+			this.wrappedNode = object;
+		} else {
+			transitionState(ElementState.DETACHED);
+		}
+
+		if (this.newWrappedNode != null) {
 			setType(object.getClass());
 		}
-		transitionState(ElementState.DETACHED);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T unwrap() {
-		return this.wrappedNode;
+		return (T) TreeUtil.IoUtil.deepCopyObject(this.wrappedNode, null);
 	}
 
 	@Override
@@ -306,19 +337,29 @@ class TreeElementCore<T> implements Element<T> {
 	
 	/*
 	 * This method only can be invoked by core API, when this is updating the
-	 * object which a change in the id attribute is necessary. This set the
+	 * object which a change in the id attribute is necessary. Update the
 	 * current id with the desirable id and all children will reference this
 	 * new id.
 	 */
 	void mergeUpdatedId(Object id) {
 		this.id = id;
 		this.setNewId(null);
-		
+
 		for (Element<T> iterator : getChildren()) {
-			TreeElementCore<T> child = (TreeElementCore<T>) iterator; 
+			TreeElementCore<T> child = (TreeElementCore<T>) iterator;
 			child.setParent(id);
 			child.syncParentId();
 		}
+	}
+
+	/*
+	 * This method only can be invoked by core API, when this is updating the
+	 * object which a change in the wrapped node attribute is necessary. Update
+	 * the current wrapped node with the desirable wrapped node.
+	 */
+	void mergeUpdatedWrappedNode(T wrappedNode) {
+		this.wrappedNode = wrappedNode;
+		this.setNewWrappedNode(wrappedNode);
 	}
 
 	void syncParentId() {
@@ -357,6 +398,16 @@ class TreeElementCore<T> implements Element<T> {
 	}
 
 	/*
+	 * This attribute represents the new wrapped node that this element will
+	 * have. When the API client invokes wrap() the wrapped node is not changed
+	 * automatically, it just is submitted when the updateElement() from
+	 * TreeManager is invoked.
+	 */
+	T getUpdatedWrappedNode() {
+		return this.newWrappedNode;
+	}
+
+	/*
 	 * Only in the root assembly. When there is a session being initialized,
 	 * then this root element cannot be detached.
 	 */
@@ -391,6 +442,7 @@ class TreeElementCore<T> implements Element<T> {
 		clone.setRoot(this.isRoot());
 		clone.setType(this.getType());
 		clone.setNewId(this.getUpdatedId());
+		clone.setNewWrappedNode(this.getUpdatedWrappedNode());
 		
 		return clone;
 	}
@@ -432,6 +484,10 @@ class TreeElementCore<T> implements Element<T> {
 
 	private void setNewId(Object newId) {
 		this.newId = newId;
+	}
+
+	private void setNewWrappedNode(T newWrappedNode) {
+		this.newWrappedNode = newWrappedNode;
 	}
 	
 	private String toJSON(final boolean isPrettyJson) {

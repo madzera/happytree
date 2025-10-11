@@ -47,7 +47,7 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		
 		Element<TaxonomyNode> root = manager.root();
 		Element<TaxonomyNode> dispatches = manager.getElementById(92);
-		Element<TaxonomyNode> _2020 = manager.getElementById(4002);
+		Element<TaxonomyNode> y2020 = manager.getElementById(4002);
 		Element<TaxonomyNode> july = manager.getElementById(54393);
 		Element<TaxonomyNode> august = manager.getElementById(98474);
 		Element<TaxonomyNode> september = manager.getElementById(93549);
@@ -55,7 +55,7 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		isNotNull(root);
 		isNotNull(september);
 		isNotNull(august);
-		isNotNull(_2020);
+		isNotNull(y2020);
 		isNotNull(dispatches);
 		isNotNull(september);
 		
@@ -66,17 +66,17 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		isFalse(manager.containsElement(august, root));
 		isTrue(manager.containsElement(root, august));
 		
-		isTrue(manager.containsElement(_2020, july));
-		isTrue(manager.containsElement(_2020, august));
-		isTrue(manager.containsElement(_2020, september));
+		isTrue(manager.containsElement(y2020, july));
+		isTrue(manager.containsElement(y2020, august));
+		isTrue(manager.containsElement(y2020, september));
 		
 		isTrue(manager.containsElement(dispatches, july));
 		isTrue(manager.containsElement(dispatches, august));
 		isTrue(manager.containsElement(dispatches, september));
-		isTrue(manager.containsElement(dispatches, _2020));
+		isTrue(manager.containsElement(dispatches, y2020));
 		
 		isEquals("Dispatches", dispatches.unwrap().getNodeName());
-		isEquals("2020", _2020.unwrap().getNodeName());
+		isEquals("2020", y2020.unwrap().getNodeName());
 		isEquals("July", july.unwrap().getNodeName());
 		isEquals("August", august.unwrap().getNodeName());
 		isEquals("September", september.unwrap().getNodeName());
@@ -129,10 +129,10 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		 * Passing Ids instead elements, this is not necessary to 'refresh' the
 		 * elements.
 		 */
-		processes = manager.cut(processes, _2020);
-		isTrue(manager.containsElement(_2020.getId(), processes.getId()));
-		isTrue(manager.containsElement(_2020.getId(), criminal.getId()));
-		isTrue(manager.containsElement(_2020.getId(), january.getId()));
+		processes = manager.cut(processes, y2020);
+		isTrue(manager.containsElement(y2020.getId(), processes.getId()));
+		isTrue(manager.containsElement(y2020.getId(), criminal.getId()));
+		isTrue(manager.containsElement(y2020.getId(), january.getId()));
 		isTrue(manager.containsElement(dispatches.getId(),
 				processes.getId()));
 		isTrue(manager.containsElement(dispatches.getId(),
@@ -140,12 +140,15 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		isTrue(manager.containsElement(dispatches.getId(), january.getId()));
 		isEquals(1, manager.root().getChildren().size());
 		
-		processes = manager.removeElement(processes);
+		manager.removeElement(processes);
 		
-		isFalse(manager.containsElement(_2020.getId(), _2020.getId()));
-		isFalse(manager.containsElement(_2020.getId(),
+		// An element contains itself.
+		isTrue(manager.containsElement(y2020.getId(), y2020.getId()));
+		
+		isFalse(manager.containsElement(y2020.getId(), processes.getId()));
+		isFalse(manager.containsElement(y2020.getId(),
 				criminal.getId()));
-		isFalse(manager.containsElement(_2020.getId(), january.getId()));
+		isFalse(manager.containsElement(y2020.getId(), january.getId()));
 		
 	}
 }

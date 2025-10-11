@@ -138,7 +138,7 @@ public final class TreeAssembler {
 				Directory readerExe = new Directory(8493845L, 403940L, "reader.exe");
 			Directory photoshop = new Directory(909443L, 24935L, "Photoshop");
 				Directory psExe = new Directory(4950243L, 909443L, "photoshop.exe");
-			Directory dreamweaver = new Directory(502010L, 24935L, "Dremweaver");
+			Directory dreamweaver = new Directory(502010L, 24935L, "Dreamweaver");
 				Directory dwExe = new Directory(8935844L, 502010L, "dreamweaver.exe");
 	Directory realtek = new Directory(94034L, 42345L, "Realtek");
 			Directory drivers = new Directory(220332L, 94034L, "drivers");

@@ -2,7 +2,6 @@ package com.madzera.happytree.core;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -383,7 +382,7 @@ class TreeManagerCore implements TreeManager {
 		 * Save changes.
 		 */
 		transaction.commitTransaction();
-		
+
 		return child.cloneElement();
 	}
 
@@ -468,6 +467,24 @@ class TreeManagerCore implements TreeManager {
 			sourceChildren.addAll(updatedElement.getChildren());
 		}
 
+		/*
+		 * Update the wrapped node of this element and all of its descendants.
+		 */
+		Collection<Element<T>> descendants = Recursion.toPlainList(
+				updatedElement);
+		descendants.forEach(descendant -> {
+			TreeElementCore<T> descendantCore = (TreeElementCore<T>) descendant;
+			T updatedWrappedNode = descendantCore.getUpdatedWrappedNode();
+
+			/*
+			 * Update the wrapped node, even if it is null. In this case, the
+			 * element will have its wrapped node with null value.
+			 */
+			TreeElementCore<T> sourceDescendant = (TreeElementCore<T>) source.
+					getElementById(descendantCore.getId());
+			sourceDescendant.mergeUpdatedWrappedNode(updatedWrappedNode);
+		});
+		
 		/*
 		 * Obtains the id to be updated. If it is not null then implies that
 		 * there is a change in the id attribute.

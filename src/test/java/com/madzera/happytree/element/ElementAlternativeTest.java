@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
+import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.util.TreeAssembler;
@@ -31,7 +32,7 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Madson de Andrade Nóbrega
  *
  */
-public class ElementAlternativeTest {
+public class ElementAlternativeTest extends TreeCommonTestHelper {
 
 	/**
 	 * Test for the {@link Element#setId(Object)} and {@link Element#getId()}.
@@ -392,6 +393,35 @@ public class ElementAlternativeTest {
 		assertNull(wrappedDirectory);
 	}
 
+	@Test
+	public void unwrap_changedNode_wrap() throws TreeException {
+		final String sessionId = "unwrap_changedNode_wrap";
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+
+		Directory beforeUpdate = adobe.unwrap();
+		beforeUpdate.setName("Adobe Inc.");
+		Directory afterUpdate = beforeUpdate;
+
+		adobe = manager.getElementById(adobeId);
+		assertEquals("Adobe", adobe.unwrap().getName());
+
+		adobe.wrap(afterUpdate);
+
+		manager.updateElement(adobe);
+
+		adobe = manager.getElementById(adobeId);
+		assertEquals("Adobe Inc.", adobe.unwrap().getName());
+	}
+	
 	/**
 	 * Test for the {@link Element#toJSON()} operation.
 	 * 
@@ -549,7 +579,7 @@ public class ElementAlternativeTest {
 	public void toJSON_addRemoveElement() throws TreeException {
 		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
 				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
-				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
+				+ "\"parentIdentifier\":24935,\"name\":\"Dreamweaver\","
 				+ "\"children\":[{\"identifier\":8935844,"
 				+ "\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\","
 				+ "\"children\":[]}]},{\"identifier\":909443,"
@@ -764,7 +794,7 @@ public class ElementAlternativeTest {
 		final String xml = "<element><identifier>24935</identifier>" +
 				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
 				"<children><element><identifier>502010</identifier>" +
-				"<parentIdentifier>24935</parentIdentifier><name>Dremweaver" +
+				"<parentIdentifier>24935</parentIdentifier><name>Dreamweaver" +
 				"</name><children><element><identifier>8935844</identifier>" +
 				"<parentIdentifier>502010</parentIdentifier>" +
 				"<name>dreamweaver.exe</name><children/></element>" +
@@ -923,7 +953,7 @@ public class ElementAlternativeTest {
 				"\"children\":[]}]}]},{\"identifier\":24935," +
 				"\"parentIdentifier\":42345,\"name\":\"Adobe\"," +
 				"\"children\":[{\"identifier\":502010," +
-				"\"parentIdentifier\":24935,\"name\":\"Dremweaver\"," +
+				"\"parentIdentifier\":24935,\"name\":\"Dreamweaver\"," +
 				"\"children\":[{\"identifier\":8935844," +
 				"\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\"," +
 				"\"children\":[]}]},{\"identifier\":909443," +
@@ -1062,7 +1092,7 @@ public class ElementAlternativeTest {
 				"<parentIdentifier>42345</parentIdentifier><name>Adobe" +
 				"</name><children><element><identifier>502010</identifier>" +
 				"<parentIdentifier>24935</parentIdentifier>" +
-				"<name>Dremweaver</name><children><element>" +
+				"<name>Dreamweaver</name><children><element>" +
 				"<identifier>8935844</identifier><parentIdentifier>502010" +
 				"</parentIdentifier><name>dreamweaver.exe</name><children/>" +
 				"</element></children></element><element>" +
@@ -1115,6 +1145,8 @@ public class ElementAlternativeTest {
 	 * 	<li>Get the root element;</li>
 	 * 	<li>Apply the function on the root element to upper case all elements
 	 * 	within the tree (except the own root element);</li>
+	 * 	<li>Update all children of root element (it is not allowed to handle
+	 * 	root element directly);</li>
 	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
 	 * 	element;</li>
 	 * 	<li>Get the element which represents the (Foo) {@link Directory}
@@ -1139,12 +1171,24 @@ public class ElementAlternativeTest {
 		transaction.initializeSession(sessionId, directoryTree);
 
 		Element<Directory> root = manager.root();
+
+		root.apply(element -> applyUpperCaseDirectoryName(element));
+
+		/*
+		 * It is not allowed to handle root element directly, so update all
+		 * children of root element.
+		 */
+		root.getChildren().forEach(element -> {
+			try {
+				manager.updateElement(element);
+			} catch (TreeException e) {
+				/* Ignored */
+			}
+		});
 		
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		Element<Directory> foo = manager.getElementById(fooId);
 
-		root.apply(element -> element.unwrap().transformNameToUpperCase());
-		
 		/*
 		 * Verify if the (Adobe) element and its children have upper case
 		 * names.
@@ -1197,6 +1241,8 @@ public class ElementAlternativeTest {
 	 * 	<li>Apply the function on the root element to upper case all elements
 	 * 	within the tree that satisfy the condition (except the own root element);
 	 * 	</li>
+	 * 	<li>Update all children of root element (it is not allowed to handle
+	 * 	root element directly);</li>
 	 * 	<li>Get the element which represents the (Adobe) {@link Directory}
 	 * 	element;</li>
 	 * 	<li>Get the element which represents the (foo) {@link Directory}
@@ -1223,12 +1269,20 @@ public class ElementAlternativeTest {
 
 		Element<Directory> root = manager.root();
 
+		root.apply( element ->  applyUpperCaseDirectoryName(element),
+					element ->  element.unwrap().getName().equals("Adobe") ||
+						element.unwrap().getName().equals("foo"));
+
+		root.getChildren().forEach(element -> {
+			try {
+				manager.updateElement(element);
+			} catch (TreeException e) {
+				/* Ignored */
+			}
+		});
+
 		Element<Directory> adobe = manager.getElementById(adobeId);
 		Element<Directory> foo = manager.getElementById(fooId);
-
-		root.apply( element ->  element.unwrap().transformNameToUpperCase(),
-					element ->  element.unwrap().getName().equals("Adobe") ||
-								element.unwrap().getName().equals("foo"));
 
 		/*
 		 * Verify if the (Adobe) children have NOT upper case names (only

@@ -185,11 +185,13 @@ public interface Element<T> {
 	 * Searches within the current element for an element according to the
 	 * <code>id</code> parameter passed through.
 	 * 
-	 * <p>If the element is not found, then <code>null</code> is returned.</p>
+	 * <p>The search is performed recursively within the children of this 
+	 * element starting by the current element itself. If the element is not
+	 * found, then <code>null</code> is returned.</p>
 	 * 
 	 * @param id the element identifier to be searched for
 	 * 
-	 * @return the found element inside this one
+	 * @return the found element within this one
 	 */
 	public Element<T> getElementById(Object id);
 	
@@ -243,6 +245,11 @@ public interface Element<T> {
 	 * 		Process</b>.</li>
 	 * 	</ol>
 	 * 
+	 * <p>To be effectively wrapped within the tree session, the invocation of
+	 * {@link TreeManager#persistElement(Element)} (for new elements) or
+	 * {@link TreeManager#updateElement(Element)} (for changing objects nodes)
+	 * is required, depending on the context.</p>
+	 * 
 	 * <p>The first one would be to create an empty tree. In this way, the
 	 * wrapped node is determined after the tree is ready, invoking this
 	 * method. This includes the choice of not determining, making it with the
@@ -265,16 +272,18 @@ public interface Element<T> {
 	 * <p>There are some requirements for this object node to be wrapped when
 	 * initializing a session by the API Transformation Process:</p>
 	 * 	<ul>
-	 * 		<li>The class of this node must be annotated by {@literal @Tree};
+	 * 		<li>The class of this node must implement <code>Serializable</code>;
 	 * 		</li>
-	 * 		<li>The class of this node must be annotated by {@literal @Parent};
+	 * 		<li>The class of this node must be annotated by <code>@Tree</code>;
 	 * 		</li>
-	 * 		<li>The class of this node must be annotated by {@literal @Id};
+	 * 		<li>The class of this node must be annotated by <code>@Parent</code>;
 	 * 		</li>
-	 * 		<li>The {@literal @Id} value cannot be <code>null</code>;
+	 * 		<li>The class of this node must be annotated by <code>@Id</code>;
 	 * 		</li>
-	 * 		<li>The {@literal @Id} and {@literal @Parent} must be of the same
-	 * 		type.</li>
+	 * 		<li>The <code>@Id</code> value cannot be <code>null</code>;
+	 * 		</li>
+	 * 		<li>The <code>@Id</code> and <code>@Parent</code> must be of the
+	 * 		same type.</li>	
 	 * 	</ul>
 	 * 
 	 * <p>Those requirements are only applied when the session is going to be
@@ -286,9 +295,15 @@ public interface Element<T> {
 	public void wrap(T object);
 	
 	/**
-	 * Obtains the object node wrapped into this element.
+	 * Obtains a copy of the object node wrapped into this element.
 	 * 
-	 * @return the wrapped object node inside of this element
+	 * <p>The own object node itself cannot be changed. This method just
+	 * provides a way to access the object node wrapped within this element. To
+	 * modify its state, consider using the {@link #wrap(Object)} method and
+	 * save the changes by invoking the
+	 * {@link TreeManager#updateElement(Element)} method.</p>
+	 * 
+	 * @return a copy of the wrapped object node inside of this element
 	 * 
 	 * @see #wrap(Object)
 	 */

@@ -9,7 +9,7 @@ public class TaxonomyNodeAssembler {
 
 	public static List<TaxonomyNode> getTaxonomyNodeList() {
 		TaxonomyNode dispatches = new TaxonomyNode();
-		TaxonomyNode _2020 = new TaxonomyNode();
+		TaxonomyNode y2020 = new TaxonomyNode();
 		TaxonomyNode july = new TaxonomyNode();
 		TaxonomyNode august = new TaxonomyNode();
 		TaxonomyNode september = new TaxonomyNode();
@@ -29,10 +29,10 @@ public class TaxonomyNodeAssembler {
 		september.setParentNodeID(4002);
 		september.setNodeName("September");
 		
-		_2020.setLevel(1);
-		_2020.setTaxonomyID(4002);
-		_2020.setParentNodeID(92);
-		_2020.setNodeName("2020");
+		y2020.setLevel(1);
+		y2020.setTaxonomyID(4002);
+		y2020.setParentNodeID(92);
+		y2020.setNodeName("2020");
 		
 		dispatches.setLevel(0);
 		dispatches.setTaxonomyID(92);
@@ -43,7 +43,7 @@ public class TaxonomyNodeAssembler {
 		nodesList.add(july);
 		nodesList.add(september);
 		nodesList.add(dispatches);
-		nodesList.add(_2020);
+		nodesList.add(y2020);
 		nodesList.add(august);
 		
 		return nodesList;

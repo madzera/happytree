@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
+import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.util.TreeAssembler;
@@ -30,7 +31,7 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Madson de Andrade Nóbrega
  *
  */
-public class ElementTest {
+public class ElementTest extends TreeCommonTestHelper {
 
 	/**
 	 * Test for the {@link Element#getId()}.
@@ -651,7 +652,7 @@ public class ElementTest {
 	public void toJSON() throws TreeException {
 		final String json = "{\"identifier\":24935,\"parentIdentifier\":42345,"
 				+ "\"name\":\"Adobe\",\"children\":[{\"identifier\":502010,"
-				+ "\"parentIdentifier\":24935,\"name\":\"Dremweaver\","
+				+ "\"parentIdentifier\":24935,\"name\":\"Dreamweaver\","
 				+ "\"children\":[{\"identifier\":8935844,"
 				+ "\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\","
 				+ "\"children\":[]}]},{\"identifier\":909443,"
@@ -712,7 +713,7 @@ public class ElementTest {
 				"  \"children\" : [ {" + breakLine() + //
 				"    \"identifier\" : 502010," + breakLine() + //
 				"    \"parentIdentifier\" : 24935," + breakLine() + //
-				"    \"name\" : \"Dremweaver\"," + breakLine() + //
+				"    \"name\" : \"Dreamweaver\"," + breakLine() + //
 				"    \"children\" : [ {" + breakLine() + //
 				"      \"identifier\" : 8935844," + breakLine() + //
 				"      \"parentIdentifier\" : 502010," + breakLine() + //
@@ -786,7 +787,7 @@ public class ElementTest {
 		final String xml = "<element><identifier>24935</identifier>" +
 				"<parentIdentifier>42345</parentIdentifier><name>Adobe</name>" +
 				"<children><element><identifier>502010</identifier>" +
-				"<parentIdentifier>24935</parentIdentifier><name>Dremweaver" +
+				"<parentIdentifier>24935</parentIdentifier><name>Dreamweaver" +
 				"</name><children><element><identifier>8935844</identifier>" +
 				"<parentIdentifier>502010</parentIdentifier>" +
 				"<name>dreamweaver.exe</name><children/></element>" +
@@ -851,7 +852,7 @@ public class ElementTest {
 				"    <element>" + breakLine() + //
 				"      <identifier>502010</identifier>" + breakLine() + //
 				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
-				"      <name>Dremweaver</name>" + breakLine() + //
+				"      <name>Dreamweaver</name>" + breakLine() + //
 				"      <children>" + breakLine() + //
 				"        <element>" + breakLine() + //
 				"          <identifier>8935844</identifier>" + breakLine() + //
@@ -912,11 +913,12 @@ public class ElementTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Apply a function to all elements within a tree. This function will be
-	 * performed for each element within the tree. As an example, the name of
-	 * each {@link Directory} element will be transformed to upper case.
+	 * Apply a function to all elements within the own element itself. This
+	 * function will be performed for each element within the own element. As an
+	 * example, the name of each {@link Directory} element will be transformed
+	 * to upper case.
 	 * <p><b>Expected:</b></p>
-	 * All elements within the tree must have its name in upper case.
+	 * All elements within the own element must have its name in upper case.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -927,6 +929,8 @@ public class ElementTest {
 	 * 	then all elements within the (Adobe) element, including itself will have
 	 * 	the name transformed to upper case;
 	 * 	</li>
+	 * 	<li>Update the (Adobe) element by invoking
+	 * 	{@link TreeManager#updateElement(Element)};</li>
 	 * 	<li>Verify if all elements within the (Adobe) element, including itself
 	 * 	have its name in upper case.</li>
 	 * </ol>
@@ -951,7 +955,15 @@ public class ElementTest {
 		 * Apply the name transformation for all elements within the (Adobe)
 		 * element, including itself.
 		 */
-		adobe.apply(element -> element.unwrap().transformNameToUpperCase());
+		adobe.apply(element -> {
+			Directory directory = element.unwrap();
+			directory.transformNameToUpperCase();
+			element.wrap(directory);
+		});
+
+		assertEquals("Adobe", adobe.unwrap().getName());
+
+		adobe = manager.updateElement(adobe);
 
 		assertEquals("ADOBE", adobe.unwrap().getName());
 
@@ -973,17 +985,18 @@ public class ElementTest {
 	 * <p>Happy scenario for this operation</p>
 	 * 
 	 * <p><b>Test:</b></p>
-	 * Apply a function to elements within a tree that satisfy a specific
-	 * condition. This function will be performed only for each element within
-	 * the tree that matches the given predicate. As an example, the name of
-	 * each {@link Directory} element will be transformed to upper case, but
-	 * only for those elements whose name contains "Photo" or "photo". Note that
-	 * unlike the {@link Element#apply(Consumer)} method, the function is
-	 * applied only for elements that satisfy the condition passed as parameter.
+	 * Apply a function to elements within the own element itself that satisfy a
+	 * specific condition. This function will be performed only for each element
+	 * within the own element that matches the given predicate. As an example,
+	 * the name of each {@link Directory} element will be transformed to upper
+	 * case, but only for those elements whose name contains "Photo" or "photo".
+	 * Note that unlike the {@link Element#apply(Consumer)} method, the function
+	 * is applied only for elements that satisfy the condition passed as
+	 * parameter.
 	 * <p><b>Expected:</b></p>
-	 * Only elements within the tree that contain "Photo" or "photo" in their
-	 * name must have their name transformed to upper case, while other elements
-	 * remain unchanged.
+	 * Only elements within the own element that contain "Photo" or "photo" in
+	 * their name must have their name transformed to upper case, while other
+	 * elements remain unchanged.
 	 * <p><b>Steps:</b></p>
 	 * <ol>
 	 * 	<li>Get the transaction;</li>
@@ -994,8 +1007,12 @@ public class ElementTest {
 	 * 	{@link Element#apply(Consumer, Predicate)} with a condition that matches
 	 * 	elements containing "Photo" or "photo" in their name. Only those
 	 * 	elements will have their name transformed to upper case;</li>
+	 * 	<li>Confirm that the elements have not been transformed as they were not
+	 * 	updated yet;</li>
+	 * 	<li>Update the (Adobe) element by invoking
+	 * 	{@link TreeManager#updateElement(Element)};</li>
 	 * 	<li>Verify that only elements containing "Photo" or "photo" within the
-	 * 	(Adobe) element have their name in upper case, while others remain
+	 * 	(Adobe) element have now their name in upper case, while others remain
 	 * 	unchanged.</li>
 	 * </ol>
 	 * 
@@ -1023,10 +1040,24 @@ public class ElementTest {
 		 * starts with "Photo" or "photo".
 		 */
 		adobe.apply(
-				element -> element.unwrap().transformNameToUpperCase(),
-				element -> 
-						element.unwrap().getName().contains("Photo") ||
-						element.unwrap().getName().contains("photo"));
+			element -> applyUpperCaseDirectoryName(element),
+			element -> directoryNameStartsWithPhoto(element)
+		);
+
+		/*
+		 * Invoking unwrap() method brings the actual state of the element, so
+		 * at this point, none of the elements must have been transformed yet,
+		 * since the (Adobe) element has not been updated yet.
+		 */
+		assertEquals("Adobe", adobe.unwrap().getName());
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
+		adobe = manager.updateElement(adobe);
+
+		assertEquals("Adobe", adobe.unwrap().getName());
 
 		/*
 		 * Verify if the elements that contains "Photo" or "photo" within the
@@ -1034,14 +1065,14 @@ public class ElementTest {
 		 * elements that don't match the condition remain unchanged.
 		 */
 		assertEquals("Adobe", adobe.unwrap().getName());
-		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		photoshop = manager.getElementById(photoshopId);
 		assertEquals("PHOTOSHOP", photoshop.unwrap().getName());
 		assertEquals("PHOTOSHOP.EXE", photoshop.getChildren().iterator()
 				.next().unwrap().getName());
 		Element<Directory> reader = manager.getElementById(readerId);
 		assertEquals("Reader", reader.unwrap().getName());
 		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
-		assertEquals("Dremweaver", dreamweaver.unwrap().getName());
+		assertEquals("Dreamweaver", dreamweaver.unwrap().getName());
 	}
 	
 	/**

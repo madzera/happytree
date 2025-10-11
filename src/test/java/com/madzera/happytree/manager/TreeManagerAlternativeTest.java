@@ -1287,7 +1287,7 @@ public class TreeManagerAlternativeTest {
 		Element<Directory> word = manager.getElementById(wordId);
 
 		word.addChild(office);
-		manager.updateElement(word);
+		word = manager.updateElement(word);
 
 		assertEquals(1, word.getChildren().size());
 		assertEquals(wordId, office.getParent());
