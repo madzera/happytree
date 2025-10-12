@@ -1,5 +1,6 @@
 package com.madzera.happytree.core;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.madzera.happytree.TreeManager;
@@ -30,6 +31,17 @@ class TreeSessionValidator extends TreeValidator {
 		if (typeSession == null) {
 			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
 					INVALID_INPUT);
+		}
+	}
+	
+	void validateMandatoryTypeSessionSerialization(TreePipeline pipeline) 
+			throws TreeException {
+		Class<?> typeSession = (Class<?>) pipeline.getAttribute(
+				TreePipelineAttributes.SESSION_TYPE);
+
+		if (!Serializable.class.isAssignableFrom(typeSession)) {
+			throw this.throwTreeException(TreeRepositoryMessage.
+					NOT_SERIALIZED_NODE);
 		}
 	}
 	

@@ -22,6 +22,7 @@ class TreeConstants {
 		static final String DIFFERENT_TYPES = "Mismatch type error. Incompatible parameterized type tree.";
 		static final String INCORRECT_SESSION = "Element not defined in this session.";
 		static final String HANDLE_ROOT = "No possible to handle the root of the tree. Consider using a transaction to clone trees.";
+		static final String NOT_SERIALIZED_NODE = "The wrapped node must implement Serializable interface.";
 
 	}
 	static class Error {
@@ -37,6 +38,7 @@ class TreeConstants {
 		static final String PERSIST_ATTACHED_ELEMENT = "com.madzera.happytree.error.checked.tree.persist.attached";
 		static final String UPDATE_NOT_EXISTED_ELEMENT = "com.madzera.happytree.error.checked.tree.update.not.existed";
 		static final String HANDLE_ROOT = "com.madzera.happytree.error.checked.tree.root";
+        static final String NOT_SERIALIZED_NODE = "com.madzera.happytree.error.checked.element.not.serialized.node";
 		//---------------------SESSION------------------
 		static final String DUPLICATE_SESSION_ID_ERROR = "com.madzera.happytree.error.checked.session.duplicate.id";
 		static final String NO_DEFINED_SESSION = "com.madzera.happytree.error.checked.session.no.defined.session";

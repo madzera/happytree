@@ -1,5 +1,7 @@
 package com.madzera.happytree.demo.model;
 
+import java.io.Serializable;
+
 import com.madzera.happytree.annotation.Id;
 import com.madzera.happytree.annotation.Parent;
 import com.madzera.happytree.annotation.Tree;
@@ -18,7 +20,7 @@ import com.madzera.happytree.annotation.Tree;
  * 
  */
 @Tree
-public class Metadata {
+public class Metadata implements Serializable {
 	@Id
 	private String id;
 	@Parent

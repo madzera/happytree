@@ -29,6 +29,7 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 		
 		validateMandatorySource(nodes);
 		validateAnnotations(nodes);
+		validateSerializableWrappedNode(nodes);
 		
 		try {
 			validateIdentifiers(nodes);
@@ -67,6 +68,16 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 		if (!fieldIdAnnotation.getType().equals(fieldParentAnnotation.
 				getType())) {
 			throw this.throwTreeException(ATPRepositoryMessage.MISMATCH_TYPE_ID);
+		}
+	}
+	
+	private void validateSerializableWrappedNode(Collection<T> nodes)
+			throws TreeException {
+		T node = nodes.iterator().next();
+
+		if (!(node instanceof java.io.Serializable)) {
+			throw this.throwTreeException(ATPRepositoryMessage.
+					NOT_SERIALIZED_NODE);
 		}
 	}
 	

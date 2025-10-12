@@ -15,6 +15,7 @@ import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.core.atp.ATPUnitTestHelper;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.model.ObjectNoGetterError;
+import com.madzera.happytree.demo.model.ObjectNotSerializedError;
 import com.madzera.happytree.demo.model.node.Node;
 import com.madzera.happytree.demo.model.node.Node_MismatchId;
 import com.madzera.happytree.demo.model.node.Node_NoId;
@@ -638,6 +639,111 @@ public class TreeTransactionErrorTest {
 		} catch (ReflectiveOperationException e) {
 			assertThrows(TreeException.class, () -> {
 				throw new TreeException();
+			});
+		}
+	}
+
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Class)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to initialize a session
+	 * with a wrapped node class that does not implement the {@code Serializable}
+	 * interface.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session with a class that does not implement
+	 * {@code Serializable}.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message:
+	 * <i>&quot;The wrapped node must implement Serializable interface.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with {@link ObjectNotSerializedError} class
+	 * 	that does not implement {@code Serializable};</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void initializeSession_wrappedNodeNotSerialized() {
+		final String sessionId = "initializeSession_wrappedNodeNotSerialized";
+		final String messageError = "The wrapped node must implement "
+				+ "Serializable interface.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		try {
+			transaction.initializeSession(sessionId,
+					ObjectNotSerializedError.class);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeTransaction#initializeSession(String, Collection)}
+	 * operation.
+	 * 
+	 * <p>Error scenario for this operation when trying to initialize a session
+	 * by API Transformation Process using a collection of objects that do not
+	 * implement the {@code Serializable} interface.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to initialize a session by API Transformation Process using objects
+	 * that do not implement {@code Serializable}.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message:
+	 * <i>&quot;The wrapped node must implement Serializable interface.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Create {@link ObjectNotSerializedError} objects that do not
+	 * 	implement {@code Serializable};</li>
+	 * 	<li>Add the objects to a collection;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	collection of the objects that do not implement {@code Serializable};
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void initializeSession_atpWrappedNodeNotSerialized() {
+		final String sessionId = "initializeSession_atpWrappedNodeNotSerialized";
+		final String messageError = "The wrapped node must implement "
+		+ "Serializable interface.";
+
+		String error = null;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		ObjectNotSerializedError obj1 = new ObjectNotSerializedError(10L, 1L);
+		ObjectNotSerializedError obj2 = new ObjectNotSerializedError(1L, null);
+		
+		Collection<ObjectNotSerializedError> objects =
+				new ArrayList<ObjectNotSerializedError>();
+		objects.add(obj1);
+		objects.add(obj2);
+
+		try {
+			transaction.initializeSession(sessionId, objects);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException(e);
 			});
 		}
 	}

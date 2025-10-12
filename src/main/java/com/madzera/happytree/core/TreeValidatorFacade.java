@@ -59,6 +59,7 @@ class TreeValidatorFacade {
 		
 		validator.validateMandatorySessionId(pipeline);
 		validator.validateMandatoryTypeSession(pipeline);
+		validator.validateMandatoryTypeSessionSerialization(pipeline);
 		validator.validateDuplicateSessionId(pipeline);
 	}
 	

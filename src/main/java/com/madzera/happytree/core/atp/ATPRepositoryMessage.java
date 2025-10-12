@@ -12,7 +12,8 @@ enum ATPRepositoryMessage {
 	NO_ID(Error.NO_ID_ERROR),
 	NO_PARENT(Error.NO_PARENT_ERROR),
 	MISMATCH_TYPE_ID(Error.DIFFERENT_TYPES_ID_ERROR),
-	DUPLICATE_ID(Error.DUPLICATE_ID_ERROR);
+	DUPLICATE_ID(Error.DUPLICATE_ID_ERROR),
+	NOT_SERIALIZED_NODE(Error.NOT_SERIALIZED_NODE);
 	
 	
 	private String error;
@@ -34,6 +35,7 @@ enum ATPRepositoryMessage {
 		messages.put(Error.NO_PARENT_ERROR, Message.NO_PARENT_ERROR);
 		messages.put(Error.DIFFERENT_TYPES_ID_ERROR, Message.DIFFERENT_TYPES_ID_ERROR);
 		messages.put(Error.DUPLICATE_ID_ERROR, Message.DUPLICATE_ID_ERROR);
+		messages.put(Error.NOT_SERIALIZED_NODE, Message.NOT_SERIALIZED_NODE);
 	}
 	
 

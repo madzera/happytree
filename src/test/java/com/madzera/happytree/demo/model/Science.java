@@ -1,11 +1,13 @@
 package com.madzera.happytree.demo.model;
 
+import java.io.Serializable;
+
 import com.madzera.happytree.annotation.Id;
 import com.madzera.happytree.annotation.Parent;
 import com.madzera.happytree.annotation.Tree;
 
 @Tree
-public class Science {
+public class Science implements Serializable {
 	@Id
 	private String subArea;
 	@Parent

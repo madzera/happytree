@@ -7,7 +7,7 @@ import com.madzera.happytree.exception.TreeException;
 
 class TreePersistValidator extends TreeElementValidator {
 
-	TreePersistValidator(TreeManager manager) {
+	protected TreePersistValidator(TreeManager manager) {
 		super(manager);
 	}
 	

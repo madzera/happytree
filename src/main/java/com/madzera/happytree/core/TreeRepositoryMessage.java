@@ -28,7 +28,8 @@ enum TreeRepositoryMessage {
 	DUPLICATE_ELEMENT(Error.DUPLICATE_ID_ERROR),
 	MISMATCH_TYPE_ELEMENT(Error.DIFFERENT_TYPES_ERROR),
 	NOT_BELONG_SESSION(Error.INCORRECT_SESSION),
-	IMPOSSIBLE_HANDLE_ROOT(Error.HANDLE_ROOT);
+	IMPOSSIBLE_HANDLE_ROOT(Error.HANDLE_ROOT),
+	NOT_SERIALIZED_NODE(Error.NOT_SERIALIZED_NODE);
 	
 	private String error;
 	private static Map<String, String> messages = TreeFactory.mapFactory()
@@ -58,6 +59,7 @@ enum TreeRepositoryMessage {
 		messages.put(Error.DIFFERENT_TYPES_ERROR, Message.DIFFERENT_TYPES);
 		messages.put(Error.INCORRECT_SESSION, Message.INCORRECT_SESSION);
 		messages.put(Error.HANDLE_ROOT, Message.HANDLE_ROOT);
+		messages.put(Error.NOT_SERIALIZED_NODE, Message.NOT_SERIALIZED_NODE);
 	}
 	
 	

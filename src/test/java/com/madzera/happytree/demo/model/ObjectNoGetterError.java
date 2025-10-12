@@ -1,5 +1,7 @@
 package com.madzera.happytree.demo.model;
 
+import java.io.Serializable;
+
 import com.madzera.happytree.annotation.Id;
 import com.madzera.happytree.annotation.Parent;
 import com.madzera.happytree.annotation.Tree;
@@ -10,7 +12,7 @@ import com.madzera.happytree.annotation.Tree;
  * there is no getters for its attributes.
  */
 @Tree
-public class ObjectNoGetterError {
+public class ObjectNoGetterError implements Serializable {
     @Id
     private Long id;
     @Parent

@@ -16,7 +16,7 @@ class ATPConstants {
 		static final String NO_PARENT_ERROR = "There is no @PARENT associated.";
 		static final String DIFFERENT_TYPES_ID_ERROR = "Mismatch type ID error.";
 		static final String DUPLICATE_ID_ERROR = "Duplicate ID.";
-
+		static final String NOT_SERIALIZED_NODE = "The wrapped node must implement Serializable interface.";
 	}
 	
 	static class Error {
@@ -30,6 +30,7 @@ class ATPConstants {
 		static final String NO_PARENT_ERROR = "com.madzera.happytree.error.checked.tree.no.parent";
 		static final String DIFFERENT_TYPES_ID_ERROR = "com.madzera.happytree.error.checked.tree.mismatch.id";
 		static final String DUPLICATE_ID_ERROR = "com.madzera.happytree.error.checked.tree.duplicate.id";
+		static final String NOT_SERIALIZED_NODE = "com.madzera.happytree.error.checked.element.not.serialized.node";
 		
 		static class Internal {
 			private Internal() {}
