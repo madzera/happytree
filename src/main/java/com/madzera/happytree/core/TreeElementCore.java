@@ -76,9 +76,6 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
-		if (this.isRoot) {
-			return;
-		}
 		/*
 		 * Invoking this method should not update the id automatically, instead
 		 * that, store the id value in a newId attribute to be submitted when
@@ -98,9 +95,6 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setParent(Object parent) {
-		if (this.isRoot) {
-			return;
-		}
 		this.parentId = parent;
 		transitionState(ElementState.DETACHED);
 	}
@@ -128,9 +122,6 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void addChildren(Collection<Element<T>> children) {
-		if (this.isRoot) {
-			return;
-		}
 		if (children != null && !children.isEmpty()) {
 			this.children.addAll(children);
 			for (Element<T> element : children) {
@@ -163,9 +154,6 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void removeChild(Object id) {
-		if (this.isRoot) {
-			return;
-		}
 		Iterator<Element<T>> iterator = this.children.iterator();
 		
 		while (iterator.hasNext()) {
