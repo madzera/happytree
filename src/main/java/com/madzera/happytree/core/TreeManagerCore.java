@@ -467,23 +467,8 @@ class TreeManagerCore implements TreeManager {
 			sourceChildren.addAll(updatedElement.getChildren());
 		}
 
-		/*
-		 * Update the wrapped node of this element and all of its descendants.
-		 */
-		Collection<Element<T>> descendants = Recursion.toPlainList(
-				updatedElement);
-		descendants.forEach(descendant -> {
-			TreeElementCore<T> descendantCore = (TreeElementCore<T>) descendant;
-			T updatedWrappedNode = descendantCore.getUpdatedWrappedNode();
-
-			/*
-			 * Update the wrapped node, even if it is null. In this case, the
-			 * element will have its wrapped node with null value.
-			 */
-			TreeElementCore<T> sourceDescendant = (TreeElementCore<T>) source.
-					getElementById(descendantCore.getId());
-			sourceDescendant.mergeUpdatedWrappedNode(updatedWrappedNode);
-		});
+		/* Update the wrapped node of the element and all of its descendants. */
+		this.updateWrappedNodeDescendants(updatedElement, source);
 		
 		/*
 		 * Obtains the id to be updated. If it is not null then implies that
@@ -534,13 +519,43 @@ class TreeManagerCore implements TreeManager {
 	@Override
 	public <T> void apply(Consumer<Element<T>> action)
 			throws TreeException {
-		throw new UnsupportedOperationException("Unimplemented method 'apply'");
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+
+		if (action == null) {
+			return;
+		}
+
+		Element<T> root = this.root();
+		root.apply(action);
+		
+		Element<T> originalRoot = this.tree();
+
+		this.updateWrappedNodeDescendants(root, originalRoot);
+		transaction.commitElement(originalRoot);
 	}
 
 	@Override
 	public <T> void apply(Consumer<Element<T>> action,
 			Predicate<Element<T>> condition) throws TreeException {
-		throw new UnsupportedOperationException("Unimplemented method 'apply'");
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+
+		if (action == null || condition == null) {
+			return;
+		}
+
+		Element<T> root = this.root();
+		root.apply(action, condition);
+		
+		Element<T> originalRoot = this.tree();
+
+		this.updateWrappedNodeDescendants(root, originalRoot);
+		transaction.commitElement(originalRoot);
 	}
 	
 	static TreeManager getTreeManagerInstance() {
@@ -548,14 +563,44 @@ class TreeManagerCore implements TreeManager {
 	}
 	
 	/*
-	 * Brings up the element from the respective stored tree session to API
-	 * client.
+	 * Brings up the element from the stored tree session.
 	 */
 	private <T> TreeElementCore<T> searchElement(Object id) {
 		return transaction.refreshElement(id);
 	}
 	
+	/*
+	 * Brings up the root element from the stored tree session.
+	 */
 	private <T> Element<T> tree() {
 		return transaction.refresh();
+	}
+
+	/*
+	 * Update the wrapped node of the element and all of its descendants.
+	 */
+	private <T> void updateWrappedNodeDescendants(Element<T> originalElement,
+			Element<T> elementToApply) {
+		Collection<Element<T>> descendants = Recursion.toPlainList(
+				originalElement);
+		descendants.forEach(descendant -> {
+			TreeElementCore<T> descendantCore = (TreeElementCore<T>) descendant;
+			T updatedWrappedNode = descendantCore.getUpdatedWrappedNode();
+
+			/*
+			 * Update the wrapped node, even if it is null. In this case, the
+			 * element will have its wrapped node with null value.
+			 */
+			TreeElementCore<T> elementCoreToApply = (TreeElementCore<T>)
+					elementToApply.getElementById(descendantCore.getId());
+			
+			/*
+			 * If the element core to apply is null, so the element to apply the
+			 * function is not found, e.g., root element.
+			 */
+			if (elementCoreToApply != null) {
+				elementCoreToApply.mergeUpdatedWrappedNode(updatedWrappedNode);
+			}
+		});
 	}
 }

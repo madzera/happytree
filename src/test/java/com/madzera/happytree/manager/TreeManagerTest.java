@@ -910,6 +910,7 @@ public class TreeManagerTest extends TreeCommonTestHelper {
 			if (obj != null) {
 				Directory directory = (Directory) obj;
 				directory.setName(directory.getName().toUpperCase());
+				element.wrap(directory);
 			}
 		});
 
@@ -1001,6 +1002,6 @@ public class TreeManagerTest extends TreeCommonTestHelper {
 		Element<Directory> reader = manager.getElementById(readerId);
 		assertEquals("Reader", reader.unwrap().getName());
 		Element<Directory> dreamweaver = manager.getElementById(dreamweaverId);
-		assertEquals("Dremweaver", dreamweaver.unwrap().getName());
+		assertEquals("Dreamweaver", dreamweaver.unwrap().getName());
 	}
 }
