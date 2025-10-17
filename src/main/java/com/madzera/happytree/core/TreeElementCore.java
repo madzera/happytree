@@ -256,15 +256,15 @@ class TreeElementCore<T> implements Element<T> {
 		try {
 			if (!this.isRoot() && condition.test(this)) {
 				action.accept(this);
+				transitionState(ElementState.DETACHED);
 			}
-			transitionState(ElementState.DETACHED);
-			} catch (NullPointerException exception) {
-				/*
-				 * The wrapped condition inside Predicate is null, so nothing is
-				 * applied.
-				 */
-				return;
-			}
+		} catch (NullPointerException exception) {
+			/*
+			 * The wrapped condition inside Predicate is null, so nothing is
+			 * applied.
+			 */
+			return;
+		}
 
 		for (Element<T> child : this.getChildren()) {
 			child.apply(action, condition);

@@ -1312,9 +1312,97 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		}
 	}
 
+	/**
+	 * Test for the {@link Element#apply(Consumer)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply an action
+	 * with a <code>null</code> consumer parameter. This test verifies that the
+	 * element remains unchanged when a <code>null</code> action is applied.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply a <code>null</code> action to a specific element.
+	 * <p><b>Expected:</b></p>
+	 * No changes should be made to the element. The original element name and
+	 * structure should remain completely unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get a specific element (Photoshop) from the tree;</li>
+	 * 	<li>Try to apply a <code>null</code> consumer action to the element;
+	 * 	</li>
+	 * 	<li>Update the element;</li>
+	 * 	<li>Verify that the element name remains unchanged since the action is
+	 * 	<code>null</code>;</li>
+	 * 	<li>Verify that the child elements also remain unchanged.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
-	public void apply_withNullActionAndNullCondition() throws TreeException {
-		final String sessionId = "apply_withNullActionAndNullCondition";
+	public void apply_nullAction() throws TreeException {
+		final String sessionId = "apply_nullAction";
+		final long photoshopId = 909443L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+
+		Consumer<Element<Directory>> nullConsumer = null;
+		photoshop.apply(nullConsumer);
+		manager.updateElement(photoshop);
+
+		photoshop = manager.getElementById(photoshopId);
+
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+	}
+
+	/**
+	 * Test for the {@link Element#apply(Consumer, Predicate)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply an action
+	 * with null consumer parameter and null predicate condition. This test
+	 * verifies the behavior when null values are passed to the apply method
+	 * in different combinations.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply actions and conditions with null values in different
+	 * combinations on a specific element.
+	 * <p><b>Expected:</b></p>
+	 * No changes should be made to the element when null consumer or null
+	 * predicate is passed. The original element name should remain unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get a specific element (Photoshop) from the tree;</li>
+	 * 	<li>Try to apply with a null consumer and a valid condition that checks
+	 * 	if directory name starts with "Photo";</li>
+	 * 	<li>Verify that the element name remains unchanged since the action is
+	 * 	null;</li>
+	 * 	<li>Try to apply with a valid action and a condition that returns null;
+	 * 	</li>
+	 * 	<li>Verify that the element name remains unchanged since the condition
+	 * 	returns null;</li>
+	 * 	<li>Try to apply with a valid action and a null predicate;</li>
+	 * 	<li>Verify that the element name remains unchanged since the predicate
+	 * 	is null.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_nullActionAndNullCondition() throws TreeException {
+		final String sessionId = "apply_nullActionAndNullCondition";
 		final long photoshopId = 909443L;
 
 		TreeManager manager = HappyTree.createTreeManager();

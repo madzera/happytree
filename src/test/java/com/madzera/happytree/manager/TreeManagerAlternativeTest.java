@@ -1368,6 +1368,58 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 	}
 
 	/**
+	 * Test for the {@link TreeManager#apply(Consumer)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply an action
+	 * with a <code>null</code> consumer parameter. This test verifies that the
+	 * tree remains unchanged when a <code>null</code> action is applied.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply a <code>null</code> action to all elements in the tree.
+	 * <p><b>Expected:</b></p>
+	 * No changes should be made to any tree elements. The original element
+	 * names and structure should remain completely unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Try to apply a <code>null</code> consumer action to all elements;
+	 * 	</li>
+	 * 	<li>Get a specific element (Photoshop) from the tree;</li>
+	 * 	<li>Verify that the element name remains unchanged since the action is
+	 * 	<code>null</code>;</li>
+	 * 	<li>Verify that the child elements also remain unchanged.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_nullAction() throws TreeException {
+		final String sessionId = "apply_nullAction";
+		final long photoshopId = 909443L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Consumer<Element<Directory>> nullConsumer = null;
+		manager.apply(nullConsumer);
+
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+	}
+
+	/**
 	 * Test for the {@link TreeManager#apply(Consumer, Predicate)} operation.
 	 * 
 	 * <p>Alternative scenario for this operation when trying to apply an action
@@ -1405,8 +1457,8 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void apply_withNullActionAndNullCondition() throws TreeException {
-		final String sessionId = "apply_withNullActionAndNullCondition";
+	public void apply_nullActionAndNullCondition() throws TreeException {
+		final String sessionId = "apply_nullActionAndNullCondition";
 		final long photoshopId = 909443L;
 
 		TreeManager manager = HappyTree.createTreeManager();
@@ -1459,6 +1511,5 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 		assertEquals("Photoshop", photoshop.unwrap().getName());
 		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
 				.next().unwrap().getName());
-
 	}
 }

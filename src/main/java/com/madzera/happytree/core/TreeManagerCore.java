@@ -517,8 +517,7 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public <T> void apply(Consumer<Element<T>> action)
-			throws TreeException {
+	public <T> void apply(Consumer<Element<T>> action) throws TreeException {
 		/*
 		 * Validates whether the current session is valid.
 		 */
@@ -549,17 +548,8 @@ class TreeManagerCore implements TreeManager {
 			return;
 		}
 
-		Element<T> root = null;
-		try {
-			root = this.root();
-			root.apply(action, condition);
-		} catch (NullPointerException exception) {
-			/*
-			 * The wrapped condition inside Predicate is returning null, so
-			 * nothing is applied.
-			 */
-			return;
-		}
+		Element<T> root = this.root();
+		root.apply(action, condition);
 
 		Element<T> originalRoot = this.tree();
 	
