@@ -357,7 +357,7 @@ public class ElementTest extends TreeCommonTestHelper {
 		
 		final int expected = 5;
 		
-		List<Element<Directory>> toBeAdded = new ArrayList<Element<Directory>>();
+		List<Element<Directory>> toBeAdded = new ArrayList<>();
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();

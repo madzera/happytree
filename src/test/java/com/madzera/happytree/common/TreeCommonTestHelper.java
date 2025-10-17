@@ -28,4 +28,10 @@ public class TreeCommonTestHelper {
 		}
 		return false;
 	}
+
+	protected Boolean nullCondition() {
+		Object obj = null;
+
+		return obj != null? true : null;
+	}
 }

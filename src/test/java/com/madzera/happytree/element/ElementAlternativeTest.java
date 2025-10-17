@@ -1269,8 +1269,8 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 
 		Element<Directory> root = manager.root();
 
-		root.apply( element ->  applyUpperCaseDirectoryName(element),
-					element ->  element.unwrap().getName().equals("Adobe") ||
+		root.apply(element -> applyUpperCaseDirectoryName(element),
+				element -> element.unwrap().getName().equals("Adobe") ||
 						element.unwrap().getName().equals("foo"));
 
 		root.getChildren().forEach(element -> {
@@ -1310,6 +1310,66 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 					child.unwrap().getName().toUpperCase(),
 					child.unwrap().getName());
 		}
+	}
+
+	@Test
+	public void apply_withNullActionAndNullCondition() throws TreeException {
+		final String sessionId = "apply_withNullActionAndNullCondition";
+		final long photoshopId = 909443L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+
+		Consumer<Element<Directory>> nullConsumer = null;
+		photoshop.apply(
+				nullConsumer,
+				element -> directoryNameStartsWithPhoto(element));
+		manager.updateElement(photoshop);
+		
+		/*
+		 * The name keeps the same, as the action is null so it does nothing.
+		 */
+		photoshop = manager.getElementById(photoshopId);
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
+		photoshop.apply(
+				element -> applyUpperCaseDirectoryName(element),
+				element -> nullCondition());
+		manager.updateElement(photoshop);
+
+		photoshop = manager.getElementById(photoshopId);
+
+		/*
+		 * The name keeps the same, as the condition has a predicate inside that
+		 * returns null and does nothing.
+		 */
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
+		Predicate<Element<Directory>> nullPredicate = null;
+		photoshop.apply(
+				element -> applyUpperCaseDirectoryName(element),
+				nullPredicate);
+		manager.updateElement(photoshop);
+		
+		photoshop = manager.getElementById(photoshopId);
+
+		/*
+		 * The name keeps the same, as the condition is null and does nothing.
+		 */
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
 	}
 	
 	/**

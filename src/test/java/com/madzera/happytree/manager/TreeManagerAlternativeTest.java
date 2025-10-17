@@ -8,12 +8,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
+import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.model.Metadata;
@@ -33,7 +36,7 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Madson de Andrade Nóbrega
  *
  */
-public class TreeManagerAlternativeTest {
+public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 
 	/**
 	 * Test for the {@link TreeManager#getElementById(Object)}.
@@ -1328,27 +1331,27 @@ public class TreeManagerAlternativeTest {
 	 * @throws TreeException in case of an error
 	 */
 	@Test
-	public void updateElement_testingElementReference() throws TreeException{
+	public void updateElement_testingElementReference() throws TreeException {
 		final String sessionId = "updateElement_testingParamReference";
-	
+
 		final Long programFilesId = 42345L;
 		final Long intelliJId = 4887582L;
-	
+
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();
-	
+
 		Directory intelliJDirectory = new Directory(4887582L, programFilesId,
 				sessionId);
-	
+
 		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-	
+
 		transaction.initializeSession(sessionId, directories);
-	
+
 		Element<Directory> intelliJ = manager.createElement(intelliJId,
 				programFilesId, intelliJDirectory);
-	
+
 		assertEquals("NOT_EXISTED", intelliJ.lifecycle());
-		
+
 		/*
 		 * Persist the element and verify its lifecycle state. The lifecycle
 		 * state should keep as NOT_EXISTED, as the element does not refresh its
@@ -1362,5 +1365,100 @@ public class TreeManagerAlternativeTest {
 		 */
 		intelliJ = manager.getElementById(intelliJId);
 		assertEquals("ATTACHED", intelliJ.lifecycle());
+	}
+
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer, Predicate)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to apply an action
+	 * with null consumer parameter and null predicate condition. This test
+	 * verifies the behavior when null values are passed to the apply method.
+	 * </p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply actions and conditions with null values in different
+	 * combinations.
+	 * <p><b>Expected:</b></p>
+	 * No changes should be made to the tree elements when null consumer or null
+	 * predicate is passed. The original element names should remain unchanged.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Try to apply with a null consumer and a valid condition that checks
+	 * 	if directory name starts with "Photo";</li>
+	 * 	<li>Verify that the (Photoshop) element name remains unchanged since the
+	 * 	action is null;</li>
+	 * 	<li>Try to apply with a valid action and a condition that returns null;
+	 * 	</li>
+	 * 	<li>Verify that the (Photoshop) element name remains unchanged since the
+	 * 	condition returns null;</li>
+	 * 	<li>Try to apply with a valid action and a null predicate;</li>
+	 * 	<li>Verify that the (Photoshop) element name remains unchanged since the
+	 * 	predicate is null.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void apply_withNullActionAndNullCondition() throws TreeException {
+		final String sessionId = "apply_withNullActionAndNullCondition";
+		final long photoshopId = 909443L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Consumer<Element<Directory>> nullConsumer = null;
+		manager.apply(
+			nullConsumer,
+			element -> directoryNameStartsWithPhoto(element)
+		);
+
+		/*
+		 * The name keeps the same, as the action is null so it does nothing.
+		 */
+		Element<Directory> photoshop = manager.getElementById(photoshopId);
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
+		manager.apply(
+			element -> applyUpperCaseDirectoryName(element),
+			element -> nullCondition()
+		);
+
+		photoshop = manager.getElementById(photoshopId);
+
+		/*
+		 * The name keeps the same, as the condition has a predicate inside that
+		 * returns null and does nothing.
+		 */
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
+		Predicate<Element<Directory>> nullPredicate = null;
+		manager.apply(
+			element -> applyUpperCaseDirectoryName(element),
+			nullPredicate
+		);
+
+		photoshop = manager.getElementById(photoshopId);
+
+		/*
+		 * The name keeps the same, as the condition is null and does nothing.
+		 */
+		assertEquals("Photoshop", photoshop.unwrap().getName());
+		assertEquals("photoshop.exe", photoshop.getChildren().iterator()
+				.next().unwrap().getName());
+
 	}
 }

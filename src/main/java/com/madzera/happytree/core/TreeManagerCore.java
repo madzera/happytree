@@ -549,11 +549,20 @@ class TreeManagerCore implements TreeManager {
 			return;
 		}
 
-		Element<T> root = this.root();
-		root.apply(action, condition);
-		
-		Element<T> originalRoot = this.tree();
+		Element<T> root = null;
+		try {
+			root = this.root();
+			root.apply(action, condition);
+		} catch (NullPointerException exception) {
+			/*
+			 * The wrapped condition inside Predicate is returning null, so
+			 * nothing is applied.
+			 */
+			return;
+		}
 
+		Element<T> originalRoot = this.tree();
+	
 		this.updateWrappedNodeDescendants(root, originalRoot);
 		transaction.commitElement(originalRoot);
 	}
