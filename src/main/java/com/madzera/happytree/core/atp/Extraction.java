@@ -23,8 +23,8 @@ class Extraction<T> extends ATPGenericPhase<T> {
 			/*
 			 * If pipeline is null, a ReflectiveOperationException is thrown
 			 * to simulate an error during reflection process. It is only for
-			 * code coverage purposes. The catch block is unreachable in
-			 * normal conditions, as the input already was validated in the
+			 * the code coverage purposes. The catch block is unreachable in
+			 * normal conditions, as the input already is validated in the
 			 * previous phase (Pre-validation).
 			 */
 			if (pipeline == null) {

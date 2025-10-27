@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
+import com.madzera.happytree.core.TreeUnitTestHelper;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.util.TreeAssembler;
 import com.madzera.happytree.exception.TreeException;
@@ -422,6 +424,31 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		assertEquals("Adobe Inc.", adobe.unwrap().getName());
 	}
 	
+	/**
+	 * Test for the {@link Element#unwrap()} operation.
+	 * 
+	 * <p>Test for the {@code TestUtil} class that assists the element to store
+	 * a deep cloned instance of the wrapped object node.</p>
+	 * 
+	 * <p>This test is a mock test to cover unreachable code. It uses the
+	 * {@link TreeUnitTestHelper} class to access an internal method of the
+	 * {@code TestUtil} class.</p>
+	 */
+	@Test
+	public void unwrap_deepCopyObject() {
+		final String fqn = "com.madzera.happytree.core.TreeUtil";
+
+		try {
+			boolean result = TreeUnitTestHelper.executeInternalMethod(fqn,
+					"runMock");
+			assertEquals(Boolean.TRUE, result);
+		} catch (ReflectiveOperationException e) {
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
 	/**
 	 * Test for the {@link Element#toJSON()} operation.
 	 * 

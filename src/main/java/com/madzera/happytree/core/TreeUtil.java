@@ -8,7 +8,11 @@ import java.io.ObjectOutputStream;
 
 final class TreeUtil {
 
-    private TreeUtil() {
+    /*
+     * This class needs a default (package) visibility constructor instead
+     * private only for the code coverage purposes.
+     */
+    TreeUtil() {
     }
 
     static class IoUtil {
@@ -26,6 +30,11 @@ final class TreeUtil {
                      ObjectOutputStream out = TreeFactory.ioFactory().
                         createObjectOutputStream(bos)) {
                     
+                    /*
+                     * It is only for the code coverage purposes. The catch
+                     * block is unreachable in normal conditions, then the mock
+                     * exception is passed through the runMock() method.
+                     */
                     if (IOException.class.equals(mock)) {
                         throw new IOException();
                     }

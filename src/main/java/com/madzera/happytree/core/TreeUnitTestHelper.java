@@ -1,15 +1,15 @@
-package com.madzera.happytree.core.atp;
+package com.madzera.happytree.core;
 
 import java.lang.reflect.Method;
 
 /**
- * The class <code>ATPUnitTestHelper</code> is a helper class to provide
- * access to internal methods of the ATP package for JUnit tests purposes.
+ * The class <code>TreeUnitTestHelper</code> is a helper class to provide
+ * access to internal methods of the core package for JUnit tests purposes.
  * 
  * @author Diego Madson de Andrade Nóbrega
  */
-public class ATPUnitTestHelper {
-    private ATPUnitTestHelper() {}
+public class TreeUnitTestHelper {
+    private TreeUnitTestHelper() {}
     
     /**
      * <p>This method helps HappyTree API to cover code blocks that is not

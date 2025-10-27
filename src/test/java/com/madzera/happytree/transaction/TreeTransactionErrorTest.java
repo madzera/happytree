@@ -633,7 +633,7 @@ public class TreeTransactionErrorTest {
 		final String fqn = "com.madzera.happytree.core.atp.Extraction";
 
 		try {
-			boolean result = ATPUnitTestHelper.executeInternalMethodEnums(fqn,
+			boolean result = ATPUnitTestHelper.executeInternalMethod(fqn,
 					"runMock");
 			assertEquals(Boolean.TRUE, result);
 		} catch (ReflectiveOperationException e) {
