@@ -1,5 +1,6 @@
 package com.madzera.happytree;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -823,6 +824,41 @@ public interface TreeManager {
 	 * work or if the current session is not active
 	 */
 	public <T> Element<T> root() throws TreeException;
+
+	/**
+	 * Searches for elements that satisfy a specific condition within the entire
+	 * tree structure. The method returns a list of elements that match the
+	 * provided condition.
+	 * 
+	 * <p>This method traverses the complete tree starting from the root element
+	 * and evaluates each element against the specified condition. If an element
+	 * satisfies the condition, it is included in the resulting list.</p>
+	 * 
+	 * <p>The resulting list consists of all elements that match the specified
+	 * condition, <b>including their children</b>. Therefore, the list will have
+	 * the elements that satisfy the condition but within of each element there
+	 * will have its hierarchical structure preserved.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Find all elements which the object node has its name starting with "A"
+	 * List&lt;Element&lt;MyNodeType&gt;&gt; results = manager.search(
+	 *     e -&gt; e.unwrap().getName().startsWith("A")
+	 * );
+	 * </pre>
+	 * 
+	 * @param <T> the class type of the wrapped object node that will be
+	 * encapsulated into the {@link Element} object
+	 * 
+	 * @param condition the predicate function defining the search criteria
+	 * 
+	 * @return a list of elements that satisfy the specified condition
+	 * 
+	 * @throws TreeException when the transaction has no selected session to
+	 * work or if the current session is not active
+	 */
+	public <T> List<Element<T>> search(Predicate<Element<T>> condition) 
+			throws TreeException;
 
 	/**
 	 * Applies a function to be performed on all elements within the entire tree

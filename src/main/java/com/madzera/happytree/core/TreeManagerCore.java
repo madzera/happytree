@@ -515,6 +515,25 @@ class TreeManagerCore implements TreeManager {
 		return root.cloneElement();
 	}
 
+	public Collection<Element<?>> search(Predicate<Element<?>> condition) 
+			throws TreeException {
+		/*
+		 * Validates whether the current session is valid.
+		 */
+		validatorFacade.validateSessionTransaction();
+
+		Collection<Element<?>> result = new HashSet<>();
+		
+		if (condition == null) {
+			return result;
+		}
+
+		Element<?> root = this.root();
+		result = Recursion.search(root, condition);
+		
+		return result;
+	}
+
 	@Override
 	public <T> void apply(Consumer<Element<T>> action) throws TreeException {
 		/*
