@@ -395,6 +395,36 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		assertNull(wrappedDirectory);
 	}
 
+	/**
+	 * Test for the {@link Element#unwrap()} and {@link Element#wrap(Object)}
+	 * operations.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to unwrap ->
+	 * changing -> wrap the object node.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Unwrap a node from an element, modify it externally, wrap it back into
+	 * the element, and update the element to save the changes.
+	 * <p><b>Expected:</b></p>
+	 * The element should maintain its original state until the modified node is
+	 * wrapped back and the element is updated. After the update, the element 
+	 * should reflect the changes made to the wrapped node.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with a directory tree;</li>
+	 * 	<li>Get an existing element (Adobe) from the tree;</li>
+	 * 	<li>Unwrap the directory object from the element;</li>
+	 * 	<li>Modify the unwrapped directory object by changing its name;</li>
+	 * 	<li>Verify that the original element still contains the unchanged data;
+	 * 	</li>
+	 * 	<li>Wrap the modified directory object back into the element;</li>
+	 * 	<li>Update the element to save the changes;</li>
+	 * 	<li>Verify that the element now reflects the modified data.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
 	@Test
 	public void unwrap_changedNode_wrap() throws TreeException {
 		final String sessionId = "unwrap_changedNode_wrap";

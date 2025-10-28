@@ -387,8 +387,7 @@ class TreeManagerCore implements TreeManager {
 	}
 
 	@Override
-	public <T> Element<T> updateElement(Element<T> element)
-			throws TreeException {
+	public <T> Element<T> updateElement(Element<T> element)	throws TreeException {
 		/*
 		 * Input validation.
 		 */
