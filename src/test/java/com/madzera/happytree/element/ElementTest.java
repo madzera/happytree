@@ -3,6 +3,7 @@ package com.madzera.happytree.element;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -905,6 +906,66 @@ public class ElementTest extends TreeCommonTestHelper {
 		String xmlOutput = adobe.toPrettyXML();
 
 		assertEquals(xml, xmlOutput);
+	}
+
+	/**
+	 * Test for the {@link Element#search(Predicate)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Search for descendant elements within an element's subtree that satisfy a
+	 * specific condition.
+	 * <p><b>Expected:</b></p>
+	 * Find all direct children of the Adobe element. The search should return 3
+	 * elements (Reader, Photoshop, and Dreamweaver) that are immediate children
+	 * of the Adobe directory.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a session by API Transformation Process using a previous
+	 * 	assembled tree;</li>
+	 * 	<li>Get the (Adobe) element from the tree;</li>
+	 * 	<li>Invoke {@link Element#search(Predicate)} with a condition that
+	 * 	checks if elements have Adobe as their parent;</li>
+	 * 	<li>Verify that exactly 3 elements are returned;</li>
+	 * 	<li>Verify that all returned elements have Adobe as their parent;</li>
+	 * 	<li>Verify that the returned elements are Reader, Photoshop, and
+	 * 	Dreamweaver.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search() throws TreeException {
+		final String sessionId = "search";
+		
+		final Long adobeId = 24935L;
+		final long readerId = 403940L;
+		final long photoshopId = 909443L;
+		final long dreamweaverId = 502010L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> adobe = manager.getElementById(adobeId);
+		
+		List<Element<Directory>> results = adobe.search(
+			element -> element.getParent().equals(adobeId)
+		);
+
+		assertEquals(3, results.size());
+
+		for (Element<Directory> element : results) {
+			assertEquals(element.getParent(), adobeId);
+			assertTrue(element.getId().equals(readerId) ||
+					element.getId().equals(photoshopId) ||
+					element.getId().equals(dreamweaverId));
+		}
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -1179,6 +1180,104 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		assertEquals(xml, xmlOutput);
 	}
 	
+	/**
+	 * Test for the {@link Element#search(Predicate)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to search with a
+	 * <code>null</code> predicate parameter.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for descendant elements using a <code>null</code> predicate
+	 * condition.
+	 * <p><b>Expected:</b></p>
+	 * Return an empty list when a <code>null</code> predicate is provided,
+	 * since no valid search condition can be evaluated.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get an element (Adobe) from the tree;</li>
+	 * 	<li>Create a <code>null</code> predicate condition;</li>
+	 * 	<li>Invoke {@link Element#search(Predicate)} with the <code>null</code>
+	 * 	predicate;</li>
+	 * 	<li>Verify that the result list is empty.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search_nullPredicate() throws TreeException {
+		final String sessionId = "search_nullPredicate";
+
+		final long adobeId = 24935L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+		Element<Directory> adobe = manager.getElementById(adobeId);
+
+		Predicate<Element<Directory>> nullPredicate = null;
+		List<Element<Directory>> result = adobe.search(nullPredicate);
+
+		assertEquals(0, result.size());
+	}
+
+	/**
+	 * Test for the {@link Element#search(Predicate)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to search for
+	 * descendant elements with a condition that matches no elements within the
+	 * element's subtree.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for descendant elements using a condition that does not
+	 * match any elements in the element's subtree.
+	 * <p><b>Expected:</b></p>
+	 * Return an empty list when no descendant elements satisfy the search
+	 * condition, demonstrating that the search method handles cases where no
+	 * matches are found within the element's subtree.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using a
+	 * 	previous assembled tree;</li>
+	 * 	<li>Get an element (Adobe) from the tree;</li>
+	 * 	<li>Create a predicate that searches for an element (Winamp) that is not
+	 * 	a descendant of the Adobe element;</li>
+	 * 	<li>Invoke {@link Element#search(Predicate)} with the predicate;</li>
+	 * 	<li>Verify that the result list is empty since the (Winamp) element is
+	 * 	not within the Adobe element's subtree.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search_noMatch() throws TreeException {
+		final String sessionId = "search_noMatch";
+
+		final long adobeId = 24935L;
+		final long winampId = 32099L;
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+		Element<Directory> adobe = manager.getElementById(adobeId);
+
+		Predicate<Element<Directory>> noMatchPredicate = 
+				element -> element.getId().equals(winampId);
+
+		List<Element<Directory>> result = adobe.search(noMatchPredicate);
+
+		assertEquals(0, result.size());
+	}
+
 	/**
 	 * Test for the {@link Element#apply(Consumer)}.
 	 * 

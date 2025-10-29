@@ -2,6 +2,7 @@ package com.madzera.happytree.core;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -169,9 +170,6 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) {
-		if (this.isRoot) {
-			return;
-		}
 		setNewWrappedNode(object);
 		
 		/*
@@ -224,6 +222,29 @@ class TreeElementCore<T> implements Element<T> {
 	@Override
 	public String toPrettyXML() {
 		return this.toXML(Boolean.TRUE);
+	}
+
+	@Override
+	public List<Element<T>> search(Predicate<Element<T>> condition) {
+		List<Element<T>> result = TreeFactory.collectionFactory()
+				.createArrayList();
+
+		if (condition == null) {
+			return result;
+		}
+
+		/*
+		 * The action is not applied to the root element, only to its
+		 * descendants.
+		 */
+		if (!this.isRoot() && condition.test(this)) {
+			result.add(this);
+		}
+
+		for (Element<T> child : this.getChildren()) {
+			result.addAll(child.search(condition));
+		}
+		return result;
 	}
 
 	@Override

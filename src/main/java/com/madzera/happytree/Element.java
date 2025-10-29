@@ -1,6 +1,7 @@
 package com.madzera.happytree;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -540,6 +541,43 @@ public interface Element<T> {
 	 * @see {@link Element#toXML()}
 	 */
 	public String toPrettyXML();
+
+	/**
+	 * Searches for elements that satisfy a specific condition within this
+	 * element and its children recursively. The method returns a list of 
+	 * elements that match the provided condition.
+	 * 
+	 * <p>This method traverses the subtree starting from this element
+	 * (including the element itself) and evaluates each element against the
+	 * specified condition. If an element satisfies the condition, it is
+	 * included in the resulting list.</p>
+	 * 
+	 * <p>The resulting list consists of all elements that match the specified
+	 * condition, <b>including their children</b>. Therefore, the list will have
+	 * the elements that satisfy the condition but within of each element there
+	 * will have its hierarchical structure preserved.</p>
+	 * 
+	 * <p>When this method is invoked by the root element, the search is
+	 * performed on all elements in the tree, <b>except for the root element
+	 * itself</b>, as it is a special element created by the HappyTree API
+	 * itself, not having the <code>@Id</code>, <code>@Parent</code> neither
+	 * a wrapped object node.</p>
+	 * 
+	 * <p><b>Example usage:</b></p>
+	 * <pre>
+	 * //Find all elements within this subtree which the object node has its
+	 * //name starting with "A"
+	 * List&lt;Element&lt;MyNodeType&gt;&gt; results = element.search(
+	 *     e -&gt; e.unwrap().getName().startsWith("A")
+	 * );
+	 * </pre>
+	 * 
+	 * @param condition the predicate function defining the search criteria
+	 * 
+	 * @return a list of elements that satisfy the specified condition within
+	 * this element's subtree
+	 */
+	public List<Element<T>> search(Predicate<Element<T>> condition);
 
 	/**
 	 * Applies a function to be performed on this element and all its children

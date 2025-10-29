@@ -1,7 +1,9 @@
 package com.madzera.happytree.core;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -515,23 +517,21 @@ class TreeManagerCore implements TreeManager {
 		return root.cloneElement();
 	}
 
-	public Collection<Element<?>> search(Predicate<Element<?>> condition) 
+	@Override
+	public <T> List<Element<T>> search(Predicate<Element<T>> condition) 
 			throws TreeException {
 		/*
 		 * Validates whether the current session is valid.
 		 */
 		validatorFacade.validateSessionTransaction();
 
-		Collection<Element<?>> result = new HashSet<>();
-		
 		if (condition == null) {
-			return result;
+			return Collections.emptyList();
 		}
 
-		Element<?> root = this.root();
-		result = Recursion.search(root, condition);
-		
-		return result;
+		Element<T> root = this.root();
+
+		return root.search(condition);
 	}
 
 	@Override

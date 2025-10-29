@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
+import com.madzera.happytree.common.TreeCommonTestHelper;
 import com.madzera.happytree.core.HappyTree;
 import com.madzera.happytree.demo.model.Directory;
 import com.madzera.happytree.demo.model.Metadata;
@@ -26,7 +27,7 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * @author Diego Madson de Andrade Nóbrega
  */
-public class TreeManagerErrorTest {
+public class TreeManagerErrorTest extends TreeCommonTestHelper {
 
 	/**
 	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
@@ -710,7 +711,7 @@ public class TreeManagerErrorTest {
 					develDirectory.getParentIdentifier(),
 					develDirectory);
 			newElement = manager.persistElement(newElement);
-			
+
 			newElement.setId(programFilesDirectory.getIdentifier());
 			newElement.setParent(programFilesDirectory.getParentIdentifier());
 			newElement.wrap(programFilesDirectory);
@@ -726,7 +727,155 @@ public class TreeManagerErrorTest {
 			});
 		}
 	}
+
+	/**
+	 * Test for the {@link TreeManager#search(Predicate)} operation.
+	 * 
+	 * <p>Error scenario for the search operation when the transaction has no
+	 * defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for elements after destroying all previous sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to search for elements using a predicate condition;</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void search_noDefinedSession() {
+		final String sessionId = "search_noDefinedSession";
+		final String messageError = "No defined session.";
+
+		final Long realtekId = 94034L;
+
+		String error = null;
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.destroyAllSessions();
+
+			manager.search(e -> e.getId().equals(realtekId));
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
 	
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer)} operation.
+	 * 
+	 * <p>Error scenario for the apply operation when the transaction has no
+	 * defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply an action to all elements after destroying all previous
+	 * sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to apply an action (upper case transformation) to all elements;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void apply_noDefinedSession() {
+		final String sessionId = "apply_noDefinedSession";
+		final String messageError = "No defined session.";
+
+		String error = null;
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.destroyAllSessions();
+
+			manager.apply(element -> applyUpperCaseDirectoryName(element));
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer, Predicate)} operation.
+	 * 
+	 * <p>Error scenario for the apply with condition operation when the
+	 * transaction has no defined session to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply an action conditionally to elements after destroying all
+	 * previous sessions.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No defined session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#destroyAllSessions()} method;</li>
+	 * 	<li>Try to apply an action (upper case transformation) conditionally to
+	 * 	elements that match a specific predicate (directory names starting with
+	 * 	"Photo");</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void apply_withCondition_noDefinedSession() {
+		final String sessionId = "apply_withCondition_noDefinedSession";
+		final String messageError = "No defined session.";
+
+		String error = null;
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.destroyAllSessions();
+
+			manager.apply(
+				element -> applyUpperCaseDirectoryName(element),
+				element -> directoryNameStartsWithPhoto(element)
+			);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
 	/**
 	 * Test for the {@link TreeManager#copy(Element, Element)} operation.
 	 * 
@@ -1452,6 +1601,156 @@ public class TreeManagerErrorTest {
 		}
 	}
 	
+	/**
+	 * Test for the {@link TreeManager#search(Predicate)} operation.
+	 * 
+	 * <p>Error scenario for the search operation when the current session is
+	 * not active to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for elements after deactivating the current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method;</li>
+	 * 	<li>Try to search for elements using a predicate condition (directory
+	 * 	names starting with "Photo");</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void search_noActiveSession() {
+		final String sessionId = "search_noActiveSession";
+
+		final String messageError = "No active session.";
+
+		String error = null;
+
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.search(
+					element -> directoryNameStartsWithPhoto(element));
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer)} operation.
+	 * 
+	 * <p>Error scenario for the apply operation when the current session is
+	 * not active to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply an action to all elements after deactivating the current
+	 * session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method;</li>
+	 * 	<li>Try to apply an action (upper case transformation) to all elements;
+	 * 	</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void apply_noActiveSession() {
+		final String sessionId = "apply_noActiveSession";
+		final String messageError = "No active session.";
+
+		String error = null;
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.apply(element -> applyUpperCaseDirectoryName(element));
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+	
+	/**
+	 * Test for the {@link TreeManager#apply(Consumer, Predicate)} operation.
+	 * 
+	 * <p>Error scenario for the apply with condition operation when the current
+	 * session is not active to run this operation.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to apply an action conditionally to elements after deactivating the
+	 * current session.
+	 * <p><b>Expected:</b></p>
+	 * An error is threw and caught by <code>TreeException</code> with the
+	 * message: <i>&quot;No active session.&quot;</i>
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the manager;</li>
+	 * 	<li>Initialize a session with <code>Directory</code> tree data;</li>
+	 * 	<li>Invoke the {@link TreeTransaction#deactivateSession()} method;</li>
+	 * 	<li>Try to apply an action (upper case transformation) conditionally to
+	 * 	elements that match a specific predicate (directory names starting with
+	 * 	"Photo");</li>
+	 * 	<li>Catch the <code>TreeException</code>;</li>
+	 * 	<li>Verify the message error.</li>
+	 * </ol>
+	 */
+	@Test
+	public void apply_withCondition_noActiveSession() {
+		final String sessionId = "apply_withCondition_noActiveSession";
+		final String messageError = "No active session.";
+
+		String error = null;
+		try {
+			TreeManager manager = HappyTree.createTreeManager();
+			TreeTransaction transaction = manager.getTransaction();
+
+			Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+
+			transaction.initializeSession(sessionId, directories);
+			transaction.deactivateSession();
+
+			manager.apply(
+				element -> applyUpperCaseDirectoryName(element),
+				element -> directoryNameStartsWithPhoto(element)
+			);
+		} catch (TreeException e) {
+			error = e.getMessage();
+			assertEquals(messageError, error);
+			assertThrows(TreeException.class, () -> {
+				throw new TreeException();
+			});
+		}
+	}
+
 	/**
 	 * Test for the {@link TreeManager#createElement(Object, Object, Object)}.
 	 * 

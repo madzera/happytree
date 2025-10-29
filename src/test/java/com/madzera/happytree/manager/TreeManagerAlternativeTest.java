@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -1365,6 +1366,101 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 		 */
 		intelliJ = manager.getElementById(intelliJId);
 		assertEquals("ATTACHED", intelliJ.lifecycle());
+	}
+
+	/**
+	 * Test for the {@link TreeManager#search(Predicate)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to search with a
+	 * <code>null</code> predicate parameter. This test verifies the behavior
+	 * when a <code>null</code> condition is passed to the search method.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for elements with a <code>null</code> predicate condition.
+	 * <p><b>Expected:</b></p>
+	 * Return an empty list when a <code>null</code> predicate is provided,
+	 * since no valid search condition can be evaluated.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Create a <code>null</code> predicate condition;</li>
+	 * 	<li>Invoke {@link TreeManager#search(Predicate)} with the
+	 * 	<code>null</code> predicate;</li>
+	 * 	<li>Verify that the result list is empty.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search_nullPredicate() throws TreeException {
+		final String sessionId = "search_nullPredicate";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Predicate<Element<Directory>> nullPredicate = null;
+		List<Element<Directory>> result = manager.search(nullPredicate);
+
+		assertEquals(0, result.size());
+	}
+
+	/**
+	 * Test for the {@link TreeManager#search(Predicate)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to search for
+	 * elements with a condition that matches no elements in the tree. This test
+	 * verifies the behavior when a valid predicate is provided but no elements
+	 * satisfy the search criteria.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to search for elements using a condition that matches no existing
+	 * elements in the tree.
+	 * <p><b>Expected:</b></p>
+	 * Return an empty list when no elements satisfy the search condition,
+	 * demonstrating that the search method handles cases where no matches are
+	 * found.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session by API Transformation Process using the
+	 * 	previous assembled tree;</li>
+	 * 	<li>Invoke {@link TreeManager#search(Predicate)} with a condition that
+	 * 	checks if directory names start with "Z" (which should not exist in the
+	 * 	test data);</li>
+	 * 	<li>Verify that the result list is empty since no directories in the
+	 * 	test tree start with "Z".</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search_noFoundElements() throws TreeException {
+		final String sessionId = "search_noFoundElements";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		List<Element<Directory>> result = manager.search(
+			element -> directoryNameStartsWithZ(element)
+		);
+
+		assertEquals(0, result.size());
 	}
 
 	/**

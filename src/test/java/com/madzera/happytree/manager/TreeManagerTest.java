@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.Test;
@@ -865,6 +866,63 @@ public class TreeManagerTest extends TreeCommonTestHelper {
 		assertTrue(manager.containsElement(winampId, recordedId));
 	}
 	
+	/**
+	 * Test for the {@link TreeManager#search(Predicate)}.
+	 * 
+	 * <p>Happy scenario for this operation</p>
+	 * 
+	 * <p>This makes use of the {@link TreeAssembler} and {@link Directory}
+	 * classes to assemble a collection of linear objects that have tree
+	 * behavior and that are going to be transformed.</p>
+	 * 
+	 * <p><b>For this demonstration, please see these sample classes in
+	 * question.</b></p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Search for elements within the tree that satisfy a specific condition.
+	 * <p><b>Expected:</b></p>
+	 * Find all elements in the tree whose wrapped Directory object has a suffix
+	 * containing "exe" (case-insensitive). The search should return 8 elements,
+	 * all ending with ".exe" suffix.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Invoke {@link TreeManager#search(Predicate)} with a condition that
+	 * 	checks if the directory name contains "exe" (case-insensitive);</li>
+	 * 	<li>Verify that exactly 8 elements are returned;</li>
+	 * 	<li>Verify that all returned elements have names ending with ".exe".
+	 * 	</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void search() throws TreeException {
+		final String sessionId = "search";
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		transaction.initializeSession(sessionId, directoryTree);
+
+		List<Element<Directory>> results = manager.search(
+				element -> {
+					Directory dir = element.unwrap();
+					return dir.getName().toLowerCase().contains("exe");
+				}
+		);
+
+		assertEquals(8, results.size());
+		for (Element<Directory> element : results) {
+			assertTrue(
+					element.unwrap().getName().toLowerCase().endsWith(".exe"));
+		}
+	}
+
 	/**
 	 * Test for the {@link TreeManager#apply(Consumer)}.
 	 * 

@@ -32,6 +32,16 @@ public class TreeCommonTestHelper {
 	protected Boolean nullCondition() {
 		Object obj = null;
 
-		return obj != null? true : null;
+		return obj != null ? true : null;
+	}
+	
+	protected <T> boolean directoryNameStartsWithZ(Element<T> element) {
+		Object obj = element.unwrap();
+		if (obj != null) {
+			Directory directory = (Directory) obj;
+			return directory.getName().startsWith("Z")
+					|| directory.getName().startsWith("z");
+		}
+		return false;
 	}
 }
