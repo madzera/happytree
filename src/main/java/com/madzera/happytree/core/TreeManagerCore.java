@@ -416,7 +416,8 @@ class TreeManagerCore implements TreeManager {
 		 * element from inside of its old parent and insert it inside of the
 		 * new parent one.
 		 */
-		if (!oldParentId.equals(updatedParentId)) {
+		if (!((TreeElementCore<T>) element).isRoot() &&
+				!oldParentId.equals(updatedParentId)) {
 			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
 					searchElement(oldParentId);
 			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
@@ -444,13 +445,15 @@ class TreeManagerCore implements TreeManager {
 			Object oldParentChild = child.getOldParentId();
 			
 			Element<T> oldParent = this.searchElement(oldParentChild);
-				
-			HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
-					oldParent.getChildren();
-			Element<T> childParent = this.searchElement(child.getId());
-			childrenParent.remove(childParent);
-				
-			child.syncParentId();
+			
+			if (oldParent != null) {
+				HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
+						oldParent.getChildren();
+				Element<T> childParent = this.searchElement(child.getId());
+				childrenParent.remove(childParent);
+					
+				child.syncParentId();
+			}
 		}
 		
 		Collection<Element<T>> updatedChildren = updatedElement.getChildren();

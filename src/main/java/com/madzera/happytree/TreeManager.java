@@ -678,12 +678,15 @@ public interface TreeManager {
 	 * 
 	 * <p>Therefore, this is only possible to update a previously persisted
 	 * element, then it is safe to say that before invoking this method, a
-	 * previous invocation to the {@link #persistElement(Element)} turns on
-	 * mandatory at some point.</p>
+	 * previous invocation to the {@link #persistElement(Element)} is done or
+	 * any changes have been made over the element.</p>
+	 * 
+	 * <p>This operation also works for the root element, allowing the update
+	 * when the root element adds or removes children elements directly.</p>
 	 * 
 	 * <p>Updating an element, also its children list will be automatically
 	 * updated recursively. After updating, all elements have their states
-	 * as <i>ATTACHED</i> in life cycle.</p>
+	 * as <i>ATTACHED</i> in the lifecycle.</p>
 	 * 
 	 * <table summary="The element states which can be operated.">
 	 * 	<tr>

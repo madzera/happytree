@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.junit.Test;
 
@@ -4676,67 +4677,6 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 			 * duplicate id.
 			 */
 			manager.updateElement(realtek);
-		} catch (TreeException e) {
-			error = e.getMessage();
-			assertEquals(messageError, error);
-			assertThrows(TreeException.class, () -> {
-				throw e;
-			});
-		}
-	}
-	
-	/**
-	 * Test for the {@link TreeManager#updateElement(Element)} operation.
-	 * 
-	 * <p>Error scenario for this operation when trying to update the root of
-	 * the tree.</p>
-	 * 
-	 * <p>For more details about this test, see also the <code>Directory</code>
-	 * and <code>TreeAssembler</code> sample classes.</p>
-	 * 
-	 * <p><b>Test:</b></p>
-	 * Try to update the root element.
-	 * <p><b>Expected:</b></p>
-	 * An error is threw and caught by <code>TreeException</code> with the
-	 * message: <i>&quot;No possible to handle the root of the tree. Consider
-	 * using a transaction to clone trees.&quot;</i>
-	 * <p><b>Steps:</b></p>
-	 * <ol>
-	 * 	<li>Get the transaction;</li>
-	 * 	<li>Initialize a new session, previously loaded from
-	 * 	<code>TreeAssembler</code>;</li>
-	 * 	<li>Get the root of the tree;</li>
-	 * 	<li>Change the id of the root (not necessary);</li>
-	 * 	<li>Try to update the root element;</li>
-	 * 	<li>Catch the <code>TreeException</code>;</li>
-	 * 	<li>Verify the message error;</li>
-	 * 	<li>Assert that the exception thrown is of <code>TreeException</code>
-	 * 	type.</li>
-	 * </ol>
-	 */
-	@Test
-	public void updateElement_rootElement() {
-		final String sessionId = "updateElement_rootElement";
-		
-		final String messageError = "No possible to handle the root of the tree."
-				+ " Consider using a transaction to clone trees.";
-		String error = null;
-		
-		TreeManager manager = HappyTree.createTreeManager();
-		TreeTransaction transaction = manager.getTransaction();
-		
-		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
-		
-		try {
-			transaction.initializeSession(sessionId, directories);
-			Element<Directory> root = transaction.currentSession().tree();
-			
-			root.setId("bar");
-			
-			/*
-			 * Impossible to update the root element.
-			 */
-			manager.updateElement(root);
 		} catch (TreeException e) {
 			error = e.getMessage();
 			assertEquals(messageError, error);

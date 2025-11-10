@@ -190,7 +190,6 @@ class TreeValidatorFacade {
 		
 		validator.validateMismatchParameterizedType(pipeline);
 		validator.validateSessionElement(pipeline);
-		validator.validateHandleRootElement(pipeline);
 		validator.validateDetachedElement(pipeline);
 		validator.validateDuplicateIdElement(pipeline);
 	}

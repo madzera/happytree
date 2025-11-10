@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -1366,6 +1367,117 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 		 */
 		intelliJ = manager.getElementById(intelliJId);
 		assertEquals("ATTACHED", intelliJ.lifecycle());
+	}
+
+	/**
+	 * Test for the {@link TreeManager#updateElement(Element)} operation.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to update the root
+	 * element by adding and removing children elements. This test verifies that
+	 * the root element can be properly updated with structural changes.</p>
+	 * 
+	 * <p>For more details about this test, see also the <code>Directory</code>
+	 * and <code>TreeAssembler</code> sample classes.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to update the root element by adding new child elements and then
+	 * removing them to verify whether the root element remains consistent.
+	 * <p><b>Expected:</b></p>
+	 * The root element should successfully accommodate adding and removing child
+	 * elements, properly updating parent-child relationships and maintaining
+	 * tree consistency. After adding children, they should be moved from their
+	 * original parent to the root level. After removal, they should no longer
+	 * be contained within the root element.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session, previously loaded from
+	 * 	<code>TreeAssembler</code>;</li>
+	 * 	<li>Create two new <code>Directory</code> elements with specific parent
+	 * 	relationships;</li>
+	 * 	<li>Persist both new elements in the tree;</li>
+	 * 	<li>Verify that both elements have their original parent relationships;
+	 * 	</li>
+	 * 	<li>Get the root element and add both new elements as its children;</li>
+	 * 	<li>Update the root element to persist the structural changes;</li>
+	 * 	<li>Verify that the root element now has the expected number of children
+	 * 	and that the new elements' parent relationships have been updated to
+	 * 	point to the root;</li>
+	 * 	<li>Remove the previously added child elements from the root;</li>
+	 * 	<li>Update the root element again to persist the removal operation;</li>
+	 * 	<li>Verify that the root element's child count has decreased and that
+	 * 	the removed elements are no longer contained within the root.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void updateElement_rootElement() throws TreeException {
+		final String sessionId = "updateElement_rootElement";
+		
+		final long newDirectoryId1 = 888888888;
+		final long newDirectoryId2 = 999999999;
+		final long officeId = 53024L;
+
+		Directory newDirectory1 = new Directory(newDirectoryId1, officeId,
+				"dir1");
+		Directory newDirectory2 = new Directory(newDirectoryId2, officeId,
+				"dir2");
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		
+		Collection<Directory> directories = TreeAssembler.getDirectoryTree();
+		
+		transaction.initializeSession(sessionId, directories);
+
+		Element<Directory> elementDir1 = manager.createElement(
+				newDirectoryId1, officeId, newDirectory1);
+		Element<Directory> elementDir2 = manager.createElement(
+				newDirectoryId2, officeId, newDirectory2);
+		
+		manager.persistElement(elementDir1);
+		manager.persistElement(elementDir2);
+
+		elementDir1 = manager.getElementById(newDirectoryId1);
+		elementDir2 = manager.getElementById(newDirectoryId2);
+		Element<Directory> office = manager.getElementById(officeId);
+
+		assertEquals(officeId, elementDir1.getParent());
+		assertEquals(officeId, elementDir2.getParent());
+		assertTrue(manager.containsElement(office, elementDir1));
+		assertTrue(manager.containsElement(office, elementDir2));
+
+		Element<Directory> root = transaction.currentSession().tree();
+		
+		root.addChild(elementDir1);
+		root.addChild(elementDir2);
+
+		manager.updateElement(root);
+
+		root = transaction.currentSession().tree();
+		
+		assertEquals(5, root.getChildren().size());
+		
+		for (Element<Directory> child : root.getChildren()) {
+			if (child.getId().equals(newDirectoryId1)) {
+				assertEquals(newDirectoryId1, child.getId());
+				assertNotEquals(officeId, child.getParent());
+				assertEquals(root.getId(), child.getParent());
+			} else if (child.getId().equals(newDirectoryId2)) {
+				assertEquals(newDirectoryId2, child.getId());
+				assertNotEquals(officeId, child.getParent());
+				assertEquals(root.getId(), child.getParent());
+			}
+		}
+
+		List<Element<Directory>> dirs = Arrays.asList(elementDir1, elementDir2);
+		root.removeChildren(dirs);
+		root = manager.updateElement(root);
+
+		assertEquals(3, root.getChildren().size());
+		assertFalse(manager.containsElement(root, elementDir1));
+		assertFalse(manager.containsElement(root, elementDir2));
 	}
 
 	/**
