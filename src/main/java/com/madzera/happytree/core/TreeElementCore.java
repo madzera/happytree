@@ -77,6 +77,10 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setId(Object id) {
+		if (this.isRoot()) {
+			return;
+		}
+
 		/*
 		 * Invoking this method should not update the id automatically, instead
 		 * that, store the id value in a newId attribute to be submitted when
@@ -96,6 +100,10 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void setParent(Object parent) {
+		if (this.isRoot()) {
+			return;
+		}
+
 		this.parentId = parent;
 		transitionState(ElementState.DETACHED);
 	}
@@ -170,6 +178,10 @@ class TreeElementCore<T> implements Element<T> {
 
 	@Override
 	public void wrap(T object) {
+		if (this.isRoot()) {
+			return;
+		}
+		
 		setNewWrappedNode(object);
 		
 		/*

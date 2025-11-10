@@ -126,6 +126,8 @@ public interface Element<T> {
 	 * <code>null</code> nothing happens because this is used to be updated, so
 	 * the element keeps the old one.</b></p>
 	 * 
+	 * <p>When the element is a root element, the id is not set.</p>
+	 * 
 	 * @param id the element identifier to be updated
 	 */
 	public void setId(Object id);
@@ -144,9 +146,10 @@ public interface Element<T> {
 	 * 
 	 * <p>If the parent reference is <code>null</code> or references a
 	 * non-existing element, then it is certain that this element will be in the
-	 * root level of the tree when it is going to be persisted or updated. If it
-	 * is the case, then after persisting or updating this element, its parent
-	 * will be the own session identifier.</p>
+	 * root level of the tree when it is going to be persisted or updated.</p>
+	 * 
+	 * <p>When the element is a root element, the <code>parent</code> is not
+	 * set.</p>
 	 * 
 	 * @param parent the parent element identifier reference to be updated
 	 */
@@ -289,6 +292,9 @@ public interface Element<T> {
 	 * 
 	 * <p>Those requirements are only applied when the session is going to be
 	 * initialized by the <b>API Transformation Process</b>.</p>
+	 * 
+	 * <p>When the element is a root element, this is no possible to wrap it. So,
+	 * the wrapped object node is always <code>null</code>.</p>
 	 * 
 	 * @param object the node to be wrapped within the element
 	 * 

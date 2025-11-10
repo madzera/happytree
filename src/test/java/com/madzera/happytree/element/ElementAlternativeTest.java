@@ -94,6 +94,49 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 	}
 	
 	/**
+	 * Test for the {@link Element#setId(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to set an element
+	 * Id on a root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to set an element Id on a root element.
+	 * <p><b>Expected:</b></p>
+	 * The root element's Id remains <code>null</code> even after attempting
+	 * to set it, since root elements do not have identifiers in the tree
+	 * structure.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with a directory tree;</li>
+	 * 	<li>Get the root element from the tree;</li>
+	 * 	<li>Verify that the root element's Id is <code>null</code>;</li>
+	 * 	<li>Attempt to set a new Id on the root element;</li>
+	 * 	<li>Verify that the root element's Id remains <code>null</code> after
+	 * 	the operation.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void setId_rootElement() throws TreeException {
+		final String sessionId = "setId_rootElement";
+		final long newRootId = 99999999;
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+
+		assertNull(root.getId());
+		root.setId(newRootId);
+		assertNull(root.getId());
+	}
+
+	/**
 	 * Test for the {@link Element#setParent(Object)}
 	 * and {@link Element#getParent()}.
 	 * 
@@ -121,7 +164,7 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 	 */
 	@Test
 	public void setParent_nullArg() throws TreeException {
-		final String sessionId = "setParent";
+		final String sessionId = "setParent_nullArg";
 		final Long elementId = 100L;
 		final Long parentId = 101L;
 		
@@ -144,6 +187,48 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		assertNull(element.getParent());
 	}
 	
+	/**
+	 * Test for the {@link Element#setParent(Object)}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to set a parent Id
+	 * on a root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to set a parent Id on a root element.
+	 * <p><b>Expected:</b></p>
+	 * The root element's parent remains <code>null</code> even after attempting
+	 * to set it, since root elements do not have parents in the tree structure.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with a directory tree;</li>
+	 * 	<li>Get the root element from the tree;</li>
+	 * 	<li>Verify that the root element's parent is <code>null</code>;</li>
+	 * 	<li>Attempt to set a new parent Id on the root element;</li>
+	 * 	<li>Verify that the root element's parent remains <code>null</code>
+	 * 	after the operation.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void setParent_rootElement() throws TreeException {
+		final String sessionId = "setParent_rootElement";
+		final long newRootParentId = 99999999;
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+
+		assertNull(root.getParent());
+		root.setParent(newRootParentId);
+		assertNull(root.getParent());
+	}
+
 	/**
 	 * Test for the {@link Element#addChildren(Collection)} operation.
 	 * 
@@ -354,6 +439,51 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		assertEquals(afterRemove, element.getChildren().size());
 	}
 	
+	/**
+	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
+	 * 
+	 * <p>Alternative scenario for this operation when trying to wrap an object
+	 * node into a root element.</p>
+	 * 
+	 * <p><b>Test:</b></p>
+	 * Try to wrap a {@link Directory} object into a root element.
+	 * <p><b>Expected:</b></p>
+	 * The root element remains unwrapped (returns <code>null</code>) even after
+	 * attempting to wrap an object into it, since root elements do not hold
+	 * wrapped objects in the tree structure.
+	 * <p><b>Steps:</b></p>
+	 * <ol>
+	 * 	<li>Create a {@link Directory} object to be wrapped;</li>
+	 * 	<li>Get the transaction;</li>
+	 * 	<li>Initialize a new session with a directory tree;</li>
+	 * 	<li>Get the root element from the tree;</li>
+	 * 	<li>Verify that the root element is unwrapped (<code>null</code>);</li>
+	 * 	<li>Attempt to wrap the {@link Directory} object into the root element;
+	 * 	</li>
+	 * 	<li>Verify that the root element remains unwrapped (<code>null</code>)
+	 * 	after the wrap operation.</li>
+	 * </ol>
+	 * 
+	 * @throws TreeException in case of an error
+	 */
+	@Test
+	public void wrap_rootElement() throws TreeException {
+		final String sessionId = "wrap_rootElement";
+		Directory directory = new Directory(999999L, null, "RootDir");
+
+		Collection<Directory> directoryTree = TreeAssembler.getDirectoryTree();
+
+		TreeManager manager = HappyTree.createTreeManager();
+		TreeTransaction transaction = manager.getTransaction();
+		transaction.initializeSession(sessionId, directoryTree);
+
+		Element<Directory> root = manager.root();
+
+		assertNull(root.unwrap());
+		root.wrap(directory);
+		assertNull(root.unwrap());
+	}
+
 	/**
 	 * Test for the {@link Element#wrap(Object)} and {@link Element#unwrap()}.
 	 * 
