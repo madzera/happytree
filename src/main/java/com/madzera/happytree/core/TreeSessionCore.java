@@ -107,8 +107,8 @@ class TreeSessionCore implements TreeSession {
 	}
 	
 	TreeSessionCore cloneSession(String newSessionId) {
-		TreeSessionCore clone = TreeFactory.serviceFactory().
-				createTreeSession(newSessionId, this.getTypeTree());
+		TreeSessionCore clone = TreeFactory.serviceFactory()
+				.createTreeSession(newSessionId, this.getTypeTree());
 		
 		clone.setActive(this.isActive);
 		

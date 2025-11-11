@@ -47,8 +47,8 @@ public class ContextMenuTest {
 		String submenu4 = EManagementContextMenu.SUBMENU_4.name();
 		String submenu5 = EManagementContextMenu.SUBMENU_5.name();
 		
-		List<EManagementContextMenu> menus = ContextMenuAssembler.
-				getContextMenuListTree();
+		List<EManagementContextMenu> menus = ContextMenuAssembler
+				.getContextMenuListTree();
 		
 		TreeManager manager = HappyTree.createTreeManager();
 		TreeTransaction transaction = manager.getTransaction();

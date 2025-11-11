@@ -19,14 +19,14 @@ class TreeRemoveValidator extends TreeCutValidator {
 				TreePipelineAttributes.OPERATION);
 		
 		if (!element.getState().canExecuteOperation(operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DETACHED_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.DETACHED_ELEMENT);
 		}
 		
-		if (Recursion.iterateForInvalidStateOperationValidation(element.
-				getChildren(), operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DETACHED_ELEMENT);
+		if (Recursion.iterateForInvalidStateOperationValidation(element
+				.getChildren(), operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage
+					.DETACHED_ELEMENT);
 		}
 	}
 }

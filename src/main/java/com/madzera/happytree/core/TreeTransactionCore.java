@@ -14,8 +14,8 @@ import com.madzera.happytree.exception.TreeException;
 
 class TreeTransactionCore implements TreeTransaction {
 
-	private Map<String, TreeSessionCore> sessions = TreeFactory.mapFactory().
-			createHashMap();
+	private Map<String, TreeSessionCore> sessions = TreeFactory.mapFactory()
+			.createHashMap();
 	
 	private TreeSessionCore currentSession;
 	private TreeManager associatedManager;
@@ -29,8 +29,8 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public <T> void initializeSession(String identifier, Class<T> type)
 			throws TreeException {
-		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
-				createValidatorFacade(this.associatedManager());
+		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory()
+				.createValidatorFacade(this.associatedManager());
 		validatorFacade.validateSessionInitialization(identifier, type);
 		
 		ServiceFactory serviceFactory = TreeFactory.serviceFactory();
@@ -42,8 +42,8 @@ class TreeTransactionCore implements TreeTransaction {
 		
 		root.setRoot(Boolean.TRUE);
 		
-		Collection<TreeElementCore<T>> rootChildren = TreeFactory.
-				collectionFactory().createHashSet();
+		Collection<TreeElementCore<T>> rootChildren = TreeFactory
+				.collectionFactory().createHashSet();
 		
 		newSession.setRoot(root, rootChildren);
 		
@@ -55,13 +55,13 @@ class TreeTransactionCore implements TreeTransaction {
 	@Override
 	public <T> void initializeSession(String identifier, Collection<T> nodes)
 			throws TreeException {
-		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
-				createValidatorFacade(this.associatedManager());
+		TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory()
+				.createValidatorFacade(this.associatedManager());
 		
 		validatorFacade.validateSessionInitialization(identifier);
 		
-		TreePipeline pipeline = TreeFactory.pipelineFactory().
-				createPipelineValidator();
+		TreePipeline pipeline = TreeFactory.pipelineFactory()
+				.createPipelineValidator();
 		
 		pipeline.addAttribute(TreePipelineAttributes.SESSION_ID, identifier);
 		pipeline.addAttribute(TreePipelineAttributes.NODES, nodes);
@@ -146,8 +146,8 @@ class TreeTransactionCore implements TreeTransaction {
 
 	@Override
 	public List<TreeSession> sessions() {
-		List<TreeSession> listSessions = TreeFactory.collectionFactory().
-				createArrayList();
+		List<TreeSession> listSessions = TreeFactory.collectionFactory()
+				.createArrayList();
 		
 		listSessions.addAll(sessions.values());
 		

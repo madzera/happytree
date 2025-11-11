@@ -19,8 +19,8 @@ class TreeSessionValidator extends TreeValidator {
 				TreePipelineAttributes.SESSION_ID);
 		
 		if (sessionId == null) {
-			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
-					INVALID_INPUT);
+			throw this.throwIllegalArgumentException(TreeRepositoryMessage
+					.INVALID_INPUT);
 		}
 	}
 	
@@ -29,8 +29,8 @@ class TreeSessionValidator extends TreeValidator {
 				TreePipelineAttributes.SESSION_TYPE);
 		
 		if (typeSession == null) {
-			throw this.throwIllegalArgumentException(TreeRepositoryMessage.
-					INVALID_INPUT);
+			throw this.throwIllegalArgumentException(TreeRepositoryMessage
+					.INVALID_INPUT);
 		}
 	}
 	
@@ -40,8 +40,8 @@ class TreeSessionValidator extends TreeValidator {
 				TreePipelineAttributes.SESSION_TYPE);
 
 		if (!Serializable.class.isAssignableFrom(typeSession)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NOT_SERIALIZED_NODE);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NOT_SERIALIZED_NODE);
 		}
 	}
 	
@@ -53,8 +53,8 @@ class TreeSessionValidator extends TreeValidator {
 
 		for (TreeSession session : sessions) {
 			if (sessionId.equals(session.getSessionId())) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATE_SESSION);
+				throw this.throwTreeException(TreeRepositoryMessage
+					.DUPLICATE_SESSION);
 			}
 		}
 	}
@@ -63,8 +63,8 @@ class TreeSessionValidator extends TreeValidator {
 		TreeSession session = getManager().getTransaction().currentSession();
 		
 		if (session == null) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NO_DEFINED_SESSION);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NO_DEFINED_SESSION);
 		}
 	}
 	
@@ -72,8 +72,8 @@ class TreeSessionValidator extends TreeValidator {
 		TreeSession session = getManager().getTransaction().currentSession();
 		
 		if (!session.isActive()) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NO_ACTIVE_SESSION);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NO_ACTIVE_SESSION);
 		}
 	}
 }

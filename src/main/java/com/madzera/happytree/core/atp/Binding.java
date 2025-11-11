@@ -17,8 +17,8 @@ class Binding<T> extends ATPGenericPhase<T> {
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")
-		List<Element<T>> allElements = (List<Element<T>>) pipeline.
-				getAttribute(ATPPipelineAttributes.ELEMENTS);
+		List<Element<T>> allElements = (List<Element<T>>) pipeline
+				.getAttribute(ATPPipelineAttributes.ELEMENTS);
 		
 		List<Element<T>> clonedElements = this.createArrayList();
 		List<Element<T>> tree = this.createArrayList();

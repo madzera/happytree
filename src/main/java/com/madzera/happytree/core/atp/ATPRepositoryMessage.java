@@ -17,8 +17,8 @@ enum ATPRepositoryMessage {
 	
 	
 	private String error;
-	private static Map<String, String> messages = ATPFactory.mapFactory().
-			createHashMap();
+	private static Map<String, String> messages = ATPFactory.mapFactory()
+			.createHashMap();
 	
 	static {
 		/*

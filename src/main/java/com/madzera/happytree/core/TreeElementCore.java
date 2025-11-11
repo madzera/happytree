@@ -450,8 +450,8 @@ class TreeElementCore<T> implements Element<T> {
 	 * few bugs.
 	 */
 	TreeElementCore<T> cloneElement() {
-		TreeElementCore<T> clone = TreeFactory.serviceFactory().
-				createElement(
+		TreeElementCore<T> clone = TreeFactory.serviceFactory()
+				.createElement(
 						this.getId(),
 						this.getParent(),
 						this.unwrap(),
@@ -527,8 +527,8 @@ class TreeElementCore<T> implements Element<T> {
 					|| Recursion.iterateForNullWrappedNode(this.getChildren()))) {
 				throw TreeFactory.exceptionFactory().createException();
 			}
-			ObjectMapper objectMapper = TreeFactory.jsonFactory().
-					createObjectMapper();
+			ObjectMapper objectMapper = TreeFactory.jsonFactory()
+					.createObjectMapper();
 
 			if (isPrettyJson) {
 				ObjectWriter writer = objectMapper.

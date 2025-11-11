@@ -133,10 +133,8 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		isTrue(manager.containsElement(y2020.getId(), processes.getId()));
 		isTrue(manager.containsElement(y2020.getId(), criminal.getId()));
 		isTrue(manager.containsElement(y2020.getId(), january.getId()));
-		isTrue(manager.containsElement(dispatches.getId(),
-				processes.getId()));
-		isTrue(manager.containsElement(dispatches.getId(),
-				criminal.getId()));
+		isTrue(manager.containsElement(dispatches.getId(), processes.getId()));
+		isTrue(manager.containsElement(dispatches.getId(), criminal.getId()));
 		isTrue(manager.containsElement(dispatches.getId(), january.getId()));
 		isEquals(1, manager.root().getChildren().size());
 		
@@ -146,8 +144,7 @@ public class TaxonomyNodeTest extends CommonDemoTest {
 		isTrue(manager.containsElement(y2020.getId(), y2020.getId()));
 		
 		isFalse(manager.containsElement(y2020.getId(), processes.getId()));
-		isFalse(manager.containsElement(y2020.getId(),
-				criminal.getId()));
+		isFalse(manager.containsElement(y2020.getId(), criminal.getId()));
 		isFalse(manager.containsElement(y2020.getId(), january.getId()));
 		
 	}

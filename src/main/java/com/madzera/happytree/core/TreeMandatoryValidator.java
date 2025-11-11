@@ -12,8 +12,8 @@ class TreeMandatoryValidator extends TreeValidator {
 	void validateMandatoryInput(Object... args) {
 		for (Object arg : args) {
 			if (arg == null) {
-				throw this.throwIllegalArgumentException(TreeRepositoryMessage.
-						INVALID_INPUT);
+				throw this.throwIllegalArgumentException(TreeRepositoryMessage
+						.INVALID_INPUT);
 			}
 		}
 	}

@@ -23,14 +23,14 @@ class TreeUpdateValidator extends TreeElementValidator {
 				TreePipelineAttributes.OPERATION);
 		
 		if (!element.getState().canExecuteOperation(operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NOT_EXISTED_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NOT_EXISTED_ELEMENT);
 		}
 		
-		if (Recursion.iterateForInvalidStateOperationValidation(element.
-				getChildren(), operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NOT_EXISTED_ELEMENT);
+		if (Recursion.iterateForInvalidStateOperationValidation(element
+				.getChildren(), operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NOT_EXISTED_ELEMENT);
 		}
 	}
 
@@ -49,7 +49,7 @@ class TreeUpdateValidator extends TreeElementValidator {
 				root);
 		
 		/*
-		 * Disconsider root element.
+		 * Ignore root element.
 		 */
 		targetPlainTree.removeIf(e -> ((TreeElementCore<Object>) e).isRoot());
 
@@ -65,8 +65,8 @@ class TreeUpdateValidator extends TreeElementValidator {
 			TreeElementCore<Object> sourceChild = (TreeElementCore<Object>)
 					sourceElement;
 			if (rootIds.contains(sourceChild.getUpdatedId())) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-					DUPLICATE_ELEMENT);
+				throw this.throwTreeException(TreeRepositoryMessage
+					.DUPLICATE_ELEMENT);
 			}
 		}
 	}

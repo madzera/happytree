@@ -532,8 +532,7 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		isEquals(computerScience.getId(), computerApplications.getParent());
 		
 		isEquals(6, computerScience.getChildren().size());
-		isNotNull(computerScience.getElementById(computerApplications.
-				getId()));
+		isNotNull(computerScience.getElementById(computerApplications.getId()));
 		isTrue(manager.containsElement(computerScience,
 				computerApplications));
 		
@@ -633,18 +632,16 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		isNull(computerGraphics);
 		
 		isFalse(manager.containsElement(computerApplications, ai));
-		isFalse(manager.containsElement(computerApplications,
-				computerGraphics));
+		isFalse(manager.containsElement(computerApplications, computerGraphics));
 		isFalse(manager.containsElement(computerScience, ai));
 		isFalse(manager.containsElement(computerScience, computerGraphics));
 		
 		computerScience = manager.getElementById("Computer Science");
-		softwareEngineering = manager.getElementById(softwareEngineering.
-				getId());
+		softwareEngineering = manager.getElementById(softwareEngineering
+				.getId());
 		
 		isEquals(4, computerScience.getChildren().size());
-		isTrue(manager.containsElement(computerScience,
-				softwareEngineering));
+		isTrue(manager.containsElement(computerScience,	softwareEngineering));
 		isEquals(computerScience.getId(), softwareEngineering.getParent());
 		
 		isEquals("ATTACHED", softwareEngineering.lifecycle());
@@ -655,10 +652,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		
 		isEquals("NOT_EXISTED", softwareEngineering.lifecycle());
 		isEquals(3, computerScience.getChildren().size());
-		isFalse(manager.containsElement(computerScience,
-				softwareEngineering));
-		isNotEquals(computerScience.getId(), softwareEngineering.
-				getParent());
+		isFalse(manager.containsElement(computerScience, softwareEngineering));
+		isNotEquals(computerScience.getId(), softwareEngineering.getParent());
 		
 		isNull(transaction.sessionCheckout(clonedSessionId));
 		isNotNull(transaction.sessionCheckout(sessionId));
@@ -670,8 +665,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		
 		transaction.sessionCheckout(clonedSessionId);
 		
-		Element<Science> clonedMedicine = manager.getElementById(medicine.
-				getId());
+		Element<Science> clonedMedicine = manager.getElementById(medicine
+				.getId());
 		
 		Element<Science> clonedComputerScience = manager.getElementById(
 				computerScience.getId());

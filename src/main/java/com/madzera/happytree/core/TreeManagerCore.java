@@ -15,11 +15,11 @@ import com.madzera.happytree.exception.TreeException;
 @SuppressWarnings("unchecked")
 class TreeManagerCore implements TreeManager {
 
-	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory().
-			createValidatorFacade(this);
+	private TreeValidatorFacade validatorFacade = TreeFactory.facadeFactory()
+			.createValidatorFacade(this);
 	
-	private TreeTransactionCore transaction = TreeFactory.serviceFactory().
-			createTreeTransaction(this);
+	private TreeTransactionCore transaction = TreeFactory.serviceFactory()
+			.createTreeTransaction(this);
 	
 	
 	TreeManagerCore() {}
@@ -86,8 +86,7 @@ class TreeManagerCore implements TreeManager {
 			target = to != null ? (TreeElementCore<T>)
 					this.searchElement(to.getId()) : null;
 			
-			target = target == null ? (TreeElementCore<T>)
-					this.tree() : target;
+			target = target == null ? (TreeElementCore<T>) this.tree() : target;
 			
 			target.addChild(source);
 			
@@ -417,10 +416,10 @@ class TreeManagerCore implements TreeManager {
 		 */
 		if (!((TreeElementCore<T>) element).isRoot() &&
 				!oldParentId.equals(updatedParentId)) {
-			TreeElementCore<T> oldParent = (TreeElementCore<T>) this.
-					searchElement(oldParentId);
-			TreeElementCore<T> newParent = (TreeElementCore<T>) this.
-					searchElement(updatedParentId);
+			TreeElementCore<T> oldParent = (TreeElementCore<T>) this
+					.searchElement(oldParentId);
+			TreeElementCore<T> newParent = (TreeElementCore<T>) this
+					.searchElement(updatedParentId);
 			
 			/*
 			 * In a case of a non-existent or parent not found, then this

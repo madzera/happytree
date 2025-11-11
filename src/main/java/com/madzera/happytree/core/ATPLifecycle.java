@@ -82,8 +82,8 @@ class ATPLifecycle<T> {
 		 * The root element has no <code>@Id</code>, <code>@Parent</code> and
 		 * wrapped object node.
 		 */
-		TreeElementCore<T> root = (TreeElementCore<T>) TreeFactory.
-				serviceFactory().createElement(session);
+		TreeElementCore<T> root = (TreeElementCore<T>) TreeFactory
+				.serviceFactory().createElement(session);
 		
 		/*
 		 * Root configuration.

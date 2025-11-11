@@ -42,8 +42,8 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 
 	private void validateMandatorySource(Collection<T> nodes) {
 		if (nodes == null || nodes.isEmpty()) {
-			throw this.throwIllegalArgumentException(ATPRepositoryMessage.
-					INVALID_INPUT);
+			throw this.throwIllegalArgumentException(ATPRepositoryMessage
+					.INVALID_INPUT);
 		}
 	}
 
@@ -62,11 +62,11 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 		
 		validateTreeAnnotation(treeAnnotation);
 		validateFieldAnnotation(fieldIdAnnotation, ATPRepositoryMessage.NO_ID);
-		validateFieldAnnotation(fieldParentAnnotation, ATPRepositoryMessage.
-				NO_PARENT);
+		validateFieldAnnotation(fieldParentAnnotation, ATPRepositoryMessage
+				.NO_PARENT);
 		
-		if (!fieldIdAnnotation.getType().equals(fieldParentAnnotation.
-				getType())) {
+		if (!fieldIdAnnotation.getType().equals(fieldParentAnnotation
+				.getType())) {
 			throw this.throwTreeException(ATPRepositoryMessage.MISMATCH_TYPE_ID);
 		}
 	}
@@ -76,8 +76,8 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 		T node = nodes.iterator().next();
 
 		if (!(node instanceof java.io.Serializable)) {
-			throw this.throwTreeException(ATPRepositoryMessage.
-					NOT_SERIALIZED_NODE);
+			throw this.throwTreeException(ATPRepositoryMessage
+					.NOT_SERIALIZED_NODE);
 		}
 	}
 	
@@ -92,12 +92,12 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 			Field fieldIdAnnotation = ATPReflectionUtil.getFieldAnnotation(
 					object, Id.class);
 			
-			Object objId = ATPReflectionUtil.invokeGetter(fieldIdAnnotation.
-					getName(), object);
+			Object objId = ATPReflectionUtil.invokeGetter(fieldIdAnnotation
+					.getName(), object);
 			
 			if (objId == null) {
-				throw this.throwIllegalArgumentException(ATPRepositoryMessage.
-						INVALID_INPUT);
+				throw this.throwIllegalArgumentException(ATPRepositoryMessage
+						.INVALID_INPUT);
 			}
 			
 			if (validIds.contains(objId)) {

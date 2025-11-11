@@ -25,10 +25,10 @@ final class TreeUtil {
             try {
                 byte[] serializedData;
                 
-                try (ByteArrayOutputStream bos = TreeFactory.ioFactory().
-                        createByteArrayOutputStream();
-                     ObjectOutputStream out = TreeFactory.ioFactory().
-                        createObjectOutputStream(bos)) {
+                try (ByteArrayOutputStream bos = TreeFactory.ioFactory()
+                        .createByteArrayOutputStream();
+                     ObjectOutputStream out = TreeFactory.ioFactory()
+                        .createObjectOutputStream(bos)) {
                     
                     /*
                      * It is only for the code coverage purposes. The catch
@@ -44,10 +44,10 @@ final class TreeUtil {
                     serializedData = bos.toByteArray();
                 }
 
-                try (ByteArrayInputStream bis = TreeFactory.ioFactory().
-                        createByteArrayInputStream(serializedData);
-                     ObjectInputStream in = TreeFactory.ioFactory().
-                        createObjectInputStream(bis)) {
+                try (ByteArrayInputStream bis = TreeFactory.ioFactory()
+                        .createByteArrayInputStream(serializedData);
+                     ObjectInputStream in = TreeFactory.ioFactory()
+                        .createObjectInputStream(bis)) {
                     
                     clonedObject = in.readObject();
                 }

@@ -19,8 +19,8 @@ abstract class TreeElementValidator extends TreeValidator {
 				TreePipelineAttributes.TARGET_ELEMENT);
 		
 		if (!source.attachedTo().equals(session)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NOT_BELONG_SESSION);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NOT_BELONG_SESSION);
 		}
 		
 		/**
@@ -28,8 +28,8 @@ abstract class TreeElementValidator extends TreeValidator {
 		 * then this is no possible to cut or copy for their elements.
 		 */
 		if (target != null && !target.attachedTo().isActive()) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					NO_ACTIVE_SESSION);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.NO_ACTIVE_SESSION);
 		}
 	}
 	
@@ -39,8 +39,8 @@ abstract class TreeElementValidator extends TreeValidator {
 				TreePipelineAttributes.SOURCE_ELEMENT);
 		
 		if (source.isRoot()) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					IMPOSSIBLE_HANDLE_ROOT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.IMPOSSIBLE_HANDLE_ROOT);
 		}
 	}
 	
@@ -53,18 +53,18 @@ abstract class TreeElementValidator extends TreeValidator {
 				TreePipelineAttributes.OPERATION);
 		
 		if (!source.getState().canExecuteOperation(operation)
-				|| Recursion.iterateForInvalidStateOperationValidation(source.
-						getChildren(), operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DETACHED_ELEMENT);
+				|| Recursion.iterateForInvalidStateOperationValidation(source
+						.getChildren(), operation)) {
+			throw this.throwTreeException(TreeRepositoryMessage
+					.DETACHED_ELEMENT);
 		}
 		
 		if ((target != null)
 				&& (!target.getState().canExecuteOperation(operation)
-				|| Recursion.iterateForInvalidStateOperationValidation(target.
-						getChildren(), operation))) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					DETACHED_ELEMENT);
+				|| Recursion.iterateForInvalidStateOperationValidation(target
+						.getChildren(), operation))) {
+			throw this.throwTreeException(TreeRepositoryMessage
+					.DETACHED_ELEMENT);
 		}
 	}
 
@@ -81,16 +81,16 @@ abstract class TreeElementValidator extends TreeValidator {
 		Class<?> sessionType = session.getTypeTree();
 		
 		if (sourceType != null && !sourceType.equals(sessionType)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					MISMATCH_TYPE_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.MISMATCH_TYPE_ELEMENT);
 		}
 		
 		if (target != null) {
 			Class<?> targetType = target.getType();
 				
 			if (targetType != null && !targetType.equals(sessionType)) {
-				throw this.throwTreeException(TreeRepositoryMessage.
-						MISMATCH_TYPE_ELEMENT);
+				throw this.throwTreeException(TreeRepositoryMessage
+						.MISMATCH_TYPE_ELEMENT);
 			}
 		}
 	}
@@ -107,8 +107,8 @@ abstract class TreeElementValidator extends TreeValidator {
 				targetObjectId.getClass() : null;
 
 		if (targetClass != null && !sourceClass.equals(targetClass)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-							MISMATCH_TYPE_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+							.MISMATCH_TYPE_ELEMENT);
 		}
 	}
 

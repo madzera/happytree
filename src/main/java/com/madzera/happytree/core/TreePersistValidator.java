@@ -20,14 +20,14 @@ class TreePersistValidator extends TreeElementValidator {
 				TreePipelineAttributes.OPERATION);
 		
 		if (!element.getState().canExecuteOperation(operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					ATTACHED_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.ATTACHED_ELEMENT);
 		}
 		
 		if (Recursion.iterateForInvalidStateOperationValidation(element.
 				getChildren(), operation)) {
-			throw this.throwTreeException(TreeRepositoryMessage.
-					ATTACHED_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.ATTACHED_ELEMENT);
 		}
 	}
 
@@ -41,7 +41,8 @@ class TreePersistValidator extends TreeElementValidator {
 		Element<Object> root = session.tree();
 		
 		if (Recursion.iterateForDuplicateId(source, root)) {
-			throw this.throwTreeException(TreeRepositoryMessage.DUPLICATE_ELEMENT);
+			throw this.throwTreeException(TreeRepositoryMessage
+					.DUPLICATE_ELEMENT);
 		}
 	}
 }

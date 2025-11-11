@@ -44,8 +44,8 @@ class Recursion {
 	 * references inside each Element object.
 	 */
 	static <T> Collection<Element<T>> toPlainList(Element<T> element) {
-		List<Element<T>> elements = TreeFactory.collectionFactory().
-				createArrayList();
+		List<Element<T>> elements = TreeFactory.collectionFactory()
+				.createArrayList();
 		elements.add(element);
 		treePlain(element.getChildren(), elements);
 		
