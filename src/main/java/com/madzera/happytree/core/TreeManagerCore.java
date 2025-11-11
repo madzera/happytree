@@ -2,7 +2,6 @@ package com.madzera.happytree.core;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -447,7 +446,7 @@ class TreeManagerCore implements TreeManager {
 			Element<T> oldParent = this.searchElement(oldParentChild);
 			
 			if (oldParent != null) {
-				HashSet<Element<T>> childrenParent = (HashSet<Element<T>>)
+				List<Element<T>> childrenParent = (List<Element<T>>)
 						oldParent.getChildren();
 				Element<T> childParent = this.searchElement(child.getId());
 				childrenParent.remove(childParent);

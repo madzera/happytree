@@ -54,7 +54,7 @@ class TreeElementCore<T> implements Element<T> {
 		this.id = id;
 		this.parentId = parentId;
 		this.oldParentId = parentId;
-		this.children = TreeFactory.collectionFactory().createHashSet();
+		this.children = TreeFactory.collectionFactory().createArrayList();
 		
 		this.wrappedNode = wrappedNode;
 		this.newWrappedNode = wrappedNode;

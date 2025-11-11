@@ -1,6 +1,6 @@
 package com.madzera.happytree.core;
 
-import java.util.Set;
+import java.util.List;
 
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
@@ -70,7 +70,7 @@ class ATPLifecycle<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	private void prepareInitializedSession() {
-		Set<TreeElementCore<T>> tree = (Set<TreeElementCore<T>>)
+		List<TreeElementCore<T>> tree = (List<TreeElementCore<T>>)
 				pipeline.getAttribute(ROOT_KEY);
 		TreeManager manager = (TreeManager) pipeline.getAttribute(MANAGER_KEY);
 		
@@ -84,13 +84,6 @@ class ATPLifecycle<T> {
 		 */
 		TreeElementCore<T> root = (TreeElementCore<T>) TreeFactory.
 				serviceFactory().createElement(session);
-		
-		/*
-		 * Change the parent id of immediate root children (first level).
-		 */
-		// for (TreeElementCore<T> child : tree) {
-		// 	child.setParent(session.getSessionId());
-		// }
 		
 		/*
 		 * Root configuration.

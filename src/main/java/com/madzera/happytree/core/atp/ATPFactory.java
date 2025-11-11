@@ -1,9 +1,9 @@
 package com.madzera.happytree.core.atp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.madzera.happytree.core.ATPPhase;
 import com.madzera.happytree.exception.TreeException;
@@ -87,8 +87,8 @@ public class ATPFactory {
 	class CollectionFactory extends ATPFactory {
 		CollectionFactory() {}
 		
-		<T> Set<T> createHashSet() {
-			return new HashSet<>();
+		<T> List<T> createArrayList() {
+			return new ArrayList<>();
 		}
 	}
 	

@@ -1,6 +1,6 @@
 package com.madzera.happytree.core.atp;
 
-import java.util.Set;
+import java.util.List;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.core.TreePipeline;
@@ -17,11 +17,11 @@ class Binding<T> extends ATPGenericPhase<T> {
 	@Override
 	protected void run(TreePipeline pipeline) throws TreeException {
 		@SuppressWarnings("unchecked")
-		Set<Element<T>> allElements = (Set<Element<T>>) pipeline.
+		List<Element<T>> allElements = (List<Element<T>>) pipeline.
 				getAttribute(ATPPipelineAttributes.ELEMENTS);
 		
-		Set<Element<T>> clonedElements = this.createHashSet();
-		Set<Element<T>> tree = this.createHashSet();
+		List<Element<T>> clonedElements = this.createArrayList();
+		List<Element<T>> tree = this.createArrayList();
 		
 		clonedElements.addAll(allElements);
 		
@@ -43,7 +43,7 @@ class Binding<T> extends ATPGenericPhase<T> {
 	}
 
 	private Element<T> getParentElement(Object parentId,
-			Set<Element<T>> clonedElements) {
+			List<Element<T>> clonedElements) {
 		Object id = null;
 		
 		for (Element<T> element : clonedElements) {

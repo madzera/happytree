@@ -3,7 +3,7 @@ package com.madzera.happytree.core.atp;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import com.madzera.happytree.annotation.Id;
 import com.madzera.happytree.annotation.Parent;
@@ -83,7 +83,7 @@ class PreValidation<T> extends ATPGenericPhase<T> {
 	
 	private void validateIdentifiers(Collection<T> nodes) 
 			throws ReflectiveOperationException, TreeException {
-		Set<Object> validIds = this.createHashSet();
+		List<Object> validIds = this.createArrayList();
 		Iterator<T> iterator = nodes.iterator();
 		
 		while (iterator.hasNext()) {

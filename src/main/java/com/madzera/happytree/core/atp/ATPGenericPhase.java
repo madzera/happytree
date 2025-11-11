@@ -1,7 +1,7 @@
 package com.madzera.happytree.core.atp;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.madzera.happytree.core.ATPPhase;
 import com.madzera.happytree.exception.TreeException;
@@ -31,8 +31,8 @@ abstract class ATPGenericPhase<T> extends ATPPhase<T> {
 		return ATPFactory.mapFactory().createHashMap();
 	}
 	
-	protected <E> Set<E> createHashSet() {
-		return ATPFactory.collectionFactory().createHashSet();
+	protected <E> List<E> createArrayList() {
+		return ATPFactory.collectionFactory().createArrayList();
 	}
 	
 	private String getMessageError(ATPRepositoryMessage error) {

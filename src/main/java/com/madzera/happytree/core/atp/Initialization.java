@@ -1,15 +1,15 @@
 package com.madzera.happytree.core.atp;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
 import com.madzera.happytree.TreeTransaction;
 import com.madzera.happytree.core.TreePipeline;
 import com.madzera.happytree.exception.TreeException;
-
-import java.util.Set;
 
 class Initialization<T> extends ATPGenericPhase<T> {
 
@@ -39,7 +39,7 @@ class Initialization<T> extends ATPGenericPhase<T> {
 		TreeTransaction transaction = manager.getTransaction();
 		transaction.initializeSession(sessionId, clazz);
 		
-		Set<Element<?>> elements = this.createHashSet();
+		List<Element<?>> elements = this.createArrayList();
 		Set<Entry<Object, T>> entrySet = nodesMap.entrySet();
 		
 		for (Entry<Object, T> entry : entrySet) {
