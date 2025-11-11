@@ -31,8 +31,8 @@ class Extraction<T> extends ATPGenericPhase<T> {
 				throw new ReflectiveOperationException();
 			}
 
-			Map<Object, Object> nodesMap = this.createHashMap();
-			Map<Object, Object> nodesParentMap = this.createHashMap();
+			Map<Object, Object> nodesMap = this.createLinkedHashMap();
+			Map<Object, Object> nodesParentMap = this.createLinkedHashMap();
 
 			Collection<?> nodes = (Collection<?>) pipeline.getAttribute(
 					ATPPipelineAttributes.NODES);

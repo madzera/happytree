@@ -2,6 +2,7 @@ package com.madzera.happytree.core.atp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,12 @@ public class ATPFactory {
 	}
 	
 	class MapFactory extends ATPFactory {
-		MapFactory() {}
+		MapFactory() {
+		}
+		
+		<K,V> Map<K,V> createLinkedHashMap() {
+			return new LinkedHashMap<>();
+		}
 		
 		<K,V> Map<K,V> createHashMap() {
 			return new HashMap<>();

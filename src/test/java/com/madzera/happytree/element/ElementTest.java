@@ -656,14 +656,14 @@ public class ElementTest extends TreeCommonTestHelper {
 				+ "\"parentIdentifier\":24935,\"name\":\"Photoshop\","
 				+ "\"children\":[{\"identifier\":4950243,"
 				+ "\"parentIdentifier\":909443,\"name\":\"photoshop.exe\","
-				+ "\"children\":[]}]},{\"identifier\":403940,"
-				+ "\"parentIdentifier\":24935,\"name\":\"Reader\","
-				+ "\"children\":[{\"identifier\":8493845,"
-				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
 				+ "\"children\":[]}]},{\"identifier\":502010,"
 				+ "\"parentIdentifier\":24935,\"name\":\"Dreamweaver\","
 				+ "\"children\":[{\"identifier\":8935844,"
 				+ "\"parentIdentifier\":502010,\"name\":\"dreamweaver.exe\","
+				+ "\"children\":[]}]},{\"identifier\":403940,"
+				+ "\"parentIdentifier\":24935,\"name\":\"Reader\","
+				+ "\"children\":[{\"identifier\":8493845,"
+				+ "\"parentIdentifier\":403940,\"name\":\"reader.exe\","
 				+ "\"children\":[]}]}]}";
 
 		final String sessionId = "toJSON";
@@ -722,16 +722,6 @@ public class ElementTest extends TreeCommonTestHelper {
 				"      \"children\" : [ ]" + breakLine() + //
 				"    } ]" + breakLine() + //
 				"  }, {" + breakLine() + //
-				"    \"identifier\" : 403940," + breakLine() + //
-				"    \"parentIdentifier\" : 24935," + breakLine() + //
-				"    \"name\" : \"Reader\"," + breakLine() + //
-				"    \"children\" : [ {" + breakLine() + //
-				"      \"identifier\" : 8493845," + breakLine() + //
-				"      \"parentIdentifier\" : 403940," + breakLine() + //
-				"      \"name\" : \"reader.exe\"," + breakLine() + //
-				"      \"children\" : [ ]" + breakLine() + //
-				"    } ]" + breakLine() + //
-				"  }, {" + breakLine() + //
 				"    \"identifier\" : 502010," + breakLine() + //
 				"    \"parentIdentifier\" : 24935," + breakLine() + //
 				"    \"name\" : \"Dreamweaver\"," + breakLine() + //
@@ -739,6 +729,16 @@ public class ElementTest extends TreeCommonTestHelper {
 				"      \"identifier\" : 8935844," + breakLine() + //
 				"      \"parentIdentifier\" : 502010," + breakLine() + //
 				"      \"name\" : \"dreamweaver.exe\"," + breakLine() + //
+				"      \"children\" : [ ]" + breakLine() + //
+				"    } ]" + breakLine() + //
+				"  }, {" + breakLine() + //
+				"    \"identifier\" : 403940," + breakLine() + //
+				"    \"parentIdentifier\" : 24935," + breakLine() + //
+				"    \"name\" : \"Reader\"," + breakLine() + //
+				"    \"children\" : [ {" + breakLine() + //
+				"      \"identifier\" : 8493845," + breakLine() + //
+				"      \"parentIdentifier\" : 403940," + breakLine() + //
+				"      \"name\" : \"reader.exe\"," + breakLine() + //
 				"      \"children\" : [ ]" + breakLine() + //
 				"    } ]" + breakLine() + //
 				"  } ]" + breakLine() + //
@@ -792,16 +792,16 @@ public class ElementTest extends TreeCommonTestHelper {
 				"</name><children><element><identifier>4950243</identifier>" +
 				"<parentIdentifier>909443</parentIdentifier>" +
 				"<name>photoshop.exe</name><children/></element>" +
-				"</children></element><element><identifier>403940" +
+				"</children></element><element><identifier>502010" +
 				"</identifier><parentIdentifier>24935</parentIdentifier>" +
-				"<name>Reader</name><children><element>" +
-				"<identifier>8493845</identifier><parentIdentifier>403940" +
-				"</parentIdentifier><name>reader.exe</name><children/>" +
-				"</element></children></element><element>" +
-				"<identifier>502010</identifier><parentIdentifier>24935" +
-				"</parentIdentifier><name>Dreamweaver</name><children><element>" +
+				"<name>Dreamweaver</name><children><element>" +
 				"<identifier>8935844</identifier><parentIdentifier>502010" +
 				"</parentIdentifier><name>dreamweaver.exe</name><children/>" +
+				"</element></children></element><element>" +
+				"<identifier>403940</identifier><parentIdentifier>24935" +
+				"</parentIdentifier><name>Reader</name><children><element>" +
+				"<identifier>8493845</identifier><parentIdentifier>403940" +
+				"</parentIdentifier><name>reader.exe</name><children/>" +
 				"</element></children></element></children></element>";
 
 		final String sessionId = "toXML";
@@ -864,19 +864,6 @@ public class ElementTest extends TreeCommonTestHelper {
 				"      </children>" + breakLine() + //
 				"    </element>" + breakLine() + //
 				"    <element>" + breakLine() + //
-				"      <identifier>403940</identifier>" + breakLine() + //
-				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
-				"      <name>Reader</name>" + breakLine() + //
-				"      <children>" + breakLine() + //
-				"        <element>" + breakLine() + //
-				"          <identifier>8493845</identifier>" + breakLine() + //
-				"          <parentIdentifier>403940</parentIdentifier>" + breakLine() + //
-				"          <name>reader.exe</name>" + breakLine() + //
-				"          <children/>" + breakLine() + //
-				"        </element>" + breakLine() + //
-				"      </children>" + breakLine() + //
-				"    </element>" + breakLine() + //
-				"    <element>" + breakLine() + //
 				"      <identifier>502010</identifier>" + breakLine() + //
 				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
 				"      <name>Dreamweaver</name>" + breakLine() + //
@@ -885,6 +872,19 @@ public class ElementTest extends TreeCommonTestHelper {
 				"          <identifier>8935844</identifier>" + breakLine() + //
 				"          <parentIdentifier>502010</parentIdentifier>" + breakLine() + //
 				"          <name>dreamweaver.exe</name>" + breakLine() + //
+				"          <children/>" + breakLine() + //
+				"        </element>" + breakLine() + //
+				"      </children>" + breakLine() + //
+				"    </element>" + breakLine() + //
+				"    <element>" + breakLine() + //
+				"      <identifier>403940</identifier>" + breakLine() + //
+				"      <parentIdentifier>24935</parentIdentifier>" + breakLine() + //
+				"      <name>Reader</name>" + breakLine() + //
+				"      <children>" + breakLine() + //
+				"        <element>" + breakLine() + //
+				"          <identifier>8493845</identifier>" + breakLine() + //
+				"          <parentIdentifier>403940</parentIdentifier>" + breakLine() + //
+				"          <name>reader.exe</name>" + breakLine() + //
 				"          <children/>" + breakLine() + //
 				"        </element>" + breakLine() + //
 				"      </children>" + breakLine() + //

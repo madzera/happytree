@@ -27,8 +27,8 @@ abstract class ATPGenericPhase<T> extends ATPPhase<T> {
 				this.getMessageError(error));
 	}
 	
-	protected <K,V> Map<K,V> createHashMap() {
-		return ATPFactory.mapFactory().createHashMap();
+	protected <K, V> Map<K, V> createLinkedHashMap() {
+		return ATPFactory.mapFactory().createLinkedHashMap();
 	}
 	
 	protected <E> List<E> createArrayList() {
