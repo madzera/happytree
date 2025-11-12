@@ -7,17 +7,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represent an identifier of an object of a class that represents a linear node
- * with a tree behavior that will be transformed by HappyTree API.
+ * Represents an identifier of an object of a class that represents a linear node
+ * with tree behavior that will be transformed by the HappyTree API.
  * 
  * <p>This id <b>must</b> be unique when a collection of objects that will be
- * transformed into a real tree hierarchical structure is passed through of a
+ * transformed into a real hierarchical tree structure is passed through
  * tree session initialization.</p>
  * 
- * <p>This happens because an object (declared with {@literal @Tree} annotation)
- * that will be transformed through <b>API Transformation Process</b> will
- * represent, respectively, a <i>node</i> in a tree concept. So, each node in a
- * tree <b>must</b> have a not <code>null</code> id and an <b>unique id</b>.</p>
+ * <p>This happens because an object (declared with the {@literal @Tree} annotation)
+ * that will be transformed through the <b>API Transformation Process</b> will
+ * represent a <i>node</i> in a tree concept. So, each node in a
+ * tree <b>must</b> have a non-<code>null</code> id and a <b>unique id</b>.</p>
  * 
  * Example:
  * <pre>

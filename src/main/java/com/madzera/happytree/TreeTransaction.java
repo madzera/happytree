@@ -6,22 +6,22 @@ import java.util.List;
 import com.madzera.happytree.exception.TreeException;
 
 /**
- * Dedicated interface to handle all stored tree sessions. It is responsible to
- * handle sessions in the API.
+ * Dedicated interface to handle all stored tree sessions. It is responsible for
+ * handling sessions in the API.
  * 
  * <p>With the transaction, the API client can initialize, deactivate, activate,
  * retrieve or destroy any sessions.</p>
  * 
  * <p>Structurally, this interface acts as a bridge between the 
- * {@link TreeManager} and the {@link TreeSession}, making inherent part of
+ * {@link TreeManager} and the {@link TreeSession}, being an inherent part of the
  * session, handling the total responsibility of this class, leaving the
  * <code>TreeManager</code> interface free to just manipulate the elements
- * inside of the session.</p>
+ * inside the session.</p>
  * 
- * <p>An {@link Element} represents a node in a tree and a tree can only exist
- * within a previously created session. But to create a session, it is needed to
- * use an object that represents the session transaction, and this object is an
- * instance of this interface. However, a transaction only can be recovered from
+ * <p>An {@link Element} represents a node in a tree, and a tree can only exist
+ * within a previously created session. But to create a session, an object that
+ * represents the session transaction is needed, and this object is an
+ * instance of this interface. However, a transaction can only be recovered from
  * within the <code>TreeManager</code> by invoking
  * {@link TreeManager#getTransaction()}.</p>
  * 
@@ -32,21 +32,21 @@ import com.madzera.happytree.exception.TreeException;
  * 		</li>
  * 	</ol>
  * 
- * <p>The first one happens when the API client just wants create a default
+ * <p>The first one happens when the API client just wants to create a default
  * empty tree session by invoking {@link #initializeSession(String, Class)}.
- * Here an empty tree is created, specifying which type of class this session
- * will have as node.</p>
+ * Here, an empty tree is created, specifying which type of class this session
+ * will have as a node.</p>
  * 
- * <p>The last one happens when an API client desire to transform a 
+ * <p>The last one happens when an API client desires to transform a 
  * <code>Collection</code> of objects that represents a linear tree structure.
- * This transformation (which is called by API Transformation Process) converts
- * this linear structure into a real tree structure, which each node is
- * represented by an <code>Element</code> objects. This API Transformation
+ * This transformation (which is called the API Transformation Process) converts
+ * this linear structure into a real tree structure, where each node is
+ * represented by <code>Element</code> objects. This API Transformation
  * Process implements an internal life cycle.</p>
  * 
  * <p><b>The <code>TreeTransaction</code> can only work with one
- * <code>TreeSession</code> per time, meanwhile the other sessions stay in
- * background waiting to be selected again in another time.</b></p>
+ * <code>TreeSession</code> at a time, while the other sessions stay in the
+ * background waiting to be selected again at another time.</b></p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  * 
@@ -55,19 +55,19 @@ public interface TreeTransaction {
 	
 	/**
 	 * Initializes a default new empty tree session with the specified
-	 * identifier. Automatically, after of creating the session, this one gets
-	 * checked out to be able to work as current session.
+	 * identifier. Automatically, after creating the session, it gets
+	 * checked out to be able to work as the current session.
 	 * 
 	 * <p>In this method, the API client must create elements one-by-one until
-	 * it assembles the desired tree. This is easily done by the
+	 * it assembles the desired tree. This is easily done through the
 	 * {@link TreeManager} methods.</p>
 	 * 
-	 * <p>When starting a new standard session, this is necessary to specify the
-	 * parameterized type that corresponds to the node class from which the
-	 * <code>Element</code> object will wrap it. Then, each element will contain
-	 * its respective node from this parameterized type.</p>
+	 * <p>When starting a new standard session, it is necessary to specify the
+	 * parameterized type that corresponds to the node class that the
+	 * <code>Element</code> object will wrap. Then, each element will contain
+	 * its respective node of this parameterized type.</p>
 	 * 
-	 * <p>The <code>identifier</code> and <code>type</code> parameters can not
+	 * <p>The <code>identifier</code> and <code>type</code> parameters cannot
 	 * be <code>null</code>.</p>
 	 * 
 	 * @param <T> the class type of the session which will store elements with
@@ -90,13 +90,13 @@ public interface TreeTransaction {
 	/**
 	 * Initializes a session with a specified identifier and a list of objects
 	 * (which represent nodes) to be transformed into a real tree structure.
-	 * Automatically, after of creating the session, this is already available
-	 * to work as current session.
+	 * Automatically, after creating the session, it is already available
+	 * to work as the current session.
 	 * 
-	 * <p>It corresponds to one of the main features of the HappyTree API. When
-	 * this is necessary, it converts a linear list of objects that behave as a
+	 * <p>This corresponds to one of the main features of the HappyTree API. When
+	 * necessary, it converts a linear list of objects that behave as a
 	 * tree into a real tree structure. For this, these objects need to follow
-	 * some requirements for the <b>API Transformation Process</b> occurs
+	 * some requirements for the <b>API Transformation Process</b> to occur
 	 * successfully.</p>
 	 * 
 	 * <p>This process implements a life cycle with 4 general phases:</p>
@@ -128,10 +128,10 @@ public interface TreeTransaction {
 	 * 		</tr>
 	 * 	</table>
 	 * 
-	 * <p><b>Pre-Validation:</b></p>
-	 * <p>This phase represents the begin of the API Transformation Process. In
-	 * this phase, the core API needs that all inputs aspects to be transformed
-	 * need to conform. The following validations are done:</p>
+ * <p><b>Pre-Validation:</b></p>
+ * <p>This phase represents the beginning of the API Transformation Process. In
+ * this phase, the core API requires that all input aspects to be transformed
+ * conform. The following validations are done:</p>
 	 * 
 	 * 	<ul>
 	 * 		<li>Verifies whether the list of objects to be transformed is not
@@ -144,24 +144,24 @@ public interface TreeTransaction {
 	 * 		transformed has the	{@code @Id} annotation;</li>
 	 * 		<li>Verifies whether the parent attribute of the object to be
 	 * 		transformed has the {@code @Parent} annotation;</li>
-	 * 		<li>Verifies whether the identifier attribute of each object is
-	 * 		<code>null</code>;</li>
-	 * 		<li>Validates whether all source objects have all of them the
-	 * 		{@code @Id} and {@code @Parent} attributes with the same class
-	 * 		type;</li>
-	 * 		<li>Checks for duplicate {@code @Id};</li>
-	 * 		<li>Verifies whether the class of the objects to be transformed has
-	 * 		getters and setters.</li>
+ * 		<li>Verifies whether the identifier attribute of each object is
+ * 		<code>null</code>;</li>
+ * 		<li>Validates whether all source objects have both the
+ * 		{@code @Id} and {@code @Parent} attributes with the same class
+ * 		type;</li>
+ * 		<li>Checks for duplicate {@code @Id};</li>
+ * 		<li>Verifies whether the class of the objects to be transformed has
+ * 		getters and setters.</li>
 	 * 	</ul>
 	 * 
-	 * <p><b>Core Engine:</b></p>
-	 * <p><i>Extraction:</i></p>
-	 * <p>If the input represented by the list of objects to be transformed
-	 * passed all validations from the previous phase, then the HappyTree API
-	 * takes them and extracts them in order to separate them from their
-	 * respective parents. Therefore, as a product for the next phase, there
-	 * will be the objects and their respective parents separated into two
-	 * blocks.</p>
+ * <p><b>Core Engine:</b></p>
+ * <p><i>Extraction:</i></p>
+ * <p>If the input represented by the list of objects to be transformed
+ * passes all validations from the previous phase, then the HappyTree API
+ * takes them and extracts them in order to separate them from their
+ * respective parents. Therefore, as a product for the next phase, there
+ * will be the objects and their respective parents separated into two
+ * blocks.</p>
 	 * 
 	 * <p><i>Initialization:</i></p>
 	 * <p>In this phase, the HappyTree API instantiates an object of type
@@ -174,10 +174,10 @@ public interface TreeTransaction {
 	 * the source object just invoke the {@link Element#unwrap()} method.</p>
 	 * 
 	 * <p><i>Binding:</i></p>
-	 * <p>After obtaining the list of resulting elements from the previous phase,
-	 * the HappyTree API will now bind each element to its respective parent,
-	 * through the block of separated parent objects in the Extraction phase.
-	 * </p>
+ * <p>After obtaining the list of resulting elements from the previous phase,
+ * the HappyTree API will now bind each element to its respective parent
+ * through the block of separated parent objects from the Extraction phase.
+ * </p>
 	 * 
 	 * <p>Therefore, it is at this phase that the tree is actually assembled.
 	 * Thus, for each node in the tree we have a represented element object,
@@ -186,16 +186,16 @@ public interface TreeTransaction {
 	 * 	<ul>
 	 * 		<li>The {@code @Id} attribute value;</li>
 	 * 		<li>The {@code @Parent} attribute value;</li>
-	 * 		<li>The <code>wrappedNode</code> corresponding the source object
-	 * 		used in this process;</li>
-	 * 		<li>The collection of <code>children</code>, corresponding to other
-	 * 		elements in which they are children of this;</li>
-	 * 		<li>The tree <code>session</code>, which this element belongs.</li>
+ * 		<li>The <code>wrappedNode</code> corresponding to the source object
+ * 		used in this process;</li>
+ * 		<li>The collection of <code>children</code>, corresponding to other
+ * 		elements that are children of this one;</li>
+ * 		<li>The tree <code>session</code> to which this element belongs.</li>
 	 * 	</ul>
 	 * 
-	 * <p>this life cycle is only triggered in the <b>API Transformation
-	 * Process</b>, by invoking this method, passing a collection of a linear
-	 * structure to be transformed (<code>nodes</code>).</p>
+ * <p>This life cycle is only triggered in the <b>API Transformation
+ * Process</b> by invoking this method, passing a collection of a linear
+ * structure to be transformed (<code>nodes</code>).</p>
 	 * 
 	 * @param <T> the class type of the session which will store elements with
 	 * this type of nodes
@@ -231,9 +231,9 @@ public interface TreeTransaction {
 	/**
 	 * Deletes the session with the specified <code>identifier</code>.
 	 * 
-	 * <p>When a session is deleted, this one is permanently removed, as it not
-	 * possible to retrieve it anymore. consequently the tree and its elements
-	 * within this section are also removed.</p>
+	 * <p>When a session is deleted, it is permanently removed, as it is not
+	 * possible to retrieve it anymore. Consequently, the tree and its elements
+	 * within this session are also removed.</p>
 	 * 
 	 * @param identifier the name of the session identifier to be deleted
 	 */
@@ -242,9 +242,9 @@ public interface TreeTransaction {
 	/**
 	 * Deletes the current session previously checked out.
 	 * 
-	 * <p>When the current session is deleted, this one is permanently removed,
-	 * as it not possible to retrieve it anymore. consequently the tree and its
-	 * elements within this section are also removed.</p>
+	 * <p>When the current session is deleted, it is permanently removed,
+	 * as it is not possible to retrieve it anymore. Consequently, the tree and its
+	 * elements within this session are also removed.</p>
 	 * 
 	 * <p>In the case of removing the current session, the API client needs to
 	 * specify a new session to be checked out right after the removal.</p>
@@ -267,13 +267,13 @@ public interface TreeTransaction {
 	 * checked out session, now, becomes the current session. It occurs because
 	 * the transaction is able only to work over one session per time.</p>
 	 * 
-	 * <p>Passing the <code>null</code> or non-existent identifier causes the
-	 * current session of the transaction to be &quot;canceled&quot;. A
-	 * &quot;canceled&quot; session means that the transaction has no session
-	 * available to work on it, and therefore, it is not possible to run out any
-	 * operation from {@link TreeManager}.</p>
+ * <p>Passing a <code>null</code> or non-existent identifier causes the
+ * current session of the transaction to be &quot;canceled&quot;. A
+ * &quot;canceled&quot; session means that the transaction has no session
+ * available to work on, and therefore, it is not possible to execute any
+ * operation from {@link TreeManager}.</p>
 	 * 
-	 * @param identifier the name of the session identifier to be pick it up
+	 * @param identifier the name of the session identifier to be picked up
 	 * 
 	 * @return an instance of <code>TreeSession</code> representing the
 	 * current session
@@ -286,9 +286,9 @@ public interface TreeTransaction {
 	 * <p>With an active session, its elements can be handle freely within the
 	 * tree.</p>
 	 * 
-	 * <p><b>This method just active a session, and not turn it ready to be
-	 * worked. For this, invoke the {@link #sessionCheckout(String)} before or
-	 * after of activating a session.</b></p>
+ * <p><b>This method just activates a session and does not make it ready to be
+ * worked on. For this, invoke {@link #sessionCheckout(String)} before or
+ * after activating a session.</b></p>
 	 * 
 	 * @param identifier the name of the session identifier to be activated
 	 */
@@ -311,8 +311,8 @@ public interface TreeTransaction {
 	 * <p>Deactivating a session does not remove it from the list of registered
 	 * sessions, instead, the session is just disabled.</p>
 	 * 
-	 * <p>With an deactivated session, its elements <b>can not</b> be handled
-	 * freely within the tree.</p>
+ * <p>With a deactivated session, its elements <b>cannot</b> be handled
+ * freely within the tree.</p>
 	 * 
 	 * @param identifier the name of the session identifier to be deactivated
 	 */
@@ -360,9 +360,9 @@ public interface TreeTransaction {
 	 * identifier does not exist, then a new session is created with the tree
 	 * and its elements replicated from the source tree session.</p>
 	 * 
-	 * <p><b>This method only clone a session, and not turn it ready to be
-	 * worked. For this, invoke the {@link #sessionCheckout(String)} before or
-	 * after of cloning a session.</b></p>
+ * <p><b>This method only clones a session and does not make it ready to be
+ * worked on. For this, invoke {@link #sessionCheckout(String)} before or
+ * after cloning a session.</b></p>
 	 * 
 	 * @param from the identifier of the source tree session to be replicated
 	 * 
@@ -393,9 +393,9 @@ public interface TreeTransaction {
 	 * identifier does not exist, then a new session is created with the tree
 	 * and its elements replicated from the source tree session.</p>
 	 * 
-	 * <p><b>This method only clone a session, and not turn it ready to be
-	 * worked. For this, invoke the {@link #sessionCheckout(String)} before or
-	 * after of cloning a session.</b></p>
+ * <p><b>This method only clones a session and does not make it ready to be
+ * worked on. For this, invoke {@link #sessionCheckout(String)} before or
+ * after cloning a session.</b></p>
 	 * 
 	 * @param from the instance of the tree session to be replicated
 	 * 

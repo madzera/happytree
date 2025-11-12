@@ -3,30 +3,30 @@ package com.madzera.happytree;
 import java.util.Collection;
 
 /**
- * Interface responsible for storing the element trees. A element tree
- * corresponds to a hierarchical data structure in a tree format which the
+ * Interface responsible for storing the element trees. An element tree
+ * corresponds to a hierarchical data structure in a tree format in which the
  * elements are arranged as nodes of that tree. This tree can be created freely
- * or from of a data structure whose objects, in that structure, behave like a
- * tree but they are arranged linearly. So by invoking
+ * or from a data structure whose objects, in that structure, behave like a
+ * tree but are arranged linearly. So by invoking
  * {@link TreeTransaction#initializeSession(String, Collection)}, this linear
  * structure is transformed into a real tree structure.
  * 
  * <p>The sessions are initialized by the {@link TreeTransaction} interface,
- * which it can manage one or several sessions, which each session represents an
+ * which can manage one or several sessions, where each session represents an
  * instance of a tree in the HappyTree API context. Although the
  * <code>TreeTransaction</code> interface is able to manage instances of
- * <code>TreeSession</code>, it is only able to do this at once per time. Thus,
- * when handling a given session, it must be captured previously, by invoking
+ * <code>TreeSession</code>, it can only do this one at a time. Thus,
+ * when handling a given session, it must be captured previously by invoking
  * {@link TreeTransaction#sessionCheckout(String)}. At each session change, it
  * is necessary to choose the session for the working copy of the
  * <code>TreeTransaction</code> interface to be able to manipulate it.</p> 
  * 
- * <p>This is important to note that when invoking
+ * <p>It is important to note that when invoking
  * {@link TreeTransaction#initializeSession(String, Class)} or
- * {@link TreeTransaction#initializeSession(String, Collection)} the session is
+ * {@link TreeTransaction#initializeSession(String, Collection)}, the session is
  * automatically placed in the working copy of <code>TreeTransaction</code>.</p>
  *
- * <p>A session contains 3 fundamentals state:</p>
+ * <p>A session contains 3 fundamental states:</p>
  * 
  * <table summary="Session States">
  * 	<tr>
@@ -43,15 +43,15 @@ import java.util.Collection;
  * 	</tr>
  * </table>
  * 
- * <p>An active session, as is already known, exists and can be freely handled.
- * A deactivated session, on the other hand, although it is not possible to be
- * handled, it still remains in memory, waiting only to be activated in order to
+ * <p>An active session, as already known, exists and can be freely handled.
+ * A deactivated session, on the other hand, although it cannot be
+ * handled, still remains in memory, waiting only to be activated in order to
  * be handled, that is, in this case, the tree and its elements are 'alive' in
  * memory but disabled.</p>
  * 
  * <p>A destroyed session is one that previously existed but has been
- * permanently removed with the entire tree and its elements. A destroyed
- * session never returns to its natural state. Represents its end of life cycle.
+ * permanently removed along with the entire tree and its elements. A destroyed
+ * session never returns to its natural state. It represents the end of its life cycle.
  * </p>
  * 
  * @author Diego Madson de Andrade Nóbrega
@@ -79,7 +79,7 @@ public interface TreeSession {
 	/**
 	 * Verifies if the session is active.
 	 * 
-	 * <p>Here, the method consider just two of session states:</p>
+	 * <p>Here, the method considers just two session states:</p>
 	 * <ul>
 	 * 	<li><b>Activated</b></li>
 	 * 	<li><b>Deactivated</b></li>
@@ -89,7 +89,7 @@ public interface TreeSession {
 	 * <code>null</code> state.</p>
 	 * 
 	 * @return <code>true</code> if the session is active, <code>false</code>
-	 * otherwise.
+	 * otherwise
 	 */
 	public boolean isActive();
 	
@@ -100,12 +100,12 @@ public interface TreeSession {
 	 * <p>This method works similarly to the {@link TreeManager#root()} method,
 	 * returning the root element of the tree.</p>
 	 * 
-	 * <p>The root element is a special element that cannot be handled and has
-	 * no <code>@Id</code>, <code>@Parent</code> neither the wrapped object node.
-	 * It is created by the core API when the session is initialized, that is,
-	 * when invoking the {@link TreeTransaction#initializeSession(String, Class)}
-	 * or {@link TreeTransaction#initializeSession(String, Collection)} methods.
-	 * </p>
+ * <p>The root element is a special element that cannot be handled and has
+ * no <code>@Id</code>, <code>@Parent</code>, or wrapped object node.
+ * It is created by the core API when the session is initialized, that is,
+ * when invoking {@link TreeTransaction#initializeSession(String, Class)}
+ * or {@link TreeTransaction#initializeSession(String, Collection)} methods.
+ * </p>
 	 * 
 	 * @param <T> the class type of the wrapped object node that will be
 	 * encapsulated into the {@link Element} object
