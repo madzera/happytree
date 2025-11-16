@@ -83,7 +83,7 @@ import com.madzera.happytree.exception.TreeException;
  * 		<td><code>Session</code></td><td>The session to which this element belongs.</td>
  * 	</tr>
  * 	<tr>
- * 		<td><code>Life Cycle</code></td><td>The current state in life cycle.
+ * 		<td><code>Life Cycle</code></td><td>The current state in the lifecycle.
  * 		</td>
  * 	</tr>
  * </table>

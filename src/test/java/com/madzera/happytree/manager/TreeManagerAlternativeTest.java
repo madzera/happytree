@@ -932,14 +932,14 @@ public class TreeManagerAlternativeTest extends TreeCommonTestHelper {
 	 * 
 	 * <p>Alternative scenario for this operation when trying to verify if an
 	 * element contains another one which one of them has the <i>DETACHED</i>
-	 * state in life cycle.</p>
+	 * state in the lifecycle.</p>
 	 * 
 	 * <p>For more details about this test, see also the <code>Directory</code>
 	 * and <code>TreeAssembler</code> sample classes.</p>
 	 * 
 	 * <p><b>Test:</b></p>
 	 * Try to verify if an element contains another one which one of them has
-	 * the <i>DETACHED</i> state in life cycle.
+	 * the <i>DETACHED</i> state in the lifecycle.
 	 * <p><b>Expected:</b></p>
 	 * Receive the <code>false</code> value.
 	 * <p><b>Steps:</b></p>
