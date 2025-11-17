@@ -68,7 +68,7 @@ class TreeTransactionCore implements TreeTransaction {
 		pipeline.addAttribute(TreePipelineAttributes.MANAGER,
 				this.associatedManager());
 		
-		ATPLifecycleFactory lifecycleFactory= TreeFactory.lifecycleFactory();
+		ATPLifecycleFactory lifecycleFactory = TreeFactory.lifecycleFactory();
 		ATPLifecycle<T> lifecycle = lifecycleFactory.createLifecycle(pipeline);
 		
 		lifecycle.run();

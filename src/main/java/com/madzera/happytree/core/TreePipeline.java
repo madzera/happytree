@@ -5,7 +5,7 @@ import java.util.Map;
 /*
  * Pipeline represents an object that will be taken from the beginning to the
  * end of the processing chain. In this context, this object will be taken to
- * the validations chain and API Transformation Process, in its life cycle.
+ * the validations chain and API Transformation Process, in its lifecycle.
  */
 public class TreePipeline {
 

@@ -32,13 +32,13 @@ package com.madzera.happytree.exception;
  * 	<li>When there is an attempt to handle the root element of the tree;</li>
  * 
  * 	<li>When the element to be cut/copied/removed is not in the
- * 	<i>ATTACHED</i> state in its life cycle;</li>
+ * 	<i>ATTACHED</i> state in its lifecycle;</li>
  * 
  * 	<li>When the element to be updated is in the <i>NOT_EXISTED</i> state
- * 	in its life cycle;</li>
+ * 	in its lifecycle;</li>
  * 
  * 	<li>When the element to be persisted is not in the <i>NOT_EXISTED</i>
- * 	state in its life cycle;</li>
+ * 	state in its lifecycle;</li>
  * 
  * 	<li>When there is an <code>Element</code> object with a duplicate id while
  * 	trying to insert/update or cut/copy an element between trees;</li>

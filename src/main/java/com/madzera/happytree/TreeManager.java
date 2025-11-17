@@ -32,7 +32,7 @@ import com.madzera.happytree.exception.TreeException;
  * client obtains an element and its children through the manager, the API
  * client is actually working with identical copies of each node (element). When
  * the API client makes any changes to any of the elements, a change in the
- * element's life cycle is made, and this change is not immediately reflected in
+ * element's lifecycle is made, and this change is not immediately reflected in
  * the tree in question. This context is called outside the tree. An inside
  * context represents the client's action to perform the persist/update of the
  * element, so the change is actually reflected in the tree, but made through

@@ -8,7 +8,7 @@ import com.madzera.happytree.core.TreeFactory.ATPLifecycleFactory;
 import com.madzera.happytree.exception.TreeException;
 
 /**
- * Life cycle of the API Transformation Process. Its objective is to transform a
+ * Lifecycle of the API Transformation Process. Its objective is to transform a
  * linear structure of objects that behaves like a tree into a structural tree
  * itself.
  * 
@@ -26,14 +26,14 @@ class ATPLifecycle<T> {
 	
 	/*
 	 * Pipeline represents an object that will be taken from the beginning to
-	 * the end of the processing chain for the entire life cycle.
+	 * the end of the processing chain for the entire lifecycle.
 	 */
 	ATPLifecycle(TreePipeline pipeline) {
 		this.pipeline = pipeline;
 	}
 	
 	/*
-	 * Life cycle purpose:
+	 * Lifecycle purpose:
 	 * 
 	 * 1. PreValidation
 	 * 2. Extraction

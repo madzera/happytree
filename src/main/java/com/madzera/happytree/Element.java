@@ -23,14 +23,14 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * <p>An element <b>always</b> is associated with a session. Even after its
  * creation, the element already belongs to a session, but that does not mean
- * that this element is already in the tree. It depends on its life cycle state.
+ * that this element is already in the tree. It depends on its lifecycle state.
  * </p>
  * 
  * <p>To be handled, an element must be in an appropriate state in its lifecycle,
  * depending on the operation that is desired to perform. Its lifecycle consists
  * of 3 states:</p>
  * 
- * <table summary="Life cycle">
+ * <table summary="Lifecycle">
  * <tr><th>State</th><th>Description</th></tr>
  * 
  * <tr>
@@ -280,8 +280,6 @@ public interface Element<T> {
 	 * <p>There are some requirements for this object node to be wrapped when
 	 * initializing a session by the API Transformation Process:</p>
 	 * 	<ul>
-	 * 		<li>The class of this node must implement <code>Serializable</code>;
-	 * 		</li>
 	 * 		<li>The class of this node must be annotated by <code>@Tree</code>;
 	 * 		</li>
 	 * 		<li>The parent attribute of this node must be annotated by
@@ -289,6 +287,8 @@ public interface Element<T> {
 	 * 		</li>
 	 * 		<li>The ID attribute of this node must be annotated by
 	 * 			<code>@Id</code>;
+	 * 		</li>
+	 * 		<li>The class of this node must implement <code>Serializable</code>;
 	 * 		</li>
 	 * 		<li>The <code>@Id</code> value cannot be <code>null</code>;
 	 * 		</li>

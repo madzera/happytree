@@ -4,7 +4,7 @@ package com.madzera.happytree.core;
  * Represents a state machine of the Element object.
  * 
  * Indicates which operation the Element object can run at certain moment of
- * its life cycle. When trying to run a incompatible operation will provoke an
+ * its lifecycle. When trying to run a incompatible operation will provoke an
  * Exception threw.
  */
 enum ElementState {

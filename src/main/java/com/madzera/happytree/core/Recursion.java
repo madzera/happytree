@@ -54,7 +54,7 @@ class Recursion {
 	
 	/*
 	 * Iterates over the tree and verifies that each element inside of the tree
-	 * can run a determined operation according the its life cycle state.
+	 * can run a determined operation according the its lifecycle state.
 	 */
 	static <T> boolean iterateForInvalidStateOperationValidation(
 			Collection<Element<T>> elements, Operation operation) {
