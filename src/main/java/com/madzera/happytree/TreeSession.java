@@ -9,7 +9,7 @@ import java.util.Collection;
  * or from a data structure whose objects, in that structure, behave like a
  * tree but are arranged linearly. So by invoking
  * {@link TreeTransaction#initializeSession(String, Collection)}, this linear
- * structure is transformed into a real tree structure.
+ * structure is transformed into an actual tree structure.
  * 
  * <p>The sessions are initialized by the {@link TreeTransaction} interface,
  * which can manage one or several sessions, where each session represents an

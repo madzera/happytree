@@ -13,17 +13,17 @@ import com.madzera.happytree.exception.TreeException;
  * retrieve or destroy any sessions.</p>
  * 
  * <p>Structurally, this interface acts as a bridge between the 
- * {@link TreeManager} and the {@link TreeSession}, being an inherent part of the
- * session, handling the total responsibility of this class, leaving the
+ * {@link TreeManager} and the {@link TreeSession}, being an inherent part of
+ * the session, handling the total responsibility of this class, leaving the
  * <code>TreeManager</code> interface free to just manipulate the elements
  * inside the session.</p>
  * 
  * <p>An {@link Element} represents a node in a tree, and a tree can only exist
  * within a previously created session. But to create a session, an object that
- * represents the session transaction is needed, and this object is an
- * instance of this interface. However, a transaction can only be recovered from
- * within the <code>TreeManager</code> by invoking
- * {@link TreeManager#getTransaction()}.</p>
+ * represents the session transaction is needed, and this object is an instance
+ * of this interface. However, a transaction can only be recovered from within
+ * the <code>TreeManager</code> by invoking {@link TreeManager#getTransaction()}.
+ * </p>
  * 
  * <p>There are two ways of creating tree sessions:</p>
  * 	<ol>
@@ -40,29 +40,28 @@ import com.madzera.happytree.exception.TreeException;
  * <p>The last one happens when an API client desires to transform a 
  * <code>Collection</code> of objects that represents a linear tree structure.
  * This transformation (which is called the API Transformation Process) converts
- * this linear structure into a real tree structure, where each node is
- * represented by <code>Element</code> objects. This API Transformation
- * Process implements an internal life cycle.</p>
+ * this linear structure into an actual tree structure, where each node is
+ * represented by <code>Element</code> objects.
  * 
- * <p><b>The <code>TreeTransaction</code> can only work with one
- * <code>TreeSession</code> at a time, while the other sessions stay in the
- * background waiting to be selected again at another time.</b></p>
+ * <p><b>The <code>TreeTransaction</code> can only work with only one
+ * <code>TreeSession</code> at a time, while the other sessions remain in the
+ * background waiting to be checked in again later.</b></p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  */
 public interface TreeTransaction {
 	
 	/**
-	 * Initializes a default new empty tree session with the specified
-	 * identifier. Automatically, after creating the session, it gets
-	 * checked out to be able to work as the current session.
+	 * Initializes a new empty tree session with the specified identifier.
+	 * Automatically, after creating the session, it gets checked in to be able
+	 * to work as the current session.
 	 * 
 	 * <p>In this method, the API client must create elements one-by-one until
 	 * it assembles the desired tree. This is easily done through the
 	 * {@link TreeManager} methods.</p>
 	 * 
 	 * <p>When starting a new standard session, it is necessary to specify the
-	 * parameterized type that corresponds to the node class that the
+	 * parameterized class type that corresponds to the node class type that the
 	 * <code>Element</code> object will wrap. Then, each element will contain
 	 * its respective node of this parameterized type.</p>
 	 * 
@@ -72,10 +71,10 @@ public interface TreeTransaction {
 	 * @param <T> the class type of the session which will store elements with
 	 * this type of nodes
 	 * 
-	 * @param identifier the session identifier
+	 * @param identifier the session identifier (it must be unique)
 	 * 
-	 * @param type class type of the node that will be wrapped by
-	 * <code>Element</code> object within tree session
+	 * @param type class type of the nodes that will be wrapped within their
+	 * respective elements in this tree session
 	 * 
 	 * @throws TreeException when there is another session with the same
 	 * identifier
@@ -88,13 +87,13 @@ public interface TreeTransaction {
 	
 	/**
 	 * Initializes a session with a specified identifier and a list of objects
-	 * (which represent nodes) to be transformed into a real tree structure.
+	 * (which represent nodes) to be transformed into an actual tree structure.
 	 * Automatically, after creating the session, it is already available
 	 * to work as the current session.
 	 * 
 	 * <p>This corresponds to one of the main features of the HappyTree API. When
 	 * necessary, it converts a linear list of objects that behave as a
-	 * tree into a real tree structure. For this, these objects need to follow
+	 * tree into an actual tree structure. For this, these objects need to follow
 	 * some requirements for the <b>API Transformation Process</b> to occur
 	 * successfully.</p>
 	 * 
@@ -121,7 +120,7 @@ public interface TreeTransaction {
 	 * 		<tr>
 	 * 			<td>Core Engine</td>
 	 * 			<td>Processes the tree assembly and transformation from the
-	 * 			source objects list into a real tree structure.
+	 * 			source objects list into an actual tree structure.
 	 * 			</td>
 	 * 			<td>Extraction - Initialization - Binding</td>
 	 * 		</tr>

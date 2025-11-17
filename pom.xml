@@ -15,7 +15,7 @@
 	<description>
 		Java Object Model API to handle Java Objects in a tree structure. Be
 		able to transform a linear structure of objects with a tree behavior
-		into a real tree structure and handle them as if it were nodes in a
+		into an actual tree structure and handle them as if they were nodes in a
 		tree.
 	</description>
 	<url>https://happytreeapi.vercel.app/</url>

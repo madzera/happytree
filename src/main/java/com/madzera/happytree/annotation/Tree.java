@@ -46,7 +46,7 @@ import com.madzera.happytree.TreeManager;
  * 	}
  * </pre>
  * 
- * Then, this API will process and transform it into a real tree structure.
+ * Then, this API will process and transform it into an actual tree structure.
  * This is called the <b>API Transformation Process</b>.
  * 
  * <p>Note that in this example, there is a slight change in how the objects are
