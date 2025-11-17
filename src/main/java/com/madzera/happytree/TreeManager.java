@@ -98,7 +98,6 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Madson de Andrade Nóbrega
  * 
  * @see TreeSession
- *
  */
 public interface TreeManager {
 	

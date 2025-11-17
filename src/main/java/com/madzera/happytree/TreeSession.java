@@ -51,13 +51,13 @@ import java.util.Collection;
  * 
  * <p>A destroyed session is one that previously existed but has been
  * permanently removed along with the entire tree and its elements. A destroyed
- * session never returns to its natural state. It represents the end of its life cycle.
+ * session never returns to its natural state. It represents the end of its lifecycle.
  * </p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  * 
  * @see TreeManager
- * 
+ * @see Element
  */
 public interface TreeSession {
 	

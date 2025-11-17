@@ -49,7 +49,6 @@ import com.madzera.happytree.exception.TreeException;
  * background waiting to be selected again at another time.</b></p>
  * 
  * @author Diego Madson de Andrade Nóbrega
- * 
  */
 public interface TreeTransaction {
 	
