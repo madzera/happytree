@@ -45,7 +45,7 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * <p><b>The <code>TreeTransaction</code> can only work with only one
  * <code>TreeSession</code> at a time, while the other sessions remain in the
- * background waiting to be checked in again later.</b></p>
+ * background waiting to be checked out again later.</b></p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  */
@@ -53,7 +53,7 @@ public interface TreeTransaction {
 	
 	/**
 	 * Initializes a new empty tree session with the specified identifier.
-	 * Automatically, after creating the session, it gets checked in to be able
+	 * Automatically, after creating the session, it gets checked out to be able
 	 * to work as the current session.
 	 * 
 	 * <p>In this method, the API client must create elements one-by-one until
@@ -250,22 +250,22 @@ public interface TreeTransaction {
 			throws TreeException;
 	
 	/**
-	 * Deletes the session with the specified <code>identifier</code>.
+	 * Removes the session with the specified <code>identifier</code>.
 	 * 
-	 * <p>When a session is deleted, it is permanently removed, as it is not
-	 * possible to retrieve it anymore. Consequently, the tree and its elements
-	 * within this session are also removed.</p>
+	 * <p>The session is permanently removed, as it is not possible to retrieve
+	 * it anymore. Consequently, the tree and its elements within this session
+	 * are also removed.</p>
 	 * 
-	 * @param identifier the name of the session identifier to be deleted
+	 * @param identifier the session identifier to be removed
 	 */
 	public void destroySession(String identifier);
 	
 	/**
-	 * Deletes the current session previously checked out.
+	 * Removes the current session previously checked out.
 	 * 
-	 * <p>When the current session is deleted, it is permanently removed,
-	 * as it is not possible to retrieve it anymore. Consequently, the tree and its
-	 * elements within this session are also removed.</p>
+	 * <p>The session is permanently removed, as it is not possible to retrieve
+	 * it anymore. Consequently, the tree and its elements within this session
+	 * are also removed.</p>
 	 * 
 	 * <p>In the case of removing the current session, the API client needs to
 	 * specify a new session to be checked out right after the removal.</p>
@@ -273,28 +273,28 @@ public interface TreeTransaction {
 	public void destroySession();
 	
 	/**
-	 * Deletes all the registered sessions.
+	 * Removes all the registered sessions.
 	 * 
 	 * <p>The removal occurs for both activated and deactivated sessions.</p>
 	 */
 	public void destroyAllSessions();
 	
 	/**
-	 * Pick a tree session to work over it. If there is a session with the
+	 * Selects a tree session to work over it. If there is a session with the
 	 * specified <code>identifier</code>, then it is returned.
 	 * 
-	 * <p>When the session is selected to work over it, the current session
+	 * <p>When the session is selected to be worked on, the current session
 	 * stays in background, waiting to be selected in another time, while the
 	 * checked out session, now, becomes the current session. It occurs because
-	 * the transaction is able only to work over one session per time.</p>
+	 * the transaction is only able to work over one session per time.</p>
 	 * 
- * <p>Passing a <code>null</code> or non-existent identifier causes the
- * current session of the transaction to be &quot;canceled&quot;. A
- * &quot;canceled&quot; session means that the transaction has no session
- * available to work on, and therefore, it is not possible to execute any
- * operation from {@link TreeManager}.</p>
+	 * <p>Passing a <code>null</code> or non-existent identifier causes the
+	 * current session of the transaction to be &quot;canceled&quot;. A
+	 * &quot;canceled&quot; session means that the transaction has no session
+	 * available to work on, and therefore, it is not possible to execute any
+	 * operation from {@link TreeManager}.</p>
 	 * 
-	 * @param identifier the name of the session identifier to be picked up
+	 * @param identifier the session identifier to be checked out
 	 * 
 	 * @return an instance of <code>TreeSession</code> representing the
 	 * current session
@@ -304,14 +304,15 @@ public interface TreeTransaction {
 	/**
 	 * Activates a session by the specified <code>identifier</code>.
 	 * 
-	 * <p>With an active session, its elements can be handle freely within the
+	 * <p>With an active session, its elements can be handled freely within the
 	 * tree.</p>
 	 * 
- * <p><b>This method just activates a session and does not make it ready to be
- * worked on. For this, invoke {@link #sessionCheckout(String)} before or
- * after activating a session.</b></p>
+	 * <p><b>This method just activates a session and does not make it available
+	 * automatically for the API client to use it as the current session. For
+	 * this, invoke {@link #sessionCheckout(String)} before or after activating
+	 * a session.</b></p>
 	 * 
-	 * @param identifier the name of the session identifier to be activated
+	 * @param identifier the session identifier to be activated
 	 */
 	public void activateSession(String identifier);
 	
@@ -332,10 +333,10 @@ public interface TreeTransaction {
 	 * <p>Deactivating a session does not remove it from the list of registered
 	 * sessions, instead, the session is just disabled.</p>
 	 * 
- * <p>With a deactivated session, its elements <b>cannot</b> be handled
- * freely within the tree.</p>
+	 * <p>With a deactivated session, its elements <b>cannot</b> be handled
+	 * freely within the tree.</p>
 	 * 
-	 * @param identifier the name of the session identifier to be deactivated
+	 * @param identifier the session identifier to be deactivated
 	 */
 	public void deactivateSession(String identifier);
 	
@@ -345,7 +346,7 @@ public interface TreeTransaction {
 	 * <p>Deactivating the current session does not remove it from the list of
 	 * registered sessions, instead, the current session is just disabled.</p>
 	 * 
-	 * <p>With an deactivated session, its elements <b>can not</b> be handled
+	 * <p>With an deactivated session, its elements <b>cannot</b> be handled
 	 * freely within the tree.</p>
 	 */
 	public void deactivateSession();
@@ -381,9 +382,9 @@ public interface TreeTransaction {
 	 * identifier does not exist, then a new session is created with the tree
 	 * and its elements replicated from the source tree session.</p>
 	 * 
- * <p><b>This method only clones a session and does not make it ready to be
- * worked on. For this, invoke {@link #sessionCheckout(String)} before or
- * after cloning a session.</b></p>
+	 * <p><b>This method only clones a session and does not make it ready to be
+	 * worked on. For this, invoke {@link #sessionCheckout(String)} before or
+	 * after cloning a session.</b></p>
 	 * 
 	 * @param from the identifier of the source tree session to be replicated
 	 * 
@@ -414,9 +415,9 @@ public interface TreeTransaction {
 	 * identifier does not exist, then a new session is created with the tree
 	 * and its elements replicated from the source tree session.</p>
 	 * 
- * <p><b>This method only clones a session and does not make it ready to be
- * worked on. For this, invoke {@link #sessionCheckout(String)} before or
- * after cloning a session.</b></p>
+	 * <p><b>This method only clones a session and does not make it ready to be
+	 * worked on. For this, invoke {@link #sessionCheckout(String)} before or
+	 * after cloning a session.</b></p>
 	 * 
 	 * @param from the instance of the tree session to be replicated
 	 * 
