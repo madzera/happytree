@@ -284,7 +284,7 @@ public interface TreeTransaction {
 	 * specified <code>identifier</code>, then it is returned.
 	 * 
 	 * <p>When the session is selected to be worked on, the current session
-	 * stays in background, waiting to be selected in another time, while the
+	 * remains in background, waiting to be selected in another time, while the
 	 * checked out session, now, becomes the current session. It occurs because
 	 * the transaction is only able to work over one session per time.</p>
 	 * 
@@ -395,8 +395,8 @@ public interface TreeTransaction {
 	public TreeSession cloneSession(String from, String to);
 	
 	/**
-	 * Replicates the tree session defined by <code>from</code> identifier for
-	 * the session defined by <code>to</code> identifier.
+	 * Replicates the tree session defined by <code>from</code> session instance
+	 * for the session defined by <code>to</code> identifier.
 	 * 
 	 * <p>Replicating an existing tree session consists of faithfully
 	 * reproducing all the elements defined in the source tree for a target
@@ -435,8 +435,8 @@ public interface TreeTransaction {
 	 * <p>Since the transaction can only work with one session at a time, the
 	 * API client needs to define which session will have the elements handled.
 	 * To choose the session to be worked on, just invoke the method
-	 * {@link #sessionCheckout(String)}, and to obtain the session to which it
-	 * was chosen, just execute this method.</p>
+	 * {@link #sessionCheckout(String)}, and to obtain the instance of the
+	 * session previously chosen, just execute this method.</p>
 	 * 
 	 * <p><b>The programmer is responsible for ensuring that the current session
 	 * is not <code>null</code>, as it causes errors when trying to execute
