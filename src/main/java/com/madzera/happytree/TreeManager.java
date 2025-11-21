@@ -120,9 +120,6 @@ public interface TreeManager {
 	 * <p>It is imperative that both trees of the <code>from</code> and
 	 * <code>to</code> elements be activated.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @param from the source element
 	 * 
 	 * @param to the target element
@@ -184,9 +181,6 @@ public interface TreeManager {
 	 * only be cut into the same tree. To cut elements to other trees, consider
 	 * using {@link #cut(Element, Element)} where the target element is linked
 	 * to another tree.</p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param from the source element
 	 * 
@@ -250,9 +244,6 @@ public interface TreeManager {
 	 * <p>It is mandatory that both <code>from</code> and <code>to</code>
 	 * elements be attached in different trees, and both trees must be activated.
 	 * </p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param from the source element
 	 * 
@@ -321,9 +312,6 @@ public interface TreeManager {
 	 * <p>If the <code>element</code> parameter is <code>null</code> then this
 	 * method also will return <code>null</code>.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @param element the element to be removed with all its children
 	 * 
 	 * @return the own removed element itself, but now with the
@@ -369,9 +357,6 @@ public interface TreeManager {
 	 * 
 	 * <p>Be sure to be in the correct tree session, so as not to remove an
 	 * element with the same <code>@Id</code> but in another tree.</p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param id the identifier of the element to be removed
 	 * 
@@ -420,9 +405,6 @@ public interface TreeManager {
 	 * operation like {@link #cut(Element, Element)} or 
 	 * {@link #copy(Element, Element)} for example.</p>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @param id the element identifier
 	 * 
 	 * @return an identical copy of the found element
@@ -440,9 +422,6 @@ public interface TreeManager {
 	 * <code>null</code> or their (including the children) state are not
 	 * <i>ATTACHED</i> to this tree session, then <code>false</code> is returned.
 	 * </p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param parent the element which will contain the <code>descendant</code>
 	 * element
@@ -610,9 +589,6 @@ public interface TreeManager {
 	 * 	</tr>
 	 * </table>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @param newElement the element to be persisted
 	 * 
 	 * @return a copy of the new persisted element with the <i>ATTACHED</i>
@@ -706,9 +682,6 @@ public interface TreeManager {
 	 * 	</tr>
 	 * </table>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @param element the element to be updated
 	 * 
 	 * @return a copy of the updated element with the <i>ATTACHED</i> state in
@@ -778,12 +751,12 @@ public interface TreeManager {
 	 * collection of children, and so on recursively. All this structure is
 	 * returned in this method as {@link Element} type.</p>
 	 * 
-	 * <p>The root element is like a &quot;special&quot; element created
-	 * exclusively by the core API. All elements that the API client handles are
-	 * under the root element. <b>Thus it is not possible to create a root
-	 * element</b>. Because of that, every object node with a <code>null</code>
-	 * <code>@Parent</code> or an unknown (not found) <code>@Parent</code> will
-	 * be attached directly as an immediate root child (first level).</p>
+	 * <p>The root element is like a 'special' element created exclusively by
+	 * the core API. All elements that the API client handles are under the root
+	 * element. <b>Thus it is not possible to create a root element</b>. Because
+	 * of that, every object node with a <code>null</code> <code>@Parent</code>
+	 * or an unknown (not found) <code>@Parent</code> will be attached directly
+	 * as an immediate root child (first level).</p>
 	 * 
 	 * <p>Different from regular elements, the root element has no metadata
 	 * associated with it, such as <code>@Id</code>, <code>@Parent</code> and
@@ -812,13 +785,12 @@ public interface TreeManager {
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
 	 * or {@link TreeTransaction#initializeSession(String, Class)} is invoked.
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
-	 * 
 	 * @return the root element
 	 * 
 	 * @throws TreeException when the transaction has no selected session to
 	 * work or if the current session is not active
+	 * 
+	 * @see TreeSession#tree()
 	 */
 	public <T> Element<T> root() throws TreeException;
 
@@ -843,9 +815,6 @@ public interface TreeManager {
 	 *     e -&gt; e.unwrap().getName().startsWith("A")
 	 * );
 	 * </pre>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param condition the predicate function defining the search criteria
 	 * 
@@ -893,9 +862,6 @@ public interface TreeManager {
 	 * entire tree (<b>except for the root element itself</b>). If you need
 	 * conditional execution based on specific criteria, consider using
 	 * {@link #apply(Consumer, Predicate)} instead.</p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param action the function to apply to each element in the tree
 	 * 
@@ -949,9 +915,6 @@ public interface TreeManager {
 	 * specified condition (<b>not including the root element</b>). If you want
 	 * to apply an action to all elements in the tree, consider using
 	 * {@link #apply(Consumer)} instead.</p>
-	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
 	 * 
 	 * @param action the function to apply to each element that meets the
 	 * condition

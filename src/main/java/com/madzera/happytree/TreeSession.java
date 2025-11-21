@@ -92,21 +92,99 @@ public interface TreeSession {
 	public boolean isActive();
 	
 	/**
-	 * Returns the whole tree session structure, represented by the <b>root</b>
+	 * Returns the entire tree session structure, represented by the <b>root</b>
 	 * element.
 	 * 
 	 * <p>This method works similarly to the {@link TreeManager#root()} method,
-	 * returning the root element of the tree.</p>
+	 * returning the root element of the tree. From the root element, it is
+	 * possible to navigate through all its children, each child's children, and
+	 * so on recursively, thus accessing the entire tree structure.</p>
 	 * 
-	 * <p>The root element is a special element that cannot be handled and has
-	 * no <code>@Id</code>, <code>@Parent</code>, or wrapped object node. It is
-	 * created by the core API when the session is initialized, that is,
-	 * when invoking {@link TreeTransaction#initializeSession(String, Class)}
-	 * or {@link TreeTransaction#initializeSession(String, Collection)} methods.
+	 * <p>Below, an example of a tree structure with its root element and
+	 * children:</p>
+	 * 	<pre>
+	 * 
+	 * 							ELEMENT(ROOT)
+	 *                               /\
+	 *                     ELEMENT(A)  ELEMENT(B)
+	 *                         /\         /\
+	 *                    E(A1) E(A2) E(B1) E(B2)
+	 * 
+	 * 	</pre>
+	 * 
+	 * <p>The root element is a special element that has no <code>@Id</code>,
+	 * <code>@Parent</code>, or wrapped object node. It is created automatically
+	 * by the core API when the session is initialized, that is, when invoking
+	 * {@link TreeTransaction#initializeSession(String, Class)} or
+	 * {@link TreeTransaction#initializeSession(String, Collection)} methods.
 	 * </p>
 	 * 
-	 * @param <T> the class type of the wrapped object node that will be
-	 * encapsulated into the {@link Element} object
+	 * <p>Just a few operations cannot be performed on the root element through
+	 * the two interfaces: <code>Element</code> and <code>TreeManager</code>.
+	 * </p>
+	 * 
+	 * <b>Element</b>
+	 * 
+	 * <table summary="Operations Not Allowed on Element Interface">
+	 * 	<tr><th>Method</th><th>Description</th></tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#getId()}</td>
+	 * 		<td>Always returns <code>null</code> because the root element has no
+	 * 		identifier.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#setId(Object)}</td>
+	 * 		<td>No effect.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#getParent()}</td>
+	 * 		<td>Always returns <code>null</code> because the root element has no
+	 * 		<code>@Parent</code>.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#setParent(Object)}</td>
+	 * 		<td>No effect.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#unwrap()}</td>
+	 * 		<td>Always returns <code>null</code> because the root element has no
+	 * 		wrapped object node.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link Element#wrap(Object)}</td>
+	 * 		<td>No effect.</td>
+	 * 	</tr>
+	 * </table>
+	 * 
+	 * <b>TreeManager</b>
+	 * 
+	 * <table summary="Operations Not Allowed on TreeManager Interface">
+	 * 	<tr><th>Method</th><th>Description</th></tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#cut(Element, Element)}</td>
+	 * 		<td>TreeException thrown.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#cut(Object, Object)}</td>
+	 * 		<td>No effect.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#copy(Element, Element)}</td>
+	 * 		<td>TreeException thrown.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#removeElement(Element)}</td>
+	 * 		<td>TreeException thrown.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#removeElement(Object)}</td>
+	 * 		<td>No effect.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>{@link TreeManager#persistElement(Element)}</td>
+	 * 		<td>Not possible.</td>
+	 * 	</tr>
+	 * </table>
 	 * 
 	 * @return the root of the tree
 	 * 
