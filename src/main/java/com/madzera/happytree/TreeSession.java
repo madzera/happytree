@@ -102,15 +102,15 @@ public interface TreeSession {
 	 * 
 	 * <p>Below, an example of a tree structure with its root element and
 	 * children:</p>
-	 * 	<pre>
+	 * <pre>
 	 * 
-	 * 							ELEMENT(ROOT)
+	 *                         ELEMENT(ROOT)
 	 *                               /\
 	 *                     ELEMENT(A)  ELEMENT(B)
 	 *                         /\         /\
 	 *                    E(A1) E(A2) E(B1) E(B2)
 	 * 
-	 * 	</pre>
+	 * </pre>
 	 * 
 	 * <p>The root element is a special element that has no <code>@Id</code>,
 	 * <code>@Parent</code>, or wrapped object node. It is created automatically
@@ -119,7 +119,7 @@ public interface TreeSession {
 	 * {@link TreeTransaction#initializeSession(String, Collection)} methods.
 	 * </p>
 	 * 
-	 * <p>Just a few operations cannot be performed on the root element through
+	 * <p>Only a few operations cannot be performed on the root element through
 	 * the two interfaces: <code>Element</code> and <code>TreeManager</code>.
 	 * </p>
 	 * 

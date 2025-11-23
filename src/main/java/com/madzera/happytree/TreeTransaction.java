@@ -43,7 +43,7 @@ import com.madzera.happytree.exception.TreeException;
  * this linear structure into an actual tree structure, where each node is
  * represented by <code>Element</code> objects.
  * 
- * <p><b>The <code>TreeTransaction</code> can only work with only one
+ * <p><b>The <code>TreeTransaction</code> can work with only one
  * <code>TreeSession</code> at a time, while the other sessions remain in the
  * background waiting to be checked out again later.</b></p>
  * 
@@ -346,7 +346,7 @@ public interface TreeTransaction {
 	 * <p>Deactivating the current session does not remove it from the list of
 	 * registered sessions, instead, the current session is just disabled.</p>
 	 * 
-	 * <p>With an deactivated session, its elements <b>cannot</b> be handled
+	 * <p>With a deactivated session, its elements <b>cannot</b> be handled
 	 * freely within the tree.</p>
 	 */
 	public void deactivateSession();
@@ -354,7 +354,7 @@ public interface TreeTransaction {
 	/**
 	 * Returns the list of all registered sessions.
 	 * 
-	 * <p>The list of all sessions includes for both activated and deactivated
+	 * <p>The list of all sessions includes both activated and deactivated
 	 * sessions.</p>
 	 * 
 	 * @return the list of all registered sessions
@@ -362,20 +362,20 @@ public interface TreeTransaction {
 	public List<TreeSession> sessions();
 	
 	/**
-	 * Replicates the tree session defined by <code>from</code> identifier for
-	 * the session defined by <code>to</code> identifier.
+	 * <p>Replicating the tree session defined by <code>from</code> identifier
+	 * for the session defined by <code>to</code> identifier.
 	 * 
 	 * <p>Replicating an existing tree session consists of faithfully
-	 * reproducing all the elements defined in the source tree for a target
-	 * tree, whether this is a new or already existed target tree.</p>
+	 * reproducing all the elements defined in the source tree for a target tree,
+	 * whether this is a new or already existing target tree.</p>
 	 * 
-	 * <p>Replicating a session to an already existed session implies replacing
+	 * <p>Replicating a session to an already existing session implies replacing
 	 * the entire tree in the target session defined by <code>to</code>
 	 * identifier, which causes the total loss of the previous states of the
 	 * elements that were defined in the target tree.</p>
 	 * 
 	 * <p><b>Warning: the programmer is responsible for ensuring that the
-	 * session defined by the <code>to</code> identifier is already existed or
+	 * session defined by the <code>to</code> identifier already exists or
 	 * not.</b></p>
 	 * 
 	 * <p>In contrast, whether the session defined by the <code>to</code>
@@ -400,16 +400,16 @@ public interface TreeTransaction {
 	 * 
 	 * <p>Replicating an existing tree session consists of faithfully
 	 * reproducing all the elements defined in the source tree for a target
-	 * tree, whether this is a new or already existed target tree.</p>
+	 * tree, whether this is a new or already existing target tree.</p>
 	 * 
-	 * <p>Replicating a session to an already existed session implies replacing
+	 * <p>Replicating a session to an already existing session implies replacing
 	 * the entire tree in the target session defined by <code>to</code>
 	 * identifier, which causes the total loss of the previous states of the
 	 * elements that were defined in the target tree.</p>
 	 * 
 	 * <p><b>Warning: the programmer is responsible for ensuring that the
-	 * session defined by the <code>to</code> identifier is already existed or
-	 * not.</b></p>
+	 * session defined by the <code>to</code> identifier already exists or not.
+	 * </b></p>
 	 * 
 	 * <p>In contrast, whether the session defined by the <code>to</code>
 	 * identifier does not exist, then a new session is created with the tree

@@ -210,10 +210,10 @@ public interface TreeManager {
 	
 	/**
 	 * Copies the respective <code>from</code> element into the <code>to</code>
-	 * element <b>in another tree session</b>. All structure of copied element
-	 * will be paste inside of <code>to</code> element. The element to be copied
-	 * and its all children cannot have the same identifier than any element in
-	 * the <code>to</code> element tree.
+	 * element <b>in another tree session</b>. The entire structure of the
+	 * copied element will be pasted inside the <code>to</code> element. The
+	 * element to be copied and all its children cannot have the same identifier
+	 * as any element in the <code>to</code> element tree.
 	 * 
 	 * <p><b>Ensure that the current session is referencing the session to which
 	 * the <code>from</code> element belongs, otherwise an exception with the
@@ -292,9 +292,10 @@ public interface TreeManager {
 	
 	/**
 	 * Removes the corresponding element from the tree session and returns the
-	 * own removed element. After removed, the element and all its children will
-	 * have the <i>NOT_EXISTED</i> state in the lifecycle. In a case of reinsert
-	 * this removed element, then the same should be persisted again.
+	 * removed element itself. After being removed, the element and all its
+	 * children will have the <i>NOT_EXISTED</i> state in the lifecycle. In the
+	 * case of reinserting this removed element, then the same should be
+	 * persisted again.
 	 * 
 	 * <p>The element to be removed must be attached (<i>ATTACHED</i> state) in
 	 * the tree and cannot have changes. All children will be removed as well,
@@ -314,7 +315,7 @@ public interface TreeManager {
 	 * 
 	 * @param element the element to be removed with all its children
 	 * 
-	 * @return the own removed element itself, but now with the
+	 * @return the removed element itself, but now with the
 	 * <i>NOT_EXISTED</i> state in the lifecycle
 	 * 
 	 * @throws TreeException when:
@@ -360,7 +361,7 @@ public interface TreeManager {
 	 * 
 	 * @param id the identifier of the element to be removed
 	 * 
-	 * @return the own removed element itself, but with the <i>NOT_EXISTED</i>
+	 * @return the removed element itself, but with the <i>NOT_EXISTED</i>
 	 * state in the lifecycle
 	 * 
 	 * @throws TreeException when:
@@ -394,14 +395,14 @@ public interface TreeManager {
 	 * 		</li>
 	 * </ul>
 	 * 
-	 * <p>The element and its children returned by this method represents
-	 * elements with <i>ATTACHED</i> state in relation with the current tree
+	 * <p>The element and its children returned by this method represent
+	 * elements with <i>ATTACHED</i> state in relation to the current tree
 	 * session. An attached element means that the element and its children are
-	 * &quot;mirrors&quot; pieces of the tree.</p>
+	 * &quot;mirror&quot; pieces of the tree.</p>
 	 * 
-	 * <p>Changing the element or the children states, then this is necessary to
+	 * <p>If the element or its children change states, then it is necessary to
 	 * attach them again in the current tree session by invoking 
-	 * {@link #updateElement(Element)} to be able of handling those, for
+	 * {@link #updateElement(Element)} to be able to handle them, for
 	 * operation like {@link #cut(Element, Element)} or 
 	 * {@link #copy(Element, Element)} for example.</p>
 	 * 
@@ -635,10 +636,10 @@ public interface TreeManager {
 	 * <i>DETACHED</i>.</p>
 	 * 
 	 * <p>A <i>DETACHED</i> element represents an element, or one of its
-	 * descendants, in which it has undergone some change, whether it be the
-	 * <code>@Id</code> the <code>@Parent</code> or the wrapped node. <b>Ensure
-	 * yourself to avoid duplicate <code>@Id</code> in current session by an
-	 * <code>@Id</code> change</b>. To move up the element for the root level
+	 * descendants, that has undergone some change, whether it be the
+	 * <code>@Id</code>, the <code>@Parent</code>, or the wrapped node. <b>Make
+	 * sure to avoid duplicate <code>@Id</code> in the current session when
+	 * changing an <code>@Id</code></b>. To move the element to the root level
 	 * (first level), just set the parent ID as <code>null</code> or reference
 	 * an inexistent parent element.</p>
 	 * 
@@ -770,7 +771,7 @@ public interface TreeManager {
 	 * 
 	 * <p>Below, an example of a tree structure with its root element and
 	 * children:</p>
-	 * 	<pre>
+	 * <pre>
 	 * 
 	 * 							ELEMENT(ROOT)
 	 *                               /\
@@ -778,7 +779,7 @@ public interface TreeManager {
 	 *                         /\         /\
 	 *                    E(A1) E(A2) E(B1) E(B2)
 	 * 
-	 * 	</pre>
+	 * </pre>
 	 * 
 	 * The creation of the root element is responsibility of the core API. It
 	 * occurs at the moment of initialization of a new session when the

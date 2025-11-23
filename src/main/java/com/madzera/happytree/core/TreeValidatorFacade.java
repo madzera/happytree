@@ -6,7 +6,7 @@ import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.exception.TreeException;
 
 /*
- * Main class of the API HappyTree to validate all interface operations.
+ * Main class of the HappyTree API to validate all interface operations.
  */
 class TreeValidatorFacade {
 	

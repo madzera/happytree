@@ -1,43 +1,39 @@
 package com.madzera.happytree.core;
 
+import com.madzera.happytree.Element;
 import com.madzera.happytree.TreeManager;
+import com.madzera.happytree.TreeSession;
 import com.madzera.happytree.TreeTransaction;
 
 /**
- * <i>Helper</i> class that shows up the entry point of the HappyTree API.
+ * <i>Helper</i> class that provides the entry point of the HappyTree API.
  * 
- * <p>This class only serve to return an instance of the main
- * <code>interface</code> which will assist the API client to handle trees.</p>
+ * <p>This class has the only objective to return an instance of the
+ * {@link TreeManager} interface that will assist the API client to handle
+ * trees. With this instance, it is possible to access the respective
+ * {@link TreeTransaction} object.</p>
  * 
- * <p>The entry point of the API represents an instance of {@link TreeManager},
- * from which it is possible to access its respective {@link TreeTransaction}
- * object.</p>
- * 
- * <p>From this, it is possible to manipulate trees and sessions and
- * consequently the elements within the trees, thus contemplating the absolute
- * use of the API.</p>
+ * <p>From this, it is possible to handle trees and sessions and consequently
+ * the elements within the trees.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega
  * 
- * @see com.madzera.happytree.TreeSession
- * @see com.madzera.happytree.Element
- * 
+ * @see TreeSession
+ * @see Element
  */
 public final class HappyTree {
 
 	/*
-	 * Protects the Helper constructor class.
+	 * Protects the constructor class.
 	 */
 	private HappyTree() {}
 
 	
 	/**
-	 * Returns an instance of <code>TreeManager</code> interface, representing
-	 * the entry point of the HappyTree API.
+	 * Returns an instance of {@link TreeManager}, representing the entry point
+	 * of the HappyTree API.
 	 * 
-	 * <p>Each thread that use the HappyTree API needs to create its respective
-	 * <code>TreeManager</code> interface instance. Therefore each thread will
-	 * have its instance. This is not a <i>Singleton</i> instance.</p>
+	 * <p>This is not a <i>Singleton</i> instance.</p>
 	 * 
 	 * @return an instance of <code>TreeManager</code>
 	 */

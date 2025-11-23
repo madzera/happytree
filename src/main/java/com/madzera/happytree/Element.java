@@ -21,7 +21,7 @@ import com.madzera.happytree.exception.TreeException;
  * elementary unit, it is only possible to relate to itself and its children.
  * </p>
  * 
- * <p>An element <b>always</b> is associated with a session. Even after its
+ * <p>An element is <b>always</b> associated with a session. Even after its
  * creation, the element already belongs to a session, but that does not mean
  * that this element is already in the tree. It depends on its lifecycle state.
  * </p>
@@ -147,7 +147,7 @@ public interface Element<T> {
 	 * Sets the parent identifier reference of this element.
 	 * 
 	 * <p>If the <code>@Parent</code> reference is <code>null</code> or
-	 * references a non-existing element, then it is certain that this element
+	 * references a nonexistent element, then it is certain that this element
 	 * will be in the root level of the tree when it is going to be persisted or
 	 * updated.</p>
 	 * 
@@ -190,7 +190,7 @@ public interface Element<T> {
 
 	/**
 	 * Searches within the current element for an element according to the
-	 * <code>id</code> parameter passed through.
+	 * <code>id</code> parameter.
 	 * 
 	 * <p>The search is performed recursively within the children of this 
 	 * element starting by the current element itself. If the element is not
@@ -228,7 +228,7 @@ public interface Element<T> {
 	
 	/**
 	 * Removes the element from the children list of the current element by the
-	 * <code>id</code> passed through.
+	 * <code>id</code> parameter.
 	 * 
 	 * <p>If it exists, then the element and all of its children are removed
 	 * as well.</p>
