@@ -7,15 +7,14 @@ import java.util.function.Predicate;
 import com.madzera.happytree.exception.TreeException;
 
 /**
- * Provides ways of handling elements within the tree session. With this, it
- * becomes possible to create, persist, update, cut, copy, remove, retrieve
- * elements, and perform any other operations within the tree.
+ * Provides ways of handling elements within the tree session. This makes it
+ * possible to create, persist, update, cut, copy, remove, retrieve elements,
+ * and perform any other operations within the tree.
  * 
  * <p>This interface works by directly handling objects represented by the 
  * {@link Element} interface, where each one behaves similarly to a node within 
  * the tree. So, in practical terms, this interface allows the API client to 
- * handle business objects with tree-like behavior similar to the
- * <i>JavaScript DOM</i>.</p>
+ * handle business objects with tree-like behavior.</p>
  * 
  * <p>The operations here are done for elements within others or for "root" 
  * elements. The root elements are considered to be those that are not inside
@@ -25,7 +24,8 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * <p>The operations are also done for cases where it is desirable to reallocate
  * elements to other tree sessions. In this case, the uniqueness of each element
- * must be respected, related to the tree in which elements will be placed.</p>
+ * as well as the same class type of the nodes must be respected, related to the
+ * tree in which elements will be placed.</p>
  * 
  * <p>It is important to note that there are two distinct and well-defined
  * contexts in the HappyTree API: the inside and outside contexts. When the API
@@ -35,9 +35,9 @@ import com.madzera.happytree.exception.TreeException;
  * element's lifecycle is made, and this change is not immediately reflected in
  * the tree in question. This context is called outside the tree. An inside
  * context represents the client's action to perform the persist/update of the
- * element, so the change is actually reflected in the tree, but made through
- * this manager itself. The persist/update operations work by invoking
- * {@link TreeManager#persistElement(Element)} and
+ * element by using this own interface, so the change is actually reflected in
+ * the tree, but made through this manager itself. The persist/update operations
+ * work by invoking {@link TreeManager#persistElement(Element)} and
  * {@link #updateElement(Element)} respectively.</p>
  * 
  * <p>Conceptually, this interface works by handling trees through a transaction.
