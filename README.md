@@ -5,9 +5,9 @@
   </a>
 </p>
 
-“*Java Object Model API designed for the Java programming language that consists
-of transforming linear structures of Java Objects with a tree behavior into an
-actual tree structure and allowing its handling.*”
+“*API designed for handling Java objects with tree-like behavior which 
+each object behaves similarly to a node within the tree. Add, remove,
+cut, copy, print in JSON/XML elements within a tree.*”
 
 
 <p align="center">
@@ -39,6 +39,28 @@ actual tree structure and allowing its handling.*”
 
 ### What is it?
 
+HappyTree is a data structure API design to handling Java objects which
+have a tree-like behavior, whereas an @Id attribute of an object is referenced
+as a @Parent attribute of its children.
+
+In certain circumstance there are needs to convert a list of Java objects, that
+could represent a model layer in a business context, into an actual hierarchical
+tree structure in memory, where objects contain its children and each child
+contains its grant children and so on.
+
+So, when there are the need to put a collection (Set/List) of objects, that each
+object relates to another object of the same type through an identifier
+attribute in a tree-like manner, the HappyTree is able to transform this
+structure into an actual tree structure in memory, when each object will be
+wrapped into a tree node object, called "Element", and each element contains its
+children elements whereas each child contains its own children and so on,
+recursively. 
+
+From this point, the API client can handle those elements within a tree, such as
+adding/removing children from nodes, moving nodes to another point of the tree
+or even to another tree, copying nodes to other trees, converting trees into
+JSON/XML, etc.
+
 HappyTree is a data structure API designed for the Java programming 
 language that consists of transforming linear objects into a tree 
 structure, where each object represents a node in the tree and can 
@@ -52,29 +74,31 @@ intuitive way.
 
 ### What is your purpose?
 
-The HappyTree API has three main purposes:
+The HappyTree API aims to provide a way of creating new trees, creating trees
+from existing collection of objects that have a tree-like behavior, as well as
+handling these trees. Therefore, there are three main purposes of the API:
 
 <ol>
-<li>Handle <b>Java Objects</b> as if they were nodes within trees, in
- order to perform operations such as copying, cutting, removing,
- creating, persisting or updating;</li>
-<li>Transform linear data structures of <b>Java Objects</b> into
- trees;</li>
- <li>Create and manage multiple trees of these objects.</li>
+	<li>Handle <b>Java Objects</b> as if they were nodes within trees, in
+		order to perform operations such as copying, cutting, removing, creating,
+		persisting/updating, etc. over those objects;</li>
+	<li>Transform linear data structures of <b>Java Objects</b> that have
+		tree-like behavior into an actual tree;</li>
+	<li>Create new trees from scratch.</li>
 </ol>
 
-The first purpose represents the basic operations in the trees, when
-the API client desires to change the state of the nodes (officially
-called of **Elements** in the context of the API) in the trees, in
-order to move, copy, remove, create and update those nodes.
+The first purpose represents the basic operations of the trees, when the API
+client desires to change the state of the nodes (officially called of
+**Elements** in the context of the API) in the trees, in order to move, copy,
+remove, create and update those nodes.
 
 The second purpose is suitable for situations in which the API client
-needs to transform a collection of plain objects of which there is a
-tree logical relation between them, but that they are not being
-represented structurally as a tree.
+needs to transform a collection of plain objects, of which there is a
+tree logical relation between them, into a tree. Here, each element contains
+its children elements, and each child contains its own children recursively.
 
-The last one allows the API client to activate, deactivate or destroy
-the trees.
+The last one allows the API client to create new trees from scratch, persisting
+element to element to build the tree structure as desired.
 
 ### For who?
 
