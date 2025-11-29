@@ -5,9 +5,9 @@
   </a>
 </p>
 
-“*API designed for handling Java objects with tree-like behavior which 
-each object behaves similarly to a node within the tree. Add, remove,
-cut, copy, print in JSON/XML elements within a tree.*”
+“*API designed for handling Java objects with tree-like behavior where each
+object behaves similarly to a node within the tree. Add, remove, cut, copy,
+print in JSON/XML elements within a tree.*”
 
 
 <p align="center">
@@ -39,21 +39,21 @@ cut, copy, print in JSON/XML elements within a tree.*”
 
 ### What is it?
 
-HappyTree is a data structure API design to handling Java objects which
-have a tree-like behavior, whereas an @Id attribute of an object is referenced
-as a @Parent attribute of its children.
+HappyTree is a data structure API designed for handling Java objects which have
+a tree-like behavior, whereas an @Id attribute of an object is referenced as a
+@Parent attribute of its children.
 
-In certain circumstance there are needs to convert a list of Java objects, that
+In certain circumstances there is a need to convert a list of Java objects, that
 could represent a model layer in a business context, into an actual hierarchical
 tree structure in memory, where objects contain its children and each child
-contains its grant children and so on.
+contains its own children collection and so on.
 
-So, when there are the need to put a collection (Set/List) of objects, that each
+So, when there is a need to put a collection (Set/List) of objects, that each
 object relates to another object of the same type through an identifier
 attribute in a tree-like manner, the HappyTree is able to transform this
-structure into an actual tree structure in memory, when each object will be
+structure into an actual tree structure in memory, where each object will be
 wrapped into a tree node object, called "Element", and each element contains its
-children elements whereas each child contains its own children and so on,
+children elements where each child contains its own children and so on,
 recursively. 
 
 From this point, the API client can handle those elements within a tree, such as
@@ -61,21 +61,10 @@ adding/removing children from nodes, moving nodes to another point of the tree
 or even to another tree, copying nodes to other trees, converting trees into
 JSON/XML, etc.
 
-HappyTree is a data structure API designed for the Java programming 
-language that consists of transforming linear objects into a tree 
-structure, where each object represents a node in the tree and can 
-have none or several other objects of the same type.
-
-In addition to the **Transformation Process** (mechanism to
-transform this linear structure of objects into a tree structure),
-the HappyTree API provides mechanisms to handle these objects within
-trees, as if these objects were tree nodes, all in an easy and
-intuitive way.
-
 ### What is your purpose?
 
 The HappyTree API aims to provide a way of creating new trees, creating trees
-from existing collection of objects that have a tree-like behavior, as well as
+from existing collections of objects that have a tree-like behavior, as well as
 handling these trees. Therefore, there are three main purposes of the API:
 
 <ol>
@@ -88,39 +77,46 @@ handling these trees. Therefore, there are three main purposes of the API:
 </ol>
 
 The first purpose represents the basic operations of the trees, when the API
-client desires to change the state of the nodes (officially called of
-**Elements** in the context of the API) in the trees, in order to move, copy,
-remove, create and update those nodes.
+client desires to change the state of the nodes (officially called **Elements**
+in the context of the API) in the trees, in order to move, copy, remove, create
+and update those nodes.
 
-The second purpose is suitable for situations in which the API client
-needs to transform a collection of plain objects, of which there is a
-tree logical relation between them, into a tree. Here, each element contains
-its children elements, and each child contains its own children recursively.
+The second purpose is suitable for situations in which the API client needs to
+transform a collection of plain objects, of which there is a logical tree
+relation between them, into a tree. Here, each element contains its children
+elements, and each child contains its own children recursively.
 
 The last one allows the API client to create new trees from scratch, persisting
 element to element to build the tree structure as desired.
 
-### For who?
+### For whom?
 
-For developers who feel the need to work with trees on their
-**Java Object Model**. The HappyTree API only acts on the
-**Object Model Layer** of a project's architecture.
+For developers who feel the need to handle objects that have a tree-like
+behavior in their applications. There are several scenarios in which this API
+can be useful, such as:
+<ul>
+	<li>Handling directory structures;</li>
+	<li>Handling organizational structures;</li>
+	<li>Handling visual component structures;</li>
+	<li>Handling product category structures;</li>
+	<li>Handling comment/reply structures;</li>
+	<li>And many other scenarios.</li>
+</ul>
 
 ### When to use?
 
-When the API client has a data structure which the logical represents
-a tree but its objects are only linearly referenced to each other,
-this API has precisely this purpose of transforming the linear
-structure into a physical tree structure, beyond of providing
-mechanisms to handle them.
+When the project into which this API was imported has a Java data model
+structure which logically represents a tree but its objects are only linearly
+referenced to each other, so this API has precisely this purpose of transforming
+the linear structure into a physical tree structure. This process is known as
+the **API Transformation Process** and it is one of the main core
+functionalities of the HappyTree API.
 
-If, for example, the API client has a directory structure in its 
-system, or if it needs to assemble a screen of visual components, 
-through objects that are not inside each other, but objects that 
-refer others through simple attributes, then this is the right 
-opportunity to use the HappyTree API, since objects will now be
-inside each other thus like a tree, as well as offering interfaces
-to handle them.
+If, for example, the project has a collection of Java model objects representing
+directories in a file system, where each directory object has an identifier
+attribute which is referenced by the parent attribute from another directory
+object in the same collection, then this API can be used to transform this
+linear structure into an actual tree structure in memory.
 
 <b>If you have something like this:</b><br>
 
@@ -160,43 +156,76 @@ public class Element<Directory> {
 
 ### How to use?
 
-If you want to do something described above, that is, using the
-HappyTree API to transform a linear structure into a tree structure,
-you must first add the following annotations to the **Java Class**
-to which its objects will be inserted as a tree node:
+If you want to do something described above, that is, using the HappyTree API to
+transform a linear structure (linear parent-child relationships through the
+identifiers) into a tree structure.
+
+#### Code Snippets
+
+1 - You must first add the following annotations to the **Java Class** to which
+its objects will be inserted as a tree node:
 
 ```java
 //Linear tree structure.
 @Tree
 public class Directory {
 	@Id
-	private Integer dirId;
+	private Integer directoryId;
 	@Parent
-	private Integer dirParentId;
+	private Integer directoryParentId;
 	//Simple attribute
-	private String dirName;
-	
-	//getters and setters
+	private String directoryName;
+
+	public Directory() {}
+
+	public Integer getDirectoryId() {
+		return directoryId;
+	}
+
+	public void setDirectoryId(Integer directoryId) {
+		this.directoryId = directoryId;
+	}
+
+	public Integer getDirectoryParentId() {
+		return directoryParentId;
+	}
+
+	public void setDirectoryParentId(Integer directoryParentId) {
+		this.directoryParentId = directoryParentId;
+	}
+
+	public String getDirectoryName() {
+		return directoryName;
+	}
+
+	public void setDirectoryName(String directoryName) {
+		this.directoryName = directoryName;
+	}
 }
 ```
 
-After that, just group these objects into a collection.
+2 - After that, just group these objects into a collection and initialize a new
+session. The meaning of "session" here is a tree instance that will handle these
+objects, in other words, sessions are just trees semantically.
 
-A tree can be created either through the **Transformation Process**
-of a previously available linear structure or be created freely
-through an empty tree.
+A tree can be created either through the **API Transformation Process** of a
+previous collection of objects, that have tree behavior, disposed in a linear
+structure or it can be created freely from scratch, one by one.
 
-For the case of the **Transformation Process**, the initialization is
+For the case of the **API Transformation Process**, the initialization is
 something similar to the code below:
 
 ```java
+	//Getting the collection of Directory objects from a private method.
 	Collection<Directory> directories = myObject.myMethodToGetDirectories();
+
+	//API usage to create a tree from the collection above.
 	TreeManager manager = HappyTree.createTreeManager();
 	TreeTransaction transaction = manager.getTransaction();
 	transaction.initializeSession("myFirstHappyTree", directories);
 ```
 
-To initialize an empty tree, the code snippet looks something like
+To initialize an empty tree from scratch, the code snippet looks something like
 the code below:
 
 ```java
@@ -204,11 +233,38 @@ the code below:
 	TreeTransaction transaction = manager.getTransaction();
 	transaction.initializeSession("mySecondHappyTree", Directory.class);
 ```
+3 - Now, just handle it as you wish.
+
+```java
+	Element<Directory> administration = manager.getElementById(
+		administrationId);
+	Element<Directory> accessControl = manager.getElementById(
+		accessControlId);
+	
+	/*
+	* Access Control menu and its children now will
+	* be moved to Administration menu.
+	*/
+	manager.cut(accessControl, administration);
+		
+	Directory security = new Directory();
+	security.setDirectoryId(securityId);
+	security.setDirectoryParentId(administrationId);
+		
+	Element<Directory> security = manager.createElement(securityId,
+		administrationId, security);
+
+	//New inserted element in the tree.		
+	manager.persistElement(security);
+	
+	Element<Directory> root = manager.root();
+	System.out.println(root.toJSON());
+```
 
 Once created, the trees start to work on
 [Element](./src/main/java/com/madzera/happytree/Element.java)
-type objects, which will encapsulate (wrap) the "original objects"
-(Directory) represented as the respective nodes. From there, just use the
+type objects, which will encapsulate (wrap) their respective "original objects"
+(Directory) represented as nodes. From there, just use the
 [TreeManager](./src/main/java/com/madzera/happytree/TreeManager.java)
 interface to handle these elements.
 
@@ -218,8 +274,8 @@ interface to handle these elements.
 
 ### Contributing
 
-In order to contribute with us?
-We are extremely grateful to collaborators.
-Thank you.
+Would you like to contribute with us?
+We are extremely grateful!
+Thank you!
 
 See [Contributing.](CONTRIBUTING.md)
