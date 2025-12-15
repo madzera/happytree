@@ -39,20 +39,20 @@ print in JSON/XML elements within a tree.*”
 
 ### What is it?
 
-HappyTree is a data structure API designed for handling Java objects which have
-a tree-like behavior, whereas an @Id attribute of an object is referenced as a
-@Parent attribute of its children.
+HappyTree is a data structure API designed for handling Java objects that have
+tree-like behavior, whereas an *@Id* attribute of an object is referenced as a
+*@Parent* attribute of its children.
 
 In certain circumstances there is a need to convert a list of Java objects, that
 could represent a model layer in a business context, into an actual hierarchical
 tree structure in memory, where objects contain its children and each child
 contains its own children collection and so on.
 
-So, when there is a need to put a collection (Set/List) of objects, that each
+When there is a need to put a collection (Set/List) of objects, where each
 object relates to another object of the same type through an identifier
-attribute in a tree-like manner, the HappyTree is able to transform this
+attribute in a tree-like manner, the HappyTree API is able to transform this
 structure into an actual tree structure in memory, where each object will be
-wrapped into a tree node object, called "Element", and each element contains its
+wrapped into a tree node object, called *Element*, and each element contains its
 children elements where each child contains its own children and so on,
 recursively. 
 
@@ -64,42 +64,43 @@ JSON/XML, etc.
 ### What is your purpose?
 
 The HappyTree API aims to provide a way of creating new trees, creating trees
-from existing collections of objects that have a tree-like behavior, as well as
-handling these trees. Therefore, there are three main purposes of the API:
+from existing collections of objects that have tree-like behavior, as well as
+handling these trees. It provides interfaces for the API client for three
+primary and clear objectives:
 
 <ol>
-	<li>Handle <b>Java Objects</b> as if they were nodes within trees, in
-		order to perform operations such as copying, cutting, removing, creating,
-		persisting/updating, etc. over those objects;</li>
-	<li>Transform linear data structures of <b>Java Objects</b> that have
-		tree-like behavior into an actual tree;</li>
+	<li>Handle <b>Java objects</b> as if they were nodes within trees to
+		perform operations such as copying, cutting, removing, creating,
+		persisting/updating, etc. over those objects.</li>
+	<li>Transform linear data structures of <b>Java objects</b> that have
+		tree-like behavior into an actual tree.</li>
 	<li>Create new trees from scratch.</li>
 </ol>
 
 The first purpose represents the basic operations of the trees, when the API
 client desires to change the state of the nodes (officially called **Elements**
-in the context of the API) in the trees, in order to move, copy, remove, create
-and update those nodes.
+in the context of the API) in the trees, to move, copy, remove, create and
+update those nodes.
 
 The second purpose is suitable for situations in which the API client needs to
 transform a collection of plain objects, of which there is a logical tree
-relation between them, into a tree. Here, each element contains its children
-elements, and each child contains its own children recursively.
+relation between them, into an actual tree. Here, each element contains its
+child elements, and each child contains its own children recursively.
 
 The last one allows the API client to create new trees from scratch, persisting
 element to element to build the tree structure as desired.
 
 ### For whom?
 
-For developers who feel the need to handle objects that have a tree-like
+For developers who feels the need to handle objects that have a tree-like
 behavior in their applications. There are several scenarios in which this API
 can be useful, such as:
 <ul>
-	<li>Handling directory structures;</li>
-	<li>Handling organizational structures;</li>
-	<li>Handling visual component structures;</li>
-	<li>Handling product category structures;</li>
-	<li>Handling comment/reply structures;</li>
+	<li>Handling directory structures.</li>
+	<li>Handling organizational structures.</li>
+	<li>Handling visual component structures.</li>
+	<li>Handling product category structures.</li>
+	<li>Handling comment/reply structures.</li>
 	<li>And many other scenarios.</li>
 </ul>
 
@@ -107,9 +108,9 @@ can be useful, such as:
 
 When the project into which this API was imported has a Java data model
 structure which logically represents a tree but its objects are only linearly
-referenced to each other, so this API has precisely this purpose of transforming
-the linear structure into a physical tree structure. This process is known as
-the **API Transformation Process** and it is one of the main core
+referenced to each other, this API has precisely this purpose of transforming
+this linear structure into a physical tree structure. This process is known as
+the **API Transformation Process**, and it is one of the main core
 functionalities of the HappyTree API.
 
 If, for example, the project has a collection of Java model objects representing
@@ -118,7 +119,7 @@ attribute which is referenced by the parent attribute from another directory
 object in the same collection, then this API can be used to transform this
 linear structure into an actual tree structure in memory.
 
-<b>If you have something like this:</b><br>
+<b>Suppose we have something like this:</b><br>
 
 ```java
 //Linear tree structure.  
@@ -131,14 +132,14 @@ public class Directory {
 	private String dirName;
 	
 	//getters and setters
-}  
+}
 ```
 
-<b>But you want this:</b><br>
+<b>But we want this:</b><br>
 
 ```java
 //Recursive tree structure wrapped through the Element object.
-public class Element<Directory> {
+public interface Element<Directory> {
 	private Object dirId;
 	private Object dirParentId;
 	private Collection<Element<Directory>> subDirs;

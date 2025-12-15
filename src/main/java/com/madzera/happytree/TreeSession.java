@@ -31,7 +31,7 @@ import java.util.Collection;
  * 
  * <table summary="Session States">
  * 	<tr>
- * 		<th>State</th><th>Exists?</th><th>Can be handled?</th>
+ * 		<th>State</th><th>Exists?</th><th>Can it be handled?</th>
  * 	</tr>
  * 	<tr>
  * 		<td><b>Activated</b></td><td>&#10004;</td><td>&#10004;</td>
