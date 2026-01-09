@@ -10,13 +10,13 @@ class ATPConstants {
 		//---------------RUNTIME EXCEPTION--------------
 		static final String INVALID_INPUT_ELEMENTS = "Invalid null/empty argument(s).";
 		//---------------------TREE---------------------
-		static final String GENERAL_ERROR = "Impossible to transform input object. Ensure the existence of getters and setters.";
-		static final String NO_TREE_ERROR = "There is no @TREE associated.";
-		static final String NO_ID_ERROR = "There is no @ID associated.";
-		static final String NO_PARENT_ERROR = "There is no @PARENT associated.";
-		static final String DIFFERENT_TYPES_ID_ERROR = "Mismatch type ID error.";
+		static final String GENERAL_ERROR = "Unable to transform input objects. Ensure the presence of a default constructor, getters, and setters.";
+		static final String NO_TREE_ERROR = "No @Tree annotation found.";
+		static final String NO_ID_ERROR = "No @Id annotation found.";
+		static final String NO_PARENT_ERROR = "No @Parent annotation found.";
+		static final String DIFFERENT_TYPES_ID_ERROR = "ID type mismatch error.";
 		static final String DUPLICATE_ID_ERROR = "Duplicate ID.";
-		static final String NOT_SERIALIZED_NODE = "The wrapped node must implement Serializable interface.";
+		static final String NOT_SERIALIZED_NODE = "The wrapped object must implement Serializable.";
 	}
 	
 	static class Error {

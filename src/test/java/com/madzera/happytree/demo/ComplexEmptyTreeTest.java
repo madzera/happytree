@@ -192,8 +192,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		isEquals("NOT_EXISTED", criticalCare.lifecycle());
 		isEquals("NOT_EXISTED", primaryCare.lifecycle());
 		
-		String error = "No possible to update the element. Invalid lifecycle"
-				+ " state.";
+		String error = "It is not possible to update the element. "
+				+ "Invalid lifecycle state.";
 		/*
 		 * Trying update the sub element instead of the parent element which
 		 * added the sub element (child).
@@ -463,8 +463,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		try {
 			manager.persistElement(computerEngineering);
 		} catch (TreeException e) {
-			String error3 = "No possible to persist the element. Invalid"
-					+ " lifecycle state.";
+			String error3 = "It is not possible to persist the element. "
+					+ "Invalid lifecycle state.";
 			isEquals(error3, e.getMessage());
 		}
 		
@@ -565,8 +565,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		try {
 			manager.removeElement(ai);
 		} catch (TreeException e) {
-			String error4 = "No possible to copy/cut/remove elements. Invalid"
-					+ " lifecycle state.";
+			String error4 = "It is not possible to copy/cut/remove "
+					+ "elements. Invalid lifecycle state.";
 			isEquals(error4, e.getMessage());
 		}
 		
@@ -592,8 +592,8 @@ public class ComplexEmptyTreeTest extends CommonDemoTest {
 		try {
 			manager.persistElement(computerApplications);
 		} catch (TreeException e) {
-			String error5 = "No possible to persist the element. Invalid"
-					+ " lifecycle state.";
+			String error5 = "It is not possible to persist the element. "
+					+ "Invalid lifecycle state.";
 			isEquals(error5, e.getMessage());
 		}
 		

@@ -152,7 +152,7 @@ public class TreeTransactionErrorTest {
 	public void initializeSession_duplicateSessionIdentifier() {
 		final String nameTree = "duplicateSessionIdentifier";
 		final String nameTreeDuplicate = nameTree;
-		final String messageError = "Already existing initialized session.";
+		final String messageError = "Duplicate session identifier.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -201,7 +201,7 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpNoTree() {
 		final String sessionId = "ATP_WITH_NO_TREE_ANNOTATION";
-		final String messageError = "There is no @TREE associated.";
+		final String messageError = "No @Tree annotation found.";
 		String error = null;
 		
 		Collection<Node_NoTree> nodes = new ArrayList<Node_NoTree>();
@@ -251,7 +251,7 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpNoId() {
 		final String sessionId = "ATP_WITH_NO_ID_ANNOTATION";
-		final String messageError = "There is no @ID associated.";
+		final String messageError = "No @Id annotation found.";
 		String error = null;
 		
 		Collection<Node_NoId> nodes = new ArrayList<Node_NoId>();
@@ -301,7 +301,7 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpNoParent() {
 		final String sessionId = "ATP_WITH_NO_PARENT_ANNOTATION";
-		final String messageError = "There is no @PARENT associated.";
+		final String messageError = "No @Parent annotation found.";
 		String error = null;
 		
 		Collection<Node_NoParent> nodes = new ArrayList<Node_NoParent>();
@@ -353,7 +353,7 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpMismatchId() {
 		final String sessionId = "ATP_WITH_MISMATCH_ID_ANNOTATION";
-		final String messageError = "Mismatch type ID error.";
+		final String messageError = "ID type mismatch error.";
 		String error = null;
 		
 		Collection<Node_MismatchId> nodes = new ArrayList<Node_MismatchId>();
@@ -598,8 +598,8 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpPreValidationException() {
 		final String sessionId = "initializeSession_atpPreValidationException";
-		final String messageError = "Impossible to transform input object. "
-				+ "Ensure the existence of getters and setters.";
+		final String messageError = "Unable to transform input objects. Ensure "
+			+ "the presence of a default constructor, getters, and setters.";
 		
 		ObjectNoGetterError obj = new ObjectNoGetterError();
 		Collection<ObjectNoGetterError> objects =
@@ -721,8 +721,8 @@ public class TreeTransactionErrorTest {
 	@Test
 	public void initializeSession_atpWrappedNodeNotSerialized() {
 		final String sessionId = "initializeSession_atpWrappedNodeNotSerialized";
-		final String messageError = "The wrapped node must implement "
-		+ "Serializable interface.";
+		final String messageError =
+				"The wrapped object must implement Serializable.";
 
 		String error = null;
 

@@ -2163,8 +2163,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	@Test
 	public void cut_notExistingFromObjectId() throws TreeException {
 		final String sessionId = "cut_notExistingFromObjectId";
-		final String messageError = "No possible to copy/cut elements. "
-			+ "Source element not found.";
+		final String messageError = "It is not possible to cut the element. "
+				+ "Source element not found.";
 		
 		final long notExistingFromId = Long.MAX_VALUE;
 		final long wordExeId = 4611329;
@@ -2231,8 +2231,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void cut_diffArgsTypes() throws TreeException {
 		final String sourceSession = "cut_diffArgsTypes";
 
-		final String messageError = "Mismatch type error. Incompatible"
-				+ " parameterized type tree.";
+		final String messageError = "Type mismatch error: incompatible "
+				+ "parameterized tree type.";
 
 		String error = null;
 
@@ -2300,8 +2300,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		
 		final long windowsId = 1;
 		
-		final String messageError = "No possible to handle the root of the tree."
-				+ " Consider using a transaction to clone trees.";
+		final String messageError = "The root of the tree cannot be handled "
+				+ "for this operation.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -2365,8 +2365,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	@Test
 	public void cut_detachedElement() {
 		final String sessionId = "cut_detachedElement";
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		
 		String error = null;
 		
@@ -2437,8 +2437,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void cut_detachedChild() {
 		final String sessionId = "cut_detachedChild";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -2758,8 +2758,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void cut_toAnotherTreeType() {
 		final String source = "source";
 		final String target = "target";
-		final String messageError = "Mismatch type error. Incompatible"
-				+ " parameterized type tree.";
+		final String messageError = "Type mismatch error: incompatible "
+				+ "parameterized tree type.";
 		
 		String error = null;
 		
@@ -3138,8 +3138,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		
 		final long windowsId = 1;
 		
-		final String messageError = "No possible to handle the root of the tree."
-				+ " Consider using a transaction to clone trees.";
+		final String messageError = "The root of the tree cannot be handled "
+				+ "for this operation.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -3210,8 +3210,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		
 		String error = null;
 		final long officeId = 53024;
@@ -3289,8 +3289,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		String error = null;
 		
 		final long officeId = 53024;
@@ -3366,8 +3366,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		final String sourceSessionId = "source";
 		final String targetSessionId = "target";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -3745,8 +3745,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void removeElement_detachedElement() {
 		final String sessionId = "removeElement_detachedElement";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		String error = null;
 		
 		final long readmeId = 495833;
@@ -3815,8 +3815,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void removeElement_detachedChild() {
 		final String sessionId = "remove_detachedChild";
 		
-		final String messageError = "No possible to copy/cut/remove elements."
-				+ " Invalid lifecycle state.";
+		final String messageError = "It is not possible to copy/cut/remove "
+				+ "elements. Invalid lifecycle state.";
 		String error = null;
 		
 		final long sdkId = 113009;
@@ -3890,8 +3890,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void removeElement_rootElement() {
 		final String sessionId = "removeElement_rootElement";
 		
-		final String messageError = "No possible to handle the root of the tree."
-				+ " Consider using a transaction to clone trees.";
+		final String messageError = "The root of the tree cannot be handled "
+				+ "for this operation.";
 		String error = null;
 		
 		TreeManager manager = HappyTree.createTreeManager();
@@ -3954,8 +3954,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void removeElement_mismatchElement() {
 		final String source = "source";
 		final String target = "target";
-		final String messageError = "Mismatch type error. Incompatible"
-				+ " parameterized type tree.";
+		final String messageError = "Type mismatch error: incompatible "
+				+ "parameterized tree type.";
 		
 		String error = null;
 		
@@ -4322,8 +4322,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void persistElement_existedElement() {
 		final String sessionId = "persistElement_existedElement";
 		
-		final String messageError = "No possible to persist the element. Invalid"
-				+ " lifecycle state.";
+		final String messageError = "It is not possible to persist the element. "
+				+ "Invalid lifecycle state.";
 		String error = null;
 		
 		final long filesId = 8484934;
@@ -4390,8 +4390,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void persistElement_mismatchElement() {
 		final String sessionId = "persistElement_mismatchElement";
 		
-		final String messageError = "Mismatch type error. Incompatible"
-				+ " parameterized type tree.";
+		final String messageError = "Type mismatch error: incompatible "
+				+ "parameterized tree type.";
 		String error = null;
 		
 		final String foo = "foo";
@@ -4450,8 +4450,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void persistElement_detachedChildElement() {
 		final String sessionId = "persistElement_detachedChildElement";
 		
-		final String messageError = "No possible to persist the element. "
-			+ "Invalid lifecycle state.";
+		final String messageError = "It is not possible to persist the element. "
+				+ "Invalid lifecycle state.";
 		String error = null;
 		
 		final String foo = "foo";
@@ -4716,8 +4716,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 	public void updateElement_notExistedElement() {
 		final String sessionId = "updateElement_notExistedElement";
 		
-		final String messageError = "No possible to update the element. Invalid"
-				+ " lifecycle state.";
+		final String messageError = "It is not possible to update the element. "
+				+ "Invalid lifecycle state.";
 		String error = null;
 		
 		final long id = Long.MAX_VALUE;
@@ -4778,8 +4778,8 @@ public class TreeManagerErrorTest extends TreeCommonTestHelper {
 		final String sourceSessionId = "Directory_Session";
 		final String targetSessionId = "Metadata_Session";
 
-		final String messageError = "Mismatch type error. Incompatible"
-				+ " parameterized type tree.";
+		final String messageError = "Type mismatch error: incompatible "
+				+ "parameterized tree type.";
 		String error = null;
 
 		final long eclipseExeId = 8483742;
