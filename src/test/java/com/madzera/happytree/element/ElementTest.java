@@ -962,9 +962,9 @@ public class ElementTest extends TreeCommonTestHelper {
 
 		for (Element<Directory> element : results) {
 			assertEquals(element.getParent(), adobeId);
-			assertTrue(element.getId().equals(readerId) ||
-					element.getId().equals(photoshopId) ||
-					element.getId().equals(dreamweaverId));
+			assertTrue(element.getId().equals(readerId)
+					|| element.getId().equals(photoshopId)
+					|| element.getId().equals(dreamweaverId));
 		}
 	}
 

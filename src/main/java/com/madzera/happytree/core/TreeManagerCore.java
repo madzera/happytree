@@ -414,8 +414,8 @@ class TreeManagerCore implements TreeManager {
 		 * element from inside of its old parent and insert it inside of the
 		 * new parent one.
 		 */
-		if (!((TreeElementCore<T>) element).isRoot() &&
-				!oldParentId.equals(updatedParentId)) {
+		if (!((TreeElementCore<T>) element).isRoot()
+				&& !oldParentId.equals(updatedParentId)) {
 			TreeElementCore<T> oldParent = (TreeElementCore<T>) this
 					.searchElement(oldParentId);
 			TreeElementCore<T> newParent = (TreeElementCore<T>) this

@@ -1558,8 +1558,8 @@ public class ElementAlternativeTest extends TreeCommonTestHelper {
 		Element<Directory> root = manager.root();
 
 		root.apply(element -> applyUpperCaseDirectoryName(element),
-				element -> element.unwrap().getName().equals("Adobe") ||
-						element.unwrap().getName().equals("foo"));
+				element -> element.unwrap().getName().equals("Adobe")
+					|| element.unwrap().getName().equals("foo"));
 
 		root.getChildren().forEach(element -> {
 			try {
