@@ -271,7 +271,7 @@ interface to handle these elements.
 
 ### Documentation
 
-[HappyTree Official Documentation](https://happytreeapi.vercel.app/happytree-1.0.0.pdf)
+[HappyTree Official Documentation](https://happytreeapi.vercel.app/happytree-2.0.0.pdf)
 
 ### Contributing
 
