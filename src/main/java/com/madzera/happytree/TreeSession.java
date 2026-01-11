@@ -3,31 +3,31 @@ package com.madzera.happytree;
 import java.util.Collection;
 
 /**
- * Interface responsible for storing the element trees. An element tree
- * corresponds to a hierarchical data structure in a tree format in which the
- * elements are arranged as nodes of that tree. This tree can be created freely
- * or from a data structure whose objects, in that structure, behave like a tree
- * but are arranged linearly. So by invoking
+ * Interface responsible for storing element trees. An element tree corresponds
+ * to a hierarchical data structure in a tree format in which the elements are
+ * arranged as nodes of that tree. This tree can be created freely or from a
+ * data structure whose objects, in that structure, behave like a tree but are
+ * arranged linearly. By invoking
  * {@link TreeTransaction#initializeSession(String, Collection)}, this linear
  * structure is transformed into an actual tree structure.
  * 
  * <p>The sessions are initialized by the {@link TreeTransaction} interface,
- * which can manage one or several sessions, where each session represents an
- * instance of a tree in the HappyTree API context. Although the
+ * which can manage one or more sessions, where each session represents a tree
+ * instance in the HappyTree API context. Although the
  * <code>TreeTransaction</code> interface is able to manage instances of
- * <code>TreeSession</code>, it can only do this one at a time. Thus, when
- * handling a given session, it must be captured previously by invoking
- * {@link TreeTransaction#sessionCheckout(String)}. At each session change, by
- * this method, the chosen session becomes the current session for the
- * <code>TreeTransaction</code> interface to be able to manipulate it.</p> 
+ * <code>TreeSession</code>, it can only do so one at a time. Thus, to handle a
+ * given session, it must be captured first by invoking
+ * {@link TreeTransaction#sessionCheckout(String)}. On each session change via
+ * this method, the chosen session becomes the current session so the
+ * <code>TreeTransaction</code> interface can manipulate it.</p>
  * 
  * <p>It is important to note that when invoking
  * {@link TreeTransaction#initializeSession(String, Class)} or
  * {@link TreeTransaction#initializeSession(String, Collection)}, the session is
- * automatically made available for the <code>TreeTransaction</code>. Thus, the
+ * automatically made available to the <code>TreeTransaction</code>. Thus, the
  * session is ready for manipulation immediately after initialization.</p>
  *
- * <p>A session contains 3 fundamental states:</p>
+ * <p>A session contains three fundamental states:</p>
  * 
  * <table>
  * <caption>Session States</caption>
@@ -45,11 +45,10 @@ import java.util.Collection;
  * 	</tr>
  * </table>
  * 
- * <p>An active session, as already known, exists and can be freely handled. A
+ * <p>An active session, as noted above, exists and can be freely handled. A
  * deactivated session, on the other hand, although it cannot be handled, still
- * remains in memory, waiting only to be activated in order to be handled, that
- * is, in this case, the tree and its elements are 'alive' in memory but
- * disabled.</p>
+ * remains in memory, waiting only to be activated so it can be handled. In
+ * this case, the tree and its elements are 'alive' in memory but disabled.</p>
  * 
  * <p>A destroyed session is one that previously existed but has been
  * permanently removed along with the entire tree and its elements. A destroyed
@@ -64,7 +63,7 @@ import java.util.Collection;
 public interface TreeSession {
 	
 	/**
-	 * Obtains the session identifier name.
+	 * Returns the session identifier name.
 	 * 
 	 * <p>A session identifier is defined when the session is initialized by
 	 * invoking the {@link TreeTransaction#initializeSession(String, Class)} or
@@ -101,7 +100,7 @@ public interface TreeSession {
 	 * possible to navigate through all its children, each child's children, and
 	 * so on recursively, thus accessing the entire tree structure.</p>
 	 * 
-	 * <p>Below, an example of a tree structure with its root element and
+	 * <p>Below is an example of a tree structure with its root element and
 	 * children:</p>
 	 * <pre>
 	 * 
@@ -120,7 +119,7 @@ public interface TreeSession {
 	 * {@link TreeTransaction#initializeSession(String, Collection)} methods.
 	 * </p>
 	 * 
-	 * <p>Only a few operations cannot be performed on the root element through
+	 * <p>Only a few operations cannot be performed on the root element using
 	 * the two interfaces: <code>Element</code> and <code>TreeManager</code>.
 	 * </p>
 	 * 
@@ -165,7 +164,7 @@ public interface TreeSession {
 	 * 	<tr><th>Method</th><th>Description</th></tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#cut(Element, Element)}</td>
-	 * 		<td>TreeException thrown.</td>
+	 * 		<td>Throws TreeException.</td>
 	 * 	</tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#cut(Object, Object)}</td>
@@ -173,11 +172,11 @@ public interface TreeSession {
 	 * 	</tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#copy(Element, Element)}</td>
-	 * 		<td>TreeException thrown.</td>
+	 * 		<td>Throws TreeException.</td>
 	 * 	</tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#removeElement(Element)}</td>
-	 * 		<td>TreeException thrown.</td>
+	 * 		<td>Throws TreeException.</td>
 	 * 	</tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#removeElement(Object)}</td>

@@ -8,12 +8,12 @@ import com.madzera.happytree.TreeTransaction;
 /**
  * <i>Helper</i> class that provides the entry point of the HappyTree API.
  * 
- * <p>This class has the only objective to return an instance of the
+ * <p>This class has the sole objective of returning an instance of the
  * {@link TreeManager} interface that will assist the API client to handle
  * trees. With this instance, it is possible to access the respective
  * {@link TreeTransaction} object.</p>
  * 
- * <p>From this, it is possible to handle trees and sessions and consequently
+ * <p>From this, it is possible to handle trees and sessions and, consequently,
  * the elements within the trees.</p>
  * 
  * @author Diego Madson de Andrade Nóbrega
@@ -23,9 +23,6 @@ import com.madzera.happytree.TreeTransaction;
  */
 public final class HappyTree {
 
-	/*
-	 * Protects the constructor class.
-	 */
 	private HappyTree() {}
 
 	

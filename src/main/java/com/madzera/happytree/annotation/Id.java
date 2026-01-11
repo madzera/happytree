@@ -17,13 +17,13 @@ import com.madzera.happytree.TreeTransaction;
  * assemble and manage the tree nodes effectively. The assembly process relies
  * on this identifier to distinguish between different nodes and to establish
  * parent-child relationships. It happens when the API client passes a
- * collection of linear objects, that have a hierarchical relationship through
+ * collection of linear objects that have a hierarchical relationship through
  * this identifier, to be organized into a tree structure through the
  * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
  * method. This process is known as <b>API Transformation Process</b>.</p>
  * 
- * <p>It is mandatory that the field annotated with <code>@Id</code> must have a
- * unique value within the tree structure and must not be <code>null</code>.</p>
+ * <p>It is mandatory that the field annotated with <code>@Id</code> has a
+ * unique value within the tree structure and is not <code>null</code>.</p>
  * 
  * Example:
  * <pre>

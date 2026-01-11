@@ -7,20 +7,20 @@ import java.util.function.Predicate;
 import com.madzera.happytree.exception.TreeException;
 
 /**
- * Provides ways of handling elements within the tree session. This makes it
+ * Provides ways to handle elements within a tree session. This makes it
  * possible to create, persist, update, cut, copy, remove, retrieve elements,
  * and perform any other operations within the tree.
  * 
- * <p>This interface works by directly handling objects represented by the 
- * {@link Element} interface, where each one behaves similarly to a node within 
- * the tree. So, in practical terms, this interface allows the API client to 
- * handle business objects with tree-like behavior.</p>
+ * <p>This interface works by directly handling objects represented by
+ * {@link Element}, where each one behaves similarly to a node within the tree.
+ * So, in practical terms, this interface allows the API client to handle
+ * business objects with tree-like behavior.</p>
  * 
- * <p>The operations here are done for elements within others or for "root" 
- * elements. The root elements are considered to be those that are not inside
- * other elements, but those that are at the "top" of the tree hierarchy in 
- * question. When the tree is created, its root is also automatically created,
- * with this root being empty or having various children.</p>
+ * <p>Operations here are performed on elements within other elements or on
+ * "root" elements. Root elements are those that are not inside other elements,
+ * but are at the "top" of the tree hierarchy in question. When the tree is
+ * created, its root is also created automatically, and it can be empty or have
+ * multiple children.</p>
  * 
  * <p>The operations are also done for cases where it is desirable to reallocate
  * elements to other tree sessions. In this case, the uniqueness of each element
@@ -35,14 +35,14 @@ import com.madzera.happytree.exception.TreeException;
  * element's lifecycle is made, and this change is not immediately reflected in
  * the tree in question. This context is called outside the tree. An inside
  * context represents the client's action to perform the persist/update of the
- * element by using this own interface, so the change is actually reflected in
+ * element by using this interface, so the change is actually reflected in
  * the tree, but made through this manager itself. The persist/update operations
  * work by invoking {@link TreeManager#persistElement(Element)} and
  * {@link #updateElement(Element)} respectively.</p>
  * 
- * <p>Conceptually, this interface works by handling trees through a transaction.
- * This transaction is represented by the {@link TreeTransaction} interface, and
- * the relation between both interfaces is 1:1. Therefore, this interface will
+ * <p>Conceptually, this interface handles trees through a transaction. This
+ * transaction is represented by the {@link TreeTransaction} interface, and the
+ * relation between both interfaces is 1:1. Therefore, this interface will
  * always be linked to a single transaction, which can contain none or many
  * sessions, but it is only possible to handle one session at a time.</p>
  * 
@@ -55,14 +55,14 @@ import com.madzera.happytree.exception.TreeException;
  * 		<li>The transaction must have a session bound, <b>always</b>.</li>
  * 		<li>It is <b>mandatory</b> that the session be <b>activated</b>.</li>
  * 		<li>
- * 			According to the method, the elements must be in the proper
- * 			state.
+ * 			According to the method, the elements must be in the proper	state.
  * 		</li>
- * 		<li>For each tree session, each element inside must have a unique id.
+ * 		<li>For each tree session, each element inside must have a unique
+ * 			<code>@Id</code>.
  * 		</li>
  * 		<li>
- * 			An element cannot be handled within trees that have different
- * 			types of wrapped object nodes.
+ * 			An element cannot be handled within trees that have different types
+ * 			of wrapped object nodes.
  * 		</li>
  * 		<li>It is not possible to handle root elements for the
  * 			{@link #copy(Element, Element)}, {@link #cut(Element, Element)},
@@ -103,11 +103,10 @@ import com.madzera.happytree.exception.TreeException;
 public interface TreeManager {
 	
 	/**
-	 * Cuts the <code>from</code> element to inside of the <code>to</code>
-	 * element, whether for the same session or not. With this, the element to
-	 * be cut can be cut into the same tree session or to another tree in
-	 * another session. All children of the <code>from</code> element will be
-	 * cut as well.
+	 * Cuts the <code>from</code> element into the <code>to</code> element,
+	 * whether for the same session or not. With this, the element to be cut can
+	 * be cut into the same tree session or to another tree in another session.
+	 * All children of the <code>from</code> element will be cut as well.
 	 * 
 	 * <p>If the <code>to</code> parameter element is <code>null</code>, then
 	 * the <code>from</code> element with all children will be moved to the root
@@ -167,8 +166,8 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Cuts the <code>from</code> element to inside of the <code>to</code>
-	 * element, <b>inside of the same session</b>. Both parameters represent the
+	 * Cuts the <code>from</code> element into the <code>to</code> element,
+	 * <b>inside of the same session</b>. Both parameters represent the
 	 * <code>@Id</code> of elements.
 	 * 
 	 * <p>If the <code>to</code> parameter is <code>null</code> or if its
@@ -295,8 +294,7 @@ public interface TreeManager {
 	 * Removes the corresponding element from the tree session and returns the
 	 * removed element itself. After being removed, the element and all its
 	 * children will have the <i>NOT_EXISTED</i> state in the lifecycle. In the
-	 * case of reinserting this removed element, then the same should be
-	 * persisted again.
+	 * case of reinserting this removed element, it must be persisted again.
 	 * 
 	 * <p>The element to be removed must be attached (<i>ATTACHED</i> state) in
 	 * the tree and cannot have changes. All children will be removed as well,
@@ -316,8 +314,8 @@ public interface TreeManager {
 	 * 
 	 * @param element the element to be removed with all its children
 	 * 
-	 * @return the removed element itself, but now with the
-	 * <i>NOT_EXISTED</i> state in the lifecycle
+	 * @return the removed element itself, but now with the <i>NOT_EXISTED</i>
+	 * state in the lifecycle
 	 * 
 	 * @throws TreeException when:
 	 * <ul>
@@ -341,7 +339,7 @@ public interface TreeManager {
 	 * 	</li>
 	 * 	<li>
 	 * 		The <code>element</code> or at least one of its children have a
-	 * 		DETACHED or NOT_EXISTED state in the lifecycle;
+	 * 		<i>DETACHED</i> or <i>NOT_EXISTED</i> state in the lifecycle;
 	 * 	</li>
 	 * </ul>
 	 */
@@ -380,12 +378,12 @@ public interface TreeManager {
 	/**
 	 * Obtains an element by <code>@Id</code> in the current tree session.
 	 * 
-	 * <p>If the <code>@Id</code> is <code>null</code> or it cannot be
-	 * found in the tree, then this method will return <code>null</code>.</p>
+	 * <p>If the <code>@Id</code> is <code>null</code> or it cannot be found in
+	 * the tree, then this method will return <code>null</code>.</p>
 	 * 
 	 * <p>The id corresponds to the <code>@Id</code> annotated attribute of the
 	 * wrapped object node in the <b>API Transformation Process</b> or just an
-	 * ID which the API client choose. When a tree is being built by a previous
+	 * ID which the API client chooses. When a tree is being built by a previous
 	 * collection of objects (<b>API Transformation Process</b>), the core API
 	 * will bind the elements by this <code>@Id</code> annotated attribute.</p>
 	 * 
@@ -402,10 +400,10 @@ public interface TreeManager {
 	 * &quot;mirror&quot; pieces of the tree.</p>
 	 * 
 	 * <p>If the element or its children change states, then it is necessary to
-	 * attach them again in the current tree session by invoking 
-	 * {@link #updateElement(Element)} to be able to handle them, for
-	 * operation like {@link #cut(Element, Element)} or 
-	 * {@link #copy(Element, Element)} for example.</p>
+	 * attach them again in the current tree session by invoking
+	 * {@link #updateElement(Element)} to be able to handle them, for operations
+	 * like {@link #cut(Element, Element)} or {@link #copy(Element, Element)}
+	 * for example.</p>
 	 * 
 	 * @param id the element identifier
 	 * 
@@ -420,7 +418,7 @@ public interface TreeManager {
 	 * Verifies whether the <code>parent</code> element contains inside of it
 	 * the <code>descendant</code> element in this current session.
 	 * 
-	 * <p>If both <code>parent</code> and <code>descendant</code> element is
+	 * <p>If both <code>parent</code> and <code>descendant</code> elements are
 	 * <code>null</code> or their (including the children) state are not
 	 * <i>ATTACHED</i> to this tree session, then <code>false</code> is returned.
 	 * </p>
@@ -514,7 +512,7 @@ public interface TreeManager {
 	 * <code>parent</code> is null or not found, then this element will be moved
 	 * to inside of the root level (first level) of the tree, when persisted.
 	 * 
-	 * <p>Creating a new element does not means that it will be automatically in
+	 * <p>Creating a new element does not mean that it will be automatically in
 	 * the tree of the current session. When creating a new element, it is
 	 * &quot;outside&quot; of the tree yet, having the <i>NOT_EXISTED</i> state
 	 * in the lifecycle. The element needs to be attached in the tree right
@@ -564,8 +562,8 @@ public interface TreeManager {
 	 * in this element to be created that has duplicate identifier in relation
 	 * to the tree, then an exception will be thrown.</p>
 	 * 
-	 * <p>The <i>NOT_EXISTED</i> state represents a
-	 * &quot;outside tree session&quot; element, that means then this element
+	 * <p>The <i>NOT_EXISTED</i> state represents an
+	 * &quot;outside tree session&quot; element, which means that this element
 	 * has not been inside any tree. When the element is persisted by this
 	 * operation, its state changes to <i>ATTACHED</i> in the lifecycle. This
 	 * also happens with its children when they are persisted at once.</p>
@@ -642,18 +640,17 @@ public interface TreeManager {
 	 * <code>@Id</code>, the <code>@Parent</code>, or the wrapped node. <b>Make
 	 * sure to avoid duplicate <code>@Id</code> in the current session when
 	 * changing an <code>@Id</code></b>. To move the element to the root level
-	 * (first level), just set the parent ID as <code>null</code> or reference
-	 * an inexistent parent element.</p>
+	 * (first level), just set the <code>@Parent</code> as <code>null</code> or
+	 * reference an inexistent parent element.</p>
 	 * 
 	 * <p>This operation is for <i>DETACHED</i> elements. Trying to update a
-	 * <i>NOT_EXISTED</i> element in the tree, an exception is threw. For
-	 * <i>ATTACHED</i> element nothing happens, because the element is already
-	 * attached, just the same is returned.</p>
+	 * <i>NOT_EXISTED</i> element in the tree throws an exception. For
+	 * <i>ATTACHED</i> elements, nothing happens because the element is already
+	 * attached, and the same copy is returned.</p>
 	 * 
-	 * <p>Therefore, this is only possible to update an element is through the
-	 * {@link #persistElement(Element)} invocation or by the API Transformation
-	 * Process, passing a previous list of elements to be transformed into a
-	 * tree by the
+	 * <p>Therefore, it is only possible to update an element through
+	 * {@link #persistElement(Element)} or by the API Transformation Process,
+	 * passing a previous list of elements to be transformed into a tree by the
 	 * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
 	 * method.</p>
 	 * 
@@ -712,8 +709,8 @@ public interface TreeManager {
 	 * 		<i>NOT_EXISTED</i> state in the lifecycle;
 	 * 	</li>
 	 * 	<li>
-	 * 		The <code>element</code> has an already existing <code>@Id</code>
-	 * 		in this	session.
+	 * 		The <code>element</code> has an already existing <code>@Id</code> in
+	 * 		this session.
 	 * 	</li>
 	 * </ul>
 	 * 
@@ -724,14 +721,14 @@ public interface TreeManager {
 			throws TreeException;
 	
 	/**
-	 * Obtains the {@link TreeTransaction} instance associated to this manager.
+	 * Returns the {@link TreeTransaction} instance associated with this manager.
 	 * 
-	 * <p>The manager is closely related to the transaction. Absolutely every
-	 * operations defined in this interface need to check the transaction and
-	 * verify whether there is a session to be managed.</p>
+	 * <p>The manager is closely related to the transaction. Every operation
+	 * defined in this interface needs to check the transaction and verify
+	 * whether there is a session to be managed.</p>
 	 * 
 	 * <p>If there is no session to be handled or the session is not active
-	 * inside of the transaction, an error occurs. The API client of this method
+	 * inside the transaction, an error occurs. The API client using this method
 	 * should know what session (tree) is preferred to work with. This
 	 * transaction object has this objective to provide and handle the sessions.
 	 * </p>
@@ -762,9 +759,9 @@ public interface TreeManager {
 	 * or an unknown (not found) <code>@Parent</code> will be attached directly
 	 * as an immediate root child (first level).</p>
 	 * 
-	 * <p>Different from regular elements, the root element has no metadata
-	 * associated with it, such as <code>@Id</code>, <code>@Parent</code> and
-	 * wrapped object node. Therefore, calling the {@link Element#getId()},
+	 * <p>Unlike regular elements, the root element has no metadata associated
+	 * with it, such as <code>@Id</code>, <code>@Parent</code> and wrapped
+	 * object node. Therefore, calling the {@link Element#getId()},
 	 * {@link Element#getParent()} or {@link Element#unwrap()} methods on the
 	 * root element will always return <code>null</code>.</p>
 	 * 
@@ -808,9 +805,9 @@ public interface TreeManager {
 	 * satisfies the condition, it is included in the resulting list.</p>
 	 * 
 	 * <p>The resulting list consists of all elements that match the specified
-	 * condition, <b>including their children</b>. Therefore, the list will have
-	 * the elements that satisfy the condition but within of each element there
-	 * will have its hierarchical structure preserved.</p>
+	 * condition, <b>including their children</b>. Therefore, the list will
+	 * include the matching elements while preserving each element's hierarchy.
+	 * </p>
 	 * 
 	 * <p><b>Example usage:</b></p>
 	 * <pre>
@@ -835,7 +832,7 @@ public interface TreeManager {
 	 * structure. The action applied to every element in the tree is
 	 * automatically reflected on the tree session (if there are any changes),
 	 * not being necessary to invoke the {@link #persistElement(Element)}
-	 * neither {@link #updateElement(Element)} to save the changes.
+	 * nor {@link #updateElement(Element)} to save the changes.
 	 * 
 	 * <p>This method traverses the complete tree starting from the root element
 	 * and applies the given action to all elements in the tree (<b>except for
@@ -851,7 +848,7 @@ public interface TreeManager {
 	 * <p>The action is applied to all elements in the tree, <b>except for the
 	 * root element itself</b>, as it is a special element created by the
 	 * HappyTree API itself, not having the <code>@Id</code>,
-	 * <code>@Parent</code> neither a wrapped object node.</p>
+	 * <code>@Parent</code> nor a wrapped object node.</p>
 	 * 
 	 * <p><b>Example usage:</b></p>
 	 * <pre>
@@ -881,7 +878,7 @@ public interface TreeManager {
 	 * condition within the entire tree structure. The action applied to every
 	 * matching element in the tree is automatically reflected on the tree
 	 * session (if there are any changes), not being necessary to invoke the
-	 * {@link #persistElement(Element)} neither
+	 * {@link #persistElement(Element)} nor
 	 * {@link #updateElement(Element)} to save the changes.
 	 * 
 	 * <p>This method traverses the complete tree starting from the root element

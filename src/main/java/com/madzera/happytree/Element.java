@@ -9,16 +9,16 @@ import com.madzera.happytree.exception.TreeException;
 
 /**
  * An <code>Element</code> represents a node within a tree. It consists of the
- * elementary unit of the HappyTree API, which is directly handled through the
+ * elementary unit of the HappyTree API, and it is directly handled through the
  * {@link TreeManager} interface. An element can move from one tree to another,
  * be removed, copied, and even encapsulate any object (node) within it, making
  * this encapsulated object hierarchically available within a tree structure.
  * 
  * <p>This interface is only responsible for handling the element itself and its
- * children only. Here, there is no direct relationship with the other available
+ * children. Here, there is no direct relationship with the other available
  * interfaces, except its respective session ({@link TreeSession}) which this
- * element belongs in. Considering that, as an element corresponds to an
- * elementary unit, it is only possible to relate to itself and its children.
+ * element belongs to. Considering that an element corresponds to an elementary
+ * unit, it can only relate to itself and its children.
  * </p>
  * 
  * <p>An element is <b>always</b> associated with a session. Even after its
@@ -37,7 +37,7 @@ import com.madzera.happytree.exception.TreeException;
  * <tr>
  * 		<td>NOT_EXISTED</td>
  * 		<td>When the element is created. At this time, the element has not been
- * 			persisted inside of any tree session yet.
+ * 			persisted inside any tree session yet.
  * 		</td>
  * </tr>
  * 
@@ -51,7 +51,7 @@ import com.madzera.happytree.exception.TreeException;
  * <tr>
  * 		<td>DETACHED</td>
  * 		<td>When the element is already inside of the tree as <i>ATTACHED</i>
- * 			but	it has been changed since the API client gained access to it.
+ * 			but it has been changed since the API client gained access to it.
  * 		</td>
  * </tr>
  * </table>
@@ -73,7 +73,7 @@ import com.madzera.happytree.exception.TreeException;
  * 	<tr>
  * 		<td><code>Parent</code></td><td>The parent element identifier within the
  * 		tree (if the parent element is not found or <code>null</code> then this
- * 		element	will be moved to the tree root level).</td>
+ * 		element will be moved to the tree root level).</td>
  * 	</tr>
  * 	<tr>
  * 		<td><code>Children</code></td><td>The children list and all descendants
@@ -104,7 +104,7 @@ import com.madzera.happytree.exception.TreeException;
  * @author Diego Madson de Andrade Nóbrega
  * 
  * @param <T> the class type of the wrapped object node that will be
- * encapsulated into this <code>Element</code>
+ * 		encapsulated in this <code>Element</code>
  * 
  * @see TreeTransaction
  */
@@ -162,7 +162,7 @@ public interface Element<T> {
 	
 	/**
 	 * Obtains all child elements of the current element. This includes all
-	 * elements within the child elements recursively.
+	 * descendants recursively.
 	 * 
 	 * @return all children of the current element
 	 */
@@ -194,7 +194,7 @@ public interface Element<T> {
 	 * Searches within the current element for an element according to the
 	 * <code>id</code> parameter.
 	 * 
-	 * <p>The search is performed recursively within the children of this 
+	 * <p>The search is performed recursively within the children of this
 	 * element starting by the current element itself. If the element is not
 	 * found, then <code>null</code> is returned.</p>
 	 * 
@@ -258,15 +258,15 @@ public interface Element<T> {
 	 * <p>To be effectively wrapped within this element in the tree session,
 	 * the invocation of {@link TreeManager#persistElement(Element)} (for new
 	 * elements) or {@link TreeManager#updateElement(Element)} (for changing
-	 * objects nodes) is required, depending on the context.</p>
+	 * object nodes) is required, depending on the context.</p>
 	 * 
 	 * <p>The first one would be to create an empty tree. In this way, the
 	 * wrapped node is determined after the tree is ready by invoking this
 	 * method. This includes the choice of not determining it, leaving it with a
 	 * <code>null</code> value.</p>
 	 * 
-	 * <p>The last one happens in the <b>API Transformation Process</b>, that is,
-	 * when at the moment of initialization, before the tree is created, a call
+	 * <p>The latter happens in the <b>API Transformation Process</b>, that is,
+	 * at the moment of initialization, before the tree is created, when a call
 	 * to {@link TreeTransaction#initializeSession(String, Collection)}
 	 * transforms a previous linear structure into a real hierarchical tree
 	 * structure. Then, each <code>Element</code> object will wrap its
@@ -298,8 +298,8 @@ public interface Element<T> {
 	 * 			same class type.</li>	
 	 * 	</ul>
 	 * 
-	 * <p>Those requirements are only applied when the session is going to be
-	 * initialized by the <b>API Transformation Process</b>.</p>
+	 * <p>These requirements apply only when the session is initialized by the
+	 * <b>API Transformation Process</b>.</p>
 	 * 
 	 * <p>When the element is a root element, it is not possible to wrap the
 	 * object in it. So, the wrapped object node is always <code>null</code>.
@@ -310,9 +310,9 @@ public interface Element<T> {
 	public void wrap(T object);
 	
 	/**
-	 * Obtains a copy of the object node wrapped in this element.
+	 * Returns a copy of the object node wrapped in this element.
 	 * 
-	 * <p>The object node itself cannot be changed. This method just provides a
+	 * <p>The object node itself cannot be changed. This method provides a
 	 * way to access this object. To modify its state, consider using the
 	 * {@link #wrap(Object)} method and save the changes by invoking the
 	 * {@link TreeManager#updateElement(Element)} method.</p>
@@ -323,7 +323,7 @@ public interface Element<T> {
 	
 	/**
 	 * Returns the {@link TreeSession} instance to which this element belongs.
-	 * It represents the tree in which this element belongs.
+	 * It represents the tree to which this element belongs.
 	 * 
 	 * <p>When an element is created, either through the <b>API Transformation
 	 * Process</b> or normally through invoking
@@ -340,10 +340,11 @@ public interface Element<T> {
 	/**
 	 * Returns the current lifecycle state of this element.
 	 * 
-	 * <p>The lifecycle is important to indicate what are the allowed operations
-	 * that this element can perform over the {@link TreeManager} interface.</p>
+	 * <p>The lifecycle is important to indicate which operations are allowed
+	 * for this element through the {@link TreeManager} interface.</p>
 	 * 
 	 * <table>
+	 * <caption>Allowed Operations by Element Lifecycle State</caption>
 	 * <tr><th>TreeManager Operation</th><th>Allowed Lifecycle</th></tr>
 	 * 
 	 * <tr><td>cut()</td><td>ATTACHED</td></tr>
@@ -360,13 +361,13 @@ public interface Element<T> {
 	 * {@link TreeManager#containsElement(Element, Element)} which just returns
 	 * <code>false</code> when the elements are not <i>ATTACHED</i>.</b>
 	 * 
-	 * <p>All operations returned by <code>TreeManager</code> change the
+	 * <p>All operations provided by <code>TreeManager</code> change the
 	 * element's state to <i>ATTACHED</i>, except
 	 * {@link TreeManager#createElement(Object, Object, Object)} (NOT_EXISTED).
 	 * </p>
 	 * 
-	 * @return <code>String</code> corresponding the lifecycle state name of
-	 * this element
+	 * @return <code>String</code> corresponding to the lifecycle state name of
+	 * 		this element
 	 */
 	public String lifecycle();
 
@@ -459,15 +460,15 @@ public interface Element<T> {
 	 * JSON format, but the root element will not contain the <code>@Id</code>,
 	 * <code>@Parent</code>, or the wrapped object node.</p>
 	 * 
-	 * @return a well formatted JSON of this element
+	 * @return a well-formatted JSON of this element
 	 * 
 	 * @see Element#toJSON()
 	 */
 	public String toPrettyJSON();
 
 	/**
-	 * Converts the whole element structure into a XML <code>String</code>. This
-	 * includes all children recursively.
+	 * Converts the whole element structure into an XML <code>String</code>.
+	 * This includes all children recursively.
 	 * 
 	 * <p>It is mandatory that the element as well as all its children have
 	 * non-null wrapped object nodes. If there is at least one wrapped object
@@ -518,7 +519,7 @@ public interface Element<T> {
 	 * 	&lt;/element&gt;
 	 * </pre>
 	 * 
-	 * <p>To convert the wrapped object into a XML format, it is not necessary
+	 * <p>To convert the wrapped object into an XML format, it is not necessary
 	 * that the element be attached to any session. However, the element as well
 	 * as all its children need to have their original objects nodes not
 	 * <code>null</code> (except for the root element).</p>
@@ -564,9 +565,9 @@ public interface Element<T> {
 	 * included in the resulting list.</p>
 	 * 
 	 * <p>The resulting list consists of all elements that match the specified
-	 * condition, <b>including their children</b>. Therefore, the list will have
-	 * the elements that satisfy the condition but within of each element there
-	 * will have its hierarchical structure preserved.</p>
+	 * condition, <b>including their children</b>. Therefore, the list will
+	 * include the elements that satisfy the condition, while preserving each
+	 * element's hierarchical structure.</p>
 	 * 
 	 * <p>When this method is invoked by the root element, the search is
 	 * performed on all elements in the tree, <b>except for the root element
@@ -594,7 +595,7 @@ public interface Element<T> {
 	 * Applies a function to be performed on this element and all its children
 	 * recursively within the tree structure. The action applied to the elements
 	 * is not automatically reflected on the tree session, thus requiring to
-	 * invoke the {@link TreeManager#persistElement(Element)} for new elements
+	 * invoke {@link TreeManager#persistElement(Element)} for new elements
 	 * or {@link TreeManager#updateElement(Element)} to save the changes for
 	 * already existing elements.
 	 * 
@@ -610,7 +611,7 @@ public interface Element<T> {
 	 * <p>When this method is invoked by the root element, the action is applied
 	 * to all elements in the tree, <b>except for the root element itself</b>,
 	 * as it is a special element created by the HappyTree API itself, not
-	 * having the <code>@Id</code>, <code>@Parent</code> neither a wrapped
+	 * having the <code>@Id</code>, <code>@Parent</code> nor a wrapped
 	 * object node.</p>
 	 * 
 	 * <p><b>Example usage:</b></p>
@@ -627,15 +628,14 @@ public interface Element<T> {
 	 * conditional execution based on specific criteria, consider using
 	 * {@link #apply(Consumer, Predicate)} instead.</p>
 	 * 
-	 * @param action the function to apply to each element in the
-	 * subtree
+	 * @param action the function to apply to each element in the subtree
 	 * 
 	 * @see #apply(Consumer, Predicate)
 	 */
 	public void apply(Consumer<Element<T>> action);
 
 	/**
-	 * Applies a function to be performed within this element that satisfy the
+	 * Applies a function to be performed within this element that satisfies the
 	 * specified condition. The action applied to the elements is not
 	 * automatically reflected on the tree session, thus requiring to invoke the
 	 * {@link TreeManager#persistElement(Element)} for new elements
@@ -655,7 +655,7 @@ public interface Element<T> {
 	 * to all elements that match the condition in the tree, <b>except for the
 	 * root element itself</b>, as it is a special element created by the
 	 * HappyTree API itself, not having the <code>@Id</code>,
-	 * <code>@Parent</code> neither a wrapped object node.</p>
+	 * <code>@Parent</code> nor a wrapped object node.</p>
 	 * 
 	 * <p><b>Example usage:</b></p>
 	 * <pre>

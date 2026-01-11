@@ -13,22 +13,22 @@ import com.madzera.happytree.TreeTransaction;
  * Declarative annotation to indicate that the object of a class represents a
  * node in a tree structure.
  * 
- * <p>When this annotation is applied to a class, it informs the core API
- * that the objects of this class can be organized into a tree structure,
- * provided that they also have the <code>@Id</code> and <code>@Parent</code>
- * annotations.</p>
+ * <p>When this annotation is applied to a class, it informs the core API that
+ * the objects of this class can be organized into a tree structure, provided
+ * that they also have the <code>@Id</code> and <code>@Parent</code> annotations.
+ * </p>
  * 
  * <p>The HappyTree API is able to transform a data structure that represents,
  * logically, a tree, but is physically organized in a linear form. Each object
  * that has this annotation will represent a node in a tree. It happens when the
- * API client passes a collection of linear objects, that have a hierarchical
+ * API client passes a collection of linear objects that have a hierarchical
  * relationship through the {@link Id} and {@link Parent}, to be organized into
  * an actual tree structure through the
  * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
  * method.</p>
  * 
- * <p>For instance, if there is, for any reason, a need to transform a
- * data structure like this:</p>
+ * <p>For instance, if there is, for any reason, a need to transform a data
+ * structure like this:</p>
  * 
  * <pre>
  * <code>@Tree</code>
@@ -60,8 +60,8 @@ import com.madzera.happytree.TreeTransaction;
  * 
  * <p>Note that in this example, there is a slight change in how the objects are
  * related. In the first one, the <code>parentIdentifier</code> of an object
- * just references the <code>identifier</code> of another one, which
- * conceptually will represent the <b>parent</b> of the first one.</p>
+ * references the <code>identifier</code> of another object, which conceptually
+ * represents the <b>parent</b> of the first one.</p>
  * 
  * <p>The second example shows that the relationship between the objects is
  * slightly different, because, indeed, an object is <b>literally</b> inside of

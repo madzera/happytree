@@ -11,14 +11,14 @@ import com.madzera.happytree.TreeTransaction;
 /**
  * Represents a reference to the parent identifier of an object in a tree model.
  * 
- * <p>When the <b>API Transformation Process</b> is triggered, through the
+ * <p>When the <b>API Transformation Process</b> is triggered through the
  * {@link TreeTransaction#initializeSession(String, java.util.Collection)}
  * method, this annotation indicates to the core API that, during the tree
  * building, the <code>@Id</code> of an object will be linked to the
- * <code>@Id</code> of another one that represents its <b>parent</b> object when
- * the tree is built.</p>
+ * <code>@Id</code> of another object that represents its <b>parent</b> when the
+ * tree is built.</p>
  * 
- * <p>When the <code>@Parent</code> identifier is not found or it is
+ * <p>When the <code>@Parent</code> identifier is not found or is
  * <code>null</code>, then this object has an unknown parent and will be placed
  * at the root level of the tree (first level).</p>
  * 
