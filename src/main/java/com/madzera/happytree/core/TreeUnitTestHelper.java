@@ -22,6 +22,8 @@ public class TreeUnitTestHelper {
      * @param fqn fully qualified name of the class
      * @param method representing the method name
      * 
+     * @return the boolean result of the method execution
+     * 
      * @throws ReflectiveOperationException if any reflection error occurs
      */
     public static boolean executeInternalMethod(final String fqn,

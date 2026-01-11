@@ -30,7 +30,8 @@ import com.madzera.happytree.exception.TreeException;
  * depending on the operation that is desired to perform. Its lifecycle consists
  * of 3 states:</p>
  * 
- * <table summary="Lifecycle">
+ * <table>
+ * <caption>Element Lifecycle States</caption>
  * <tr><th>State</th><th>Description</th></tr>
  * 
  * <tr>
@@ -62,7 +63,8 @@ import com.madzera.happytree.exception.TreeException;
  * 
  * <p>The API client has access to the following attributes:</p>
  * 
- * <table summary="Attributes">
+ * <table>
+ * <caption>Element Attributes</caption>
  * 	<tr><th>Attributes</th><th>Description</th></tr>
  * 	<tr>
  * 		<td><code>ID</code></td><td>The element identifier within the tree
@@ -341,7 +343,7 @@ public interface Element<T> {
 	 * <p>The lifecycle is important to indicate what are the allowed operations
 	 * that this element can perform over the {@link TreeManager} interface.</p>
 	 * 
-	 * <table summary="Possible Operations">
+	 * <table>
 	 * <tr><th>TreeManager Operation</th><th>Allowed Lifecycle</th></tr>
 	 * 
 	 * <tr><td>cut()</td><td>ATTACHED</td></tr>
@@ -459,7 +461,7 @@ public interface Element<T> {
 	 * 
 	 * @return a well formatted JSON of this element
 	 * 
-	 * @see {@link Element#toJSON()}
+	 * @see Element#toJSON()
 	 */
 	public String toPrettyJSON();
 
@@ -547,7 +549,7 @@ public interface Element<T> {
 	 * 
 	 * @return a well formatted XML of this element
 	 * 
-	 * @see {@link Element#toXML()}
+	 * @see Element#toXML()
 	 */
 	public String toPrettyXML();
 

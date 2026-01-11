@@ -134,6 +134,11 @@
 		      			</goals>
 		     		</execution>
 		    	</executions>
+<!-- ################### Ignoring Javadoc lint warnings #################### -->
+				<configuration>
+         			<additionalOptions>-Xdoclint:none</additionalOptions>
+      			</configuration>
+<!-- ################### Ignoring Javadoc lint warnings #################### -->
 		   	</plugin>
 <!-- ############################## SIGNING ################################ -->
 		   	<plugin>

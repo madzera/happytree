@@ -66,14 +66,15 @@ import com.madzera.happytree.exception.TreeException;
  * 		</li>
  * 		<li>It is not possible to handle root elements for the
  * 			{@link #copy(Element, Element)}, {@link #cut(Element, Element)},
- * 			{@link #persistElement(Element)} and {@link #remove(Element)}
+ * 			{@link #persistElement(Element)} and {@link #removeElement(Element)}
  * 			methods.
  * 		</li>
  * </ul>
  * 
  * <p>If one of these validations fails, an exception will be thrown.</p>
  * 
- * <table summary="Operations by element state.">
+ * <table>
+ * <caption>Operations by Element State</caption>
  * 	<tr>
  * 		<th>Element State/operation</th><th>Attached</th><th>Detached</th>
  * 		<th>Not Existed</th>
@@ -569,7 +570,8 @@ public interface TreeManager {
 	 * operation, its state changes to <i>ATTACHED</i> in the lifecycle. This
 	 * also happens with its children when they are persisted at once.</p>
 	 * 
-	 * <table summary="The element states which can be operated.">
+	 * <table>
+	 * <caption>Element States</caption>
 	 * 	<tr>
 	 * 	<th>Element Status</th><th>Ways</th><th>persistElement()</th>
 	 * 	</tr>
@@ -662,7 +664,8 @@ public interface TreeManager {
 	 * updated recursively. After updating, all elements have their states as
 	 * <i>ATTACHED</i> in the lifecycle.</p>
 	 * 
-	 * <table summary="The element states which can be operated.">
+	 * <table>
+	 * <caption>Element States</caption>
 	 * 	<tr>
 	 * 	<th>Element Status</th><th>Ways</th><th>updateElement()</th>
 	 * 	</tr>

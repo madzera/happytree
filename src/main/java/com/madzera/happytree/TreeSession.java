@@ -29,7 +29,8 @@ import java.util.Collection;
  *
  * <p>A session contains 3 fundamental states:</p>
  * 
- * <table summary="Session States">
+ * <table>
+ * <caption>Session States</caption>
  * 	<tr>
  * 		<th>State</th><th>Exists?</th><th>Can it be handled?</th>
  * 	</tr>
@@ -125,7 +126,8 @@ public interface TreeSession {
 	 * 
 	 * <b>Element</b>
 	 * 
-	 * <table summary="Operations Not Allowed on Element Interface">
+	 * <table>
+	 * <caption>Root Element Unsupported Operations</caption>
 	 * 	<tr><th>Method</th><th>Description</th></tr>
 	 * 	<tr>
 	 * 		<td>{@link Element#getId()}</td>
@@ -158,7 +160,8 @@ public interface TreeSession {
 	 * 
 	 * <b>TreeManager</b>
 	 * 
-	 * <table summary="Operations Not Allowed on TreeManager Interface">
+	 * <table>
+	 * <caption>Root Element Unsupported Operations - First Parameter</caption>
 	 * 	<tr><th>Method</th><th>Description</th></tr>
 	 * 	<tr>
 	 * 		<td>{@link TreeManager#cut(Element, Element)}</td>

@@ -501,12 +501,12 @@ public static void main(String[] args)
 
 #### Commenting
 
-Comments are only required on API client interfaces. The collaborator can feel
-free to elaborate line comments in internal methods, if the collaborator thinks
-it is necessary.
+Comments are required only on API client interfaces. Contributors are free to
+add line comments to internal methods and classes if they consider it necessary;
+however, such comments must not use the **Javadoc** format.
 
-In public interfaces, the HappyTree API adopts **Javadoc** as a comment
-convention.
+For public classes and interfaces, the HappyTree API mandates the use of
+**Javadoc** as the official documentation standard.
 
 #### Edge margin
 

@@ -108,7 +108,8 @@ public interface TreeTransaction {
 	 * only to distinguish the phase of validation from the phases of the tree
 	 * transformation process.</b></p>
 	 * 
-	 * 	<table summary="ATP Lifecycle">
+	 * 	<table>
+	 * 		<caption>ATP Lifecycle</caption>
 	 * 		<tr>
 	 * 			<th>Phase</th><th>Description</th><th>Sub-Phases</th>
 	 * 		</tr>
@@ -238,8 +239,8 @@ public interface TreeTransaction {
 	 * 		have incompatible types;
 	 * 	</li>
 	 * 	<li>There are duplicate IDs;</li>
-	 * 	<li>The class of the object to be transformed has not getters & setters.
-	 * 	</li>
+	 * 	<li>The class of the object to be transformed has not getters &amp;
+	 * 	setters.</li>
 	 * </ul>
 	 * 
 	 * @throws IllegalArgumentException when the <code>identifier</code> or
