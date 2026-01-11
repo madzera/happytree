@@ -29,7 +29,7 @@ print in JSON/XML elements within a tree.*”
     <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
         <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=security_rating">
     </a>
-    <a href="https://github.com/madzera/happytree/releases/tag/v1.0.0" target="_blank">
+    <a href="https://github.com/madzera/happytree/releases/tag/v2.0.0" target="_blank">
         <img alt="GitHub Release" src="https://img.shields.io/github/v/release/madzera/happytree">
     </a>
 </p>
@@ -43,7 +43,7 @@ HappyTree is a data structure API designed for handling Java objects that have
 tree-like behavior, whereas an *@Id* attribute of an object is referenced as a
 *@Parent* attribute of its children.
 
-In certain circumstances there is a need to convert a list of Java objects, that
+In certain circumstances there is a need to convert a list of Java objects that
 could represent a model layer in a business context, into an actual hierarchical
 tree structure in memory, where objects contain its children and each child
 contains its own children collection and so on.
@@ -53,7 +53,7 @@ object relates to another object of the same type through an identifier
 attribute in a tree-like manner, the HappyTree API is able to transform this
 structure into an actual tree structure in memory, where each object will be
 wrapped into a tree node object, called *Element*, and each element contains its
-children elements where each child contains its own children and so on,
+children elements, where each child contains its own children and so on
 recursively. 
 
 From this point, the API client can handle those elements within a tree, such as
@@ -88,11 +88,11 @@ relation between them, into an actual tree. Here, each element contains its
 child elements, and each child contains its own children recursively.
 
 The last one allows the API client to create new trees from scratch, persisting
-element to element to build the tree structure as desired.
+element by element to build the tree structure as desired.
 
 ### For whom?
 
-For developers who feels the need to handle objects that have a tree-like
+For developers who feel the need to handle objects that have a tree-like
 behavior in their applications. There are several scenarios in which this API
 can be useful, such as:
 <ul>
@@ -107,7 +107,7 @@ can be useful, such as:
 ### When to use?
 
 When the project into which this API was imported has a Java data model
-structure which logically represents a tree but its objects are only linearly
+structure that logically represents a tree but its objects are only linearly
 referenced to each other, this API has precisely this purpose of transforming
 this linear structure into a physical tree structure. This process is known as
 the **API Transformation Process**, and it is one of the main core
@@ -210,7 +210,7 @@ session. The meaning of "session" here is a tree instance that will handle these
 objects, in other words, sessions are just trees semantically.
 
 A tree can be created either through the **API Transformation Process** of a
-previous collection of objects, that have tree behavior, disposed in a linear
+previous collection of objects that have tree behavior, disposed in a linear
 structure or it can be created freely from scratch, one by one.
 
 For the case of the **API Transformation Process**, the initialization is
@@ -252,17 +252,17 @@ the code below:
 	security.setDirectoryId(securityId);
 	security.setDirectoryParentId(administrationId);
 		
-	Element<Directory> security = manager.createElement(securityId,
+	Element<Directory> securityElement = manager.createElement(securityId,
 		administrationId, security);
 
 	//New inserted element in the tree.		
-	manager.persistElement(security);
+	manager.persistElement(securityElement);
 	
 	Element<Directory> root = manager.root();
 	System.out.println(root.toJSON());
 ```
 
-Once created, the trees start to work on
+Once created, the trees start to work with
 [Element](./src/main/java/com/madzera/happytree/Element.java)
 type objects, which will encapsulate (wrap) their respective "original objects"
 (Directory) represented as nodes. From there, just use the
@@ -275,8 +275,9 @@ interface to handle these elements.
 
 ### Contributing
 
-Would you like to contribute with us?
+Would you like to contribute?
 We are extremely grateful!
 Thank you!
 
-See [Contributing.](CONTRIBUTING.md)
+See our [Wiki](https://github.com/madzera/happytree/wiki) or
+[Contributing](CONTRIBUTING.md) file.

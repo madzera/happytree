@@ -6,9 +6,9 @@
 
 # Contributing to the HappyTree API
 
-HappyTree API has a contribution organization in a very simple way, without
-bureaucracy. All of this in order to further encourage the act of contributing
-by third parties.
+The HappyTree API has a very simple contribution organization, with minimal
+bureaucracy. This approach aims to further encourage contributions from third
+parties.
 
 If you want to contribute, you just need to fork the project and work on the
 current version of the project, which is specified in every reported issue
@@ -69,135 +69,137 @@ inclusive environment.
 ## Branches & Issues & Milestones
 
 Every contribution is inserted within the **Issue** context which can be
-reported by anyone and this **Issue** is related with the actual **Milestone**
-of the project. Each **Milestone** represents a version number (the current
-**Milestone** is 2.0.0), the official API version being developed at the moment.
+reported by anyone and this **Issue** is associated with the actual
+**Milestone** of the project. Each **Milestone** represents a version number
+(the current **Milestone** is 2.0.0), the official API version being developed
+at the moment.
+
 Also, for each **Milestone**, there will always be its respective **Branch**,
 in this case named **2.0.0**, and **every development must be done under this
-branch, known as version branch.** So, there will always be a connection among
-**Issue**, **Milestone** and **Branch** and this link is identified by the
+branch, known as the version branch.** So, there will always be a connection
+among **Issue**, **Milestone** and **Branch** and this link is identified by the
 current version of the API being developed at the moment.
 
 ### Milestones
 
 Each milestone represents a version of the project and has an estimated date to
 be concluded. The project can have the same number of milestones as the project
-versions, being currently the version **2.0.0**.
+versions, currently being at version **2.0.0**.
 
-The milestone is a concept that is used only for internal purpose, the external
-collaborators cannot handle it.
+The milestone is a concept used only for internal purposes; external
+collaborators cannot manage it.
 
 ### Issues
 
 Any collaborator can create new issues. There are two ways of creating new
 issues:
-  - By a template;
+  - By using a template;
   - By creating an empty issue.
 
-When the collaborator push the button to create a new issue, he will go to a
-page to specify the type of the issue through a template or just create a new
-empty issue.
+When the collaborator pushes the button to create a new issue, they will be
+directed to a page where they can specify the issue type through a template or
+simply create a new empty issue.
 
-By selecting a template, it automatically will generate all inputs that the
-collaborator needs to fill, there are no worries here.
+By selecting a template, all required inputs will be automatically generated
+for the collaborator to fill in, so there are no concerns in this case.
 
 Another option occurs when the collaborator decides to create an empty issue
-without templates. To do this, the collaborator has to respect some rules, for
-better comprehension and ideas organization. Just put in the title, the prefix
-corresponding to the current *Milestone* version, for example:
+without using templates. To do this, the collaborator must follow some rules
+for better comprehension and organization of ideas. In the title, simply add
+the prefix corresponding to the current *Milestone* version, for example:
 **[2.0.0] - Print Hello World**. It is very important that this prefix
-(**[2.0.0] -**) be placed.
+(**[2.0.0] -**) is included.
 
 In addition, it is only necessary to define the type of **Issue** to be created.
-Each type is represented by a *Github Label*. Below are the labels that will
-define what each issue proposes:
+Each type is represented by a *GitHub Label*. Below are the labels that define
+what each issue represents:
 
 | Label  | Description  |
 |---|---|
-| type: adaptive  | Request/Feature change issue  |
+| type: adaptive  | Request/feature change issue  |
 | type: bug  | Bug found  |
-| type: documentation  | Issue for API doc and .md Files  |
+| type: documentation  | Issue for API documentation and .md files  |
 | type: enhancement  | Issue for improvements and refactoring  |
 | type: feature  | Issue for new functionality/feature  |
-| type: question  | I've a question  |
-| type: suggestion  | Give us any suggestion about everything  |
-| type: test  | Issue for unit test  |
-| type: urgent-bug  | Notification for high priority bug  |
+| type: question  | I have a question  |
+| type: suggestion  | Suggestion about any topic  |
+| type: test  | Issue for unit tests  |
+| type: urgent-bug  | Notification for a high-priority bug  |
 
-Whatever the type of the issue, the collaborator may feel free to organize ideas
-as he wishes, with the exceptions of the **type: bug** and **type: urgent-bug**
-issues. Those types deserve special treatment in its description, because it
-facilitates the work of correcting bugs if an issue, in its description, has the
-following topics in this order:
+Regardless of the issue type, the collaborator is free to organize their ideas
+as they wish, with the exception of **type: bug** and **type: urgent-bug**
+issues. These types require special treatment in their descriptions, as it
+facilitates the bug-fixing process when an issue includes the following topics,
+in this order:
 
 1. What was done;
-	* Describe in an objective and summarized manner what has been done.
+	* Describe in an objective and summarized manner what was done.
 2. What happened;
-	* Describe in an objective and summarized way the result of what happened.
+	* Describe in an objective and summarized way what occurred.
 3. What was expected to happen;
-	* Describe in an objective and summarized way the result that was expected.
+	* Describe in an objective and summarized way the expected result.
 4. Steps.
-	* List and detail the step-by-step of what was done, if	preferable, with
-	some screenshots.
+	* List and detail the step-by-step actions that were performed, preferably
+	with screenshots.
 
-When a collaborator publishes a new issue, it doesn't mean that the issue will
-be treated immediately, as this issue will receive a feedback by the HappyTree
-Team, represented by black labels and these labels can be:
+When a collaborator publishes a new issue, it does not mean that the issue will
+be addressed immediately, as it will first receive feedback from the HappyTree
+Team, represented by black labels. These labels can be:
 
 | Label  | Description  |
 |---|---|
-| status: waiting-for-triage  | Issue which was not seen yet  |
+| status: waiting-for-triage  | Issue that has not been reviewed yet  |
 | status: accepted  | Accepted issue  |
 | status: declined  | Declined issue  |
-| status: declined-duplicate  | Declined. Duplicate issue  |
+| status: declined-duplicate  | Declined due to duplication  |
 
-After the collaborator has his issue accepted, for sure that this issue will be
-present in the next release. So, the collaborator has the possibility of
-tracking his issue through the white labels information provided by HappyTree
-Team over the course of time:
+After the collaborator has their issue accepted, the issue will be included in
+the next release. The collaborator can then track the issue through the white
+labels provided by the HappyTree Team over time:
 
 | Label  | Description  |
 |---|---|
-| phase: backlog  | Issue that is in backlog phase  |
-| phase: in-progress  | In progress issue  |
+| phase: backlog  | Issue in the backlog phase  |
+| phase: in-progress  | Issue in progress  |
 | phase: testing  | Issue in testing phase  |
-| phase: done  | Issue that is concluded and will be in next release  |
+| phase: done  | Issue completed and scheduled for the next release  |
 
 ### Branches
 
-HappyTree API strategy of handling development branches consists in work based
-on version, in other words, a version number drives the link among **Issues**,
-**Branches** and **Milestone**.
+The HappyTree API strategy for handling development branches is based on
+versions. In other words, a version number drives the relationship among
+**Issues**, **Branches**, and **Milestone**.
 
 <p align="center">
   <img alt="Image of version 2.0.0" src="./.github/resources/versioning.png"/>
   </a>
 </p>
 
-This strategy of workflow is known as **Release Flow**, where, from the **main**
-branch, a respective branch for each release is created. For example, creating
-the **2.0.0** branch under **main** branch.
+This workflow strategy is known as **Release Flow**, where, from the **main**
+branch, a dedicated branch is created for each release. For example, the
+**2.0.0** branch is created under the **main** branch.
 
-In this way, new features and fixes are made in dedicated branches and merged
-into **2.0.0** branch first before going to **main**, ensuring a good separation
-between stable and development code.
+In this approach, new features and fixes are developed in dedicated branches
+and merged first into the **2.0.0** branch before being merged into **main**,
+ensuring a clear separation between stable and development code.
 
-<b>While working in progress, on a specific version, all commits must be done
-under the respective snapshot version branch. In the example of the v2.0.0, the
+<b>While work is in progress on a specific version, all commits must be made
+under the corresponding snapshot version branch. In the example of v2.0.0, the
 branch name would be **2.0.0-SNAPSHOT**.</b> 
 
-Knowing the current version which the work will be done, through the milestone,
-there will be only one branch below the **main**, and its name will represent
-the current version. **All developments, made by HappyTree Team and external
-collaborators must be child of this snapshot branch.** In an example of the
-v2.0.0, the **main** branch will have only one branch child called **2.0.0** and
-below this branch there will be only one branch called **2.0.0-SNAPSHOT**.
+Knowing the current version being developed, as defined by the milestone, there
+will be only one branch directly below **main**, and its name will represent
+the current version. **All development, performed by the HappyTree Team and
+external collaborators, must be based on this snapshot branch.** In the example
+of v2.0.0, the **main** branch will have only one child branch called **2.0.0**,
+and below this branch there will be only one branch called
+**2.0.0-SNAPSHOT**.
 
-Below the snapshot branch, **2.0.0-SNAPSHOT**, the collaborator creates his own
-branch with no restriction, but as a recommendation, it will be nice whether the
-created branch follows the format: **2.0.0-issueId**, where *issueId* is the
-GitHub Issue ID reported by any user. For example, if there is an Issue #100,
-the branch name would be **2.0.0-100**.
+Below the snapshot branch, **2.0.0-SNAPSHOT**, the collaborator may create their
+own branch without restriction. However, as a recommendation, it is preferred
+that the created branch follows the format: **2.0.0-issueId**, where *issueId*
+is the GitHub Issue ID reported by any user. For example, if there is an Issue
+#100, the branch name would be **2.0.0-100**.
 
 <p align="center">
   <img alt="Image of version 2.0.0" src="./.github/resources/happytree_branches.png"/>
@@ -207,23 +209,25 @@ the branch name would be **2.0.0-100**.
 ### Workflow
 
 The user who wishes to contribute follows a workflow partially described in
-those previous sections. The workflow summary consists of creating/working on
-an issue, that belongs to a version represented by a milestone and his commit is
-done over a branch that is inside of another branch that represents the own
+the previous sections. The workflow consists of creating or working on an
+issue that belongs to a version represented by a milestone, and whose commits
+are made on a branch that is nested within another branch representing that
 version.
 
 The following workflow consists of:
-1. The user who will contribute creates an issue or opens an existing issue;
-2. The user sees/associates the current milestone (version) being developed;
-3. If the user created a new issue, he has to wait the response confirming
+1. The user who wishes to contribute creates a new issue or opens an existing
+issue;
+2. The user views or associates the current milestone (version) being
+developed;
+3. If the user created a new issue, they must wait for a response confirming
 whether the issue was accepted;
-4. If the issue is accepted, then the user forks the code;
-5. The user creates a branch from the current version branch. E.g. for 
-v2.0.0 milestone and issue ID 100, the user creates a branch with the name
+4. If the issue is accepted, the user forks the code;
+5. The user creates a branch from the current version branch. For example, for
+the v2.0.0 milestone and issue ID 100, the user creates a branch named
 **2.0.0-100**;
-6. The user requests a pull request for the version branch;
-7. If the user's pull request is accepted, he is able to track his changes
-through the white label feedback indicating whether the issue is with *done*
+6. The user submits a pull request to the version branch;
+7. If the user's pull request is accepted, they can track their changes through
+the white label feedback, indicating whether the issue has received the *done*
 label.
 
 ## Code Style
@@ -249,6 +253,7 @@ package and which ***must not be exposed to the API client***.
 This is the only standard in which collaborators must follow strictly in order
 not to violate the HappyTree API specifications.
 
+
 In a class, the order of its members is:
 
 1. Static constants;
@@ -266,7 +271,7 @@ In a class, the order of the access modifiers is:
 
 ### Packages
 
-The HappyTree API has 4 Java class packages:
+The HappyTree API has 5 Java class packages:
 
 #### HappyTree Package (Root)
 
@@ -318,7 +323,7 @@ The core package consists of:
 
 The collaborator has the freedom to develop or correct any problem at any time,
 as long as he does not expose the details to the API client and writes a legible
-and easy to understand code.
+and easy-to-understand code.
 
 #### ATP Package
 
@@ -335,36 +340,36 @@ The encoding used in the HappyTree API is UTF-8.
 
 ### Naming Conventions
 
-In the most part, the HappyTree API follows the
+For the most part, the HappyTree API follows the
 [Oracle Code Conventions](https://www.oracle.com/java/technologies/javase/codeconventions-contents.html)
 
 #### Classes/Interfaces
 
 * Names of classes or interfaces in the HappyTree API represent nouns and each
-spelled word has its first letter in capital letter;
-* There are not "$", "_" and numbers.
+spelled word has its first letter capitalized;
+* There are no "$", "_" and numbers.
 
 #### Methods
 
-* Method names usually indicate verb (not necessarily);
+* Method names usually indicate a verb (not necessarily);
 * The first letter must always be lowercase;
-* After the first spelled word, all words have the first letter in capital letter;
-* There are not "$", "_" and numbers.
+* After the first spelled word, all words have the first letter capitalized;
+* There are no "$", "_" and numbers.
 
 #### Variables
 
-* Variable names must represent the context it has in a method or class;
+* Variable names must represent the context they have in a method or class;
 * The first letter must always be lowercase;
-* After the first spelled word, all words have the first letter in capital letter;
-* There are not "$", "_" and numbers.
+* After the first spelled word, all words have the first letter capitalized;
+* There are no "$", "_" and numbers.
 
 #### Constants
 
-* Method constants must follow the same as variables;
+* Method constants must follow the same rules as variables;
 * Class constants are all capitalized;
-* If this is a class constant, each spelled word is separated by "_" e.g
+* If this is a class constant, each spelled word is separated by "_" e.g.
 <code>DEFAULT_VERSION</code>;
-* There are not "$", "_" and numbers.
+* There are no "$", "_" and numbers.
 
 ### Indentation
 
@@ -385,7 +390,7 @@ public class Example {
 	public boolean doIt() {
 		String helloWorld = null;
 		
-		for (String bar : bars ) {
+    for (String bar : bars) {
 			if (!bar.equals("")) {
 			
 				switch (bar.length()) {
@@ -407,7 +412,7 @@ public class Example {
 
 #### Brackets
 
-Brackets are used beside the class instead of the variable.
+Brackets are used beside the type instead of the variable.
 
 Compliant:
 
@@ -460,6 +465,7 @@ public static void main (String args[]) {
 ```
 
 There is only one space between the parentheses and a key word.
+ 
 
 Compliant:
 
@@ -510,11 +516,11 @@ For public classes and interfaces, the HappyTree API mandates the use of
 
 #### Edge margin
 
-The HappyTree API is coded with a margin of 80 characters.
+The HappyTree API is coded with a line length of 80 characters.
 
 ## Project information
 
-For you who want to contribute, here are some basic information about the
+For you who want to contribute, here is some basic information about the
 project requirements, dependencies and build command.
 
 ### Requirements
@@ -522,6 +528,7 @@ project requirements, dependencies and build command.
 Because it acts on a specific layer of the architecture of a **Java Project**,
 the HappyTree API has a very limited list of requirements, so, in addition to
 being easy to use, the HappyTree API almost has no requirements.
+
 
 To use the HappyTree API as a project dependency, you just need **Java 8**.
 
@@ -536,7 +543,7 @@ To contribute to the HappyTree API, the requirements are:
 For a code contribution to be successful, it has to pass the following steps:
 
 1. **Coding Standards;**
-2. **Unity Tests;**
+2. **Unit Tests;**
 3. **Sonar Analysis.**
 
 ### Dependencies
@@ -596,7 +603,7 @@ You can feel free to create sub packages inside **demo**.
 
 #### API client interfaces tests
 
-These tests are fundamentals for each available service provided by their
+These tests are fundamental for each available service provided by their
 respective interfaces. So, each interface is represented by a package, and each
 package can contain:
 
