@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
-<!-- ############################## HappyTree ############################## -->
+<!-- ############################# HappyTree ############################### -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema#instance"
 	xsi:schemaLocation=
 "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven#4.0.0.xsd">
 
-<!-- ############################### Header ################################ -->
+<!-- ############################## Header ################################# -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.madzera</groupId>
 	<artifactId>happytree</artifactId>
 	<version>2.0.0</version>
 	<name>happytree</name>
 	<description>
-		A Java Object Model API designed to manage Java objects in a tree 
-		structure. It supports transforming linear object models that exhibit 
-		hierarchical relationships into fully structured trees, allowing the 
+		A Java API designed for the management of Java objects in a tree 
+		structure. It supports the transformation of linear object models with 
+		hierarchical relationships into fully structured trees, enabling the 
 		objects to be handled as tree nodes.
 	</description>
 	<url>https://happytreeapi.vercel.app/</url>
@@ -33,7 +33,7 @@
       		<organizationUrl>http://www.madzera.com</organizationUrl>
     	</developer>
   	</developers>
-<!-- ############################## Properties ############################# -->
+<!-- ############################ Properties ############################### -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -42,14 +42,14 @@
   		<sonar.organization>madzera</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
-<!-- ################################ SCM ################################## -->
+<!-- ############################### SCM ################################### -->
 	<scm>
 		<connection>scm:git:git://github.com/madzera/happytree.git</connection>
 		<developerConnection>scm:git:ssh://github.com:madzera/happytree.git
 		</developerConnection>
 		<url>http://github.com/madzera/happytree/tree/main</url>
 	</scm>
-<!-- ############################# Dependencies ############################ -->
+<!-- ########################### Dependencies ############################## -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -68,18 +68,9 @@
   			<version>2.20.0</version>
 		</dependency>
 	</dependencies>
-<!-- ############################## Build Conf ############################# -->
+<!-- ############################# Build Conf ############################## -->
 	<build>
 		<plugins>
-			<plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.5.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                </configuration>
-            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -96,26 +87,6 @@
         			<configuration>
         				<test>HappyTreeTest.java</test>
         			</configuration>
-      		</plugin>
-			<plugin>
-        		<groupId>org.codehaus.mojo</groupId>
-		        <artifactId>buildnumber-maven-plugin</artifactId>
-		        <version>1.4</version>
-        		<executions>
-          			<execution>
-            			<phase>validate</phase>
-            			<goals>
-              				<goal>create</goal>
-            			</goals>
-          			</execution>
-        		</executions>
-        		<configuration>
-          			<doCheck>false</doCheck>
-          			<doUpdate>false</doUpdate>
-          			<useLastCommittedRevision>true</useLastCommittedRevision>
-					<scmBranchPropertyName>buildVersion</scmBranchPropertyName>
-					<shortRevisionLength>5</shortRevisionLength>
-        		</configuration>
       		</plugin>
       		<plugin>
                 <groupId>org.jacoco</groupId>
@@ -136,7 +107,7 @@
                     </execution>
                 </executions>
             </plugin>
-<!-- ############################### OSSHR ################################# -->            
+<!-- ############################## SOURCE ################################# -->
             <plugin>
 		    	<groupId>org.apache.maven.plugins</groupId>
 		    	<artifactId>maven-source-plugin</artifactId>
@@ -150,10 +121,11 @@
 		     		</execution>
 		    	</executions>
 		   	</plugin>
+<!-- ############################## JAVADOC ################################ -->
 		   	<plugin>
 		    	<groupId>org.apache.maven.plugins</groupId>
 		    	<artifactId>maven-javadoc-plugin</artifactId>
-		    	<version>3.2.0</version>
+		    	<version>3.12.0</version>
 		    	<executions>
 		     		<execution>
 		      			<id>attach-javadocs</id>
@@ -162,16 +134,8 @@
 		      			</goals>
 		     		</execution>
 		    	</executions>
-<!-- ############## DUE TO A KNOW BUG: error: invalid entity ############### -->
-<!-- ######### https://bugs.openjdk.java.net/browse/JDK-8148480 ############ -->
-		    	<configuration>
-         			<additionalparam>-Xdoclint:none</additionalparam>
-         			<additionalOptions>-Xdoclint:none</additionalOptions>
-         			<additionalJOption>-Xdoclint:none</additionalJOption>
-      			</configuration>
-<!-- ############## DUE TO A KNOW BUG: error: invalid entity ############### -->
-<!-- ######### https://bugs.openjdk.java.net/browse/JDK-8148480 ############ -->
 		   	</plugin>
+<!-- ############################## SIGNING ################################ -->
 		   	<plugin>
 		    	<groupId>org.apache.maven.plugins</groupId>
 		    	<artifactId>maven-gpg-plugin</artifactId>
@@ -186,6 +150,16 @@
 		     		</execution>
 		    	</executions>
 		   	</plugin>
+<!-- ############################ MAVEN CENTRAL ############################ -->
+			<plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>
