@@ -35,21 +35,15 @@ print in JSON/XML elements within a tree.*”
 </p>
 
 ## Disclaimer About the HappyTree API 2.0.0
-<span style="color:red;">Compared to the v1.0.0 the **groupId** of this new
-version has been changed from:</span>
+Compared to the **v1.0.0** the **groupId** of this new version has been changed:
 
-```mvn
-<groupId>com.madzera.happytree</groupId>
-<artifactId>happytree</artifactId>
-<version>1.0.0</version>
-```
-
-<span style="color:red;">to:</span>
-
-```mvn
-<groupId>com.madzera</groupId>
-<artifactId>happytree</artifactId>
-<version>1.0.0</version>
+```diff
+- <groupId>com.madzera.happytree</groupId>
+  <artifactId>happytree</artifactId>
+- <version>1.0.0</version>
++ <groupId>com.madzera</groupId>
+  <artifactId>happytree</artifactId>
++ <version>2.0.0</version>
 ```
 
 ## About the HappyTree API
