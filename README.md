@@ -34,18 +34,6 @@ print in JSON/XML elements within a tree.*”
     </a>
 </p>
 
-## Disclaimer About the HappyTree API 2.0.0
-Compared to the **v1.0.0** the **groupId** of this new version has been changed:
-
-```diff
-- <groupId>com.madzera.happytree</groupId>
-  <artifactId>happytree</artifactId>
-- <version>1.0.0</version>
-+ <groupId>com.madzera</groupId>
-  <artifactId>happytree</artifactId>
-+ <version>2.0.0</version>
-```
-
 ## About the HappyTree API
 
 ### What is it?
@@ -279,6 +267,28 @@ type objects, which will encapsulate (wrap) their respective "original objects"
 (Directory) represented as nodes. From there, just use the
 [TreeManager](./src/main/java/com/madzera/happytree/TreeManager.java)
 interface to handle these elements.
+
+### Importing the HappyTree API
+To import the HappyTree API into the Maven projects, just add the following:
+```xml
+<dependency>
+	<groupId>com.madzera</groupId>
+	<artifactId>happytree</artifactId>
+	<version>2.0.0</version>
+</dependency>
+```
+
+#### Disclaimer About the HappyTree API 2.0.0
+Compared to the **v1.0.0** the **groupId** of this new version has been changed:
+
+```diff
+- <groupId>com.madzera.happytree</groupId>
+  <artifactId>happytree</artifactId>
+- <version>1.0.0</version>
++ <groupId>com.madzera</groupId>
+  <artifactId>happytree</artifactId>
++ <version>2.0.0</version>
+```
 
 ### Documentation
 
