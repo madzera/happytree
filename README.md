@@ -285,6 +285,8 @@ interface to handle these elements.
 ### Importing the HappyTree API
 To import the HappyTree API into a project, simply add the following:
 
+- Maven
+
 ```xml
 <dependency>
 	<groupId>com.madzera</groupId>
@@ -292,6 +294,8 @@ To import the HappyTree API into a project, simply add the following:
 	<version>2.0.0</version>
 </dependency>
 ```
+
+- Gradle
 
 ```gradle
 implementation 'com.madzera:happytree:2.0.0'
