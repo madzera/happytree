@@ -269,7 +269,8 @@ type objects, which will encapsulate (wrap) their respective "original objects"
 interface to handle these elements.
 
 ### Importing the HappyTree API
-To import the HappyTree API into the Maven projects, just add the following:
+To import the HappyTree API into a Maven project, simply add the following:
+
 ```xml
 <dependency>
 	<groupId>com.madzera</groupId>
@@ -278,8 +279,8 @@ To import the HappyTree API into the Maven projects, just add the following:
 </dependency>
 ```
 
-#### Disclaimer About the HappyTree API 2.0.0
-Compared to the **v1.0.0** the **groupId** of this new version has been changed:
+#### HappyTree API 2.0.0 Note
+Compared to **v1.0.0** the **groupId** of this new version has changed:
 
 ```diff
 - <groupId>com.madzera.happytree</groupId>
