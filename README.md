@@ -124,11 +124,11 @@ linear structure into an actual tree structure in memory.
 //Linear tree structure.  
 public class Directory {
 	//Own ID
-	private Integer dirId;
+	private Integer directoryId;
 	//Super node reference
-	private Integer dirParentId;
+	private Integer directoryParentId;
 	//Simple attribute
-	private String dirName;
+	private String directoryName;
 	
 	//getters and setters
 }
@@ -139,9 +139,9 @@ public class Directory {
 ```java
 //Recursive tree structure wrapped through the Element object.
 public interface Element<Directory> {
-	private Object dirId;
-	private Object dirParentId;
-	private Collection<Element<Directory>> subDirs;
+	private Object directoryId;
+	private Object directoryParentId;
+	private Collection<Element<Directory>> children;
 	
 	//Skeleton methods.
 	public void addChild(Element<Directory> child);
@@ -241,10 +241,10 @@ the code below:
 	Element<Directory> accessControl = manager.getElementById(
 		accessControlId);
 	
-	/*
-	* Access Control menu and its children now will
-	* be moved to Administration menu.
-	*/
+    /*
+	 * The Access Control menu and its children will now be moved to the
+	 * Administration menu.
+	 */
 	manager.cut(accessControl, administration);
 		
 	Directory security = new Directory();
@@ -254,11 +254,25 @@ the code below:
 	Element<Directory> securityElement = manager.createElement(securityId,
 		administrationId, security);
 
-	//New inserted element in the tree.		
-	manager.persistElement(securityElement);
+	//New inserted element (Security) in the tree.
+	securityElement = manager.persistElement(securityElement);
 	
-	Element<Directory> root = manager.root();
-	System.out.println(root.toJSON());
+	/*
+	 * The Access Control menu has been moved to the new Security menu.
+	 */
+	accessControl = manager.cut(accessControl, securityElement);
+
+	/*
+	 * If the Security element contains the Access Control element and the
+	 * Administration element no longer contains the Access Control element,
+	 * print the tree in JSON format.
+	 */
+	if (manager.containsElement(securityElement, accessControl)
+			&& !manager.containsElement(administration, accessControl)) {
+		Element<Directory> root = manager.root();
+		System.out.println(root.toJSON());
+	}
+	
 ```
 
 Once created, the trees start to work with
