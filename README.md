@@ -39,8 +39,8 @@ print in JSON/XML elements within a tree.*”
 ### What is it?
 
 HappyTree is a data structure API designed for handling Java objects that have
-tree-like behavior, whereas an *@Id* attribute of an object is referenced as a
-*@Parent* attribute of its children.
+tree-like behavior, whereas an **@Id** attribute of an object is referenced as a
+**@Parent** attribute of its children.
 
 In certain circumstances there is a need to convert a list of Java objects that
 could represent a model layer in a business context, into an actual hierarchical
@@ -301,6 +301,7 @@ implementation 'com.madzera:happytree:2.0.0'
 Compared to **v1.0.0**, the **groupId** of this new version has changed:
 
 - Maven
+
 ```diff
 - <groupId>com.madzera.happytree</groupId>
   <artifactId>happytree</artifactId>
@@ -311,6 +312,7 @@ Compared to **v1.0.0**, the **groupId** of this new version has changed:
 ```
 
 - Gradle
+
 ```diff
 - implementation 'com.madzera.happytree:happytree:1.0.0'
 + implementation 'com.madzera:happytree:2.0.0'

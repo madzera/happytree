@@ -98,8 +98,8 @@ public class TreeTransactionTest {
 	 * 	{@link TreeManager#getElementById(Object)};</li>
 	 * 	<li>Verify if the <i>happytree</i> element is not <code>null</code>;
 	 * 	</li>
-	 * 	<li>Verify if the <i>projects</i> has the same id than the
-	 * 	<i>happytree</i> parent id (true).</li>
+	 * 	<li>Verify if the <i>happytree</i> element is inside of <i>projects</i>.
+	 * 	</li>
 	 * </ol>
 	 * 
 	 * @throws TreeException in case of an error
@@ -125,7 +125,7 @@ public class TreeTransactionTest {
 		assertNotNull(happytree);
 		
 		assertEquals(projects.getId(), happytree.getParent());
-		//assertTrue(manager.containsElement(projects, happytree));
+		assertTrue(manager.containsElement(projects, happytree));
 	}
 	
 	/**
@@ -145,7 +145,8 @@ public class TreeTransactionTest {
 	 * 	<li>Initialize the both sessions with their respective identifiers;</li>
 	 * 	<li>Check out session 2;</li>
 	 * 	<li>Check out session 1;</li>
-	 * 	<li>Destroy the last checked out session (session 1);</li>
+	 * 	<li>Verify that both sessions are active;</li>
+	 * 	<li>Destroy the session 1;</li>
 	 * 	<li>Verify that the session 1 is <code>null</code> and the session 2 is
 	 * 	not <code>null</code>.</li>
 	 * </ol>
@@ -166,6 +167,9 @@ public class TreeTransactionTest {
 		TreeSession session2 = transaction.sessionCheckout(sessionIdentifier2);
 		TreeSession session1 = transaction.sessionCheckout(sessionIdentifier1);
 		
+		assertTrue(session1.isActive());
+		assertTrue(session2.isActive());
+
 		/*
 		 * Destroy the last checked out session (session1).
 		 */
