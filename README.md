@@ -26,9 +26,6 @@ print in JSON/XML elements within a tree.*”
     <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
         <img alt="Reliability" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=reliability_rating">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
-        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=security_rating">
-    </a>
     <a href="https://github.com/madzera/happytree/releases/tag/v2.0.0" target="_blank">
         <img alt="GitHub Release" src="https://img.shields.io/github/v/release/madzera/happytree">
     </a>
