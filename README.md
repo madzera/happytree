@@ -269,7 +269,7 @@ type objects, which will encapsulate (wrap) their respective "original objects"
 interface to handle these elements.
 
 ### Importing the HappyTree API
-To import the HappyTree API into a Maven project, simply add the following:
+To import the HappyTree API into a project, simply add the following:
 
 ```xml
 <dependency>
@@ -279,9 +279,14 @@ To import the HappyTree API into a Maven project, simply add the following:
 </dependency>
 ```
 
-#### HappyTree API 2.0.0 Note
-Compared to **v1.0.0** the **groupId** of this new version has changed:
+```gradle
+implementation 'com.madzera:happytree:2.0.0'
+```
 
+#### HappyTree API 2.0.0 Note
+Compared to **v1.0.0**, the **groupId** of this new version has changed:
+
+- Maven
 ```diff
 - <groupId>com.madzera.happytree</groupId>
   <artifactId>happytree</artifactId>
@@ -289,6 +294,12 @@ Compared to **v1.0.0** the **groupId** of this new version has changed:
 + <groupId>com.madzera</groupId>
   <artifactId>happytree</artifactId>
 + <version>2.0.0</version>
+```
+
+- Gradle
+```diff
+- implementation 'com.madzera.happytree:happytree:1.0.0'
++ implementation 'com.madzera:happytree:2.0.0'
 ```
 
 ### Documentation
