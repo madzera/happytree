@@ -324,7 +324,7 @@ Compared to **v1.0.0**, the **groupId** of this new version has changed:
 
 ### Documentation
 
-[HappyTree Official Documentation](https://www.madzera.com/happytree/happytree-2.0.0.pdf)
+[HappyTree Official Documentation - PDF](https://www.madzera.com/happytree/happytree-2.0.0.pdf)
 
 ### Contributing
 
