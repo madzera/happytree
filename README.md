@@ -5,9 +5,9 @@
   </a>
 </p>
 
-“*API designed for handling Java objects with tree-like behavior where each
-object behaves similarly to a node within the tree. Add, remove, cut, copy,
-print in JSON/XML elements within a tree.*”
+“*A Java API designed for handling objects with tree-like behavior. Transform
+linear Java objects into hierarchical tree structures. Add, remove, cut, copy,
+and export to JSON/XML with ease.*”
 
 
 <p align="center">
