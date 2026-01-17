@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://happytreeapi.vercel.app/" target="_blank" >
+  <a href="https://www.madzera.com/happytree/happytree.html" target="_blank" >
     <img alt="HappyTree API" src="./.github/resources/happytree_logo.png" width="400" />
   </a>
 </p>
@@ -17,17 +17,17 @@ print in JSON/XML elements within a tree.*”
     <a href="https://github.com/madzera/happytree/actions?query=workflow%3ABuild" target="_blank">
         <img alt="Build Status" src="https://github.com/madzera/happytree/workflows/Build/badge.svg">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+    <a href="https://sonarcloud.io/summary/overall?id=madzera_happytree&branch=main" target="_blank">
         <img alt="Code Quality" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=alert_status">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+    <a href="https://sonarcloud.io/summary/overall?id=madzera_happytree&branch=main" target="_blank">
         <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=sqale_rating">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
+    <a href="https://sonarcloud.io/summary/overall?id=madzera_happytree&branch=main" target="_blank">
         <img alt="Reliability" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=reliability_rating">
     </a>
-    <a href="https://sonarcloud.io/dashboard?id=madzera_happytree" target="_blank">
-        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=coverage">
+    <a href="https://sonarcloud.io/summary/overall?id=madzera_happytree&branch=main" target="_blank">
+        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=coverage">
     </a>
     <a href="https://github.com/madzera/happytree/releases/tag/v2.0.0" target="_blank">
         <img alt="GitHub Release" src="https://img.shields.io/github/v/release/madzera/happytree">
@@ -324,7 +324,7 @@ Compared to **v1.0.0**, the **groupId** of this new version has changed:
 
 ### Documentation
 
-[HappyTree Official Documentation](https://happytreeapi.vercel.app/happytree-2.0.0.pdf)
+[HappyTree Official Documentation](https://www.madzera.com/happytree/happytree-2.0.0.pdf)
 
 ### Contributing
 
