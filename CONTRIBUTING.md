@@ -535,7 +535,7 @@ To use the HappyTree API as a project dependency, you just need **Java 8**.
 To contribute to the HappyTree API, the requirements are:
 
 * **Java 8**;
-* **Maven 3.6.x**;
+* **Maven 3.9.x**;
 * **The Java and Maven environment variables must be well configured
 ($JAVA_HOME, $MAVEN_HOME and $PATH).**
 * **SonarLint**: It is optional, but highly recommended to fix code issues.
@@ -551,7 +551,7 @@ For a code contribution to be successful, it has to pass the following steps:
 The HappyTree API has two dependencies:
 
 * **JUnit 4.13.1** for unit tests;
-* **Jackson 2.17.2** for conversions from Java objects.
+* **Jackson 2.20.0** for conversions from Java objects.
 
 ### Code structure
 
