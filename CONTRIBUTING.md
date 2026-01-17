@@ -565,8 +565,11 @@ HappyTree API is structured into different directories:
 For building, go to the project root folder and enter the following command:
 
 ```mvn
-mvn clean package -Dgpg.skip=true
+mvn clean install -Dgpg.skip=true
 ```
+
+The `-Dgpg.skip=true` parameter is used to skip GPG signing during the build
+process, which is not necessary for local builds.
 
 ## Unit Tests
 
