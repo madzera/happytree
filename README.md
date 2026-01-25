@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://www.madzera.com/happytree/happytree.html" target="_blank" >
+  <a href="https://happytreeapi.io/" target="_blank" >
     <img alt="HappyTree API" src="./.github/resources/happytree_logo.png" width="400" />
   </a>
 </p>
@@ -324,7 +324,7 @@ Compared to **v1.0.0**, the **groupId** of this new version has changed:
 
 ### Documentation
 
-[HappyTree Official Documentation - PDF](https://www.madzera.com/happytree/happytree-2.0.0.pdf)
+[HappyTree Official Documentation - PDF](https://happytreeapi.io/happytree-2.0.0.pdf)
 
 ### Contributing
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.madzera.com/happytree/happytree.html" target="_blank" >
+  <a href="https://happytreeapi.io/" target="_blank" >
 	<img alt="HappyTree API" src="./.github/resources/happytree_logo.png" width="400" />
   </a>
 </p>
