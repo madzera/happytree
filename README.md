@@ -162,13 +162,14 @@ identifiers) into a tree structure.
 
 #### Code Snippets
 
-1 - You must first add the following annotations to the **Java Class** to which
-its objects will be inserted as a tree node:
+1 - You must first add the following annotations to the **Java Class**, usually
+a POJO, to which its objects will be inserted as a tree node and make it to
+implement the **Serializable** interface:
 
 ```java
 //Linear tree structure.
 @Tree
-public class Directory {
+public class Directory implements Serializable {
 	@Id
 	private Integer directoryId;
 	@Parent
