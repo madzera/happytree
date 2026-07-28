@@ -1,9 +1,9 @@
 name: New feature
 description: Suggest or request a new feature
-title: "[2.0.0] - "
+title: "[2.0.1] - "
 labels: ["type:feature"]
 projects:
-  - "[2.0.0] - HappyTree"
+  - "[2.0.1] - HappyTree"
 body:
   - type: markdown
     attributes:

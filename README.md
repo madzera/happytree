@@ -29,7 +29,7 @@ and export to JSON/XML with ease.*”
     <a href="https://sonarcloud.io/summary/overall?id=madzera_happytree&branch=main" target="_blank">
         <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=madzera_happytree&metric=coverage">
     </a>
-    <a href="https://github.com/madzera/happytree/releases/tag/v2.0.0" target="_blank">
+    <a href="https://github.com/madzera/happytree/releases/tag/v2.0.1" target="_blank">
         <img alt="GitHub Release" src="https://img.shields.io/github/v/release/madzera/happytree">
     </a>
 </p>
@@ -292,17 +292,17 @@ To import the HappyTree API into a project, simply add the following:
 <dependency>
 	<groupId>com.madzera</groupId>
 	<artifactId>happytree</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.1</version>
 </dependency>
 ```
 
 - Gradle
 
 ```gradle
-implementation 'com.madzera:happytree:2.0.0'
+implementation 'com.madzera:happytree:2.0.1'
 ```
 
-#### HappyTree API 2.0.0 Note
+#### HappyTree API v2 Note
 Compared to **v1.0.0**, the **groupId** of this new version has changed:
 
 - Maven
@@ -313,19 +313,19 @@ Compared to **v1.0.0**, the **groupId** of this new version has changed:
 - <version>1.0.0</version>
 + <groupId>com.madzera</groupId>
   <artifactId>happytree</artifactId>
-+ <version>2.0.0</version>
++ <version>2.0.1</version>
 ```
 
 - Gradle
 
 ```diff
 - implementation 'com.madzera.happytree:happytree:1.0.0'
-+ implementation 'com.madzera:happytree:2.0.0'
++ implementation 'com.madzera:happytree:2.0.1'
 ```
 
 ### Documentation
 
-[HappyTree Official Documentation - PDF](https://www.madzera.com/happytree/happytree-2.0.0.pdf)
+[HappyTree Official Documentation - PDF](https://www.madzera.com/happytree/happytree-2.0.1.pdf)
 
 ### Contributing
 

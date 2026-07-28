@@ -71,11 +71,11 @@ inclusive environment.
 Every contribution is inserted within the **Issue** context which can be
 reported by anyone and this **Issue** is associated with the actual
 **Milestone** of the project. Each **Milestone** represents a version number
-(the current **Milestone** is 2.0.0), the official API version being developed
+(the current **Milestone** is 2.0.1), the official API version being developed
 at the moment.
 
 Also, for each **Milestone**, there will always be its respective **Branch**,
-in this case named **2.0.0**, and **every development must be done under this
+in this case named **2.0.1**, and **every development must be done under this
 branch, known as the version branch.** So, there will always be a connection
 among **Issue**, **Milestone** and **Branch** and this link is identified by the
 current version of the API being developed at the moment.
@@ -84,7 +84,7 @@ current version of the API being developed at the moment.
 
 Each milestone represents a version of the project and has an estimated date to
 be concluded. The project can have the same number of milestones as the project
-versions, currently being at version **2.0.0**.
+versions, currently being at version **2.0.1**.
 
 The milestone is a concept used only for internal purposes; external
 collaborators cannot manage it.
@@ -107,8 +107,8 @@ Another option occurs when the collaborator decides to create an empty issue
 without using templates. To do this, the collaborator must follow some rules
 for better comprehension and organization of ideas. In the title, simply add
 the prefix corresponding to the current *Milestone* version, for example:
-**[2.0.0] - Print Hello World**. It is very important that this prefix
-(**[2.0.0] -**) is included.
+**[2.0.1] - Print Hello World**. It is very important that this prefix
+(**[2.0.1] -**) is included.
 
 In addition, it is only necessary to define the type of **Issue** to be created.
 Each type is represented by a *GitHub Label*. Below are the labels that define
@@ -171,38 +171,38 @@ versions. In other words, a version number drives the relationship among
 **Issues**, **Branches**, and **Milestone**.
 
 <p align="center">
-  <img alt="Image of version 2.0.0" src="./.github/resources/versioning.png"/>
+  <img alt="Image of version 2.0.1" src="./.github/resources/versioning.png"/>
   </a>
 </p>
 
 This workflow strategy is known as **Release Flow**, where, from the **main**
 branch, a dedicated branch is created for each release. For example, the
-**2.0.0** branch is created under the **main** branch.
+**2.0.1** branch is created under the **main** branch.
 
 In this approach, new features and fixes are developed in dedicated branches
-and merged first into the **2.0.0** branch before being merged into **main**,
+and merged first into the **2.0.1** branch before being merged into **main**,
 ensuring a clear separation between stable and development code.
 
 <b>While work is in progress on a specific version, all commits must be made
-under the corresponding snapshot version branch. In the example of v2.0.0, the
-branch name would be **2.0.0-SNAPSHOT**.</b> 
+under the corresponding snapshot version branch. In the example of v2.0.1, the
+branch name would be **2.0.1-SNAPSHOT**.</b> 
 
 Knowing the current version being developed, as defined by the milestone, there
 will be only one branch directly below **main**, and its name will represent
 the current version. **All development, performed by the HappyTree Team and
 external collaborators, must be based on this snapshot branch.** In the example
-of v2.0.0, the **main** branch will have only one child branch called **2.0.0**,
+of v2.0.1, the **main** branch will have only one child branch called **2.0.1**,
 and below this branch there will be only one branch called
-**2.0.0-SNAPSHOT**.
+**2.0.1-SNAPSHOT**.
 
-Below the snapshot branch, **2.0.0-SNAPSHOT**, the collaborator may create their
+Below the snapshot branch, **2.0.1-SNAPSHOT**, the collaborator may create their
 own branch without restriction. However, as a recommendation, it is preferred
-that the created branch follows the format: **2.0.0-issueId**, where *issueId*
+that the created branch follows the format: **2.0.1-issueId**, where *issueId*
 is the GitHub Issue ID reported by any user. For example, if there is an Issue
-#100, the branch name would be **2.0.0-100**.
+#100, the branch name would be **2.0.1-100**.
 
 <p align="center">
-  <img alt="Image of version 2.0.0" src="./.github/resources/happytree_branches.png"/>
+  <img alt="Image of version 2.0.1" src="./.github/resources/happytree_branches.png"/>
   </a>
 </p>
 
@@ -223,8 +223,8 @@ developed;
 whether the issue was accepted;
 4. If the issue is accepted, the user forks the code;
 5. The user creates a branch from the current version branch. For example, for
-the v2.0.0 milestone and issue ID 100, the user creates a branch named
-**2.0.0-100**;
+the v2.0.1 milestone and issue ID 100, the user creates a branch named
+**2.0.1-100**;
 6. The user submits a pull request to the version branch;
 7. If the user's pull request is accepted, they can track their changes through
 the white label feedback, indicating whether the issue has received the *done*

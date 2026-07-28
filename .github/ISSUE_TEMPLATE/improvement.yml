@@ -1,9 +1,9 @@
 name: Improvement
-description: Suggest an changing or improvement
-title: "[2.0.0] - "
+description: Suggest a change or improvement
+title: "[2.0.1] - "
 labels: ["type:enhancement", "type:suggestion"]
 projects:
-  - "[2.0.0] - HappyTree"
+  - "[2.0.1] - HappyTree"
 body:
   - type: markdown
     attributes:
